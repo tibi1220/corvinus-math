@@ -1,0 +1,986 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Week 8: combinatorial analysis, sample space, events.
+% Sessions 1 and 2 are held on the SAME DAY, back to back (2 x 90 min,
+% short break in between).
+% Sources: lecture slides (Lectures 16--17), AK Probability Exercises (Ch. 13),
+% referred to as AK01, AK02, ...; Ross, A First Course in Probability, 8th ed.,
+% Ch. 1--2 (problems paraphrased).
+
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage{fontspec}
+\setsansfont{Latin Modern Sans}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{booktabs}
+\usepackage{cancel}
+
+\usetheme{Madrid}
+
+\definecolor{navy}{RGB}{24,48,75}
+\definecolor{teal}{RGB}{0,120,125}
+\definecolor{gold}{RGB}{190,130,20}
+
+\setbeamercolor{structure}{fg=navy}
+\setbeamercolor{alerted text}{fg=teal}
+\setbeamercolor{block title}{bg=navy,fg=white}
+\setbeamercolor{block body}{bg=navy!5}
+\setbeamercolor{block title example}{bg=teal,fg=white}
+\setbeamercolor{block body example}{bg=teal!6}
+\setbeamercolor{block title alerted}{bg=gold,fg=white}
+\setbeamercolor{block body alerted}{bg=gold!8}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \usebeamerfont{footline}\hspace{1em}\insertshortauthor\hfill%
+  \insertshorttitle\quad|\quad%
+  \insertframenumber/\inserttotalframenumber%
+  \hspace{1em}\vspace{2mm}%
+}
+\setbeamertemplate{itemize items}[circle]
+
+% Contact (beamer loads hyperref itself)
+\newcommand{\myemail}{tiborsandor2001@gmail.com}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Om}{\Omega}
+\newcommand{\exercise}[2]{%
+  \begin{block}{Exercise #1}
+    #2
+  \end{block}%
+}
+\newcommand{\finance}[2]{%
+  \begin{exampleblock}{Finance example #1}
+    #2
+  \end{exampleblock}%
+}
+\newcommand{\sol}{\alert{Solution.}\ }
+
+% Small Venn diagram of two events E, F in Omega; #1 = shading commands
+\newcommand{\venn}[1]{%
+  \begin{tikzpicture}[scale=.42,baseline=(O.base)]
+    \node (O) at (.5,0) {\phantom{x}};
+    #1
+    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
+    \draw[thick,navy] (0,0) circle (.85);
+    \draw[thick,navy] (1,0) circle (.85);
+    \node at (-.35,0) {\scriptsize $E$};
+    \node at (1.35,0) {\scriptsize $F$};
+    \node at (2.15,.8) {\scriptsize $\Omega$};
+  \end{tikzpicture}}
+\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+
+\title[Mathematics for Finance]{Mathematics for Finance}
+\author{Tibor SÁNDOR}
+\subtitle{Week 8: Combinatorial analysis, sample space, events}
+\institute{Corvinus University of Budapest\\[2pt]
+  \href{mailto:\myemail}{\texttt{\myemail}}}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Plan for today}
+  \textbf{Two sessions back to back, on the same day} (2 $\times$ 90 min,
+  with a short break in between):
+  \begin{enumerate}
+    \item \textbf{Session 1 (90 min):} counting principle; permutations;
+          permutations with repetition; combinations; lattice paths, the
+          binomial tree and Pascal's triangle.
+    \item[] \hspace*{-1.2em}\textit{--- short break ---}
+    \item \textbf{Session 2 (90 min):} multinomial coefficients; binomial and
+          multinomial theorems; combinations with repetition (stars and bars);
+          combinatorial proofs; sample space and events; De Morgan's laws;
+          Venn diagrams.
+  \end{enumerate}
+  \vspace{.3cm}
+  \textbf{Why do finance students count?} Next week probabilities in
+  ``equally likely'' models are \emph{(favorable cases)/(all cases)}. The
+  binomial option-pricing model, credit baskets and portfolio selection all
+  start with a counting argument.\\[2mm]
+  Problems marked \textbf{AK01, AK02, \ldots} are from the AK exercise
+  collection.\\[1mm]
+  \textbf{Contact:} Tibor SÁNDOR,
+  \href{mailto:\myemail}{\texttt{\myemail}}
+\end{frame}
+
+%======================================================================
+\section{Session 1: Counting}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 1: Permutations and combinations
+\end{frame}
+
+\begin{frame}{Toolbox}
+  \begin{block}{Basic principle of counting}
+    If experiment 1 has $m$ outcomes and, for each of them, experiment 2 has
+    $n$ outcomes, then together there are $m\cdot n$ outcomes. (Generalizes to
+    $n_1 n_2\cdots n_r$.)
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{.5\textwidth}
+      \begin{block}{Permutations}
+        $n$ distinct objects in a row: $n!$\\[2pt]
+        ordered selection of $k$ out of $n$: \\
+        $\dfrac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1)$
+      \end{block}
+    \end{column}
+    \begin{column}{.5\textwidth}
+      \begin{block}{Combinations}
+        unordered selection of $k$ out of $n$:\\
+        $\displaystyle\binom nk=\frac{n!}{k!\,(n-k)!}$\\[2pt]
+        permutations with repetition:\\
+        $\dfrac{n!}{n_1!\,n_2!\cdots n_r!}$
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{2mm}
+  \textbf{Two questions to ask every time:} Does the order matter? Can an
+  element be used more than once?
+\end{frame}
+
+\begin{frame}[t]{Warm-up: license plates}
+  \small
+  \exercise{1.1}{%
+    A license plate has 7 places: the first 2 are letters (26 options), the
+    other 5 are digits. (a) How many plates are possible? (b) How many, if no
+    letter and no digit may be repeated?}
+  \pause
+  \sol Fill the 7 places one by one and multiply (basic principle).
+  \begin{enumerate}
+    \item[(a)] Repetition allowed: 26 choices for each letter, 10 for each
+          digit: \ $26^2\cdot 10^5 = 676\cdot 100\,000 = 67\,600\,000$.
+    \item[(b)] Each choice uses up one symbol: letters $26\cdot 25=650$,
+          digits $10\cdot 9\cdot 8\cdot 7\cdot 6=30\,240$; \
+          $650\cdot 30\,240 = 19\,656\,000$.
+  \end{enumerate}
+  \pause
+  \finance{1}{A bank card PIN has 4 digits: $10^4=10\,000$ PINs. With no
+    repeated digit: $10\cdot9\cdot8\cdot7=\frac{10!}{6!}=5040$. Three different
+    random guesses cover 3 of the $10\,000$ PINs, so they succeed with chance
+    $3/10\,000$ --- next week!}
+\end{frame}
+
+\begin{frame}[t]{Five couples at a concert}
+  \small
+  \exercise{1.2 (AK02)}{%
+    Five married couples have 10 seats next to each other in one row. In how
+    many ways can they sit
+    (a) with no restriction? (b) if couples sit together?
+    (c) if the men sit together and the women sit together?
+    (d) if men and women alternate?}
+  \pause
+  \sol
+  \begin{enumerate}
+    \item[(a)] 10 distinct people on 10 seats: $10! = 3\,628\,800$.
+    \item[(b)] Glue each couple into a block $\Rightarrow$ 5 blocks:
+          $5!=120$ orders. Inside each block 2 orders, independently for the
+          5 couples: $2^5=32$. \ Total $120\cdot 32 = 3840$.
+    \item[(c)] Two blocks (men, women): $2$ orders (men left or women
+          left); men inside $5!$, women inside $5!$:
+          $2\cdot 120\cdot 120 = 28\,800$.
+    \item[(d)] Pattern MWMW\ldots\ or WMWM\ldots: 2 choices. Then the men
+          fill their 5 seats in $5!$ ways, the women in $5!$ ways:
+          $2\cdot 5!\cdot 5! = 28\,800$.
+  \end{enumerate}
+  \textbf{Trick:} ``together'' $\Rightarrow$ glue into a block, permute the
+  blocks, then permute inside each block.
+\end{frame}
+
+\begin{frame}[t]{Queueing for the bus}
+  \small
+  \exercise{1.3 (AK03)}{%
+    Eight people line up for a bus. In how many ways can they line up
+    (a) with no restriction? (b) if 3 given people insist on standing together?
+    (c) if 2 given people refuse to stand next to each other?}
+  \pause
+  \sol
+  \begin{enumerate}
+    \item[(a)] $8! = 40\,320$.
+    \item[(b)] Glue the 3 into one block: block $+$ 5 others $=6$ units,
+          $6!=720$ orders; inside the block $3!=6$ orders:
+          $6\cdot 720 = 4320$.
+    \item[(c)] Direct counting is messy, so count the \emph{bad} lines
+          (the two \emph{are} adjacent): glue them, $7$ units: $7!=5040$,
+          times $2!$ inside: $10\,080$. Hence
+          $8! - 2!\cdot 7! = 40\,320-10\,080 = 30\,240$.
+  \end{enumerate}
+  \begin{alertblock}{Complement principle}
+    $\#(\text{good}) = \#(\text{all}) - \#(\text{bad})$ --- often much easier.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[t]{Permutations with repetition}
+  \small
+  \exercise{1.4}{%
+    How many different letter arrangements can be made from the letters of
+    (a) FLUKE \quad (b) PROPOSE \quad (c) MISSISSIPPI \quad (d) ARRANGE?}
+  \pause
+  \sol If all letters were different we would have $n!$ arrangements. Swapping
+  identical letters does not change the word, so every word is counted
+  $n_1!\,n_2!\cdots$ times: divide by the factorials of the multiplicities.
+  \begin{enumerate}
+    \item[(a)] 5 different letters: $5! = 120$.
+    \item[(b)] P,R,O,P,O,S,E: P and O twice: $\dfrac{7!}{2!\,2!} =
+          \dfrac{5040}{4} = 1260$.
+    \item[(c)] M$\times1$, I$\times4$, S$\times4$, P$\times2$: each word is
+          counted $4!\,4!\,2!=1152$ times among the $11!$ orders:
+          $\dfrac{11!}{4!\,4!\,2!} = \dfrac{39\,916\,800}{1152} = 34\,650$.
+    \item[(d)] A,R,R,A,N,G,E: A and R twice: $\dfrac{7!}{2!\,2!} = 1260$.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[t]{Eight-digit numbers}
+  \small
+  \exercise{1.5 (AK01)}{%
+    The digits $0,1,1,2,3,3,3,4$ are written on eight cards. Using all eight
+    cards, how many 8-digit numbers can be formed?}
+  \pause
+  \sol \textbf{All arrangements:} 8 cards, the 1 appears twice and the 3
+  three times: $\dfrac{8!}{2!\,3!} = \dfrac{40\,320}{12} = 3360$.\\[1mm]
+  \textbf{Bad ones} start with $0$ (not an 8-digit number). Fix the $0$ in
+  front and arrange the other 7 cards $1,1,2,3,3,3,4$:
+  $\dfrac{7!}{2!\,3!}=\dfrac{5040}{12}=420$. \ Therefore
+  $\dfrac{8!}{2!\,3!}-\dfrac{7!}{2!\,3!} = 3360-420 = \mathbf{2940}$.
+  \pause
+  \finance{2}{A trader had 7 up-days and 5 down-days in a 12-day period.
+    How many different up/down sequences are possible?
+    \ \sol A word of 7 U's and 5 D's: $\frac{12!}{7!\,5!}$. Equivalently,
+    choose which 5 of the 12 days were down: $\binom{12}{5} = 792$.}
+\end{frame}
+
+\begin{frame}[t]{Awards: with or without repetition}
+  \small
+  \exercise{1.6}{%
+    Five different awards are given to students of a class of 30. How many
+    outcomes are possible if (a) a student may receive any number of awards?
+    (b) each student receives at most one award?}
+  \pause
+  \sol Hand out the awards one by one.
+  \begin{enumerate}
+    \item[(a)] Every award can go to any of the 30 students (repetition
+          allowed, order matters because the awards differ):
+          $30^5 = 24\,300\,000$.
+    \item[(b)] After each award one student fewer is eligible:
+          $30\cdot29\cdot28\cdot27\cdot26 = \frac{30!}{25!} = 17\,100\,720$.
+  \end{enumerate}
+  \pause
+  \finance{3}{10 mutual funds compete. A rating agency publishes the
+    gold--silver--bronze podium. Order matters, no fund twice:
+    $10\cdot 9\cdot 8 = 720$ possible podiums. If only the unordered
+    ``top three'' were published: $720/3! = \binom{10}{3}=120$.
+    The full league table: $10! = 3\,628\,800$.}
+\end{frame}
+
+\begin{frame}[t]{Committees with a conflict}
+  \small
+  \exercise{1.7}{%
+    From 8 women and 6 men a committee of 3 men and 3 women is formed. How many
+    committees are possible if (a) 2 of the men refuse to serve together?
+    (b) 2 of the women refuse to serve together? (c) 1 man and 1 woman refuse
+    to serve together?}
+  \pause
+  \sol No restriction: men $\binom63=20$, women $\binom83=56$, total
+  $20\cdot 56 = 1120$. In each part subtract the bad committees.
+  \begin{enumerate}
+    \item[(a)] Bad male trios contain both feuding men; the third man comes
+          from the other 4: $\binom41=4$. Good trios $20-4=16$; total
+          $16\cdot 56 = 896$.
+    \item[(b)] Bad female trios: both feuding women $+$ one of the other 6:
+          $6$. Good $56-6=50$; total $20\cdot 50 = 1000$.
+    \item[(c)] Bad: that man and that woman are both in; choose 2 more men of
+          5 and 2 more women of 7: $\binom52\binom72=10\cdot21 = 210$. Hence
+          $1120-210 = 910$.
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[t]{Choosing a portfolio}
+  \small
+  \finance{4}{An index has 30 stocks, 8 of them technology stocks. An analyst
+    picks 5 stocks (an equally weighted portfolio; order does not matter).
+    (a) How many portfolios are possible?
+    (b) How many contain at least one tech stock?
+    (c) How many contain exactly two tech stocks?}
+  \pause
+  \sol
+  \begin{enumerate}
+    \item[(a)] Unordered, no repetition: $\binom{30}{5} =
+          \frac{30\cdot29\cdot28\cdot27\cdot26}{5!} = 142\,506$.
+    \item[(b)] ``At least one'' $\to$ complement ``none'': all 5 from the 22
+          non-tech stocks, $\binom{22}{5}=26\,334$. So
+          $142\,506-26\,334 = 116\,172$.
+    \item[(c)] Choose the tech part and the non-tech part separately, then
+          multiply: $\binom82\binom{22}{3} = 28\cdot1540 = 43\,120$.
+  \end{enumerate}
+  \pause
+  \textbf{Lottery:} the Hungarian \emph{ötöslottó} draws 5 numbers out of 90,
+  order irrelevant: $\binom{90}{5} = 43\,949\,268$ tickets --- one ticket wins
+  the jackpot in 1 of about 44 million cases.
+\end{frame}
+
+\begin{frame}[t]{Dance class: choose, then pair}
+  \exercise{1.8}{%
+    A dance class has 10 women and 12 men. 5 men and 5 women are chosen and
+    then paired off. How many results are possible?}
+  \pause
+  \sol Three independent steps, multiply:
+  \begin{enumerate}
+    \item choose the women: $\binom{10}{5}=252$;
+    \item choose the men: $\binom{12}{5}=792$;
+    \item match them: line up the 5 chosen women; the first has 5 possible
+          partners, the second 4, \ldots, the last 1: $5!=120$.
+  \end{enumerate}
+  \[
+    \binom{10}{5}\binom{12}{5}\,5! = 252\cdot 792\cdot 120 = 23\,950\,080.
+  \]
+  \textbf{Lesson:} combinations (who?) times permutations (how arranged?).
+\end{frame}
+
+\begin{frame}[t]{Lattice paths}
+  \begin{columns}[T]
+    \begin{column}{.6\textwidth}
+      \small
+      \exercise{1.9}{%
+        Starting at $A$, at each move you go one step right or one step up,
+        until you reach $B$ (4 steps right, 3 steps up).
+        (a) How many paths are there from $A$ to $B$?
+        (b) How many pass through the circled point $(2,1)$?}
+      \uncover<2->{\sol
+      \begin{enumerate}
+        \item[(a)] Every path has $7$ moves: 4 R's and 3 U's, e.g.\
+              RURRUUR. The path is fixed once we choose \emph{which} 3 of
+              the 7 moves are U's: $\binom73 = 35$.
+        \item[(b)] Split at $(2,1)$. $A\to(2,1)$: 3 moves, 1 U:
+              $\binom31=3$. $(2,1)\to B$: 4 moves, 2 U's:
+              $\binom42=6$. Every first half combines with every second
+              half: $3\cdot 6=18$.
+      \end{enumerate}}
+    \end{column}
+    \begin{column}{.38\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.75]
+        \foreach \x in {0,...,4} \foreach \y in {0,...,3}
+          \fill[navy] (\x,\y) circle (2pt);
+        \draw[gray!50] (0,0) grid (4,3);
+        \node[below left] at (0,0) {$A$};
+        \node[above right] at (4,3) {$B$};
+        \draw[teal,very thick] (2,1) circle (6pt);
+        \draw<2->[gold,ultra thick,->] (0,0)--(1,0)--(1,1)--(2,1)--(3,1)--(3,3)--(4,3);
+      \end{tikzpicture}
+      \\ \uncover<2->{\footnotesize path RURRUUR}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{The binomial tree}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.6\textwidth}
+      \finance{5}{A stock moves up (factor $u$) or down (factor $d$) every day.
+        After $n=10$ days the price is $S_0u^kd^{10-k}$ where $k$ is the number
+        of up-days.
+        (a) How many price paths are there?
+        (b) How many paths end with $k=6$ up-days?
+        (c) How many different final prices?}
+    \end{column}
+    \begin{column}{.38\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.75,every node/.style={font=\scriptsize}]
+        \foreach \t in {0,...,3}
+          \foreach \k in {0,...,\t} {
+            \pgfmathtruncatemacro{\c}{factorial(\t)/(factorial(\k)*factorial(\t-\k))}
+            \node[circle,draw=navy,fill=navy!8,inner sep=1.5pt] (n\t\k)
+              at (1.4*\t,\k-\t/2) {\c};
+          }
+        \foreach \t in {0,...,2} {
+          \pgfmathtruncatemacro{\tn}{\t+1}
+          \foreach \k in {0,...,\t} {
+            \pgfmathtruncatemacro{\kn}{\k+1}
+            \draw[->,gray] (n\t\k)--(n\tn\kn);
+            \draw[->,gray] (n\t\k)--(n\tn\k);
+          }
+        }
+      \end{tikzpicture}\\
+      \scriptsize paths reaching each node; each node $=$ sum of the two
+      nodes feeding it (Pascal's triangle)
+    \end{column}
+  \end{columns}
+  \uncover<2->{\sol
+  \begin{enumerate}
+    \item[(a)] 2 choices on each of 10 days: $2^{10}=1024$.
+    \item[(b)] A path is a word of 6 U's and 4 D's; choose the 6 up-days:
+          $\binom{10}{6}=210$.
+    \item[(c)] The order of the factors does not change the product, so the
+          final price depends only on $k\in\{0,\dots,10\}$: $11$ prices.
+  \end{enumerate}
+  Check: grouping the paths by $k$ gives $\sum_{k=0}^{10}\binom{10}{k}=2^{10}$.
+  This is the combinatorics behind the Cox--Ross--Rubinstein model.}
+\end{frame}
+
+\begin{frame}[t]{Pascal's triangle}
+  \begin{columns}[T]
+    \begin{column}{.52\textwidth}
+      \centering
+      \begin{tikzpicture}[every node/.style={font=\small}]
+        \foreach \n in {0,...,6} {
+          \node[navy!70] at (-3.9,-.62*\n) {\scriptsize $n=\n$};
+          \foreach \k in {0,...,\n} {
+            \pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+            \node[inner sep=1pt,minimum size=13pt] (p\n-\k)
+              at ({(\k-\n/2)*.92},{-.62*\n}) {\c};
+          }
+        }
+        \draw[gold,thick] (p4-1) circle (7pt);
+        \draw[gold,thick] (p4-2) circle (7pt);
+        \draw[teal,thick,fill=teal!15,fill opacity=.5] (p5-2) circle (7pt);
+        \draw[gold,thick,->] (p4-1)--(p5-2);
+        \draw[gold,thick,->] (p4-2)--(p5-2);
+        \node[teal] at (p5-2) {\small 10};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize row $n$, position $k=0,1,\dots,n$ holds $\binom nk$
+    \end{column}
+    \begin{column}{.46\textwidth}
+      \small
+      \begin{block}{Pascal's rule (proof: Exercise 2.5, AK07)}
+        $\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$\\[1mm]
+        each entry $=$ sum of the two above it, e.g.\
+        $\binom41+\binom42=4+6=10=\binom52$.
+      \end{block}
+      \textbf{Three readings of row $n$:}
+      \begin{itemize}
+        \item paths in the binomial tree reaching each node after $n$ steps;
+        \item coefficients of $(a+b)^n$, e.g.\\
+              $(a+b)^5=a^5+5a^4b+10a^3b^2$\\
+              \hspace*{3.2em}$+\,10a^2b^3+5ab^4+b^5$;
+        \item row sum $=2^n$; symmetry $\binom nk=\binom n{n-k}$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Session 1: summary and extra practice}
+  \small
+  \begin{itemize}
+    \item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
+    \item Unordered, no repetition: $\binom nk$ (Pascal's triangle);
+          identical objects: divide by $n_1!\cdots n_r!$.
+    \item ``Together'' $\to$ block; ``not together'' $\to$ complement.
+  \end{itemize}
+  \textbf{Extra practice} (for self-study after class).
+  \begin{enumerate}
+    \item 3 boys and 3 girls sit in a row. In how many ways if (a) no
+          restriction; (b) boys together and girls together; (c) only the boys
+          must sit together; (d) no two of the same sex sit together?
+    \item 8 people in a row: (a) $A$ and $B$ next to each other; (b) 4 men and
+          4 women, no two men or two women adjacent; (c) 4 couples, each
+          together.
+    \item A student sells 2 books out of 6 math, 7 science and 4 economics
+          books. How many choices if the two books are on (a) the same,
+          (b) different subjects?
+    \item 5 of 8 friends are invited; (a) 2 of them are feuding and won't come
+          together; (b) 2 of them only come together.
+  \end{enumerate}
+  \centering\textit{Short break --- Session 2 follows right after.}
+\end{frame}
+
+%======================================================================
+\section{Session 2: Multinomials, events}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 2 (after the break):\\
+  Multinomial coefficients, sample space, events
+\end{frame}
+
+\begin{frame}{After the break: a two-minute recap of Session 1}
+  \begin{itemize}
+    \item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
+      \begin{center}
+        \begin{tabular}{lcc}\toprule
+          & ordered & unordered\\\midrule
+          no repetition & $n!/(n-k)!$ & $\binom nk$\\
+          repetition & $n^k$ & \alert{$\binom{n+k-1}{k}$ (now)}\\\bottomrule
+        \end{tabular}
+      \end{center}
+    \item Identical objects in a row: $n!/(n_1!\cdots n_r!)$.
+    \item ``Together'' $\to$ block; ``not together'' or ``at least one''
+          $\to$ complement.
+    \item Paths of the binomial tree $\to\binom nk$ $\to$ Pascal's triangle.
+  \end{itemize}
+  \vspace{2mm}
+  \textbf{Now:} dividing objects into several groups, identical objects into
+  boxes, and the language of events.
+\end{frame}
+
+\begin{frame}{Toolbox}
+  \small
+  \begin{block}{Multinomial coefficient}
+    Number of ways to divide $n$ distinct objects into $r$ labeled groups of
+    sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$):
+    \[ \binom{n}{n_1,\dots,n_r} = \frac{n!}{n_1!\cdots n_r!}
+       = \binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+  \end{block}
+  \begin{block}{Binomial and multinomial theorems}
+    \[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
+       (x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+       x_1^{n_1}\cdots x_r^{n_r}. \]
+  \end{block}
+  \begin{block}{Combinations with repetition (stars and bars)}
+    $n$ identical objects into $r$ distinct boxes:
+    $\binom{n+r-1}{r-1}$; \ with every box nonempty: $\binom{n-1}{r-1}$.
+  \end{block}
+\end{frame}
+
+\begin{frame}[t]{Bridge: two correct solutions}
+  \small
+  \exercise{2.1 (AK04)}{%
+    In bridge, the 52 cards are dealt evenly to 4 players (13 each). How many
+    deals are possible?}
+  \pause
+  \sol \textbf{Permutation view.} Line up the deck ($52!$ orders), give cards
+  1--13 to player 1, 14--26 to player 2, \ldots. The order within a hand does
+  not matter, so the 13 cards of a hand behave as ``identical'':
+  \[ \frac{52!}{13!\,13!\,13!\,13!}. \]
+  \textbf{Combination view.} Player 1 gets 13 of 52, player 2 gets 13 of the
+  remaining 39, player 3 13 of 26, player 4 the rest:
+  \[ \binom{52}{13}\binom{39}{13}\binom{26}{13}\binom{13}{13}
+     = \frac{52!}{13!\,\cancel{39!}}\cdot\frac{\cancel{39!}}{13!\,\cancel{26!}}
+       \cdot\frac{\cancel{26!}}{13!\,13!}\cdot 1
+     = \frac{52!}{(13!)^4}\approx 5.36\cdot 10^{28}. \]
+  The factorials cancel telescopically: \textbf{both views give the same
+  number.}
+\end{frame}
+
+\begin{frame}[t]{Dividing into groups}
+  \small
+  \exercise{2.2}{%
+    (a) 12 people are divided into 3 committees of sizes 3, 4 and 5. How many
+    divisions are possible?
+    (b) 8 new teachers are assigned to 4 schools. How many assignments? What
+    if each school gets exactly 2?}
+  \pause
+  \sol
+  (a) Fill the committees one after the other:
+  $\binom{12}{3}\binom{9}{4}\binom55 = 220\cdot126\cdot 1
+   = \dfrac{12!}{3!\,4!\,5!} = 27\,720$.\\[1mm]
+  (b) Each teacher independently chooses one of 4 schools: $4^8 = 65\,536$.
+  With exactly 2 each: groups of sizes $2,2,2,2$:
+  $\binom82\binom62\binom42\binom22 = 28\cdot15\cdot6\cdot1 =
+   \dfrac{8!}{2!\,2!\,2!\,2!} = 2520$.
+  \pause
+  \finance{6}{A credit analyst must rate 10 bonds: exactly 4 get rating A,
+    3 get rating B and 3 get rating C. How many rating assignments are possible?
+    \ \sol Three labeled groups of sizes 4, 3, 3:
+    \[ \binom{10}{4,3,3} = \frac{10!}{4!\,3!\,3!}
+       = \binom{10}{4}\binom63 = 210\cdot 20 = 4200. \]}
+\end{frame}
+
+\begin{frame}[t]{Expansions}
+  \small
+  \exercise{2.3}{%
+    (a) Expand $(3x^2+y)^5$.\quad (b) Find the coefficient of
+    $x_1x_2^2x_3$ in $(x_1+2x_2+3x_3)^4$.\quad (c) Sum of all coefficients in (b)?}
+  \pause
+  \sol
+  (a) Binomial theorem with $a=3x^2$, $b=y$: the $k$-th term is
+  $\binom5k3^kx^{2k}y^{5-k}$. Row 5 of Pascal's triangle is
+  $1,5,10,10,5,1$; multiply by $3^k=1,3,9,27,81,243$:
+  \[ 243x^{10}+405x^8y+270x^6y^2+90x^4y^3+15x^2y^4+y^5. \]
+  (b) We need $x_1$ once, $(2x_2)$ twice, $(3x_3)$ once out of the 4 factors:
+  $\binom{4}{1,2,1}\cdot 1\cdot 2^2\cdot 3 = \frac{4!}{1!\,2!\,1!}\cdot 12
+   = 12\cdot 12 = 144$.\\[1mm]
+  (c) The sum of the coefficients is the value at $x_1=x_2=x_3=1$:
+  $(1+2+3)^4 = 1296$.
+  \pause
+  \begin{alertblock}{Useful identities (AK06): substitute into the binomial theorem}
+    $a=b=1$: $\sum_k\binom nk = 2^n$; \quad $a=2,b=1$:
+    $\sum_k\binom nk 2^k = 3^n$; \quad $a=-1,b=1$:
+    $\sum_k(-1)^k\binom nk = 0$.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}[t]{Identical objects: stars and bars}
+  \small
+  \exercise{2.4 (part (a): AK05)}{%
+    (a) We roll two identical (indistinguishable) dice. How many outcomes can
+    we observe?
+    (b) 8 identical blackboards are divided among 4 schools. How many divisions?
+    How many if each school gets at least one?}
+  \pause
+  \sol
+  (a) $(1,2)$ and $(2,1)$ look the same. Pairs with two different numbers:
+  $\binom62=15$; doubles: $6$; total $21$.
+  Or: choose 2 out of 6 numbers, order irrelevant, repetition allowed:
+  $\binom{6+2-1}{2}=\binom72 = 21$.\\[1mm]
+  (b) Encode a division as 8 stars and 3 bars (bars separate the 4 schools):
+  \ \texttt{**|***||***} \ means $(2,3,0,3)$. A code is fixed by choosing
+  the 3 bar positions among the $11$ symbols:
+  \[ \binom{11}{3} = 165. \]
+  At least one each: first give every school one board, then divide the
+  remaining $4$ freely: $\binom{4+3}{3}=\binom{7}{3} = 35$.
+\end{frame}
+
+\begin{frame}[t]{Allocating capital}
+  \small
+  \finance{7}{We have 20 thousand euros to invest in 4 opportunities, in
+    whole units of 1000. The minimal investments are 2, 2, 3 and 4 thousand.
+    How many strategies if (a) we invest in each opportunity;
+    (b) we invest in at least 3 of the 4? (All 20 units are invested.)}
+  \pause
+  \sol (a) First pay the minimums: $2+2+3+4=11$ units. The remaining $9$
+  identical units go to 4 boxes freely (stars and bars, $9$ stars, $3$ bars):
+  $\binom{9+3}{3}=\binom{12}{3} = 220$.\\[1mm]
+  (b) Add the cases where exactly one opportunity gets nothing:
+  \begin{center}
+    \begin{tabular}{lccc}\toprule
+      left out & minimums paid & left to divide & count \\\midrule
+      1st (2) & $2+3+4=9$ & 11 among 3 & $\binom{13}{2}=78$\\
+      2nd (2) & $2+3+4=9$ & 11 among 3 & $78$\\
+      3rd (3) & $2+2+4=8$ & 12 among 3 & $\binom{14}{2}=91$\\
+      4th (4) & $2+2+3=7$ & 13 among 3 & $\binom{15}{2}=105$\\\bottomrule
+    \end{tabular}
+  \end{center}
+  Total: $220+78+78+91+105 = 572$.
+\end{frame}
+
+\begin{frame}[t]{A combinatorial proof}
+  \small
+  \exercise{2.5 (AK07)}{%
+    Prove Pascal's rule: \ $\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$.}
+  \pause
+  \sol \textbf{Algebra.} Common denominator $(k+1)!\,(n-k)!$:
+  \[
+   \frac{n!}{k!(n-k)!}+\frac{n!}{(k+1)!(n-k-1)!}
+   = \frac{n!\,\big[(k+1)+(n-k)\big]}{(k+1)!\,(n-k)!}
+   = \frac{(n+1)!}{(k+1)!\,(n-k)!} = \binom{n+1}{k+1},
+  \]
+  since $n!\,(n+1)=(n+1)!$ and $n-k=(n+1)-(k+1)$.\\[1mm]
+  \textbf{Story.} A bowl holds $n$ apples and $1$ pear. Choose $k+1$ fruits:
+  $\binom{n+1}{k+1}$ ways. Split the choices by the pear:
+  \emph{pear not chosen} (all $k+1$ are apples): $\binom n{k+1}$;
+  \emph{pear chosen} ($k$ more apples from $n$): $\binom nk$.
+  The same set counted in two ways $\Rightarrow$ the identity. This is
+  exactly the rule that builds Pascal's triangle.\\
+  \textbf{Extra practice (AK08):} prove
+  $\sum_{j=0}^k\binom nj\binom m{k-j}=\binom{n+m}k$ the same way.
+\end{frame}
+
+%----------------------------------------------------------------------
+\begin{frame}{Sample space and events}
+  \begin{block}{Definitions}
+    \begin{itemize}
+      \item \textbf{Sample space} $\Om$: set of all possible outcomes.
+      \item \textbf{Event}: a subset $E\subseteq\Om$; $E$ \emph{occurs} if the
+            outcome lies in $E$.
+      \item $E\cup F$ (or), \ $E\cap F=EF$ (and), \ $E^c$ (not),
+            \ $E\subseteq F$ ($E$ implies $F$).
+      \item $E,F$ \textbf{mutually exclusive} if $EF=\emptyset$.
+    \end{itemize}
+  \end{block}
+  \begin{center}
+    \venn{\fill[teal!35] (0,0) circle (.85); \fill[teal!35] (1,0) circle (.85);}
+    \ $E\cup F$ \qquad
+    \venn{\begin{scope}\clip (0,0) circle (.85);
+          \fill[teal!35] (1,0) circle (.85);\end{scope}}
+    \ $EF$ \qquad
+    \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+    \ $E^c$
+  \end{center}
+\end{frame}
+
+\begin{frame}[t]{De Morgan's laws for two events}
+  \begin{block}{De Morgan's laws}
+    \[ (E\cup F)^c = E^c\cap F^c, \qquad (E\cap F)^c = E^c\cup F^c. \]
+    ``not (E or F)'' $=$ ``neither E nor F'';\quad
+    ``not (both E and F)'' $=$ ``at least one of them fails''.
+  \end{block}
+  \vspace{1mm}
+  \begin{center}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{ccccc}
+      \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+      & $\cap$ &
+      \venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+      & $=$ &
+      \venn{\shadeall{navy!35}\fill[white] (0,0) circle (.85);
+            \fill[white] (1,0) circle (.85);}\\[-1mm]
+      \scriptsize $E^c$ && \scriptsize $F^c$ &&
+      \scriptsize $E^c\cap F^c$: outside both $=(E\cup F)^c$\\
+      \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+      & $\cup$ &
+      \venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+      & $=$ &
+      \venn{\shadeall{navy!35}\begin{scope}\clip (0,0) circle (.85);
+            \fill[white] (1,0) circle (.85);\end{scope}}\\[-1mm]
+      \scriptsize $E^c$ && \scriptsize $F^c$ &&
+      \scriptsize $E^c\cup F^c$: all but the lens $=(E\cap F)^c$
+    \end{tabular}
+  \end{center}
+  \vspace{-1mm}\small Shade $E^c$ and $F^c$: shaded \emph{twice} $=$
+  intersection; shaded \emph{at least once} $=$ union.
+\end{frame}
+
+\begin{frame}[t]{De Morgan's laws: proof and general form}
+  \small
+  \textbf{Proof of the first law} (follow one outcome $\omega$):
+  \[
+    \omega\in(E\cup F)^c \iff \omega\notin E\cup F
+    \iff \omega\notin E \text{ and } \omega\notin F
+    \iff \omega\in E^c\cap F^c .
+  \]
+  \textbf{Second law from the first:} apply it to $E^c$ and $F^c$:
+  $(E^c\cup F^c)^c = (E^c)^c\cap(F^c)^c = E\cap F$; now take complements of
+  both sides: $E^c\cup F^c=(E\cap F)^c$.
+  \pause
+  \begin{block}{General form ($n$ events, same proof)}
+    \[ \Big(\bigcup_{i=1}^n E_i\Big)^c = \bigcap_{i=1}^n E_i^c, \qquad
+       \Big(\bigcap_{i=1}^n E_i\Big)^c = \bigcup_{i=1}^n E_i^c. \]
+  \end{block}
+  \textbf{Finance reading:} ``not at least one default'' $=$ ``no default at
+  all''; ``not all bonds survive'' $=$ ``at least one bond defaults''.\\[1mm]
+  Next week AK09(c) uses exactly this: $P(A^cB^c)=1-P(A\cup B)$.
+\end{frame}
+
+\begin{frame}[t]{Writing down the sample space}
+  \exercise{2.6}{%
+    A box has 3 marbles: red, green, blue. We draw one, put it back, then draw
+    a second one. Describe $\Om$. Repeat without putting the first one back.}
+  \pause
+  \sol Record the outcome as an ordered pair (first draw, second draw).
+  \begin{itemize}
+    \item With replacement: 3 choices, then again 3 choices:
+          \[\Om=\{rr,rg,rb,gr,gg,gb,br,bg,bb\},\qquad |\Om|=3\cdot3=9.\]
+    \item Without replacement: the second draw cannot repeat the first, so
+          the pairs $rr,gg,bb$ disappear:
+          \[\Om=\{rg,rb,gr,gb,br,bg\},\qquad |\Om|=3\cdot 2=6.\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Events of a stock path}
+  \small
+  \finance{8}{A stock moves Up or Down on each of 3 days.
+    $\Om=\{UUU,UUD,UDU,UDD,DUU,DUD,DDU,DDD\}$, $|\Om|=2^3=8$.
+    Let $A$ = ``ends above the start'', $B$ = ``up on day 1'',
+    $C$ = ``never below the start''. List them and compare.}
+  \pause
+  \sol Track the position (number of ups minus downs) after each day.
+  \begin{itemize}
+    \item $A$: at least 2 U's (net $+1$ or $+3$): $A=\{UUU,UUD,UDU,DUU\}$.
+    \item $B$: first letter U: $B=\{UUU,UUD,UDU,UDD\}$.
+    \item $C$: positions stay $\ge 0$; $UDD$ goes to $-1$, any path starting
+          with $D$ goes to $-1$: $C=\{UUU,UUD,UDU\}$.
+  \end{itemize}
+  Then: $C\subseteq A$ (after 3 steps the position is odd, so $\ge0$ means
+  $\ge1$); \ $AB=\{UUU,UUD,UDU\}=C$; \ $A^cB=\{UDD\}$ (up first, but ends
+  below); \ $AB^c=\{DUU\}$ (down first, but ends above).
+\end{frame}
+
+\begin{frame}[t]{Two dice: event algebra}
+  \small
+  \exercise{2.7}{%
+    Two dice are rolled. $E$: the sum is odd; $F$: at least one die shows 1;
+    $G$: the sum is 5. Describe $EF$, $E\cup F$, $FG$, $EF^c$, $EFG$.}
+  \pause
+  \sol $|\Om|=36$. Odd sum $\iff$ one die even, one odd:
+  $|E|=3\cdot3\cdot2=18$. Complement of $F$ is ``no 1'': $|F|=36-25=11$.
+  \begin{itemize}
+    \item $EF$: one die is 1 (odd), so the other must be even:
+          $EF=\{(1,2),(1,4),(1,6),(2,1),(4,1),(6,1)\}$, 6 outcomes.
+    \item $E\cup F$: $|E|+|F|-|EF|=18+11-6=23$ outcomes (the 18 odd sums
+          plus $(1,1),(1,3),(1,5),(3,1),(5,1)$).
+    \item $G=\{(1,4),(2,3),(3,2),(4,1)\}$, so $FG=\{(1,4),(4,1)\}$.
+    \item $EF^c$: odd sum and no 1: $|E|-|EF|=18-6=12$ outcomes.
+    \item $5$ is odd, so $G\subseteq E$ and $EFG=FG=\{(1,4),(4,1)\}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t]{Reliability of a system}
+  \small
+  \exercise{2.8}{%
+    A system has 5 components, each working (1) or failed (0); outcome
+    $(x_1,\dots,x_5)$. The system works if components 1 and 2 work, or 3 and 4
+    work, or 1, 3 and 5 work. (a) $|\Om|$? (b) List $W$ = ``system works''.
+    (c) $A$ = ``4 and 5 failed'': $|A|$? (d) List $AW$.}
+  \pause
+  \sol (a) Each $x_i\in\{0,1\}$: $|\Om|=2^5=32$.\\[1mm]
+  (b) $W=\{x_1x_2=1\}\cup\{x_3x_4=1\}\cup\{x_1x_3x_5=1\}$. Split into
+  \emph{disjoint} pieces:
+  \begin{itemize}
+    \item $x_1=x_2=1$, rest free: $2^3=8$:
+          \texttt{11000 11001 11010 11011 11100 11101 11110 11111}
+    \item $x_3=x_4=1$ but not $x_1=x_2=1$: $3\cdot 2=6$:
+          \texttt{00110 00111 01110 01111 10110 10111}
+    \item only via $1,3,5$: then $x_2=0$ and $x_4=0$: \texttt{10101}
+  \end{itemize}
+  Total $|W|=8+6+1=15$.
+\end{frame}
+
+\begin{frame}[t]{Reliability of a system (cont.)}
+  \small
+  \sol (c) $A=\{x_4=x_5=0\}$: $x_1,x_2,x_3$ are free, $|A|=2^3=8$.\\[1mm]
+  (d) If 4 and 5 failed, the routes ``3 and 4'' and ``1, 3 and 5'' are both
+  broken; only ``1 and 2'' can work. So $x_1=x_2=1$, $x_4=x_5=0$, $x_3$ free:
+  \[ AW=\{11000,\ 11100\}. \]
+  \begin{center}
+    \begin{tikzpicture}[x=.8cm,y=.5cm,every node/.style={font=\scriptsize},
+        c/.style={draw,circle,fill=navy!10,inner sep=1.5pt}]
+      \coordinate (in) at (0,0); \coordinate (out) at (5,0);
+      \node[left] at (in) {in}; \node[right] at (out) {out};
+      \foreach \y/\lst in {1/{1,2}, 0/{3,4}, -1/{1,3,5}} {
+        \draw (in) |- (.6,\y) -- (4.4,\y) -| (out);
+      }
+      \node[c] at (1.8,1) {1}; \node[c] at (3.2,1) {2};
+      \node[c] at (1.8,0) {3}; \node[c] at (3.2,0) {4};
+      \node[c] at (1.4,-1) {1}; \node[c] at (2.5,-1) {3};
+      \node[c] at (3.6,-1) {5};
+      \node[right,align=left] at (5.9,0)
+        {\small three parallel routes;\\ \small a route works if all its
+         components work\\ \small (components 1 and 3 appear in two routes)};
+    \end{tikzpicture}
+  \end{center}
+  \finance{9}{Read ``working'' as ``not defaulted'': the same algebra describes
+    when a structured product still pays. Each route is a combination of
+    issuers that must all survive; the product pays if at least one route
+    survives.}
+\end{frame}
+
+\begin{frame}[t]{A credit basket}
+  \small
+  \finance{10}{A basket contains 3 bonds. Let $D_i$ = ``bond $i$ defaults within
+    a year''. $\Om=\{0,1\}^3$ (1 = default), $|\Om|=8$. Express:
+    (a) at least one default; (b) no default; (c) exactly one default;
+    (d) at least two defaults.}
+  \pause
+  \sol
+  \begin{enumerate}
+    \item[(a)] $D_1\cup D_2\cup D_3$ \quad (pays a \emph{first-to-default}
+          swap). All outcomes except $000$: $8-1=7$.
+    \item[(b)] $(D_1\cup D_2\cup D_3)^c = D_1^cD_2^cD_3^c$ \quad (De Morgan):
+          only $000$, 1 outcome.
+    \item[(c)] $D_1D_2^cD_3^c\ \cup\ D_1^cD_2D_3^c\ \cup\ D_1^cD_2^cD_3$
+          \quad (mutually exclusive pieces): $100,010,001$, i.e.\
+          $\binom31=3$ outcomes.
+    \item[(d)] $D_1D_2\cup D_1D_3\cup D_2D_3$ \quad (\emph{second-to-default}):
+          some pair defaults; $110,101,011,111$:
+          $\binom32+\binom33=4$ outcomes.
+  \end{enumerate}
+  Check: (b)$+$(c)$+$(d) $=1+3+4=8=|\Om|$, and (a) $=$ (c) $+$ (d) $=7$.
+\end{frame}
+
+\begin{frame}[t]{Venn diagrams and inclusion--exclusion}
+  \begin{columns}[T]
+    \begin{column}{.6\textwidth}
+      \small
+      \exercise{2.9}{%
+        A town of 100\,000 has newspapers I, II, III. Readers (\%):
+        I: 10, II: 30, III: 5, I\&II: 8, I\&III: 2, II\&III: 4, all: 1.
+        How many read (a) exactly one paper? (b) at least two?
+        (c) a morning paper (I or III) and the evening paper II?
+        (d) no paper? (e) exactly one morning paper and the evening paper?}
+      \uncover<2->{\sol Fill the Venn diagram \textbf{from the inside out}:
+      \begin{itemize}
+        \item center (all three): $1$;
+        \item only I\&II: $8-1=7$; only I\&III: $2-1=1$; only II\&III:
+              $4-1=3$;
+        \item only I: $10-7-1-1=1$; only II: $30-7-3-1=19$; only III:
+              $5-1-3-1=0$.
+      \end{itemize}}
+    \end{column}
+    \begin{column}{.38\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.6]
+        \draw[navy,thick] (0,0) circle (1.5);
+        \draw[teal,thick] (1.8,0) circle (1.5);
+        \draw[gold,thick] (.9,-1.5) circle (1.5);
+        \uncover<2->{
+        \node at (-.7,.3) {\scriptsize 1};
+        \node at (2.5,.3) {\scriptsize 19};
+        \node at (.9,-2.3) {\scriptsize 0};
+        \node at (.9,.6) {\scriptsize 7};
+        \node at (.1,-.95) {\scriptsize 1};
+        \node at (1.7,-.95) {\scriptsize 3};
+        \node at (.9,-.45) {\scriptsize 1};}
+        \node[navy] at (-1.4,1.4) {I};
+        \node[teal] at (3.2,1.4) {II};
+        \node[gold] at (.9,-3.3) {III};
+      \end{tikzpicture}\\
+      \footnotesize (in \%)
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}[t]{Venn diagrams and inclusion--exclusion (cont.)}
+  \small
+  \sol (percentages of 100\,000 people; read off the diagram)
+  \begin{enumerate}
+    \item[(a)] Exactly one: only I $+$ only II $+$ only III
+          $=1+19+0=20\%$: \textbf{20\,000}.
+    \item[(b)] At least two: the four inner regions $7+1+3+1=12\%$:
+          \textbf{12\,000}.
+    \item[(c)] $(I\cup III)\cap II = (I\cap II)\cup(III\cap II)$; the two
+          overlap in ``all three'': $8+4-1=11\%$: \textbf{11\,000}.
+    \item[(d)] Inclusion--exclusion:
+          $|I\cup II\cup III| = 10+30+5-8-2-4+1 = 32\%$, so
+          $100-32=68\%$ read none: \textbf{68\,000}.
+    \item[(e)] II together with exactly one of I, III: only I\&II $+$ only
+          II\&III $=7+3=10\%$: \textbf{10\,000}.
+  \end{enumerate}
+  \begin{block}{Inclusion--exclusion for three sets}
+    $|E\cup F\cup G| = |E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|$
+  \end{block}
+\end{frame}
+
+\begin{frame}[t]{Bank products}
+  \small
+  \finance{11}{A bank has 1000 retail clients: 820 have a current account
+    ($C$), 350 a credit card ($K$), 240 a mortgage ($M$); 300 have $C$\&$K$,
+    200 have $C$\&$M$, 90 have $K$\&$M$, 70 have all three.
+    (a) How many have none of the products? (b) exactly one product?
+    (c) A cross-selling campaign targets clients with a current account but
+    no credit card. How many?}
+  \pause
+  \sol
+  (a) Inclusion--exclusion:
+  $|C\cup K\cup M| = 820+350+240-300-200-90+70 = 890$; so $1000-890=110$
+  clients have none.\\[1mm]
+  (b) ``Only $C$'' $=|C|-|CK|-|CM|+|CKM|$ ($CKM$ was removed twice):
+  only $C$: $820-300-200+70=390$; only $K$: $350-300-90+70=30$;
+  only $M$: $240-200-90+70=20$; total $440$.\\[1mm]
+  (c) $C$ splits into $CK$ and $CK^c$: $|CK^c| = |C|-|CK| = 820-300 = 520$.
+  \pause
+  \begin{alertblock}{Next week}
+    Divide by 1000: these become probabilities, and
+    $P(E\cup F)=P(E)+P(F)-P(EF)$.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Session 2: summary and extra practice}
+  \small
+  \begin{itemize}
+    \item Groups of given sizes: multinomial coefficient.
+    \item Identical objects into boxes: stars and bars.
+    \item Identities: count the same set in two ways (Pascal's rule).
+    \item Events are sets: $\cup$ = or, $\cap$ = and, $^c$ = not;
+          De Morgan: $(E\cup F)^c=E^cF^c$, $(EF)^c=E^c\cup F^c$;
+          Venn diagrams from the inside out.
+  \end{itemize}
+  \textbf{Extra practice.}
+  \begin{enumerate}
+    \item (AK06) Show $\sum_k\binom nk=2^n$ and $\sum_k(-1)^k\binom nk=0$.
+    \item (AK08) Prove $\sum_{j=0}^k\binom nj\binom m{k-j}=\binom{n+m}k$
+          (apples and pears).
+    \item $A$, $B$, $C$ flip a coin in turn ($A$ first); the first head wins.
+          Write $\Om$ and the events ``$A$ wins'', ``$B$ wins'',
+          ``$(A\cup B)^c$''.
+    \item 15 team members are classified as blue/white collar and Republican/
+          Democrat/Independent. How many outcomes are in $\Om$? In ``at least
+          one blue-collar''? In ``no Independent''?
+  \end{enumerate}
+  \textbf{Next week (week 9):} axioms of probability; AK09--AK14.
+\end{frame}
+
+\end{document}

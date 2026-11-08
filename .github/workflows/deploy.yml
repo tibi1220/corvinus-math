@@ -1,0 +1,77 @@
+# Compiles the LaTeX content, builds the static site and publishes it to
+# GitHub Pages on every push to main.
+#
+# One-time setup: in the repository settings, under Pages, set "Source" to
+# "GitHub Actions".
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push waits for the running one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    # Full TeX Live: lualatex, lwarp, KOMA-Script, beamer, TikZ, STIX Two, ...
+    container: texlive/texlive:latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # lwarp converts PDF to HTML with pdftotext; the slide images come from
+      # pdftoppm.
+      - name: Install poppler
+        run:
+          apt-get update && apt-get install -y --no-install-recommends
+          poppler-utils
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # Installs the pnpm version pinned in package.json (packageManager).
+      - uses: pnpm/action-setup@v4
+
+      - run: pnpm install --frozen-lockfile
+
+      # Converted documents, PDFs and slide images are cached by the hash of
+      # their source, so a push only recompiles the documents it changed.
+      - name: Restore the LaTeX cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules/.cache/lwarp
+          key:
+            lwarp-${{ hashFiles('content/**/*.tex', 'scripts/build-content.mjs',
+            'src/lib/catalog.ts') }}
+          restore-keys: lwarp-
+
+      - uses: actions/configure-pages@v5
+
+      # pnpm build compiles the content (pnpm content), then runs next build.
+      - name: Build
+        run: pnpm build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

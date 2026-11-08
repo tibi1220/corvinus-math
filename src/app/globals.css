@@ -1,0 +1,98 @@
+@import 'tailwindcss';
+
+/* Dark mode follows the data-theme attribute on <html> (see src/lib/theme.ts). */
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+/* In-page links (table of contents, figure references) scroll smoothly. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+}
+
+/*
+ * Formulas: letters, digits and text in STIX Two, like the PDFs. KaTeX keeps
+ * its own fonts for delimiters, radicals and big operators, which depend on
+ * KaTeX's metrics. This rule overrides katex.min.css, so it must stay outside
+ * Tailwind's layers: unlayered CSS always wins over layered utilities.
+ */
+.katex {
+  font-family: var(--font-stix-two), KaTeX_Main, serif;
+  font-size: 1.15em;
+}
+
+.katex :is(.mathnormal, .mathit, .mathrm, .textrm, .mathbf, .boldsymbol) {
+  font-family: var(--font-stix-two), KaTeX_Main, serif;
+}
+
+/*
+ * Displayed formulas may wrap on narrow screens. KaTeX lays a formula out as
+ * a row of boxes that a line may break between (after relations such as =
+ * and operators such as +), but katex.min.css forbids wrapping displays; this
+ * allows it. A formula with no such break point still scrolls sideways.
+ */
+:is(.katex-display, .math-split-part) > .katex {
+  white-space: normal;
+}
+
+/*
+ * The boxes of a display as a wrapping row: wrapped lines get some space
+ * between them (a formula on one line is unchanged), and a formula that still
+ * cannot fit stays scrollable from its left edge ("safe" centring).
+ */
+:is(.katex-display, .math-split-part) > .katex > .katex-html {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: safe center;
+  align-items: baseline;
+  row-gap: 0.5em;
+}
+
+/*
+ * Punctuation that touches an inline formula ("$x$:", "($y$",
+ * "$P_\alpha$-like"): scripts/build-content.mjs moves it into the formula, so
+ * the line cannot break between them. It is set in the surrounding text's
+ * font and size again (.katex is 1.15em, see above).
+ */
+.katex .math-punct {
+  font-family: var(--font-geist-sans), sans-serif;
+  font-size: calc(100% / 1.15);
+  font-style: normal;
+}
+
+/*
+ * The floating table of contents button (below the xl breakpoint) would cover
+ * the footer's links at the very bottom of the page; leave room for it.
+ */
+@media (width < 80rem) {
+  body:has([data-floating-toc]) footer {
+    padding-bottom: 4.5rem;
+  }
+}
+
+/*
+ * A display of several equations side by side ("a = b, \qquad c = d"), split
+ * into one part per equation by scripts/build-content.mjs: the parts wrap as
+ * wholes, with the \qquad between them when they fit on one line.
+ */
+.katex-display.math-split {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: safe center;
+  align-items: baseline;
+  column-gap: 2em;
+  row-gap: 0.75em;
+}
+
+.math-split-part > .katex {
+  display: block;
+  text-align: center;
+}

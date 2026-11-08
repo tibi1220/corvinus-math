@@ -1,0 +1,5 @@
+# Packages whose install scripts must not run (pnpm 12 fails the install in
+# CI when a build script is neither allowed nor denied here).
+allowBuilds:
+  sharp: false
+  unrs-resolver: false

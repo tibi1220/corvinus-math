@@ -1,0 +1,9 @@
+**/*.svg
+
+# Written by tools, not by hand
+pnpm-lock.yaml
+src/generated/
+public/downloads/
+public/slides/
+content/
+AGENTS.md

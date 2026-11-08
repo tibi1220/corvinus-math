@@ -1,0 +1,33 @@
+# LaTeX: latexmk output folders and logs
+build
+*.log
+
+# Generated from the .tex files by `pnpm content` (also run by `pnpm dev`,
+# `pnpm build` and the GitHub Pages workflow)
+/src/generated/
+/public/downloads/
+/public/slides/
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# env files
+.env*
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
