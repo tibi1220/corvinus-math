@@ -3,24 +3,58 @@
 import { ChevronLeft, ChevronRight, Maximize } from 'lucide-react';
 import { useCallback, useEffect, useRef, useSyncExternalStore } from 'react';
 
-// The URL hash as an external store: changed by the viewer (notifyHash) or by
-// the visitor (hashchange).
+// The URL hash as an external store: changed by the viewer (setHash) or by the
+// visitor (hashchange). Browsers allow only ~100 history.replaceState calls in
+// 10 seconds (Safari throws a SecurityError beyond that), and dragging the
+// page slider changes the page far more often. So the viewer's hash is kept
+// in memory at once and written to the URL only after the page has stayed
+// the same for HASH_DELAY ms.
+const HASH_DELAY = 300;
 const hashListeners = new Set<() => void>();
-
-function subscribeToHash(listener: () => void) {
-  hashListeners.add(listener);
-  window.addEventListener('hashchange', listener);
-  return () => {
-    hashListeners.delete(listener);
-    window.removeEventListener('hashchange', listener);
-  };
-}
+let pendingHash: string | null = null;
+let hashTimer: ReturnType<typeof setTimeout> | undefined;
 
 function notifyHash() {
   for (const listener of hashListeners) listener();
 }
 
-const readHash = () => location.hash;
+// A hash typed or followed by the visitor wins over one still waiting.
+function onHashChange() {
+  clearTimeout(hashTimer);
+  pendingHash = null;
+  notifyHash();
+}
+
+function subscribeToHash(listener: () => void) {
+  if (hashListeners.size === 0) {
+    window.addEventListener('hashchange', onHashChange);
+  }
+  hashListeners.add(listener);
+  return () => {
+    hashListeners.delete(listener);
+    if (hashListeners.size === 0) {
+      window.removeEventListener('hashchange', onHashChange);
+    }
+  };
+}
+
+function setHash(hash: string) {
+  pendingHash = hash;
+  notifyHash();
+  clearTimeout(hashTimer);
+  hashTimer = setTimeout(() => {
+    pendingHash = null;
+    try {
+      // replaceState keeps the history clean (no entry per page) and fires
+      // no hashchange event.
+      history.replaceState(null, '', hash);
+    } catch {
+      // Still rate-limited: the page is right, only the URL lags behind.
+    }
+  }, HASH_DELAY);
+}
+
+const readHash = () => pendingHash ?? location.hash;
 
 // Shows a slide deck one page at a time, from the page images written by the
 // content pipeline. Arrow keys, Page Up/Down and space turn the pages; the
@@ -48,11 +82,7 @@ export function SlideViewer({
 
   const go = useCallback(
     (next: number) => {
-      const clamped = Math.min(last, Math.max(1, next));
-      // replaceState keeps the history clean (no entry per page) but fires no
-      // hashchange event, so the store is told by hand.
-      history.replaceState(null, '', `#${clamped}`);
-      notifyHash();
+      setHash(`#${Math.min(last, Math.max(1, next))}`);
     },
     [last],
   );
