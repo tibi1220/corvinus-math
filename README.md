@@ -33,8 +33,8 @@ Currently covered: **Mathematics for Finance** (MSc), week 8.
 
 ## Writing content
 
-The LaTeX sources live in the course's working folder (for Mathematics for
-Finance: `../MATH-FOR-FINANCE/week-N/`). The documents to publish are listed in
+All sources live in this repository, in `content/<course>/week-NN/`, and are
+edited here. The documents to publish are listed in
 [`src/lib/catalog.ts`](src/lib/catalog.ts), week by week:
 
 | Document               | Source file             | Shown as           |
@@ -43,10 +43,26 @@ Finance: `../MATH-FOR-FINANCE/week-N/`). The documents to publish are listed in
 | Exercises              | `handout.tex`           | web page + PDF     |
 | Exercises w/ solutions | `handout-solutions.tex` | web page + PDF     |
 
-To publish a week, give it `documents: weekDocuments()` in the catalog and run
-`pnpm sync`, which copies the listed files and everything they `\input` into
-`content/<course>/week-NN/`. Lecturer-only files (the read-aloud script, audio)
-are never listed, so they are never copied.
+A week folder also holds lecturer-only files, tracked in git but never
+published, because only the documents listed in the catalog are built:
+
+```text
+content/math-for-finance/week-08/
+├── beamer.tex, handout*.tex        # published
+├── script.tex                      # read-aloud teaching script (not published)
+├── script-print.tex                # printable script, without the background boxes
+└── audio/
+    ├── script-spoken.txt           # text-to-speech version of script.tex
+    └── script-print-spoken.txt     # text-to-speech version of script-print.tex
+```
+
+Compile a lecturer-only document with `latexmk script-print.tex` inside its
+folder (the `build/` output is ignored by git).
+
+To publish a new week, give it `documents: weekDocuments()` in the catalog. If
+its sources are still in the old working folder (`source` in the catalog, e.g.
+`../MATH-FOR-FINANCE/week-9/`), `pnpm sync` imports them once; it never
+overwrites a file that is already in `content/`.
 
 ## Development
 
@@ -64,7 +80,7 @@ pnpm dev        # http://localhost:3000
 
 | Command        | What it does                                                                        |
 | -------------- | ----------------------------------------------------------------------------------- |
-| `pnpm sync`    | Copy the published LaTeX sources from the working folder into `content/`            |
+| `pnpm sync`    | Import a new week's sources from the old working folder (never overwrites)          |
 | `pnpm dev`     | Content watcher and development server                                              |
 | `pnpm content` | Compile the content only (`--force` ignores the cache, `--verbose` logs every step) |
 | `pnpm build`   | Compile the content, then build the static site into `out/`                         |
@@ -99,5 +115,5 @@ Every push to `main` runs
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml): it compiles the
 content in a TeX Live container, builds the site and publishes it to GitHub
 Pages. To set it up on a new repository, choose **GitHub Actions** as the source
-under **Settings → Pages**, with `corvinus.tibi1220.hu` as the custom domain. The
-site is built for the root of that domain.
+under **Settings → Pages**, with `corvinus.tibi1220.hu` as the custom domain.
+The site is built for the root of that domain.

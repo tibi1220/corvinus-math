@@ -1,9 +1,12 @@
 #!/usr/bin/env node
-// Copies the LaTeX sources of the published documents from the course's
+// Imports the LaTeX sources of a newly published week from the course's old
 // working folder (`source` in src/lib/catalog.ts, e.g. ../MATH-FOR-FINANCE/
-// week-8/) into content/<course>/week-NN/: the files listed in the catalog and
-// every file they \input. Lecturer-only files (the script, audio) are never
-// listed, so they are never copied.
+// week-9/) into content/<course>/week-NN/: the files listed in the catalog and
+// every file they \input.
+//
+// content/ is the source of truth: a file that already exists there is never
+// overwritten. If the working folder has a different version, a warning says
+// so; edit the file in content/ instead.
 //
 // Usage: pnpm sync
 
@@ -30,17 +33,16 @@ async function dependencies(dir, file, seen = new Set()) {
 }
 
 let copied = 0;
+let differing = 0;
 for (const course of courses) {
   for (const week of course.weeks) {
     if (week.documents.length === 0) continue;
     const from = path.resolve(ROOT, course.source, `week-${week.number}`);
     const to = path.join(CONTENT_DIR, course.dir, weekDir(week));
-    if (!existsSync(from)) {
-      console.warn(`warning: ${from} does not exist, skipped`);
-      continue;
-    }
+    if (!existsSync(from)) continue;
     const files = new Set();
     for (const document of week.documents) {
+      if (!existsSync(path.join(from, document.file))) continue;
       for (const file of await dependencies(from, document.file)) {
         files.add(file);
       }
@@ -49,14 +51,23 @@ for (const course of courses) {
     for (const file of files) {
       const source = await fs.readFile(path.join(from, file));
       const target = path.join(to, file);
-      const previous = await fs.readFile(target).catch(() => null);
-      if (previous?.equals(source)) continue;
+      const existing = await fs.readFile(target).catch(() => null);
+      if (existing) {
+        if (!existing.equals(source)) {
+          differing++;
+          console.warn(
+            `kept ${path.relative(ROOT, target)} (the copy in ${path.relative(ROOT, from)} differs; content/ is the source of truth)`,
+          );
+        }
+        continue;
+      }
       await fs.writeFile(target, source);
       copied++;
-      console.log(`copied ${path.relative(ROOT, target)}`);
+      console.log(`imported ${path.relative(ROOT, target)}`);
     }
   }
 }
 console.log(
-  `${copied} file(s) updated in ${path.relative(ROOT, CONTENT_DIR)}/`,
+  `${copied} file(s) imported into ${path.relative(ROOT, CONTENT_DIR)}/` +
+    (differing ? `, ${differing} kept as they are` : ''),
 );

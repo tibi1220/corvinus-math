@@ -1,0 +1,821 @@
+Mathematics for Finance. Week 8. Combinatorial analysis, sample space, events. Teaching script for two ninety-minute practical classes held on the same day, back to back. By Tibor Sandor, tibor sandor 2001 at gmail dot com.
+[[slnc 1500]]
+
+How to use this script.
+[[slnc 600]]
+Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The sections called Background for you explain the finance behind the examples: what the terms mean, why the example matters, and what students may ask. They are not meant to be read out, but they let you answer follow-up questions with confidence. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Exercise numbers match the slides. Problems taken from the A K exercise collection are marked A K zero one, A K zero two, and so on. Timings are approximate; items marked optional can be dropped if you run late.
+[[slnc 500]]
+Both sessions are on the same day: Session 1, 90 minutes, then a short break, then Session 2, another 90 minutes.
+[[slnc 500]]
+Timing overview for Session 1. Introduction, who I am and how to reach me, and the plan for today, slides 1 to 3: 6 minutes. Toolbox: 6 minutes. Exercise 1.1: 3 minutes. Finance example 1, the PIN codes: 3 minutes. Exercise 1.2, problem A K zero two: 9 minutes. Exercise 1.3, problem A K zero three: 7 minutes. Exercise 1.4: 6 minutes. Exercise 1.5, problem A K zero one: 5 minutes. Finance example 2, up and down days: 3 minutes. Exercise 1.6: 3 minutes. Finance example 3, ranking mutual funds: 4 minutes. Exercise 1.7: 8 minutes. Finance example 4 and the lottery: 7 minutes. Exercise 1.8, optional: 3 minutes. Exercise 1.9, lattice paths: 7 minutes. Pascal's triangle: 6 minutes. Summary, extra practice and the short break: 4 minutes. Total: 90 minutes.
+[[slnc 400]]
+Timing overview for Session 2, after the break. The two-minute recap, slides 20 and 21: 3 minutes. Toolbox: 6 minutes. Exercise 2.1, problem A K zero four: 5 minutes. Exercise 2.2: 4 minutes. Finance example 6, rating bonds: 2 minutes. Exercise 2.3, the identities, problem A K zero six: 6 minutes. Exercise 2.4, whose part a is problem A K zero five: 6 minutes. Finance example 7: 6 minutes. Exercise 2.5, problem A K zero seven: 3 minutes. Finance example 5, the binomial tree: 6 minutes. Sample space and events: 5 minutes. De Morgan's laws for two events: 5 minutes. De Morgan's laws, general form: 2 minutes. Exercise 2.6: 3 minutes. Finance example 8: 4 minutes. Exercise 2.7: 5 minutes. Finance example 10: 5 minutes. Exercise 2.9, slides 38 and 39: 6 minutes. Finance example 11: 5 minutes. Summary and extra practice: 3 minutes. Total: 90 minutes.
+[[slnc 2000]]
+
+Session 1. Permutations and combinations.
+[[slnc 1200]]
+
+Introduction and plan for today. Slides 1 to 3.
+[[slnc 600]]
+Note for you: slide 1, the title, is on the screen while you introduce yourself. Speak slowly; this is the first time they see you.
+[[slnc 600]]
+Good morning, everyone, and welcome. Before we start, let me introduce myself. My name is Tibor Sandor. On the slides you see Sandor in capitals, that is my family name. I am new to this course: from today I will be teaching you the probability part of Mathematics for Finance.
+[[slnc 500]]
+My background is in engineering, not in finance. I actually think that is an advantage for this part of the course. Engineers use probability every day: how likely is it that a system fails, how large are measurement errors, how much safety margin do we need. You will see that a lot of finance is the same mathematics with different names. A bond that defaults behaves very much like a component that fails, and diversifying a portfolio is very much like building redundancy into a system. So I will show you the mathematics carefully, and I will always tell you the financial story behind the examples. And if some of you know more about a financial product than I do, please speak up. I am happy to learn from you as well.
+[[slnc 500]]
+How to reach me: my email address is tibor sandor 2001 at gmail dot com. It is on the title slide and on the next slide. Please put Math for Finance in the subject line, so that I find your message quickly. You can also just catch me after class.
+[[slnc 600]]
+Note for you: slide 2, plan for today.
+[[slnc 500]]
+Today is a long day: we have two sessions back to back, 90 minutes each, with a short break in between.
+[[slnc 500]]
+In Session 1 we count: the counting principle, permutations, permutations with repetition, combinations, lattice paths and Pascal's triangle. After the break, in Session 2, we divide objects into groups, we meet the binomial and multinomial theorems and the stars and bars method, we see how counting works in the binomial tree of a stock price, and then we introduce the language of probability: the sample space, events, De Morgan's laws and Venn diagrams.
+[[slnc 500]]
+Why start the probability part with counting? Because when all outcomes are equally likely, a probability is simply the number of favorable outcomes, divided by the number of all outcomes. And that is exactly where we start next week.
+[[slnc 500]]
+Some exercises are marked A K zero one, A K zero two, and so on. These are taken from the A K exercise collection that belongs to the course, so you can find them there too, with short hints.
+[[slnc 600]]
+Note for you: slide 3, the Session 1 title. Just click through.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+The big picture of finance and counting. You do not need finance knowledge to teach this week, but here is the vocabulary that appears in the examples, in one place.
+[[slnc 400]]
+A stock, or share, is a piece of ownership in a company; its price moves randomly. A bond is a loan to a company or a government; the borrower, called the issuer, pays interest and repays the face value at maturity. If the issuer cannot pay, the bond defaults. In engineering terms, the component fails. A portfolio is a collection of investments held together. A derivative is a contract whose payoff depends on something else, such as a stock price, or whether a bond defaults. The two derivatives in this week's examples are options, which give the right, but not the obligation, to buy or sell a stock at a fixed price later, and credit default swaps, which are insurance against a bond defaulting.
+[[slnc 400]]
+Why counting matters: many pricing and risk models are built on a finite set of scenarios. If all scenarios are equally likely, probability is counting. If they are not, as in the binomial model with q not equal to one half, we still need to know how many scenarios lead to the same outcome, because they all get the same weight. That is exactly what binomial coefficients do in the binomial tree.
+[[slnc 400]]
+Key terms: stock, or share; bond; issuer; default; portfolio; derivative; option; credit default swap; scenario.
+[[slnc 400]]
+A student may ask: is finance mathematics really the same as engineering mathematics?
+[[slnc 400]]
+Answer: the tools are the same: probability, statistics, optimization, differential equations. The difference is that prices are set by people who react to each other, so models are less stable than physical laws. A good engineer's habit, check the model against reality and know its limits, is exactly what finance needs.
+[[slnc 1200]]
+
+Toolbox. Slide 4.
+[[slnc 600]]
+The basic principle of counting: if something can be done in m ways, and then, for each of those, a second thing in n ways, then the two together can be done in m times n ways. With more steps we keep multiplying: n 1 times n 2, and so on, times n r.
+[[slnc 400]]
+On the board: m ways, then n ways, gives m times n ways.
+[[slnc 500]]
+Think of a tree: the first step gives m branches, each branch splits into n branches, so there are m times n leaves. From this single principle we get everything else.
+[[slnc 500]]
+Permutations: order matters. In how many ways can we arrange n distinct objects in a row? The first place can be filled in n ways, the second in n minus 1 ways, because one object is used up, and so on, so n factorial. If we only fill k places, we stop after k factors: n factorial, divided by the factorial of n minus k, which equals n, times n minus 1, and so on, down to n minus k plus 1.
+[[slnc 500]]
+Combinations: order does not matter. If we only care which k objects are chosen, look at the ordered selections above: each set of k objects comes in k factorial orders, so it was counted k factorial times. We divide, and get n choose k, which equals n factorial, divided by k factorial times the factorial of n minus k.
+[[slnc 500]]
+Note for you: permutations with repetition, that is identical objects, where we divide by n 1 factorial, times n 2 factorial, and so on, up to n r factorial, are no longer on the toolbox slide. They come with Exercise 1.4, slide 9, where the formula is derived on the MISSISSIPPI example.
+[[slnc 500]]
+Before every exercise, ask yourself two questions. First: does the order matter? Second: can the same element be used more than once? The answers tell you which formula to use.
+[[slnc 400]]
+On the board, a table with four cells. Order matters, no repetition: n factorial over the factorial of n minus k. Order does not matter, no repetition: n choose k. Order matters, repetition allowed: n to the power k. Order does not matter, repetition allowed: n plus k minus 1, choose k. That last cell comes in Session 2.
+[[slnc 400]]
+Note for you: leave this table on the board for the whole day. You will fill in the bottom-right cell after the break, in Session 2.
+[[slnc 1200]]
+
+Exercise 1.1. License plates. Slide 5.
+[[slnc 600]]
+A license plate has 7 places: the first 2 are letters, with 26 options each, and the other 5 are digits. Part a: how many plates are possible? Part b: how many, if no letter and no digit may be repeated?
+[[slnc 800]]
+Ask the class: does the order matter?
+[[slnc 800]]
+Yes. A B 1 2 3 and B A 1 2 3 are different plates.
+[[slnc 400]]
+Ask the class: can we repeat?
+[[slnc 800]]
+In part a yes, in part b no.
+[[slnc 500]]
+We fill the 7 places one by one and multiply. That is the basic principle.
+[[slnc 500]]
+Part a. Repetition is allowed: each letter place has 26 choices and each digit place has 10 choices. So 26 squared, times 10 to the power 5, which is 676 times 100,000, which is 67,600,000.
+[[slnc 500]]
+Part b. Now every choice uses up a symbol. Letters: 26 times 25, which is 650. Digits: 10 times 9 times 8 times 7 times 6, which is 30,240. Together, 650 times 30,240, which is 19,656,000.
+[[slnc 1200]]
+
+Finance example 1. PIN codes. Slide 6.
+[[slnc 600]]
+A bank card PIN has 4 digits. Part a: how many PINs are there? Part b: how many have no repeated digit? Part c: a thief makes three different random guesses. Which fraction of all PINs does he cover?
+[[slnc 800]]
+Ask the class: the same two questions. Does the order matter, and can a digit repeat?
+[[slnc 800]]
+Order matters: 1 2 3 4 and 4 3 2 1 are different PINs. Repetition is allowed in part a, not in part b.
+[[slnc 500]]
+Part a. Four places, 10 digits each: 10 to the power 4, which is 10,000 PINs.
+[[slnc 500]]
+Part b. No repeated digit: 10 times 9 times 8 times 7, which is 10 factorial over 6 factorial, which is 5,040.
+[[slnc 500]]
+Part c. Three different guesses cover 3 of the 10,000 PINs: the fraction 3 over 10,000.
+[[slnc 500]]
+Next week this fraction becomes a probability: the chance that a thief who tries 3 random PINs before the card is blocked succeeds. For now we only need the denominator.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+PIN security. Intuition: security of a PIN is a counting argument. An attacker who knows nothing must guess, and the number of possible PINs is the size of the haystack. Banks keep the haystack small enough to remember, 4 digits, and protect it with an attempt limit: after typically 3 wrong tries the card is blocked or retained. Hence the success chance of blind guessing is 3 over 10,000, which is 0.03 percent.
+[[slnc 400]]
+The catch: people do not choose uniformly. Studies of leaked 4-digit codes found that a handful of codes, such as 1 2 3 4, 1 1 1 1, 0 0 0 0, and birth years starting with 19, account for a large share of all codes; 1 2 3 4 alone is reported at roughly one in ten. So the real guessing probability is much higher than 3 over 10,000. The equally likely assumption fails. This is a nice preview of next week: classical probability is only as good as the equally likely assumption.
+[[slnc 400]]
+Key terms: brute-force attack; attempt limit, or lockout; entropy, measured in bits: log base 2 of 10,000 is about 13.3.
+[[slnc 400]]
+A student may ask: would banning repeated digits make PINs safer?
+[[slnc 400]]
+Answer: no. It removes weak PINs like 1 1 1 1, but it shrinks the space from 10,000 to 5,040, so blind guessing becomes almost twice as easy. Every rule that restricts choices reduces the count.
+[[slnc 400]]
+A student may ask: why not 6-digit PINs?
+[[slnc 400]]
+Answer: some banks use them, with 10 to the power 6 possibilities. It is a trade-off between security and how easily customers remember them.
+[[slnc 1200]]
+
+Exercise 1.2, problem A K zero two. Five couples at a concert. Slide 7.
+[[slnc 600]]
+Five married couples have 10 seats next to each other in one row. In how many ways can they sit: a, with no restriction; b, if couples sit together; c, if the men sit together and the women sit together; d, if men and women alternate?
+[[slnc 800]]
+Part a. Ten distinct people in ten seats: 10 factorial, which is 3,628,800.
+[[slnc 500]]
+Part b. When some people must sit together, glue them into one block.
+[[slnc 400]]
+We have 5 blocks, the couples. The blocks can be arranged in 5 factorial, that is 120 ways. Inside each block the husband can sit on the left or on the right: 2 ways, and this happens independently for all 5 couples, giving 2 to the power 5, which is 32. So 5 factorial times 2 to the power 5, that is 120 times 32, which is 3,840.
+[[slnc 500]]
+Part c. Now there are two blocks: the men and the women. The two blocks can be ordered in 2 ways, men on the left or women on the left. Inside the men's block, 5 factorial orders; inside the women's block, 5 factorial orders. So 2 times 5 factorial times 5 factorial, that is 2 times 120 times 120, which is 28,800.
+[[slnc 500]]
+Part d. If they alternate, the pattern is either man, woman, man, woman, and so on, starting with a man, or woman, man, woman, man, and so on, starting with a woman: 2 patterns. Then the men fill their 5 seats in 5 factorial ways and the women theirs in 5 factorial ways: again 2 times 5 factorial times 5 factorial, which is 28,800.
+[[slnc 500]]
+Ask the class: is it a coincidence that parts c and d give the same answer?
+[[slnc 800]]
+No. In both cases we choose one of two seat patterns for the genders, and then permute the men and the women within their seats.
+[[slnc 500]]
+On the board, the trick: together means glue into a block, permute the blocks, then permute inside each block.
+[[slnc 1200]]
+
+Exercise 1.3, problem A K zero three. Queueing for the bus. Slide 8.
+[[slnc 600]]
+Eight people line up for a bus. In how many ways can they line up: a, with no restriction; b, if 3 given people insist on standing together; c, if 2 given people refuse to stand next to each other?
+[[slnc 800]]
+Part a. 8 factorial, which is 40,320.
+[[slnc 500]]
+Part b. Glue the three friends into a block. Now we arrange 6 units, the block and 5 other people: 6 factorial, which is 720. Inside the block: 3 factorial, which is 6. So 6 times 720, which is 4,320.
+[[slnc 500]]
+Part c. Not next to each other is awkward to count directly. Count the opposite, the bad lines, and subtract.
+[[slnc 400]]
+The bad lines are those in which the two people are adjacent. Glue them into a block: 7 units, 7 factorial, that is 5,040 orders, and 2 factorial orders inside the block, so 2 times 5,040, which is 10,080. Hence the answer is 8 factorial minus 2 factorial times 7 factorial, that is 40,320 minus 10,080, which is 30,240.
+[[slnc 500]]
+On the board, the complement principle: the number of good cases equals the number of all cases, minus the number of bad cases.
+[[slnc 400]]
+Note for you: stress this. The complement trick is the single most useful technique in this chapter, and it will return constantly next week as: the probability of E complement equals 1 minus the probability of E.
+[[slnc 1200]]
+
+Exercise 1.4. Letter arrangements. Slide 9.
+[[slnc 600]]
+How many different letter arrangements can be made from the letters of: a, FLUKE; b, PROPOSE; c, MISSISSIPPI; d, ARRANGE?
+[[slnc 800]]
+This is the one formula that is not on the toolbox slide: permutations with repetition. If all letters were different, we would have n factorial arrangements. Swapping identical letters does not change the word, so every word is counted as many times as the product n 1 factorial, times n 2 factorial, and so on. We divide by the factorials of the multiplicities.
+[[slnc 500]]
+Part a. Five different letters: 5 factorial, which is 120.
+[[slnc 500]]
+Part b. PROPOSE has 7 letters; P appears twice and O appears twice. If we labeled them P 1, P 2, O 1, O 2, we would get 7 factorial arrangements. But swapping P 1 and P 2 gives the same word, and so does swapping O 1 and O 2. Therefore each word was counted 2 factorial times 2 factorial, that is 4, times. The answer is 7 factorial, divided by 2 factorial times 2 factorial, that is 5,040 divided by 4, which is 1,260.
+[[slnc 500]]
+Part c. MISSISSIPPI: 11 letters, M once, I four times, S four times, P twice. Each word is counted 4 factorial times 4 factorial times 2 factorial, that is 24 times 24 times 2, which is 1,152 times among the 11 factorial orders. So the answer is 11 factorial, divided by 4 factorial times 4 factorial times 2 factorial, that is 39,916,800 divided by 1,152, which is 34,650.
+[[slnc 500]]
+Part d. ARRANGE: A twice, R twice, and N, G, E once each. So 7 factorial, divided by 2 factorial times 2 factorial, which is 1,260.
+[[slnc 500]]
+On the board, permutations with repetition: n objects, n 1 of one kind, n 2 of another, and so on. The number of arrangements is n factorial, divided by n 1 factorial, times n 2 factorial, and so on, times n r factorial.
+[[slnc 1200]]
+
+Exercise 1.5, problem A K zero one. Eight-digit numbers. Slide 10.
+[[slnc 600]]
+The digits 0, 1, 1, 2, 3, 3, 3, 4 are written on eight cards. Using all eight cards, how many 8-digit numbers can be formed?
+[[slnc 800]]
+Ask the class: what is the catch?
+[[slnc 800]]
+A number cannot start with 0.
+[[slnc 500]]
+All arrangements of the cards: 8 cards, digit 1 twice, digit 3 three times. So 8 factorial, divided by 2 factorial times 3 factorial, that is 40,320 divided by 12, which is 3,360.
+[[slnc 500]]
+The bad ones start with 0. They are not 8-digit numbers. Fix the 0 in front; the remaining 7 cards, 1, 1, 2, 3, 3, 3, 4, can be arranged in 7 factorial, divided by 2 factorial times 3 factorial ways, that is 5,040 divided by 12, which is 420 ways. So the answer is 8 factorial, divided by 2 factorial times 3 factorial, minus 7 factorial, divided by 2 factorial times 3 factorial, that is 3,360 minus 420, which is 2,940.
+[[slnc 1200]]
+
+Finance example 2. Up and down days. Slide 11.
+[[slnc 600]]
+A trader had 7 up-days and 5 down-days in a 12-day period. How many different up-down sequences are possible?
+[[slnc 800]]
+Ask the class: which exercise is this, in disguise?
+[[slnc 800]]
+Letter arrangements: a word with 7 U's and 5 D's.
+[[slnc 500]]
+This is exactly a word with 7 U's and 5 D's: 12 factorial, divided by 7 factorial times 5 factorial, which is 12 choose 5, which is 792.
+[[slnc 500]]
+Notice that permutations with two kinds of objects are the same as combinations: we just choose which 5 of the 12 days were down-days.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Up and down sequences and random walks. Intuition: recording only up or down for each trading day turns a price chart into a binary word. The simplest model of stock prices, the random walk, says each day is up or down independently, like a coin. Under that model all 2 to the power 12, that is 4,096 sequences of 12 days are equally likely, and the 792 sequences with exactly 7 ups are all equally likely too. So a pattern such as 7 ups in a row, then 5 downs, is no more special than any other ordering. Chart-readers, called technical analysts, look for patterns; statisticians test whether the patterns are more frequent than counting predicts, for example with the runs test.
+[[slnc 400]]
+Key terms: up-day and down-day; random walk; streak or run; technical analysis.
+[[slnc 400]]
+A student may ask: if there were 7 up-days and only 5 down-days, did the stock rise?
+[[slnc 400]]
+Answer: not necessarily. The count ignores the size of the moves. Five big falls can outweigh seven small rises. In the binomial tree, Finance example 5, after the break, we fix the sizes, u and d, and then the count of ups does determine the final price.
+[[slnc 1200]]
+
+Exercise 1.6. Awards, with or without repetition. Slide 12.
+[[slnc 600]]
+Five different awards are given to students of a class of 30. How many outcomes are possible if: a, a student may receive any number of awards; b, each student receives at most one award?
+[[slnc 800]]
+Hand out the awards one by one.
+[[slnc 500]]
+Part a. Every award can go to any of the 30 students: repetition is allowed, and order matters because the awards are different. 30 to the power 5, which is 24,300,000.
+[[slnc 500]]
+Part b. After each award one student fewer is eligible: 30 times 29 times 28 times 27 times 26, which is 30 factorial over 25 factorial, which is 17,100,720.
+[[slnc 1200]]
+
+Finance example 3. Ranking mutual funds. Slide 13.
+[[slnc 600]]
+10 mutual funds compete. How many possible results are there if a rating agency publishes: a, the gold, silver and bronze podium; b, only the unordered top three; c, the full league table?
+[[slnc 800]]
+Ask the class: in which part does the order matter?
+[[slnc 800]]
+In parts a and c; in part b it does not.
+[[slnc 500]]
+Part a. Order matters, and no fund appears twice: 10 times 9 times 8, which is 720 podiums.
+[[slnc 500]]
+Part b. Each top three appears as a podium in 3 factorial, that is 6 orders. So 720 divided by 3 factorial, which is 10 choose 3, which is 120.
+[[slnc 500]]
+Part c. The full league table is an arrangement of all 10 funds: 10 factorial, which is 3,628,800.
+[[slnc 500]]
+Part b is the toolbox remark in action: each set comes in k factorial orders.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Mutual funds, fund ratings and league tables. A mutual fund is a pool of money from many investors, managed by a professional who buys a portfolio of stocks, bonds, or both. Investors want to know which funds are good, so companies such as Morningstar or Lipper rate and rank funds, typically by past return adjusted for risk. One such measure is the Sharpe ratio: the average excess return over the risk-free rate, divided by the volatility. A league table is simply the ranking of all funds. The ordered podium, who is first, versus the unordered top three, is exactly the permutation versus combination distinction: a top quartile badge is a combination, a number 1 fund title is a permutation.
+[[slnc 400]]
+Do not confuse these fund ratings with credit ratings of bonds, by Moody's, S and P, and Fitch, which appear in Finance example 6.
+[[slnc 400]]
+Key terms: mutual fund; fund manager; risk-adjusted return; Sharpe ratio; league table; fund rating versus credit rating.
+[[slnc 400]]
+A student may ask: is being number one last year a good reason to buy a fund?
+[[slnc 400]]
+Answer: mostly no. Studies find that past winners rarely stay on top; a large part of the ranking is luck. With many funds, some fund will be on top by chance. That is a counting argument in disguise.
+[[slnc 1200]]
+
+Exercise 1.7. Committees with a conflict. Slide 14.
+[[slnc 600]]
+From 8 women and 6 men, a committee of 3 men and 3 women is formed. How many committees are possible if: a, 2 of the men refuse to serve together; b, 2 of the women refuse to serve together; c, 1 man and 1 woman refuse to serve together?
+[[slnc 800]]
+Ask the class: does the order matter in a committee?
+[[slnc 800]]
+No. So we use combinations.
+[[slnc 500]]
+Without restrictions: choose the men in 6 choose 3, that is 20 ways, and the women in 8 choose 3, that is 56 ways. The total is 20 times 56, which is 1,120. In each part we subtract the bad committees.
+[[slnc 500]]
+Part a. Bad male trios contain both feuding men; the third man comes from the other 4: 4 choose 1, which is 4. Good male trios: 20 minus 4, which is 16, and the total is 16 times 56, which is 896.
+[[slnc 500]]
+Part b. Similarly for the women: both feuding women are in, plus 1 of the other 6, so 6 bad trios. Good: 56 minus 6, which is 50. Total: 20 times 50, which is 1,000.
+[[slnc 500]]
+Part c. Here the conflict is across the two groups, so we subtract from the grand total. Bad committees: that man is in, so we need 2 more men from the other 5: 5 choose 2, which is 10. That woman is in, so we need 2 more women from the other 7: 7 choose 2, which is 21. Bad committees: 10 times 21, which is 210. Answer: 1,120 minus 210, which is 910.
+[[slnc 1200]]
+
+Finance example 4. Choosing a portfolio. Slide 15.
+[[slnc 600]]
+An index has 30 stocks, 8 of them technology stocks. An analyst picks 5 stocks for an equally weighted portfolio; order does not matter. Part a: how many portfolios are possible? Part b: how many contain at least one tech stock? Part c: how many contain exactly two tech stocks?
+[[slnc 800]]
+Part a. Equally weighted, so only the set of stocks matters: unordered, no repetition. 30 choose 5, which is 30 times 29 times 28 times 27 times 26, divided by 5 factorial, which is 142,506.
+[[slnc 500]]
+Part b. Ask the class: what is the complement of at least one?
+[[slnc 800]]
+None. Portfolios with no tech stock choose all 5 from the 22 non-tech stocks: 22 choose 5, which is 26,334. Hence 142,506 minus 26,334, which is 116,172.
+[[slnc 500]]
+Part c. Choose the tech part and the non-tech part separately, then multiply: 2 of the 8 tech stocks and 3 of the 22 others. 8 choose 2, times 22 choose 3, that is 28 times 1,540, which is 43,120.
+[[slnc 500]]
+In the Hungarian lottery, Otoslotto, 5 numbers are drawn from 90, and the order is irrelevant. The number of possible tickets is 90 choose 5, which is 43,949,268. So one ticket wins the jackpot in 1 of about 44 million cases.
+[[slnc 400]]
+Note for you, an optional remark: with 500 stocks and 20 chosen, 500 choose 20 is about 2.7 times 10 to the power 35. Trying all portfolios is impossible, which is why portfolio selection uses optimization, not enumeration.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Portfolio selection, diversification, and the lottery. An index is a list of stocks whose average price is tracked. For example, the Dow Jones Industrial Average has 30 stocks, and the S and P 500 has about 500. An equally weighted portfolio puts the same amount of money in each chosen stock, so only the set matters. That is a combination.
+[[slnc 400]]
+Diversification: holding several stocks reduces risk, because their random fluctuations partly cancel. Engineering analogy: averaging several noisy, not perfectly correlated sensors reduces the noise. The part of the risk that is specific to a single company, called idiosyncratic risk, diversifies away; the part common to all stocks, called market or systematic risk, does not. Parts b and c are typical sector constraints: a fund's rules may require at least one, or at most two, stocks from a sector, to avoid concentration, putting all eggs in the tech basket.
+[[slnc 400]]
+Portfolio selection, by Markowitz in 1952, Nobel prize 1990: choose weights to minimize variance for a given expected return. With a limit on the number of stocks, such as pick 20 of 500, this becomes a combinatorial, mixed-integer optimization problem, and the 2.7 times 10 to the power 35 candidates explain why brute force is hopeless.
+[[slnc 400]]
+The lottery as a negative expected value bet. The organizer pays out only part of the ticket revenue as prizes, for state lotteries typically around half, and keeps the rest. So the expected payoff of a ticket is roughly half its price: on average you lose. Buying a ticket is the opposite of an investment; finance calls such a bet unfair. People still buy because a tiny chance of a life-changing gain is attractive. In behavioral finance: people overweight small probabilities.
+[[slnc 400]]
+Key terms: idiosyncratic versus systematic risk; diversification; mean-variance optimization; expected value; fair versus unfair bet.
+[[slnc 400]]
+A student may ask: why would anyone use equal weights instead of optimizing?
+[[slnc 400]]
+Answer: optimized weights depend on estimated means and covariances, which are very noisy. The simple rule of putting 1 over N of the money in each of N stocks is surprisingly hard to beat in practice.
+[[slnc 400]]
+A student may ask: can a lottery ever be a good bet?
+[[slnc 400]]
+Answer: in theory, when a jackpot has rolled over many times, its expected value can exceed the price. But the jackpot is usually shared with other winners and taxed, so in practice it hardly ever is.
+[[slnc 1200]]
+
+Exercise 1.8, optional. Dance class: choose, then pair. Slide 16.
+[[slnc 600]]
+A dance class has 10 women and 12 men. 5 men and 5 women are chosen and then paired off. How many results are possible?
+[[slnc 800]]
+Three independent steps, so we multiply. First, who: choose the women, 10 choose 5, which is 252; choose the men, 12 choose 5, which is 792. Then, how: line up the 5 chosen women. The first can get any of 5 men, the second any of the remaining 4, and so on: 5 factorial, which is 120. Altogether, 10 choose 5, times 12 choose 5, times 5 factorial, that is 252 times 792 times 120, which is 23,950,080.
+[[slnc 500]]
+Lesson: combinations answer who, permutations answer how are they arranged, and we multiply.
+[[slnc 1200]]
+
+Exercise 1.9. Lattice paths. Slide 17.
+[[slnc 600]]
+Starting at the point A, at 0 comma 0, at each move you go one step right or one step up, until you reach the point B, at 4 comma 3. Part a: how many paths are there from A to B? Part b: how many pass through the circled point 2 comma 1?
+[[slnc 800]]
+The picture shows a grid 4 squares wide and 3 squares high, with A at the bottom left corner and B at the top right corner. The point 2 comma 1 is circled, and one path is drawn as an arrow: right, up, right, right, up, up, right.
+[[slnc 500]]
+Every path consists of exactly 7 moves: 4 right steps and 3 up steps, in some order. The path in the picture is R U R R U U R. So a path is a word with 4 R's and 3 U's, and we already know how to count those.
+[[slnc 500]]
+Part a. The path is fixed once we choose which 3 of the 7 moves are up: 7 choose 3, which is 35.
+[[slnc 500]]
+Part b. Split the path at the point 2 comma 1. From A to 2 comma 1: 3 moves, 1 of them up, so 3 choose 1, which is 3 paths. From 2 comma 1 to B: 4 moves, 2 of them up, so 4 choose 2, which is 6 paths. Every first half combines with every second half, so by the counting principle, 3 times 6, which is 18 paths.
+[[slnc 1200]]
+
+Pascal's triangle. Slide 18.
+[[slnc 600]]
+The lattice-path counts are worth a closer look. The number of monotone paths with n moves, k of them up, is n choose k. Write these numbers in rows: row n contains n choose 0, n choose 1, and so on, up to n choose n. This is Pascal's triangle.
+[[slnc 500]]
+The picture shows rows 0 to 6. Row 0: 1. Row 1: 1, 1. Row 2: 1, 2, 1. Row 3: 1, 3, 3, 1. Row 4: 1, 4, 6, 4, 1. Row 5: 1, 5, 10, 10, 5, 1. Row 6: 1, 6, 15, 20, 15, 6, 1. In row 4, the entries 4 and 6 are circled, and two arrows lead from them to the highlighted 10 in row 5.
+[[slnc 500]]
+On the board: draw the first rows of the triangle, at least up to row 5, and write Pascal's rule: n choose k, plus n choose k plus 1, equals n plus 1 choose k plus 1. For example, 4 choose 1, plus 4 choose 2, is 4 plus 6, which is 10, which is 5 choose 2.
+[[slnc 500]]
+Each entry is the sum of the two entries above it. This is Pascal's rule; we will prove it after the break, in Exercise 2.5, problem A K zero seven. Why is it true for lattice paths? To reach a point you must arrive either from the point on its left or from the point below it, so the number of paths into a point is the sum of the paths into those two neighbors.
+[[slnc 500]]
+Ask the class: who can tell me the next row, row 7?
+[[slnc 800]]
+1, 7, 21, 35, 35, 21, 7, 1. Each entry is the sum of the two above it.
+[[slnc 500]]
+Three ways to read row n.
+[[slnc 400]]
+First, lattice paths: n choose k paths with k up-steps among n moves, as in Exercise 1.9.
+[[slnc 400]]
+Second: the coefficients of a plus b, to the power n. For example, row 5 gives: a plus b, to the power 5, equals a to the fifth, plus 5 a to the fourth b, plus 10 a cubed b squared, plus 10 a squared b cubed, plus 5 a b to the fourth, plus b to the fifth. We will prove this, the binomial theorem, after the break.
+[[slnc 400]]
+Third: the sum of row n is 2 to the power n. For row 5: 1 plus 5 plus 10 plus 10 plus 5 plus 1 is 32. And every row is symmetric: n choose k equals n choose n minus k. Choosing the k elements you take is the same as choosing the n minus k you leave.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Pascal's triangle in finance. After the break the same numbers reappear in the binomial tree of a stock price, Finance example 5. In the binomial option model, the entries of row n are the path multiplicities of the final nodes. With risk-neutral probability q, node k gets weight n choose k, times q to the power k, times 1 minus q, to the power n minus k. This is the binomial distribution, which students will meet in a few weeks. With q equal to one half, the weights are simply row n divided by 2 to the power n. For example, for n equals 2: one quarter, two quarters, one quarter, as in the tiny example in the background box of Finance example 5. Practitioners build trees with hundreds of steps; the triangle is never written out, but the same add-the-two-parents recursion is how the tree is evaluated numerically. This is called backward induction.
+[[slnc 400]]
+Key terms: path multiplicity; binomial distribution; risk-neutral weight; backward induction.
+[[slnc 400]]
+A student may ask: why do the middle nodes matter most in the binomial model?
+[[slnc 400]]
+Answer: because most paths end there. In row 10 the middle entry, 10 choose 5, is 252 of the 1,024 paths, while the two extreme nodes get only 1 each. So, with q near one half, the final price is most likely near the middle, and for many steps the weights look like a bell curve.
+[[slnc 1200]]
+
+Summary and extra practice for Session 1. Slide 19.
+[[slnc 600]]
+Ordered, no repetition: n factorial over the factorial of n minus k. Ordered, with repetition: n to the power k. Unordered, no repetition: n choose k, which gives Pascal's triangle. Identical objects: divide by n 1 factorial, and so on, up to n r factorial. Together means glue into a block; not together means use the complement.
+[[slnc 500]]
+The four problems on the slide are extra practice for self-study after class. You do not have to hand them in, but they are very good preparation for next week.
+[[slnc 600]]
+Extra practice for Session 1, with detailed answers for you.
+[[slnc 400]]
+Problem E 1. 3 boys and 3 girls sit in a row. Part a, no restriction: 6 distinct people, 6 factorial, which is 720. Part b, boys together and girls together: two blocks, 2 orders of the blocks, 3 factorial inside each, so 2 times 3 factorial times 3 factorial, which is 72. Part c, only the boys must sit together: one block of boys plus 3 girls makes 4 units, 4 factorial orders, and 3 factorial inside the block, so 4 factorial times 3 factorial, which is 144. Part d, no two of the same sex adjacent: the pattern is boy, girl, boy, girl, boy, girl, or girl, boy, girl, boy, girl, boy, that is 2 ways; then 3 factorial for the boys and 3 factorial for the girls: 2 times 3 factorial times 3 factorial, which is 72.
+[[slnc 400]]
+Problem E 2. 8 people in a row. Part a, A and B next to each other: glue them, 7 units, so 2 times 7 factorial, which is 10,080. Part b, 4 men and 4 women, no two men and no two women adjacent: 2 patterns, so 2 times 4 factorial times 4 factorial, which is 1,152. Part c, 4 couples, each together: 4 blocks, 4 factorial orders, and 2 orders inside each block: 4 factorial times 2 to the power 4, which is 384.
+[[slnc 400]]
+Problem E 3. Choose 2 books out of 6 math, 7 science and 4 economics books. Part a, same subject: 6 choose 2, plus 7 choose 2, plus 4 choose 2, that is 15 plus 21 plus 6, which is 42. Part b, different subjects: choose the pair of subjects and one book of each: 6 times 7, plus 6 times 4, plus 7 times 4, that is 42 plus 24 plus 28, which is 94. Check: every pair of books is in exactly one case, and 42 plus 94 is 136, which is 17 choose 2.
+[[slnc 400]]
+Problem E 4. Invite 5 of 8 friends. Part a, two are feuding and will not come together: all invitations minus those with both, 8 choose 5, minus 6 choose 3, that is 56 minus 20, which is 36. Part b, two only come together: both invited, with 3 more from the other 6, gives 6 choose 3, which is 20; or both left out, with all 5 from the other 6, gives 6 choose 5, which is 6. The total is 26.
+[[slnc 500]]
+Note for you: slide 19 ends with: short break, Session 2 follows right after. Announce the exact restart time, for example, we continue in ten minutes, and leave the toolbox table on the board.
+[[slnc 2000]]
+
+Session 2. Multinomial coefficients, sample space, events.
+[[slnc 1200]]
+
+After the break: a two-minute recap. Slides 20 and 21.
+[[slnc 600]]
+Welcome back. Let's continue where we stopped before the break. Two minutes of recap, then something new.
+[[slnc 500]]
+Every counting problem starts with two questions: does order matter, and is repetition allowed?
+[[slnc 500]]
+On the board: point at the table from Session 1 and fill in the empty cell. Ordered, no repetition: n factorial over the factorial of n minus k. Unordered, no repetition: n choose k. Ordered, with repetition: n to the power k. And now the new cell, unordered, with repetition: n plus k minus 1, choose k.
+[[slnc 500]]
+Identical objects in a row: n factorial, divided by n 1 factorial, and so on, times n r factorial. Together means a block; not together, or at least one, means the complement. And lattice paths are counted by n choose k, which led us to Pascal's triangle.
+[[slnc 500]]
+Now: we divide objects into several groups, we put identical objects into boxes, and then we learn the language of events.
+[[slnc 1200]]
+
+Toolbox. Slide 22.
+[[slnc 600]]
+The multinomial coefficient. Suppose we split n distinct objects into r labeled groups of sizes n 1, n 2, and so on, up to n r, where n 1 plus n 2, and so on, plus n r, equals n. We choose the first group in n choose n 1 ways, the second from the remaining objects in n minus n 1, choose n 2 ways, and so on. Multiplying and canceling gives the multinomial coefficient, n choose n 1, n 2, up to n r, which equals n factorial, divided by n 1 factorial, times n 2 factorial, and so on, times n r factorial.
+[[slnc 400]]
+This is the same number as the permutations with repetition: label every object with the name of its group, and you get a word with n 1 copies of the first label, n 2 copies of the second, and so on.
+[[slnc 500]]
+The binomial theorem: a plus b, to the power n, equals the sum, from k equals 0 to n, of n choose k, times a to the power k, times b to the power n minus k.
+[[slnc 400]]
+The multinomial theorem: x 1 plus x 2, and so on, plus x r, all to the power n, equals the sum, over all n 1 up to n r that add up to n, of the multinomial coefficient n choose n 1 up to n r, times x 1 to the power n 1, and so on, times x r to the power n r.
+[[slnc 500]]
+Why is the coefficient of a to the power k, times b to the power n minus k, equal to n choose k? When you multiply out a plus b, times a plus b, and so on, n times, you choose a or b from every factor. To get a to the power k, times b to the power n minus k, you must choose a from exactly k factors, and there are n choose k ways to choose which ones. That is why row n of Pascal's triangle gave the coefficients of a plus b, to the power n, before the break.
+[[slnc 500]]
+Stars and bars. Put n identical objects into r distinct boxes. Draw the objects as n stars and separate the boxes by r minus 1 bars. Every distribution is one arrangement of n stars and r minus 1 bars, so the number of distributions is n plus r minus 1, choose r minus 1.
+[[slnc 400]]
+If every box must be nonempty, put one object in each box first and distribute the remaining n minus r freely. That gives n minus r, plus r minus 1, choose r minus 1, which simplifies to n minus 1, choose r minus 1.
+[[slnc 1200]]
+
+Exercise 2.1, problem A K zero four. Bridge: two correct solutions. Slide 23.
+[[slnc 600]]
+In bridge, the 52 cards are dealt evenly to 4 players, 13 each. How many deals are possible?
+[[slnc 800]]
+I will show you two solutions that look completely different, and both are correct.
+[[slnc 500]]
+The permutation view. Line up the deck: 52 factorial orders. Give cards 1 to 13 to the first player, 14 to 26 to the second, and so on. But the order of cards inside a hand does not matter to the player, so the 13 cards of each hand behave like identical objects. We divide by 13 factorial four times: 52 factorial, divided by 13 factorial times 13 factorial times 13 factorial times 13 factorial.
+[[slnc 500]]
+The combination view. Player 1 gets 13 of the 52 cards, player 2 gets 13 of the remaining 39, player 3 gets 13 of the remaining 26, and player 4 gets the last 13, in one way. So 52 choose 13, times 39 choose 13, times 26 choose 13, times 13 choose 13.
+[[slnc 500]]
+Ask the class: are these equal?
+[[slnc 800]]
+Write out the binomial coefficients: 52 factorial over the product 13 factorial times 39 factorial; times 39 factorial over the product 13 factorial times 26 factorial; times 26 factorial over the product 13 factorial times 13 factorial; times 1. This equals 52 factorial, divided by 13 factorial to the power 4. The 39 factorial and the 26 factorial cancel telescopically, so both views give the same number, about 5.36 times 10 to the power 28.
+[[slnc 1200]]
+
+Exercise 2.2. Dividing into groups. Slide 24.
+[[slnc 600]]
+Part a: 12 people are divided into 3 committees of sizes 3, 4 and 5. How many divisions are possible? Part b: 8 new teachers are assigned to 4 schools. How many assignments? What if each school gets exactly 2?
+[[slnc 800]]
+Part a. Fill the committees one after the other: 12 choose 3, times 9 choose 4, times 5 choose 5, that is 220 times 126 times 1. This equals 12 factorial, divided by 3 factorial times 4 factorial times 5 factorial, which is 27,720.
+[[slnc 500]]
+Part b. Each teacher independently chooses one of 4 schools: 4 to the power 8, which is 65,536.
+[[slnc 400]]
+Careful: this part is not a multinomial problem, because the group sizes are not fixed. With exactly 2 per school it is: groups of sizes 2, 2, 2, 2. So 8 choose 2, times 6 choose 2, times 4 choose 2, times 2 choose 2, that is 28 times 15 times 6 times 1. This equals 8 factorial, divided by 2 factorial times 2 factorial times 2 factorial times 2 factorial, which is 2,520.
+[[slnc 1200]]
+
+Finance example 6. Rating bonds. Slide 25.
+[[slnc 600]]
+A credit analyst must rate 10 bonds: exactly 4 get rating A, 3 get rating B and 3 get rating C. How many rating assignments are possible?
+[[slnc 800]]
+Ask the class: what are the groups here?
+[[slnc 800]]
+The three rating classes, of sizes 4, 3 and 3.
+[[slnc 500]]
+Three labeled groups of sizes 4, 3 and 3. The multinomial coefficient 10 choose 4, 3, 3 equals 10 factorial, divided by 4 factorial times 3 factorial times 3 factorial. This also equals 10 choose 4, times 6 choose 3, that is 210 times 20, which is 4,200. After choosing the 4 A's, the 3 B's are chosen from the remaining 6, and the last 3 bonds get C.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Credit ratings and rating agencies. A credit rating is an opinion about how likely a borrower is to pay its debts. The three big rating agencies are S and P, Moody's and Fitch. Their letter scales run from triple A at S and P and Fitch, or capital A, small a, small a at Moody's, the safest, through double A, single A, triple B, down to double B, single B, triple C, and so on, and finally D, for default. Triple B minus and above is investment grade; below that is high yield, popularly called junk. Many institutional investors, such as pension funds and insurers, may only hold investment-grade bonds, so a downgrade below triple B minus forces selling. Banks also run internal rating systems for their loan clients; under the Basel rules their capital requirements depend on these grades.
+[[slnc 400]]
+The exercise fixes how many bonds get each grade. That is like a forced distribution, or grading on a curve, used for example when a bank wants its internal grades to match a target distribution. Each rating assignment is a labeled division into groups, so it is counted by a multinomial coefficient.
+[[slnc 400]]
+Key terms: investment grade versus high yield; downgrade; default probability; rating migration, which means moving between grades over time.
+[[slnc 400]]
+A student may ask: does rating A mean the bond cannot default?
+[[slnc 400]]
+Answer: no. It means a low estimated default probability. Historically, A-rated corporate bonds default rarely within a year, but not never. In 2008 many triple-A rated mortgage securities suffered heavy losses.
+[[slnc 400]]
+A student may ask: who pays the rating agency?
+[[slnc 400]]
+Answer: usually the issuer of the bond. This is called issuer pays, and it is a known conflict of interest.
+[[slnc 1200]]
+
+Exercise 2.3. Expansions and identities, problem A K zero six. Slide 26.
+[[slnc 600]]
+Part a: expand 3 x squared plus y, all to the power 5. Part b: find the coefficient of x 1, times x 2 squared, times x 3, in x 1, plus 2 times x 2, plus 3 times x 3, all to the power 4. Part c: what is the sum of all coefficients in part b?
+[[slnc 800]]
+Part a. Use the binomial theorem with a equal to 3 x squared and b equal to y. The term with index k is 5 choose k, times 3 to the power k, times x to the power 2 k, times y to the power 5 minus k. Row 5 of Pascal's triangle is 1, 5, 10, 10, 5, 1. Multiply by 3 to the power k, which runs 1, 3, 9, 27, 81, 243. This gives 1 times 1, 5 times 3, 10 times 9, 10 times 27, 5 times 81, and 1 times 243, that is 1, 15, 90, 270, 405, 243.
+[[slnc 400]]
+So, writing the highest power of x first: 3 x squared plus y, all to the power 5, equals 243 x to the tenth, plus 405 x to the eighth y, plus 270 x to the sixth y squared, plus 90 x to the fourth y cubed, plus 15 x squared y to the fourth, plus y to the fifth.
+[[slnc 500]]
+Part b. Out of the 4 factors we need x 1 once, 2 times x 2 twice, and 3 times x 3 once. The number of ways to decide which factor gives what is the multinomial coefficient 4 choose 1, 2, 1, which is 4 factorial, divided by 1 factorial times 2 factorial times 1 factorial, which is 12. The constants contribute 1 times 2 squared times 3, which is 12. So the coefficient is 12 times 12, which is 144.
+[[slnc 500]]
+Part c. To add up all coefficients, set every variable equal to 1: 1 plus 2 plus 3, to the power 4, which is 6 to the power 4, which is 1,296.
+[[slnc 500]]
+The same substitution trick gives three useful identities. This is problem A K zero six. First: the sum over k of n choose k equals 1 plus 1, to the power n, which is 2 to the power n. Second: the sum over k of n choose k times 2 to the power k equals 2 plus 1, to the power n, which is 3 to the power n. Third: the sum over k of the quantity minus 1, to the power k, times n choose k, equals 1 minus 1, to the power n, which is 0.
+[[slnc 400]]
+The first says: a set with n elements has 2 to the power n subsets, because each element is in or out. And it is the row sum of Pascal's triangle.
+[[slnc 1200]]
+
+Exercise 2.4, part a is problem A K zero five. Stars and bars. Slide 27.
+[[slnc 600]]
+Part a: we roll two identical, indistinguishable dice. How many outcomes can we observe? Part b: 8 identical blackboards are divided among 4 schools. How many divisions? How many, if each school gets at least one?
+[[slnc 800]]
+Part a. Since we cannot tell the dice apart, 1 and 2, and 2 and 1, look the same. Outcomes with two different numbers: 6 choose 2, which is 15. Doubles: 6. Total: 21.
+[[slnc 400]]
+Alternatively: we choose 2 numbers out of 6, order does not matter, and repetition is allowed: 6 plus 2 minus 1, choose 2, which is 7 choose 2, which is 21.
+[[slnc 400]]
+Note for you: warn them. The 21 outcomes are not equally likely: a double has probability 1 over 36, a mixed pair 2 over 36. This is an important point for next week.
+[[slnc 500]]
+Part b. Encode a division as 8 stars and 3 bars; the bars separate the 4 schools.
+[[slnc 400]]
+On the board: star star, bar, star star star, bar, bar, star star star. This means 2, 3, 0, 3: 2 boards to school 1, 3 to school 2, none to school 3, and 3 to school 4.
+[[slnc 400]]
+Every division gives exactly one code, and every code gives one division. A code has 8 plus 3, that is 11 symbols, and is fixed once we choose the positions of the 3 bars: 11 choose 3, which is 165.
+[[slnc 400]]
+At least one each: first give every school one board, then divide the remaining 4 freely: 4 stars and 3 bars, so 4 plus 3, choose 3, which is 7 choose 3, which is 35.
+[[slnc 1200]]
+
+Finance example 7. Allocating capital. Slide 28.
+[[slnc 600]]
+We have 20 thousand euros to invest in 4 opportunities, in whole units of 1,000 euros. The minimal investments are 2, 2, 3 and 4 thousand euros. How many strategies are there if: a, we invest in each opportunity; b, we invest in at least 3 of the 4? All 20 units are invested.
+[[slnc 800]]
+Part a. First pay the minimums: 2 plus 2 plus 3 plus 4, which is 11 units. The remaining 9 identical units can be distributed freely among the 4 opportunities: 9 stars and 3 bars, so 9 plus 3, choose 3, which is 12 choose 3, which is 220.
+[[slnc 500]]
+Part b. Add the strategies in which exactly one opportunity gets nothing. If the first is left out, we pay the other three minimums, 2 plus 3 plus 4, which is 9, and distribute the remaining 11 units among 3 opportunities, 11 stars and 2 bars: 13 choose 2, which is 78.
+[[slnc 400]]
+The other cases are in a table. Second left out, minimum 2: we pay 2 plus 3 plus 4, which is 9, and divide 11 among 3, again 78. Third left out, minimum 3: we pay 2 plus 2 plus 4, which is 8, and divide 12 among 3: 14 choose 2, which is 91. Fourth left out, minimum 4: we pay 2 plus 2 plus 3, which is 7, and divide 13 among 3: 15 choose 2, which is 105.
+[[slnc 400]]
+Total: 220 plus 78 plus 78 plus 91 plus 105, which is 572.
+[[slnc 400]]
+Note for you: if asked why we cannot leave out two opportunities: part b says at least 3 of the 4. Leaving out two would be a different question.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Capital allocation with minimum investments. Capital allocation means deciding how to split a budget among investment opportunities. Real opportunities often come in lots and have minimum tickets: a private-equity fund may accept commitments only above a threshold, some bonds trade in minimum denominations, for example 100,000 euros, and many funds have a minimum subscription. That is why the amounts are integers, and each opportunity is either skipped or gets at least its minimum.
+[[slnc 400]]
+Counting the strategies tells you the size of the search space. 572 strategies is tiny; a computer can evaluate every one of them by brute force. With 50 opportunities and a budget of 1,000 units the count would be astronomically large, and one uses integer programming instead, the same algorithms engineers use for scheduling and network design.
+[[slnc 400]]
+Key terms: capital allocation; minimum ticket, or minimum subscription; lot size; integer programming; search space.
+[[slnc 400]]
+A student may ask: why not invest fractional amounts?
+[[slnc 400]]
+Answer: then the set of strategies is continuous, a simplex, and one uses ordinary optimization. The integer version is what you face with lots and minimum tickets.
+[[slnc 400]]
+A student may ask: which of the 572 strategies is best?
+[[slnc 400]]
+Answer: counting cannot say; it depends on expected returns and risks. That is the portfolio-selection problem from Finance example 4.
+[[slnc 1200]]
+
+Exercise 2.5, problem A K zero seven. A combinatorial proof. Slide 29.
+[[slnc 600]]
+Prove Pascal's rule: n choose k, plus n choose k plus 1, equals n plus 1 choose k plus 1.
+[[slnc 800]]
+This is the rule that builds Pascal's triangle, which we saw before the break. Here are two proofs.
+[[slnc 500]]
+The algebraic proof. This one is optional if you are short of time; it is on the slide. Bring both fractions to the common denominator: the factorial of k plus 1, times the factorial of n minus k. The first fraction is n factorial over k factorial times the factorial of n minus k. The second is n factorial over the factorial of k plus 1, times the factorial of n minus k minus 1. Their sum is n factorial times the bracket, k plus 1, plus n minus k, all over the factorial of k plus 1, times the factorial of n minus k. The bracket equals n plus 1, so the sum is the factorial of n plus 1, over the factorial of k plus 1, times the factorial of n minus k, which is n plus 1 choose k plus 1. This works because n factorial times n plus 1 is the factorial of n plus 1, and n minus k equals the difference of n plus 1 and k plus 1.
+[[slnc 500]]
+The story proof. Here is a proof with no algebra at all. A bowl contains n apples and 1 pear. In how many ways can we take k plus 1 fruits? Obviously, n plus 1 choose k plus 1. Now split the choices according to the pear. If the pear is not taken, all k plus 1 fruits are apples: n choose k plus 1. If the pear is taken, we need k more apples from n: n choose k. We counted the same set in two ways, so the two answers are equal.
+[[slnc 500]]
+Extra practice, problem A K zero eight: prove that the sum, from j equals 0 to k, of n choose j, times m choose k minus j, equals n plus m choose k, in the same way. The hint, if asked: n apples and m pears, choose k fruits, and split by the number j of apples.
+[[slnc 1200]]
+
+Finance example 5. The binomial tree. Slide 30.
+[[slnc 600]]
+A stock moves up, by a factor u, or down, by a factor d, every day. After n equals 10 days, the price is S 0, times u to the power k, times d to the power 10 minus k, where k is the number of up-days. Part a: how many price paths are there? Part b: how many paths end with k equals 6 up-days? Part c: how many different final prices are there?
+[[slnc 800]]
+Note for you: point at the small tree on the slide. The number in each node is the number of paths reaching it, and each node is the sum of the two nodes feeding it: Pascal's rule, which we have just proved. It is the same lattice-path idea as in Exercise 1.9, rotated by 45 degrees.
+[[slnc 500]]
+Before the break we counted lattice paths; here is the same counting in finance.
+[[slnc 500]]
+Part a. Two choices on each of 10 days: 2 to the power 10, which is 1,024 paths.
+[[slnc 500]]
+Part b. A path is a word of 6 U's and 4 D's; choose the 6 up-days: 10 choose 6, which is 210.
+[[slnc 500]]
+Part c. The order of the factors does not change the product, u times d equals d times u, so the final price depends only on k, and k is one of 0, 1, and so on, up to 10. That gives 11 final prices. The tree recombines: up then down gives the same price as down then up.
+[[slnc 500]]
+Check: grouping the paths by k gives all paths. The sum, from k equals 0 to 10, of 10 choose k, equals 2 to the power 10. This is exactly the combinatorics behind the Cox, Ross, Rubinstein option-pricing model you will meet in derivatives courses.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+The binomial tree and the binomial option-pricing model. Options first. A call option with strike K and maturity n gives the right to buy the stock at price K at time n. If the stock then costs S n, the call pays the maximum of S n minus K, and 0. You buy at K and can sell at S n; if S n is less than K, you simply do not use the right. A put pays the maximum of K minus S n, and 0. The question is: what is a fair price today?
+[[slnc 400]]
+The model, by Cox, Ross and Rubinstein, 1979. Time is split into n steps; in each step the price is multiplied by u, which is greater than 1, or by d, which is less than 1. Engineering view: it is a discretization of a continuous random process, geometric Brownian motion, much like a finite-difference grid. As n tends to infinity, the price converges to the Black-Scholes formula. Typically, u equals e to the power of the product sigma times the square root of delta t, and d equals 1 over u, where sigma is the volatility.
+[[slnc 400]]
+Pricing by no-arbitrage. One can build a portfolio of stock and cash that pays exactly what the option pays in both successor nodes. This is called replication. The option must cost what that portfolio costs, or someone could make a riskless profit, which is called arbitrage. The result can be written as an expectation with an artificial risk-neutral probability q of an up-step: q equals the quantity 1 plus r, minus d, all divided by the quantity u minus d, where r is the risk-free interest per step.
+[[slnc 400]]
+The price of the call today, C 0, equals 1 over the quantity 1 plus r, to the power n, times the sum, from k equals 0 to n, of n choose k, times q to the power k, times the quantity 1 minus q, to the power n minus k, times the maximum of two numbers: first, S 0 times u to the power k, times d to the power n minus k, minus K; second, 0.
+[[slnc 400]]
+Why paths are counted: the payoff depends only on the final node k, and every one of the n choose k paths into node k has the same probability, q to the power k, times 1 minus q, to the power n minus k. So the binomial coefficient is the number of ways to get there. The recombining tree has only n plus 1 final nodes, instead of 2 to the power n leaves. That is what makes the model computable.
+[[slnc 400]]
+A tiny example. S 0 equals 100, u equals 1.1, d equals 0.9, r equals 0, n equals 2, and K equals 100. Then q equals 0.5. The final prices are 121, 99 and 81, reached by 1, 2 and 1 paths. The call pays 21, 0 and 0. The price is one quarter times 21, which is 5.25.
+[[slnc 400]]
+Key terms: call and put; strike; maturity; volatility; replication; arbitrage; risk-neutral probability; recombining tree.
+[[slnc 400]]
+A student may ask: why not use the real probability of an up-move?
+[[slnc 400]]
+Answer: because the price comes from replication, not from a bet on the direction. Two investors who disagree about the real probability must still agree on the cost of the replicating portfolio. The real probability does not appear in the formula.
+[[slnc 400]]
+A student may ask: are daily up and down moves of fixed size realistic?
+[[slnc 400]]
+Answer: not for a single day, but with many small steps the tree approximates a continuous price process very well. It is a numerical method, like a grid in engineering.
+[[slnc 1200]]
+
+Sample space and events. Slide 31.
+[[slnc 600]]
+Now we switch to the language of probability.
+[[slnc 400]]
+The sample space, written capital omega, is the set of all possible outcomes of an experiment. An event is a subset E of omega. We say that E occurs if the outcome of the experiment is an element of E.
+[[slnc 500]]
+Because events are sets, we can combine them.
+[[slnc 400]]
+E union F: E or F occurs, at least one of them.
+[[slnc 400]]
+E intersect F, often written simply E F: both occur.
+[[slnc 400]]
+E complement: E does not occur.
+[[slnc 400]]
+E is a subset of F: whenever E occurs, F occurs too. E implies F.
+[[slnc 400]]
+E and F are mutually exclusive if E F is the empty set: they cannot occur together.
+[[slnc 500]]
+The slide shows six small Venn diagrams in two rows. Each is a rectangle for omega with two overlapping circles, E on the left and F on the right. Top row: E, F, and E minus F. Bottom row: E union F, E F, and E complement.
+[[slnc 400]]
+A Venn diagram is a picture of this: the rectangle is omega, the circles are the events, and the shaded region is the event we are talking about. Let's read the six pictures.
+[[slnc 400]]
+Top row: E alone is the left circle, F alone the right circle. The third picture is E minus F, E but not F: the left circle without the lens. In event notation this is E F complement: E occurs and F does not.
+[[slnc 400]]
+Bottom row: E union F shades both circles, so at least one occurs. E F shades only the lens in the middle, so both occur. E complement shades everything outside the left circle, so E does not occur.
+[[slnc 500]]
+Ask the class: which picture shows: F occurs but E does not?
+[[slnc 800]]
+None of the six. It is F E complement, which is F minus E: the right circle without the lens.
+[[slnc 1200]]
+
+De Morgan's laws for two events. Slide 32.
+[[slnc 600]]
+On the board: the complement of E union F equals E complement intersect F complement. And the complement of E intersect F equals E complement union F complement.
+[[slnc 500]]
+In words: not E or F, is the same as neither E nor F. And not both E and F, is the same as at least one of them fails.
+[[slnc 500]]
+The slide shows two rows of Venn diagrams. First row: E complement, shaded in one color, intersect F complement, shaded in another color, equals the region outside both circles, which is the complement of E union F. Second row: E complement union F complement equals everything except the lens in the middle, which is the complement of E intersect F.
+[[slnc 500]]
+Look at the pictures. Shade E complement, everything outside E, in one color, and F complement in another. The region shaded twice is the intersection, E complement intersect F complement: that is the part outside both circles, which is exactly the complement of E union F. The region shaded at least once is the union, E complement union F complement: that is everything except the lens in the middle, and the lens is E intersect F. So the union is the complement of E intersect F.
+[[slnc 500]]
+Ask the class: give me an everyday example of the second law.
+[[slnc 800]]
+For example: it is not true that I passed both exams, is the same as: I failed at least one of them.
+[[slnc 1200]]
+
+De Morgan's laws: general form. Slide 33.
+[[slnc 600]]
+The same laws hold for any number of events: the complement of a union is the intersection of the complements, and the complement of an intersection is the union of the complements.
+[[slnc 500]]
+On the board, the general form for n events. The complement of the union of E i, for i from 1 to n, equals the intersection of the complements E i complement, for i from 1 to n. And the complement of the intersection of E i, for i from 1 to n, equals the union of the complements E i complement, for i from 1 to n.
+[[slnc 500]]
+Next week, in problem A K zero nine, part c, we will use exactly this: the probability of A complement intersect B complement equals 1 minus the probability of A union B.
+[[slnc 1200]]
+
+Exercise 2.6. Writing down the sample space. Slide 34.
+[[slnc 600]]
+A box has 3 marbles: red, green, blue. We draw one, put it back, then draw a second one. Describe omega. Repeat without putting the first one back.
+[[slnc 800]]
+Record the outcome as an ordered pair: first draw, then second draw.
+[[slnc 400]]
+With replacement: 3 choices, then again 3 choices. Omega consists of red red, red green, red blue, green red, green green, green blue, blue red, blue green, and blue blue. The size of omega is 3 times 3, which is 9.
+[[slnc 400]]
+Without replacement: the second draw cannot repeat the first, so the pairs red red, green green and blue blue disappear. Omega consists of red green, red blue, green red, green blue, blue red, and blue green. The size of omega is 3 times 2, which is 6.
+[[slnc 1200]]
+
+Finance example 8. Events of a stock path. Slide 35.
+[[slnc 600]]
+A stock moves up or down on each of 3 days. The sample space consists of up up up, up up down, up down up, up down down, down up up, down up down, down down up, and down down down. Its size is 2 to the power 3, which is 8. Let A be the event that the price ends above the start, B the event that it is up on day 1, and C the event that it is never below the start. List them and compare.
+[[slnc 800]]
+Track the position, the number of ups minus the number of downs, after each day. Up and down steps have the same size here.
+[[slnc 400]]
+A: at least 2 ups, so the net position is plus 1 or plus 3. A consists of up up up, up up down, up down up, and down up up.
+[[slnc 400]]
+B: the first letter is up. B consists of up up up, up up down, up down up, and up down down.
+[[slnc 400]]
+C: the positions must stay at 0 or above. Up down down goes plus 1, then 0, then minus 1, so it drops below. Any path starting with down goes to minus 1 immediately. Hence C consists of up up up, up up down, and up down up.
+[[slnc 500]]
+Ask the class: what is the relation between C and A?
+[[slnc 800]]
+After 3 steps the position is odd, so never below forces it to end at 1 or more. So C is a subset of A.
+[[slnc 400]]
+Further: A intersect B is up up up, up up down, up down up, which equals C. A complement intersect B is just up down down: up first, but ends below. And A intersect B complement is just down up up: down first, but ends above.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Path-dependent events and barrier options. Event A depends only on the final price; event C depends on the whole path. Derivatives whose payoff depends on the path are called path-dependent. The classic example is a barrier option. A down-and-out call is an ordinary call option that is canceled, or knocked out, if the price ever falls below a barrier. If the barrier is the starting price, the option is alive at maturity exactly on event C. Because it can be knocked out, it is cheaper than the plain call: you give up the scenarios in A minus C, which is just down up up, the path that ends above but touched the barrier. Engineering analogy: a circuit breaker. It does not matter where the current ends up, only whether it ever exceeded the limit.
+[[slnc 400]]
+Key terms: path-dependent; barrier; knock-out and knock-in; Asian option, which pays on the average price.
+[[slnc 400]]
+A student may ask: why would anyone buy a knock-out option?
+[[slnc 400]]
+Answer: it is cheaper, and an investor who believes the price will not fall below the barrier does not want to pay for the scenarios where it does.
+[[slnc 1200]]
+
+Exercise 2.7. Two dice: event algebra. Slide 36.
+[[slnc 600]]
+Two dice are rolled. E is the event that the sum is odd; F, that at least one die shows 1; G, that the sum is 5. Describe E F, E union F, F G, E F complement, and E F G.
+[[slnc 800]]
+Omega consists of all ordered pairs i comma j, with i and j from 1 to 6, so the size of omega is 36. The sum is odd exactly when one die is even and the other odd: 3 even values, 3 odd values, and 2 ways to decide which die is the even one. So the size of E is 3 times 3 times 2, which is 18. The complement of F is no 1 on either die, which has 5 times 5, that is 25 outcomes, so the size of F is 36 minus 25, which is 11.
+[[slnc 500]]
+E F: one die is 1, which is odd, so the other must be even. The outcomes are 1 and 2, 1 and 4, 1 and 6, 2 and 1, 4 and 1, 6 and 1: 6 outcomes.
+[[slnc 400]]
+E union F: the size of E plus the size of F minus the size of E F, that is 18 plus 11 minus 6, which is 23 outcomes. These are the 18 odd sums, plus the elements of F with an even sum: 1 and 1, 1 and 3, 1 and 5, 3 and 1, 5 and 1.
+[[slnc 400]]
+G consists of 1 and 4, 2 and 3, 3 and 2, 4 and 1. So F G consists of 1 and 4, and 4 and 1.
+[[slnc 400]]
+E F complement: odd sum and no 1. Its size is the size of E minus the size of E F, that is 18 minus 6, which is 12 outcomes.
+[[slnc 400]]
+5 is odd, so G is a subset of E, and E F G equals F G: 1 and 4, and 4 and 1.
+[[slnc 500]]
+The count in the second item is the inclusion-exclusion formula: the size of E union F equals the size of E plus the size of F minus the size of E F. In the size of E plus the size of F, the overlap was counted twice. Next week it becomes: the probability of E union F equals the probability of E, plus the probability of F, minus the probability of E F.
+[[slnc 1200]]
+
+Finance example 10. A credit basket. Slide 37.
+[[slnc 600]]
+Note for you: the numbering jumps on purpose. There is no Exercise 2.8 and no Finance example 9 on the slides; the reliability problem was dropped from class, and it is in the extra practice of the handout. If students ask, just say so.
+[[slnc 500]]
+A basket contains 3 bonds. D i is the event that bond i defaults within a year. Omega is the set of all vectors of length 3 made of zeros and ones, where 1 means default, so the size of omega is 8. Express: a, at least one default; b, no default; c, exactly one default; d, at least two defaults.
+[[slnc 800]]
+Part a. D 1 union D 2 union D 3. This is where a first-to-default swap pays. It contains all outcomes except 0 0 0: 8 minus 1, which is 7 outcomes.
+[[slnc 400]]
+Part b. The complement of D 1 union D 2 union D 3, which by De Morgan equals D 1 complement intersect D 2 complement intersect D 3 complement. Only 0 0 0: 1 outcome.
+[[slnc 400]]
+Part c. D 1 intersect D 2 complement intersect D 3 complement; union D 1 complement intersect D 2 intersect D 3 complement; union D 1 complement intersect D 2 complement intersect D 3. That is: bond 1 alone, bond 2 alone, or bond 3 alone. The three pieces are mutually exclusive: 1 0 0, 0 1 0, 0 0 1. That is 3 choose 1, which is 3 outcomes.
+[[slnc 400]]
+Part d. D 1 D 2, union D 1 D 3, union D 2 D 3: some pair defaults. This is where a second-to-default swap pays. The outcomes are 1 1 0, 1 0 1, 0 1 1, and 1 1 1: exactly two defaults, 3 choose 2, which is 3, plus all three, 3 choose 3, which is 1. So 4 outcomes.
+[[slnc 400]]
+Check: parts b, c and d give 1 plus 3 plus 4, which is 8, the size of omega. And part a equals part c plus part d: 3 plus 4, which is 7.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Credit default swaps, first-to-default and second-to-default. A credit default swap, C D S, is insurance on a bond. The protection buyer pays a regular premium, called the C D S spread, quoted in basis points per year. If the reference company defaults, the protection seller pays the loss, that is the face value minus what can be recovered. The recovered fraction is the recovery rate, often around 40 percent.
+[[slnc 400]]
+A basket default swap is protection on a basket of several names, typically 3 to 10. An nth-to-default swap pays when the nth default in the basket happens, and then terminates. A first-to-default swap pays at the first default, so on the event at least one default, which is D 1 union D 2 union D 3. A second-to-default swap pays at the second default, so on the event at least two defaults, which is D 1 D 2, union D 1 D 3, union D 2 D 3.
+[[slnc 400]]
+The first-to-default is the riskier position for the seller, because its event is bigger, so its spread is higher. An illustration, using next week's material: if each bond defaults with probability 2 percent, independently, the probability of at least one default is 1 minus 0.98 cubed, about 5.9 percent, while the probability of at least two is 3 times 0.02 squared times 0.98, plus 0.02 cubed, about 0.12 percent.
+[[slnc 400]]
+Correlation matters. If defaults tend to happen together, at least one becomes less likely than under independence, because defaults cluster in the same scenarios, and at least two becomes more likely. So the first-to-default gets cheaper and the second-to-default more expensive.
+[[slnc 400]]
+Structured products push the same idea further: a C D O tranche or a credit-linked note pays depending on which combination of names in a pool survives. In engineering terms, that is a reliability block diagram of series and parallel routes. The lesson that transfers best from engineering is common-cause failure: redundancy helps only if failures are not strongly correlated. In 2008 mortgage defaults all depended on house prices, so redundant structures failed together, like parallel components sharing one power supply.
+[[slnc 400]]
+Key terms: C D S spread; protection buyer and seller; recovery rate; basket; default correlation; structured product; C D O tranche; common-cause failure.
+[[slnc 400]]
+A student may ask: why buy a first-to-default swap instead of three separate C D S contracts?
+[[slnc 400]]
+Answer: it is cheaper. It covers only the first loss, which is enough if you think one default is plausible but several are not.
+[[slnc 400]]
+A student may ask: what happens to the swap after the first default?
+[[slnc 400]]
+Answer: the first-to-default swap pays and ends; the second-to-default swap keeps running and now waits for one more default.
+[[slnc 1200]]
+
+Exercise 2.9. Venn diagrams and inclusion-exclusion. Slides 38 and 39.
+[[slnc 600]]
+A town of 100,000 people has three newspapers: one, two and three. The percentages of readers are: paper one, 10; paper two, 30; paper three, 5; papers one and two, 8; papers one and three, 2; papers two and three, 4; all three, 1. How many people read: a, exactly one paper; b, at least two; c, a morning paper, which is one or three, and the evening paper, two; d, no paper; e, exactly one morning paper and the evening paper?
+[[slnc 800]]
+Fill the Venn diagram from the inside out: first the center, then the regions of exactly two papers, then the regions of exactly one paper.
+[[slnc 400]]
+The picture shows three overlapping circles, for papers one, two and three, with the percentage written in each of the seven regions.
+[[slnc 400]]
+Center, all three: 1.
+[[slnc 400]]
+Only one and two: 8 minus 1, which is 7. Only one and three: 2 minus 1, which is 1. Only two and three: 4 minus 1, which is 3. The 8 percent reading one and two include the 1 percent reading all three.
+[[slnc 400]]
+Only one: 10 minus 7 minus 1 minus 1, which is 1. Only two: 30 minus 7 minus 3 minus 1, which is 19. Only three: 5 minus 1 minus 3 minus 1, which is 0.
+[[slnc 400]]
+Note for you: slide 39, the continuation, shows the answers. Let the class read them off the diagram first.
+[[slnc 500]]
+Part a. Exactly one: only one, plus only two, plus only three, that is 1 plus 19 plus 0, which is 20 percent, so 20,000 people.
+[[slnc 400]]
+Part b. At least two: the four inner regions, 7 plus 1 plus 3 plus 1, which is 12 percent, so 12,000 people.
+[[slnc 400]]
+Part c. The union of one and three, intersected with two, equals the union of two pieces: one intersect two, and three intersect two. The two overlap in all three, so 8 plus 4 minus 1, which is 11 percent, so 11,000 people.
+[[slnc 400]]
+Part d. Inclusion-exclusion: the size of the union of one, two and three is 10 plus 30 plus 5, minus 8 minus 2 minus 4, plus 1, which is 32 percent. So 100 minus 32, which is 68 percent, read no paper: 68,000 people.
+[[slnc 400]]
+Part e. Two together with exactly one of one and three: only one and two, plus only two and three, that is 7 plus 3, which is 10 percent, so 10,000 people.
+[[slnc 500]]
+On the board, inclusion-exclusion for three sets: the size of E union F union G equals the size of E, plus the size of F, plus the size of G, minus the size of E F, minus the size of E G, minus the size of F G, plus the size of E F G.
+[[slnc 400]]
+Adding the three sets counts the pairwise overlaps twice, so we subtract them; but then the center has been added three times and subtracted three times, so we add it back once.
+[[slnc 1200]]
+
+Finance example 11. Bank products. Slide 40.
+[[slnc 600]]
+A bank has 1,000 retail clients. 820 have a current account, C. 350 have a credit card, K. 240 have a mortgage, M. 300 have C and K, 200 have C and M, 90 have K and M, and 70 have all three. Part a: how many have none of the products? Part b: how many have exactly one product? Part c: a cross-selling campaign targets clients with a current account but no credit card. How many are there?
+[[slnc 800]]
+Part a. Inclusion-exclusion for three sets: the size of C union K union M is 820 plus 350 plus 240, minus 300 minus 200 minus 90, plus 70, which is 890. So 1,000 minus 890, which is 110 clients, have none of the products.
+[[slnc 500]]
+Part b. Only C equals the size of C, minus the size of C K, minus the size of C M, plus the size of C K M. We remove the two overlaps, but the clients with all three were removed twice, so we add them back once. Only C: 820 minus 300 minus 200 plus 70, which is 390. Only K: 350 minus 300 minus 90 plus 70, which is 30. Only M: 240 minus 200 minus 90 plus 70, which is 20. Total: 390 plus 30 plus 20, which is 440.
+[[slnc 500]]
+Part c. C splits into C K and C K complement, so the size of C K complement is the size of C minus the size of C K, that is 820 minus 300, which is 520.
+[[slnc 500]]
+Divide every number by 1,000 and you have probabilities. That is where we start next week: the axioms of probability, and the probability of E union F equals the probability of E, plus the probability of F, minus the probability of E F.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Retail banking and cross-selling. Retail clients are individuals, as opposed to companies. The three products: a current account, the everyday account for salary and payments; a credit card; and a mortgage, a long-term loan for buying a home, secured by the home. Cross-selling means selling an additional product to an existing client. Banks love it because acquiring a new client is expensive, while an existing client is already known: the bank sees their income on the current account, which lowers credit risk. A common bank K P I is products per client.
+[[slnc 400]]
+Part c is a target list: clients with C but not K are the natural candidates for a card offer. In set language, C minus K, which is C K complement. The 110 clients with no product are probably dormant accounts or clients of other services, which calls for a different campaign.
+[[slnc 400]]
+Key terms: retail client; current account; mortgage; cross-selling; target list; products per client, a K P I.
+[[slnc 400]]
+A student may ask: is aggressive cross-selling a problem?
+[[slnc 400]]
+Answer: it can be. In 2016 Wells Fargo was fined after employees, pushed by sales targets, opened millions of accounts without customers' consent. Regulators now watch sales incentives closely.
+[[slnc 1200]]
+
+Summary and extra practice for Session 2. Slide 41.
+[[slnc 600]]
+Groups of given sizes: the multinomial coefficient. Identical objects into boxes: stars and bars. Identities: count the same set in two ways, as in Pascal's rule. Binomial tree: n choose k of the 2 to the power n paths have k up-moves. Events are sets: union means or, intersection means and, complement means not. De Morgan: the complement of E union F equals E complement intersect F complement, and the complement of E intersect F equals E complement union F complement. Fill Venn diagrams from the inside out.
+[[slnc 500]]
+Next week, in week 9, we turn these counts into probabilities: the axioms of probability, with problems A K zero nine to A K fourteen. The extra practice on the slide is for self-study.
+[[slnc 600]]
+Extra practice for Session 2, with detailed answers for you.
+[[slnc 400]]
+Problem E 1, from A K zero six. The sum over k of n choose k equals 2 to the power n, and the sum over k of the quantity minus 1, to the power k, times n choose k, equals 0. Substitute a equals b equals 1, and then a equals minus 1 and b equals 1, in the binomial theorem: 1 plus 1, to the power n, is 2 to the power n, and minus 1 plus 1, to the power n, is 0. The second identity says that a nonempty set, with n at least 1, has as many subsets of even size as of odd size.
+[[slnc 400]]
+Problem E 2, from A K zero eight. The sum, from j equals 0 to k, of n choose j times m choose k minus j, equals n plus m choose k. A bowl holds n apples and m pears; choose k fruits. Directly: n plus m choose k. Split by the number j of apples: n choose j ways for the apples, and m choose k minus j for the pears, and add over j from 0 to k. The same set is counted twice, so the identity follows.
+[[slnc 400]]
+Problem E 3. A, B and C flip a coin in turn, A first, and the first head wins. With 1 for head and 0 for tail, omega consists of the sequences 1; 0 1; 0 0 1; 0 0 0 1; and so on; together with the outcome tails forever. A wins on 1; 0 0 0 1; six tails followed by a head; and so on, that is, the first head comes on flip 1, 4, 7, and so on. B wins on 0 1; 0 0 0 0 1; and so on, that is, the first head comes on flip 2, 5, 8, and so on. The complement of A union B is the event that C wins, with the first head on flip 3, 6, 9, and so on, or that nobody ever wins, tails forever.
+[[slnc 400]]
+Problem E 4. 15 team members, each blue-collar or white-collar, and Republican, Democrat or Independent. Each person has 2 times 3, that is 6 types, so the size of omega is 6 to the power 15, about 4.7 times 10 to the power 11. At least one blue-collar: the complement of all white-collar, with 3 types each, so 6 to the power 15, minus 3 to the power 15. No Independent: 2 times 2, that is 4 types each, so 4 to the power 15.
+[[slnc 500]]
+Note for you, the bridge to week 9: start with Exercise 2.9 and Finance example 11 in probability form, then problems A K zero nine to A K fourteen, including the double-counting traps in A K eleven and A K twelve.
+[[slnc 1500]]
+End of the week 8 script.

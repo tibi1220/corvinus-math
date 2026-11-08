@@ -1,0 +1,1690 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Read-aloud teaching script for Week 8 (companion to beamer.tex, follows it
+% frame by frame). Sessions 1 and 2 are held on the SAME DAY, back to back
+% (2 x 90 min with a short break in between).
+% AK01, AK02, ... = problems of the AK Probability Exercises collection.
+
+\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+\usepackage{amsmath}
+\usepackage[stixtwo]{fontsetup}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage[a4paper,margin=2cm,marginparwidth=1.9cm,marginparsep=2mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{navy}{RGB}{24,48,75}
+\definecolor{teal}{RGB}{0,120,125}
+\definecolor{gold}{RGB}{190,130,20}
+\definecolor{plum}{RGB}{110,60,120}
+
+\addtokomafont{disposition}{\color{navy}}
+\setkomafont{section}{\Large\bfseries\color{navy}}
+
+% Contact
+\newcommand{\myemail}{tiborsandor2001@gmail.com}
+
+\newcommand{\Om}{\Omega}
+
+% Exercise statement (what students see on the slide)
+\newtcolorbox{task}[1]{enhanced,breakable,colback=navy!4,colframe=navy,
+  fonttitle=\bfseries,title={#1}}
+% Finance example
+\newtcolorbox{fin}[1]{enhanced,breakable,colback=teal!5,colframe=teal,
+  fonttitle=\bfseries,title={#1}}
+% Teaching cue, not read aloud
+\newtcolorbox{cue}{enhanced,breakable,colback=gold!8,colframe=gold,
+  boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small\itshape}
+% Background for the lecturer (finance theory), NOT read aloud
+\newtcolorbox{bg}[1]{enhanced,breakable,colback=plum!4,colframe=plum,
+  boxrule=.6pt,fonttitle=\bfseries\small,
+  title={Background for you (not read aloud): #1},fontupper=\small,
+  before upper={\setlength{\parskip}{4pt}}}
+% Print version (script-print.tex defines \scriptprint): the background
+% boxes are dropped entirely.
+\ifdefined\scriptprint
+  \RenewDocumentEnvironment{bg}{m +b}{}{}
+\fi
+\newcommand{\terms}{\par\textbf{\color{plum}Key terms.}\ }
+\newcommand{\sq}[1]{\par\textbf{\color{plum}Student may ask:}\ \emph{#1}\par}
+\newcommand{\ans}{\textbf{Answer:}\ }
+
+\newcommand{\say}{\textbf{\color{teal}Say:}\ }
+\newcommand{\board}{\textbf{\color{gold}Board:}\ }
+\newcommand{\ask}{\textbf{\color{navy}Ask the class:}\ }
+\newcommand{\slide}[1]{\marginpar{\raggedright\footnotesize\color{gray}slide #1}}
+
+% Small Venn diagram of two events E, F in Omega (same as in the deck)
+\newcommand{\venn}[1]{%
+  \begin{tikzpicture}[scale=.5,baseline=(O.base)]
+    \node (O) at (.5,0) {\phantom{x}};
+    #1
+    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
+    \draw[thick,navy] (0,0) circle (.85);
+    \draw[thick,navy] (1,0) circle (.85);
+    \node at (-.35,0) {\scriptsize $E$};
+    \node at (1.35,0) {\scriptsize $F$};
+    \node at (2.15,.8) {\scriptsize $\Omega$};
+  \end{tikzpicture}}
+\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+
+\title{Mathematics for Finance}
+\subtitle{Week 8 --- Combinatorial analysis, sample space, events\\[2pt]
+  \normalsize Teaching script for two 90-minute practical classes held on the
+  same day, back to back\ifdefined\scriptprint\\[2pt]
+  (print version, without the background boxes)\fi}
+\author{Tibor SÁNDOR\\[2pt]
+  \normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{cue}
+	How to use this script. Plain text is meant to be read out loud or
+	paraphrased. \textbf{Say} marks key sentences; \textbf{Ask} marks questions
+	to put to the class (wait for answers before revealing the solution);
+	\textbf{Board} marks what to write. Gold boxes like this one are short notes
+	for you only.\ifdefined\scriptprint\else\ \textbf{Purple ``Background for
+			you'' boxes} explain the finance behind the examples (what the terms mean,
+		why the example matters, what students may ask); they are \emph{not} meant
+		to be read out, but they let you answer follow-up questions with
+		confidence.\fi\ The script follows the
+	deck frame by frame; the slide numbers in the margin are the frame numbers
+	in the footline of the deck. Exercise numbers match the slides; problems
+	taken from the AK exercise collection are marked AK01, AK02, \ldots\
+	Timings are approximate; items marked \emph{(optional)} can be dropped if
+	you run late.
+\end{cue}
+
+\subsection*{Timing overview}
+
+Both sessions are on the same day: Session 1 (90 min), a short break,
+Session 2 (90 min).
+
+\begin{center}
+	\small
+	\begin{tabular}{@{}llrr@{}}
+		\toprule
+		Slides & Session 1                                        & min & cum.        \\\midrule
+		1--3   & Introduction (who I am, contact), plan for today & 6   & 6           \\
+		4      & Toolbox                                          & 6   & 12          \\
+		5      & Exercise 1.1                                     & 3   & 15          \\
+		6      & Finance example 1 (PIN codes)                    & 3   & 18          \\
+		7      & Exercise 1.2 (AK02)                              & 9   & 27          \\
+		8      & Exercise 1.3 (AK03)                              & 7   & 34          \\
+		9      & Exercise 1.4                                     & 6   & 40          \\
+		10     & Exercise 1.5 (AK01)                              & 5   & 45          \\
+		11     & Finance example 2 (up and down days)             & 3   & 48          \\
+		12     & Exercise 1.6                                     & 3   & 51          \\
+		13     & Finance example 3 (ranking mutual funds)         & 4   & 55          \\
+		14     & Exercise 1.7                                     & 8   & 63          \\
+		15     & Finance example 4, lottery                       & 7   & 70          \\
+		16     & Exercise 1.8 (optional)                          & 3   & 73          \\
+		17     & Exercise 1.9 (lattice paths)                     & 7   & 80          \\
+		18     & Pascal's triangle                                & 6   & 86          \\
+		19     & Summary, extra practice; short break             & 4   & 90          \\\midrule
+		       & \textbf{Total}                                   &     & \textbf{90} \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\begin{center}
+	\small
+	\begin{tabular}{@{}llrr@{}}
+		\toprule
+		Slides & Session 2 (after the break)       & min & cum.        \\\midrule
+		20--21 & After the break: two-minute recap & 3   & 3           \\
+		22     & Toolbox                           & 6   & 9           \\
+		23     & Exercise 2.1 (AK04)               & 5   & 14          \\
+		24     & Exercise 2.2                      & 4   & 18          \\
+		25     & Finance example 6 (rating bonds)  & 2   & 20          \\
+		26     & Exercise 2.3, identities (AK06)   & 6   & 26          \\
+		27     & Exercise 2.4 (part (a): AK05)     & 6   & 32          \\
+		28     & Finance example 7                 & 6   & 38          \\
+		29     & Exercise 2.5 (AK07)               & 3   & 41          \\
+		30     & Finance example 5 (binomial tree) & 6   & 47          \\
+		31     & Sample space and events           & 5   & 52          \\
+		32     & De Morgan's laws for two events   & 5   & 57          \\
+		33     & De Morgan's laws: general form    & 2   & 59          \\
+		34     & Exercise 2.6                      & 3   & 62          \\
+		35     & Finance example 8                 & 4   & 66          \\
+		36     & Exercise 2.7                      & 5   & 71          \\
+		37     & Finance example 10                & 5   & 76          \\
+		38--39 & Exercise 2.9                      & 6   & 82          \\
+		40     & Finance example 11                & 5   & 87          \\
+		41     & Summary, extra practice           & 3   & 90          \\\midrule
+		       & \textbf{Total}                    &     & \textbf{90} \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\tableofcontents
+
+%======================================================================
+\section{Session 1: Permutations and combinations}
+%======================================================================
+
+\subsection{Introduction and plan for today (6 min)}\slide{1--3}
+
+\begin{cue}
+	Slide 1 (title) is on the screen while you introduce yourself. Speak
+	slowly; this is the first time they see you.
+\end{cue}
+
+Good morning, everyone, and welcome. Before we start, let me introduce
+myself. My name is Tibor Sándor --- on the slides you see SÁNDOR in capitals,
+that is my family name. I am new to this course: from today I will be
+teaching you the probability part of Mathematics for Finance.
+
+My background is in engineering, not in finance. I actually think that is
+an advantage for this part of the course. Engineers use probability every
+day: how likely is it that a system fails, how large are measurement errors,
+how much safety margin do we need. You will see that a lot of finance is
+the same mathematics with different names --- a bond that defaults behaves
+very much like a component that fails, and diversifying a portfolio is very
+much like building redundancy into a system. So I will show you the
+mathematics carefully, and I will always tell you the financial story behind
+the examples. And if some of you know more about a financial product than I
+do, please speak up --- I am happy to learn from you as well.
+
+How to reach me: my email address is
+\href{mailto:\myemail}{\texttt{\myemail}}. It is on the title slide and on
+the next slide. Please put ``Math for Finance'' in the subject line, so that
+I find your message quickly. You can also just catch me after class.
+
+\begin{cue}
+	Slide 2 (Plan for today).
+\end{cue}
+
+\say Today is a long day: we have two sessions back to back, 90 minutes
+each, with a short break in between.
+
+In Session 1 we count: the counting principle, permutations, permutations
+with repetition, combinations, lattice paths and Pascal's triangle. After the
+break, in Session 2, we divide objects into groups, we meet the binomial and
+multinomial theorems and the ``stars and bars'' method, we see how counting
+works in the binomial tree of a stock price, and then we introduce the
+language of probability: the sample space, events, De Morgan's laws and Venn
+diagrams.
+
+Why start the probability part with counting? Because when all outcomes are
+equally likely, a probability is simply (favorable outcomes)/(all outcomes)
+--- and that is exactly where we start next week.
+
+Some exercises are marked AK01, AK02, and so on. These are taken from the AK
+exercise collection that belongs to the course, so you can find them there
+too, with short hints.
+
+\begin{cue}
+	Slide 3 (Session 1 title) --- just click through.
+\end{cue}
+
+\begin{bg}{the big picture of ``finance and counting''}
+	You do not need finance knowledge to teach this week, but here is the
+	vocabulary that appears in the examples, in one place.
+
+	\emph{Stock (share)}: a piece of ownership in a company; its price moves
+	randomly. \emph{Bond}: a loan to a company or a government; the borrower
+	(the \emph{issuer}) pays interest and repays the face value at maturity.
+	If the issuer cannot pay, the bond \emph{defaults} --- in engineering terms,
+	the component fails. \emph{Portfolio}: a collection of investments held
+	together. \emph{Derivative}: a contract whose payoff depends on something
+	else (a stock price, whether a bond defaults, \ldots). The two derivatives
+	in this week's examples are \emph{options} (the right, but not the
+	obligation, to buy or sell a stock at a fixed price later) and \emph{credit
+		default swaps} (insurance against a bond defaulting).
+
+	Why counting matters: many pricing and risk models are built on a finite
+	set of scenarios. If all scenarios are equally likely, probability is
+	counting; if they are not (as in the binomial model with $q\neq 1/2$), we
+	still need to know \emph{how many} scenarios lead to the same outcome,
+	because they all get the same weight. That is exactly what binomial
+	coefficients do in the binomial tree.
+
+	\terms stock (share); bond; issuer; default; portfolio; derivative;
+	option; credit default swap; scenario.
+
+	\sq{Is finance mathematics really the same as engineering mathematics?}
+	\ans The tools are the same (probability, statistics, optimization,
+	differential equations); the difference is that prices are set by people
+	who react to each other, so models are less stable than physical laws. A
+	good engineer's habit --- ``check the model against reality and know its
+	limits'' --- is exactly what finance needs.
+\end{bg}
+
+\subsection{Toolbox (6 min)}\slide{4}
+
+\say The \emph{basic principle of counting}: if something can be done in
+$m$ ways, and then, for each of those, a second thing in $n$ ways, then the
+two together can be done in $m\cdot n$ ways. With more steps we keep
+multiplying: $n_1 n_2\cdots n_r$.
+
+\board $m$ ways, then $n$ ways $\Rightarrow$ $m\cdot n$ ways.
+
+Think of a tree: the first step gives $m$ branches, each branch splits
+into $n$ branches, so there are $m\cdot n$ leaves. From this single principle
+we get everything else.
+
+\emph{Permutations --- order matters.} In how many ways can we arrange $n$
+distinct objects in a row? The first place can be filled in $n$ ways, the
+second in $n-1$ ways (one object is used up), and so on, so $n!$. If we only
+fill $k$ places, we stop after $k$ factors:
+\[ \frac{n!}{(n-k)!} = n(n-1)\cdots(n-k+1). \]
+
+\emph{Combinations --- order does not matter.} If we only care \emph{which}
+$k$ objects are chosen, look at the ordered selections above: each set of
+$k$ objects comes in $k!$ orders, so it was counted $k!$ times. We divide:
+\[ \binom nk = \frac{n!}{k!\,(n-k)!}. \]
+
+\begin{cue}
+	Permutations with repetition (identical objects, divide by
+	$n_1!\,n_2!\cdots n_r!$) are no longer on the toolbox slide; they come with
+	Exercise 1.4 (slide 9), where the formula is derived on the MISSISSIPPI
+	example.
+\end{cue}
+
+\say Before every exercise, ask yourself two questions. First: does the order
+matter? Second: can the same element be used more than once? The answers tell
+you which formula to use.
+
+\board
+\begin{tabular}{lcc}
+	\toprule
+	                   & order matters & order does not matter          \\\midrule
+	no repetition      & $n!/(n-k)!$   & $\binom nk$                    \\
+	repetition allowed & $n^k$         & $\binom{n+k-1}{k}$ (Session 2) \\\bottomrule
+\end{tabular}
+
+\begin{cue}
+	Leave this table on the board for the whole day: you will fill in the
+	bottom-right cell after the break, in Session 2.
+\end{cue}
+
+\subsection{Exercise 1.1 --- License plates (3 min)}\slide{5}
+
+\begin{task}{Exercise 1.1}
+	A license plate has 7 places: the first 2 are letters (26 options each),
+	the other 5 are digits. (a) How many plates are possible? (b) How many, if
+	no letter and no digit may be repeated?
+\end{task}
+
+\ask Does the order matter? \emph{(Yes --- AB123 and BA123 are different
+	plates.)} Can we repeat? \emph{(In (a) yes, in (b) no.)}
+
+\say We fill the 7 places one by one and multiply --- that is the basic
+principle.
+
+(a) Repetition is allowed: each letter place has 26 choices and each digit
+place has 10 choices:
+\[ 26^2\cdot 10^5 = 676\cdot 100\,000 = 67\,600\,000. \]
+
+(b) Now every choice uses up a symbol. Letters: $26\cdot25 = 650$. Digits:
+$10\cdot9\cdot8\cdot7\cdot6 = 30\,240$. Together
+\[ 650\cdot 30\,240 = 19\,656\,000. \]
+
+\subsection{Finance example 1 --- PIN codes (3 min)}\slide{6}
+
+\begin{fin}{Finance example 1}
+	A bank card PIN has 4 digits. (a) How many PINs are there? (b) How many
+	have no repeated digit? (c) A thief makes three different random guesses.
+	Which fraction of all PINs does he cover?
+\end{fin}
+
+\ask Same two questions: does the order matter, can a digit repeat?
+\emph{(Order matters --- 1234 and 4321 are different PINs; repetition is
+	allowed in (a), not in (b).)}
+
+(a) Four places, 10 digits each: $10^4 = 10\,000$ PINs.
+
+(b) No repeated digit: $10\cdot9\cdot8\cdot7 = \dfrac{10!}{6!} = 5040$.
+
+(c) Three different guesses cover 3 of the $10\,000$ PINs: the fraction
+$3/10\,000$.
+
+\say Next week this fraction becomes a probability: the chance that a thief
+who tries 3 random PINs before the card is blocked succeeds. For now we only
+need the denominator.
+
+\begin{bg}{PIN security}
+	\emph{Intuition.} Security of a PIN is a counting argument: an attacker who
+	knows nothing must guess, and the number of possible PINs is the size of
+	the haystack. Banks keep the haystack small enough to remember (4 digits)
+	and protect it with an \emph{attempt limit}: after typically 3 wrong tries
+	the card is blocked or retained. Hence the success chance of blind guessing
+	is $3/10\,000 = 0.03\%$.
+
+	\emph{The catch: people do not choose uniformly.} Studies of leaked
+	4-digit codes found that a handful of codes (1234, 1111, 0000, birth years
+	such as 19xx) account for a large share of all codes; 1234 alone is
+	reported at roughly one in ten. So the real guessing probability is much
+	higher than $3/10\,000$ --- the ``equally likely'' assumption fails. This is
+	a nice preview of next week: classical probability is only as good as the
+	equally-likely assumption.
+
+	\terms brute-force attack; attempt limit (lockout); entropy (in bits,
+	$\log_2 10\,000\approx 13.3$).
+
+	\sq{Would banning repeated digits make PINs safer?}
+	\ans No: it removes weak PINs like 1111, but it shrinks the space from
+	$10\,000$ to $5040$, so blind guessing becomes almost twice as easy. Every
+	rule that restricts choices reduces the count.
+
+	\sq{Why not 6-digit PINs?}
+	\ans Some banks use them ($10^6$ possibilities); it is a trade-off between
+	security and how easily customers remember them.
+\end{bg}
+
+\subsection{Exercise 1.2 (AK02) --- Five couples at a concert (9 min)}\slide{7}
+
+\begin{task}{Exercise 1.2 (AK02)}
+	Five married couples have 10 seats next to each other in one row. In how many
+	ways can they sit (a) with no restriction? (b) if couples sit together?
+	(c) if the men sit together and the women sit together? (d) if men and
+	women alternate?
+\end{task}
+
+(a) Ten distinct people in ten seats: $10! = 3\,628\,800$.
+
+(b) \say When some people must sit together, glue them into one block.
+
+We have 5 blocks (the couples). The blocks can be arranged in $5! = 120$
+ways. Inside each block the husband can sit on the left or on the right: 2
+ways, and this happens independently for all 5 couples, giving $2^5 = 32$. So
+\[ 5!\cdot 2^5 = 120\cdot 32 = 3840. \]
+
+(c) Now there are two blocks: the men and the women. The two blocks can be
+ordered in $2$ ways (men on the left or women on the left). Inside the men's
+block, $5!$ orders; inside the women's block, $5!$ orders:
+\[ 2\cdot5!\cdot5! = 2\cdot120\cdot120 = 28\,800. \]
+
+(d) If they alternate, the pattern is either MWMWMWMWMW or WMWMWMWMWM: 2
+patterns. Then the men fill their 5 seats in $5!$ ways and the women theirs in
+$5!$ ways: again $2\cdot5!\cdot5! = 28\,800$.
+
+\ask Is it a coincidence that (c) and (d) give the same answer? \emph{(No: in
+	both cases we choose one of two ``seat patterns'' for the genders, and then
+	permute men and women within their seats.)}
+
+\board \textbf{Trick:} ``together'' $\Rightarrow$ glue into a block, permute
+the blocks, then permute inside each block.
+
+\subsection{Exercise 1.3 (AK03) --- Queueing for the bus (7 min)}\slide{8}
+
+\begin{task}{Exercise 1.3 (AK03)}
+	Eight people line up for a bus. In how many ways can they line up (a) with
+	no restriction? (b) if 3 given people insist on standing together? (c) if 2
+	given people refuse to stand next to each other?
+\end{task}
+
+(a) $8! = 40\,320$.
+
+(b) Glue the three friends into a block. Now we arrange 6 units (the block and
+5 other people): $6! = 720$. Inside the block: $3! = 6$. So
+$6\cdot 720 = 4320$.
+
+(c) \say ``Not next to each other'' is awkward to count directly. Count the
+opposite --- the bad lines --- and subtract.
+
+The bad lines are those in which the two people \emph{are} adjacent: glue
+them into a block, $7$ units, $7! = 5040$ orders, and $2!$ orders inside the
+block: $2\cdot 5040 = 10\,080$. Hence
+\[ 8! - 2!\cdot 7! = 40\,320-10\,080 = 30\,240. \]
+
+\board Complement principle: $\#\text{good} = \#\text{all} - \#\text{bad}$.
+
+\begin{cue}
+	Stress this: the complement trick is the single most useful technique in
+	this chapter and will return constantly next week as $P(E^c)=1-P(E)$.
+\end{cue}
+
+\subsection{Exercise 1.4 --- Letter arrangements (6 min)}\slide{9}
+
+\begin{task}{Exercise 1.4}
+	How many different letter arrangements can be made from the letters of
+	(a) FLUKE, (b) PROPOSE, (c) MISSISSIPPI, (d) ARRANGE?
+\end{task}
+
+\say This is the one formula that is not on the toolbox slide:
+\emph{permutations with repetition}. If all letters were different, we would
+have $n!$ arrangements. Swapping identical letters does not change the word, so every word is
+counted $n_1!\,n_2!\cdots$ times: we divide by the factorials of the
+multiplicities.
+
+(a) Five different letters: $5! = 120$.
+
+(b) PROPOSE has 7 letters; P appears twice and O appears twice. If we
+labeled them $P_1, P_2, O_1, O_2$ we would get $7!$ arrangements. But
+swapping $P_1$ and $P_2$ gives the same word, and so does swapping $O_1$ and
+$O_2$. Therefore each word was counted $2!\cdot2!$ times:
+\[ \frac{7!}{2!\,2!} = \frac{5040}{4} = 1260. \]
+
+(c) MISSISSIPPI: 11 letters, M once, I four times, S four times, P twice.
+Each word is counted $4!\,4!\,2! = 24\cdot24\cdot2 = 1152$ times among the
+$11!$ orders:
+\[ \frac{11!}{4!\,4!\,2!} = \frac{39\,916\,800}{1152} = 34\,650. \]
+
+(d) ARRANGE: A twice, R twice, N, G, E once: $\dfrac{7!}{2!\,2!} = 1260$.
+
+\board Permutations with repetition: $n$ objects, $n_1$ of one kind, $n_2$
+of another, \ldots: \ $\dfrac{n!}{n_1!\,n_2!\cdots n_r!}$.
+
+\subsection{Exercise 1.5 (AK01) --- Eight-digit numbers (5 min)}\slide{10}
+
+\begin{task}{Exercise 1.5 (AK01)}
+	The digits $0,1,1,2,3,3,3,4$ are written on eight cards. Using all eight
+	cards, how many 8-digit numbers can be formed?
+\end{task}
+
+\ask What is the catch? \emph{(A number cannot start with 0.)}
+
+All arrangements of the cards: 8 cards, digit 1 twice, digit 3 three times:
+\[ \frac{8!}{2!\,3!} = \frac{40\,320}{12} = 3360. \]
+
+The bad ones start with 0 --- they are not 8-digit numbers. Fix the 0 in
+front; the remaining 7 cards $1,1,2,3,3,3,4$ can be arranged in
+$\dfrac{7!}{2!\,3!} = \dfrac{5040}{12} = 420$ ways. So the answer is
+\[ \frac{8!}{2!\,3!}-\frac{7!}{2!\,3!} = 3360 - 420 = 2940. \]
+
+\subsection{Finance example 2 --- Up and down days (3 min)}\slide{11}
+
+\begin{fin}{Finance example 2}
+	A trader had 7 up-days and 5 down-days in a 12-day period. How many
+	different up/down sequences are possible?
+\end{fin}
+
+\ask Which exercise is this, in disguise? \emph{(Letter arrangements: a
+	word with 7 U's and 5 D's.)}
+
+This is exactly a word with 7 U's and 5 D's:
+\[ \frac{12!}{7!\,5!} = \binom{12}{5} = 792. \]
+
+\say Notice that permutations with two kinds of objects are the same as
+combinations: we just choose \emph{which} 5 of the 12 days were down-days.
+
+\begin{bg}{up/down sequences and random walks}
+	\emph{Intuition.} Recording only ``up'' or ``down'' for each trading day
+	turns a price chart into a binary word. The simplest model of stock prices,
+	the \emph{random walk}, says each day is up or down independently, like a
+	coin. Under that model all $2^{12} = 4096$ sequences of 12 days are equally
+	likely, and the 792 sequences with exactly 7 ups are all equally likely too
+	--- so a pattern such as ``7 ups in a row, then 5 downs'' is no more
+	special than any other ordering. Chart-readers (``technical analysts'')
+	look for patterns; statisticians test whether the patterns are more
+	frequent than counting predicts (e.g.\ the \emph{runs test}).
+
+	\terms up-day / down-day; random walk; streak or run; technical analysis.
+
+	\sq{If there were 7 up-days and only 5 down-days, did the stock rise?}
+	\ans Not necessarily: the count ignores the \emph{size} of the moves. Five
+	big falls can outweigh seven small rises. In the binomial tree (Finance
+	example 5, after the break) we fix the sizes ($u$ and $d$), and then the
+	count of ups does determine the final price.
+\end{bg}
+
+\subsection{Exercise 1.6 --- Awards, with or without repetition (3 min)}\slide{12}
+
+\begin{task}{Exercise 1.6}
+	Five different awards are given to students of a class of 30. How many
+	outcomes are possible if (a) a student may receive any number of awards?
+	(b) each student receives at most one award?
+\end{task}
+
+\say Hand out the awards one by one.
+
+(a) Every award can go to any of the 30 students: repetition is allowed, and
+order matters because the awards are different. $30^5 = 24\,300\,000$.
+
+(b) After each award one student fewer is eligible:
+$30\cdot29\cdot28\cdot27\cdot26 = \dfrac{30!}{25!} = 17\,100\,720$.
+
+\subsection{Finance example 3 --- Ranking mutual funds (4 min)}\slide{13}
+
+\begin{fin}{Finance example 3}
+	10 mutual funds compete. How many possible results are there if a rating
+	agency publishes (a) the gold--silver--bronze podium; (b) only the
+	unordered ``top three''; (c) the full league table?
+\end{fin}
+
+\ask In which part does the order matter? \emph{(In (a) and (c); in (b) it
+	does not.)}
+
+(a) Order matters, no fund appears twice: $10\cdot9\cdot8 = 720$ podiums.
+
+(b) Each top three appears as a podium in $3! = 6$ orders, so
+$720/3! = \binom{10}{3} = 120$.
+
+(c) The full league table is an arrangement of all 10 funds:
+$10! = 3\,628\,800$.
+
+\say Part (b) is the toolbox remark in action: each set comes in $k!$
+orders.
+
+\begin{bg}{mutual funds, fund ratings and league tables}
+	\emph{Mutual fund}: a pool of money from many investors, managed by a
+	professional who buys a portfolio of stocks and/or bonds. Investors want to
+	know which funds are good, so companies such as Morningstar or Lipper
+	\emph{rate and rank} funds, typically by past return adjusted for risk
+	(e.g.\ the \emph{Sharpe ratio}: average excess return over the risk-free
+	rate divided by the volatility). A \emph{league table} is simply the
+	ranking of all funds. The ordered podium (who is first) versus the
+	unordered ``top three'' is exactly the permutation/combination distinction:
+	a ``top quartile'' badge is a combination, a ``number 1 fund'' title is a
+	permutation.
+
+	Do not confuse these \emph{fund} ratings with \emph{credit} ratings of
+	bonds (Moody's, S\&P, Fitch), which appear in Finance example 6.
+
+	\terms mutual fund; fund manager; risk-adjusted return; Sharpe ratio;
+	league table; fund rating vs.\ credit rating.
+
+	\sq{Is being number one last year a good reason to buy a fund?}
+	\ans Mostly no: studies find that past winners rarely stay on top; a large
+	part of the ranking is luck. With many funds, \emph{some} fund will be on
+	top by chance --- a counting argument in disguise.
+\end{bg}
+
+\subsection{Exercise 1.7 --- Committees with a conflict (8 min)}\slide{14}
+
+\begin{task}{Exercise 1.7}
+	From 8 women and 6 men a committee of 3 men and 3 women is formed. How many
+	committees are possible if (a) 2 of the men refuse to serve together? (b) 2
+	of the women refuse to serve together? (c) 1 man and 1 woman refuse to serve
+	together?
+\end{task}
+
+\ask Does the order matter in a committee? \emph{(No --- combinations.)}
+
+Without restrictions: choose the men in $\binom63 = 20$ ways, the women in
+$\binom83 = 56$ ways, total $20\cdot56 = 1120$. In each part we subtract the
+bad committees.
+
+(a) Bad male trios contain both feuding men; the third man comes from the
+other 4: $\binom41 = 4$. Good male trios: $20-4 = 16$, and the total is
+$16\cdot56 = 896$.
+
+(b) Similarly for the women: both feuding women in, plus 1 of the other 6:
+$6$ bad trios. Good: $56-6 = 50$. Total: $20\cdot 50 = 1000$.
+
+(c) Here the conflict is across the two groups, so we subtract from the grand
+total. Bad committees: that man is in, so we need 2 more men from the other 5:
+$\binom52 = 10$; that woman is in, so 2 more women from the other 7:
+$\binom72 = 21$. Bad committees: $10\cdot21 = 210$. Answer:
+$1120 - 210 = 910$.
+
+\subsection{Finance example 4 --- Choosing a portfolio (7 min)}\slide{15}
+
+\begin{fin}{Finance example 4}
+	An index has 30 stocks, 8 of them technology stocks. An analyst picks 5
+	stocks for an equally weighted portfolio (order does not matter). (a) How
+	many portfolios are possible? (b) How many contain at least one tech stock?
+	(c) How many contain exactly two tech stocks?
+\end{fin}
+
+(a) Equally weighted, so only the \emph{set} of stocks matters: unordered, no
+repetition,
+\[ \binom{30}{5} = \frac{30\cdot29\cdot28\cdot27\cdot26}{5!} = 142\,506. \]
+
+(b) \ask What is the complement of ``at least one''? \emph{(``None''.)}
+Portfolios with no tech stock choose all 5 from the 22 non-tech stocks:
+$\binom{22}{5} = 26\,334$. Hence $142\,506 - 26\,334 = 116\,172$.
+
+(c) Choose the tech part and the non-tech part separately, then multiply:
+2 of the 8 tech stocks and 3 of the 22 others,
+$\binom82\binom{22}3 = 28\cdot1540 = 43\,120$.
+
+\say In the Hungarian lottery, ötöslottó, 5 numbers are drawn from 90, and
+the order is irrelevant. The number of possible tickets is
+$\binom{90}{5} = 43\,949\,268$. So one ticket wins the jackpot in 1 of about
+44 million cases.
+
+\begin{cue}
+	Optional remark: with 500 stocks and 20 chosen,
+	$\binom{500}{20}\approx 2.7\cdot10^{35}$ --- trying all portfolios is
+	impossible, which is why portfolio selection uses optimization, not
+	enumeration.
+\end{cue}
+
+\begin{bg}{portfolio selection, diversification, and the lottery}
+	\emph{Index}: a list of stocks whose average price is tracked (e.g.\ the
+	Dow Jones Industrial Average has 30 stocks, the S\&P 500 has about 500).
+	\emph{Equally weighted portfolio}: the same amount of money in each chosen
+	stock, so only the \emph{set} matters --- a combination.
+
+	\emph{Diversification}: holding several stocks reduces risk, because their
+	random fluctuations partly cancel. Engineering analogy: averaging several
+	noisy, not perfectly correlated sensors reduces the noise. The part of the
+	risk that is specific to a single company (\emph{idiosyncratic risk})
+	diversifies away; the part common to all stocks (\emph{market} or
+	\emph{systematic risk}) does not. Part (b) and (c) are typical
+	\emph{sector constraints}: a fund's rules may require at least one, or at
+	most two, stocks from a sector, to avoid concentration (all eggs in the
+	tech basket).
+
+	\emph{Portfolio selection} (Markowitz, 1952, Nobel prize 1990): choose
+	weights to minimize variance for a given expected return. With a limit on
+	the number of stocks (``pick 20 of 500'') this becomes a combinatorial
+	(mixed-integer) optimization problem, and the $2.7\cdot 10^{35}$
+	candidates explain why brute force is hopeless.
+
+	\emph{Lottery as a negative-expected-value bet.} The organizer pays out
+	only part of the ticket revenue as prizes (for state lotteries typically
+	around half) and keeps the rest. So the expected payoff of a ticket is
+	roughly half its price: on average you lose. Buying a ticket is the
+	opposite of an investment; finance calls such a bet ``unfair''. People
+	still buy because a tiny chance of a life-changing gain is attractive
+	(behavioral finance: people overweight small probabilities).
+
+	\terms idiosyncratic vs.\ systematic risk; diversification; mean--variance
+	optimization; expected value; fair vs.\ unfair bet.
+
+	\sq{Why would anyone use equal weights instead of optimizing?}
+	\ans Optimized weights depend on estimated means and covariances, which
+	are very noisy; the simple $1/N$ rule is surprisingly hard to beat in
+	practice.
+
+	\sq{Can a lottery ever be a good bet?}
+	\ans In theory, when a jackpot has rolled over many times its expected
+	value can exceed the price, but the jackpot is usually shared with other
+	winners and taxed, so in practice it hardly ever is.
+\end{bg}
+
+\subsection{Exercise 1.8 --- Dance class: choose, then pair (3 min, optional)}\slide{16}
+
+\begin{task}{Exercise 1.8}
+	A dance class has 10 women and 12 men. 5 men and 5 women are chosen and then
+	paired off. How many results are possible?
+\end{task}
+
+Three independent steps, so we multiply. First \emph{who}: choose the women,
+$\binom{10}{5} = 252$; choose the men, $\binom{12}{5} = 792$. Then
+\emph{how}: line up the 5 chosen women; the first can get any of 5 men, the
+second any of the remaining 4, and so on: $5! = 120$. Altogether
+\[ \binom{10}{5}\binom{12}{5}\,5! = 252\cdot792\cdot120 = 23\,950\,080. \]
+
+\say Lesson: combinations answer ``who?'', permutations answer ``how are they
+arranged?'', and we multiply.
+
+\subsection{Exercise 1.9 --- Lattice paths (7 min)}\slide{17}
+
+\begin{task}{Exercise 1.9}
+	Starting at $A=(0,0)$, at each move you go one step right or one step up,
+	until you reach $B=(4,3)$. (a) How many paths are there from $A$ to $B$?
+	(b) How many pass through the circled point $(2,1)$?
+\end{task}
+
+\begin{center}
+	\begin{tikzpicture}[scale=.6]
+		\draw[gray!50] (0,0) grid (4,3);
+		\foreach \x in {0,...,4} \foreach \y in {0,...,3} \fill[navy] (\x,\y) circle (2pt);
+		\node[below left] at (0,0) {$A$}; \node[above right] at (4,3) {$B$};
+		\draw[teal,very thick] (2,1) circle (6pt);
+		\draw[gold,ultra thick,->] (0,0)--(1,0)--(1,1)--(2,1)--(3,1)--(3,3)--(4,3);
+	\end{tikzpicture}
+\end{center}
+
+\say Every path consists of exactly 7 moves: 4 right steps and 3 up steps, in
+some order. The path in the picture is R\,U\,R\,R\,U\,U\,R. So a path is a
+word with 4 R's and 3 U's, and we already know how to count those.
+
+(a) The path is fixed once we choose \emph{which} 3 of the 7 moves are
+``up'': $\binom73 = 35$.
+
+(b) Split the path at $(2,1)$. From $A$ to $(2,1)$: 3 moves, 1 of them U,
+$\binom31 = 3$ paths. From $(2,1)$ to $B$: 4 moves, 2 of them U,
+$\binom42 = 6$ paths. Every first half combines with every second half, so
+by the counting principle $3\cdot6 = 18$ paths.
+
+\subsection{Pascal's triangle (6 min)}\slide{18}
+
+\say The lattice-path counts are worth a closer look. The number of
+monotone paths with $n$ moves, $k$ of them up, is $\binom nk$. Write these
+numbers in rows: row $n$ contains $\binom n0,\binom n1,\dots,\binom nn$. This is
+\emph{Pascal's triangle}.
+
+\begin{center}
+	\begin{tikzpicture}[every node/.style={font=\small}]
+		\foreach \n in {0,...,6} {
+				\node[navy!70] at (-4.2,-.62*\n) {\scriptsize $n=\n$};
+				\foreach \k in {0,...,\n} {
+						\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+						\node[inner sep=1pt,minimum size=13pt] (p\n-\k)
+						at ({(\k-\n/2)*.92},{-.62*\n}) {\c};
+					}
+			}
+		\draw[gold,thick] (p4-1) circle (7pt);
+		\draw[gold,thick] (p4-2) circle (7pt);
+		\draw[teal,thick,fill=teal!15,fill opacity=.5] (p5-2) circle (7pt);
+		\draw[gold,thick,->] (p4-1)--(p5-2);
+		\draw[gold,thick,->] (p4-2)--(p5-2);
+		\node[teal] at (p5-2) {\small 10};
+	\end{tikzpicture}
+\end{center}
+
+\board Draw the first rows of the triangle (at least up to $n=5$) and
+\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1},\qquad\text{e.g. }
+	\binom41+\binom42 = 4+6 = 10 = \binom52. \]
+
+\say Each entry is the sum of the two entries above it. This is
+\emph{Pascal's rule}; we will prove it after the break, in Exercise 2.5
+(AK07). Why is it true for lattice paths? To reach a point you must
+arrive either from the point on its left or from the point below it, so the
+number of paths into a point is the sum of the paths into those two
+neighbors.
+
+\ask Who can tell me the next row, $n=7$? \emph{(1, 7, 21, 35, 35, 21, 7, 1
+	--- each entry the sum of the two above it.)}
+
+\say Three ways to read row $n$:
+\begin{itemize}
+	\item lattice paths: $\binom nk$ paths with $k$ up-steps among $n$ moves
+	      (Exercise 1.9);
+	\item the coefficients of $(a+b)^n$. For example, row 5 gives
+	      \[ (a+b)^5 = a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5. \]
+	      We will prove this --- the binomial theorem --- after the break;
+	\item the sum of row $n$ is $2^n$ (for row 5: $1+5+10+10+5+1 = 32$), and
+	      every row is symmetric, $\binom nk = \binom n{n-k}$: choosing the $k$
+	      elements you take is the same as choosing the $n-k$ you leave.
+\end{itemize}
+
+\begin{bg}{Pascal's triangle in finance}
+	After the break the same numbers reappear in the binomial tree of a stock
+	price (Finance example 5). In the binomial option model the row-$n$
+	entries are the \emph{path multiplicities} of the final nodes; with risk-neutral probability $q$, node
+	$k$ gets weight $\binom nk q^k(1-q)^{n-k}$ --- the \emph{binomial
+		distribution}, which students will meet in a few weeks. With $q=1/2$ the
+	weights are simply row $n$ divided by $2^n$ (e.g.\ for $n=2$:
+	$\frac14,\frac24,\frac14$, as in the tiny example in the box of Finance
+	example 5). Practitioners
+	build trees with hundreds of steps; the triangle is never written out, but
+	the same ``add the two parents'' recursion is how the tree is evaluated
+	numerically (\emph{backward induction}).
+
+	\terms path multiplicity; binomial distribution; risk-neutral weight;
+	backward induction.
+
+	\sq{Why do the middle nodes matter most in the binomial model?}
+	\ans Because most paths end there: in row 10 the middle entry is
+	$\binom{10}{5} = 252$ of the $1024$ paths, the two extreme nodes only 1
+	each. So (with $q$ near $1/2$) the final price is most likely near the
+	middle, and for many steps the weights look like a bell curve.
+\end{bg}
+
+\subsection{Summary and extra practice (4 min)}\slide{19}
+
+\begin{itemize}
+	\item Ordered, no repetition: $n!/(n-k)!$; ordered with repetition: $n^k$.
+	\item Unordered, no repetition: $\binom nk$ (Pascal's triangle);
+	      identical objects: divide by $n_1!\cdots n_r!$.
+	\item ``Together'' $\to$ glue into a block; ``not together'' $\to$
+	      complement.
+\end{itemize}
+
+\say The four problems on the slide are extra practice for self-study after
+class --- you do not have to hand them in, but they are very good
+preparation for next week.
+
+\subsubsection*{Extra practice, Session 1 (with detailed answers for you)}
+\begin{enumerate}[label=\textbf{E\arabic*.}]
+	\item 3 boys and 3 girls sit in a row. (a) No restriction: 6 distinct
+	      people, $6! = 720$. (b) Boys together and girls together: two
+	      blocks, 2 orders of the blocks, $3!$ inside each:
+	      $2\cdot3!\cdot3! = 72$. (c) Only the boys must sit together: one
+	      block of boys plus 3 girls $=4$ units, $4!$ orders, $3!$ inside the
+	      block: $4!\cdot3! = 144$. (d) No two of the same sex adjacent: the
+	      pattern is BGBGBG or GBGBGB (2 ways), then $3!$ for the boys and
+	      $3!$ for the girls: $2\cdot3!\cdot3! = 72$.
+	\item 8 people in a row. (a) $A$ and $B$ next to each other: glue them,
+	      7 units, $2\cdot7! = 10\,080$. (b) 4 men and 4 women, no two men or
+	      two women adjacent: 2 patterns, $2\cdot4!\cdot4! = 1152$. (c) 4
+	      couples, each together: 4 blocks, $4!$ orders, 2 orders inside each
+	      block: $4!\cdot2^4 = 384$.
+	\item 2 books out of 6 math, 7 science and 4 economics books. (a) Same
+	      subject: $\binom62+\binom72+\binom42 = 15+21+6 = 42$. (b) Different
+	      subjects: choose the pair of subjects and one book of each:
+	      $6\cdot7+6\cdot4+7\cdot4 = 42+24+28 = 94$. Check: every pair of
+	      books is in exactly one case, $42+94 = 136 = \binom{17}{2}$.
+	\item Invite 5 of 8 friends. (a) Two are feuding and won't come together:
+	      all invitations minus those with both: $\binom85-\binom63 = 56-20 =
+		      36$. (b) Two only come together: both invited (3 more from 6),
+	      $\binom63 = 20$, or both left out (5 from the other 6), $\binom65=6$;
+	      total $26$.
+\end{enumerate}
+
+\begin{cue}
+	Slide 19 ends with ``Short break --- Session 2 follows right after.''
+	Announce the exact restart time (e.g.\ ``we continue in ten minutes'') and
+	leave the toolbox table on the board.
+\end{cue}
+
+%======================================================================
+\section{Session 2: Multinomial coefficients, sample space, events}
+%======================================================================
+
+\subsection{After the break: a two-minute recap (3 min)}\slide{20--21}
+
+Welcome back. Let's continue where we stopped before the break. Two minutes
+of recap, then something new.
+
+\say Every counting problem starts with two questions: does order matter, and
+is repetition allowed?
+
+\board Point at the table from Session 1 and fill in the empty cell:
+\begin{center}
+	\begin{tabular}{lcc}\toprule
+		              & ordered     & unordered                \\\midrule
+		no repetition & $n!/(n-k)!$ & $\binom nk$              \\
+		repetition    & $n^k$       & $\binom{n+k-1}{k}$ (now) \\\bottomrule
+	\end{tabular}
+\end{center}
+
+Identical objects in a row: $n!/(n_1!\cdots n_r!)$. ``Together'' means a
+block; ``not together'' or ``at least one'' means the complement. And
+lattice paths are counted by $\binom nk$, which led us to Pascal's triangle.
+
+\say Now: we divide objects into several groups, we put identical objects
+into boxes, and then we learn the language of events.
+
+\subsection{Toolbox (6 min)}\slide{22}
+
+\emph{Multinomial coefficient.} Suppose we split $n$ distinct objects into
+$r$ labeled groups of sizes $n_1,\dots,n_r$ (with $n_1+\dots+n_r=n$). We
+choose the first group in $\binom{n}{n_1}$ ways, the second from the
+remaining objects in $\binom{n-n_1}{n_2}$ ways, and so on. Multiplying and
+canceling gives
+\[ \binom{n}{n_1,n_2,\dots,n_r} = \frac{n!}{n_1!\,n_2!\cdots n_r!}. \]
+This is the same number as the permutations with repetition: label every
+object with the name of its group, and you get a word with $n_1$ copies of
+the first label, $n_2$ copies of the second, \ldots
+
+\emph{Binomial and multinomial theorems.}
+\[ (a+b)^n = \sum_{k=0}^{n}\binom nk a^kb^{n-k},\qquad
+	(x_1+\dots+x_r)^n = \sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+	x_1^{n_1}\cdots x_r^{n_r}. \]
+\say Why is the coefficient of $a^kb^{n-k}$ equal to $\binom nk$? When you
+multiply out $(a+b)(a+b)\cdots(a+b)$, you choose $a$ or $b$ from every
+factor. To get $a^kb^{n-k}$ you must choose $a$ from exactly $k$ factors ---
+there are $\binom nk$ ways to choose which ones. That is why row $n$ of
+Pascal's triangle gave the coefficients of $(a+b)^n$ before the break.
+
+\emph{Stars and bars.} Put $n$ \emph{identical} objects into $r$ distinct
+boxes. Draw the objects as $n$ stars and separate the boxes by $r-1$ bars.
+Every distribution is one arrangement of $n$ stars and $r-1$ bars, so the
+number of distributions is
+\[ \binom{n+r-1}{r-1}. \]
+If every box must be nonempty, put one object in each box first and
+distribute the remaining $n-r$ freely: $\binom{(n-r)+r-1}{r-1} =
+	\binom{n-1}{r-1}$.
+
+\subsection{Exercise 2.1 (AK04) --- Bridge: two correct solutions (5 min)}\slide{23}
+
+\begin{task}{Exercise 2.1 (AK04)}
+	In bridge, the 52 cards are dealt evenly to 4 players (13 each). How many
+	deals are possible?
+\end{task}
+
+\say I will show you two solutions that look completely different, and both
+are correct.
+
+\emph{Permutation view.} Line up the deck: $52!$ orders. Give cards 1--13 to
+the first player, 14--26 to the second, and so on. But the order of cards
+inside a hand does not matter to the player, so the 13 cards of each hand
+behave like identical objects. We divide by $13!$ four times:
+\[ \frac{52!}{13!\,13!\,13!\,13!}. \]
+
+\emph{Combination view.} Player 1 gets 13 of the 52 cards, player 2 gets 13
+of the remaining 39, player 3 gets 13 of the remaining 26, and player 4 gets
+the last 13 (one way):
+\[ \binom{52}{13}\binom{39}{13}\binom{26}{13}\binom{13}{13}. \]
+
+\ask Are these equal? Write out the binomial coefficients:
+\[ \frac{52!}{13!\,39!}\cdot\frac{39!}{13!\,26!}\cdot\frac{26!}{13!\,13!}
+	\cdot 1 = \frac{52!}{(13!)^4}. \]
+The $39!$ and the $26!$ cancel telescopically, so both views give the same
+number, about $5.36\cdot10^{28}$.
+
+\subsection{Exercise 2.2 --- Dividing into groups (4 min)}\slide{24}
+
+\begin{task}{Exercise 2.2}
+	(a) 12 people are divided into 3 committees of sizes 3, 4 and 5. How many
+	divisions are possible? (b) 8 new teachers are assigned to 4 schools. How
+	many assignments? What if each school gets exactly 2?
+\end{task}
+
+(a) Fill the committees one after the other:
+\[ \binom{12}{3}\binom{9}{4}\binom55 = 220\cdot126\cdot1
+	= \frac{12!}{3!\,4!\,5!} = 27\,720. \]
+
+(b) Each teacher independently chooses one of 4 schools: $4^8 = 65\,536$.
+\say Careful --- this part is not a multinomial problem, because the group
+sizes are not fixed. With exactly 2 per school it is: groups of sizes
+$2,2,2,2$,
+\[ \binom82\binom62\binom42\binom22 = 28\cdot15\cdot6\cdot1
+	= \frac{8!}{2!\,2!\,2!\,2!} = 2520. \]
+
+\subsection{Finance example 6 --- Rating bonds (2 min)}\slide{25}
+
+\begin{fin}{Finance example 6}
+	A credit analyst must rate 10 bonds: exactly 4 get rating A, 3 get rating B
+	and 3 get rating C. How many rating assignments are possible?
+\end{fin}
+
+\ask What are the groups here? \emph{(The three rating classes, of sizes 4,
+	3 and 3.)}
+
+Three labeled groups of sizes 4, 3, 3:
+\[ \binom{10}{4,3,3} = \frac{10!}{4!\,3!\,3!} = \binom{10}{4}\binom63
+	= 210\cdot 20 = 4200. \]
+(After choosing the 4 A's, the 3 B's are chosen from the remaining 6, and
+the last 3 bonds get C.)
+
+\begin{bg}{credit ratings and rating agencies}
+	\emph{Credit rating}: an opinion about how likely a borrower is to pay its
+	debts. The three big \emph{rating agencies} are S\&P, Moody's and Fitch.
+	Their letter scales run from AAA (S\&P/Fitch) or Aaa (Moody's), the
+	safest, through AA, A, BBB, down to BB, B, CCC, \ldots\ and D (default).
+	BBB$-$ and above is \emph{investment grade}; below that is \emph{high
+		yield}, popularly ``junk''. Many institutional investors (pension funds,
+	insurers) may only hold investment-grade bonds, so a downgrade below BBB$-$
+	forces selling. Banks also run \emph{internal} rating systems for their
+	loan clients; under the Basel rules their capital requirements depend on
+	these grades.
+
+	The exercise fixes how many bonds get each grade: that is like a
+	\emph{forced distribution} (grading on a curve), used e.g.\ when a bank
+	wants its internal grades to match a target distribution. Each rating
+	assignment is a labeled division into groups --- a multinomial
+	coefficient.
+
+	\terms investment grade vs.\ high yield; downgrade; default probability;
+	rating migration (moving between grades over time).
+
+	\sq{Does rating A mean the bond cannot default?}
+	\ans No. It means a low estimated default probability (historically,
+	A-rated corporate bonds default rarely within a year, but not never). In
+	2008 many AAA-rated mortgage securities suffered heavy losses.
+
+	\sq{Who pays the rating agency?}
+	\ans Usually the issuer of the bond (``issuer pays''), which is a known
+	conflict of interest.
+\end{bg}
+
+\subsection{Exercise 2.3 --- Expansions; identities (AK06) (6 min)}\slide{26}
+
+\begin{task}{Exercise 2.3}
+	(a) Expand $(3x^2+y)^5$. (b) Find the coefficient of $x_1x_2^2x_3$ in
+	$(x_1+2x_2+3x_3)^4$. (c) What is the sum of all coefficients in (b)?
+\end{task}
+
+(a) Binomial theorem with $a = 3x^2$, $b = y$: the $k$-th term is
+$\binom5k 3^kx^{2k}y^{5-k}$. Row 5 of Pascal's triangle is
+$1,5,10,10,5,1$; multiply by $3^k = 1,3,9,27,81,243$:
+\[ 1\cdot1,\ 5\cdot3,\ 10\cdot9,\ 10\cdot27,\ 5\cdot81,\ 1\cdot243
+	\;=\; 1,\ 15,\ 90,\ 270,\ 405,\ 243, \]
+so (writing the highest power of $x$ first)
+\[ (3x^2+y)^5 = 243x^{10} + 405x^8y + 270x^6y^2 + 90x^4y^3 + 15x^2y^4 + y^5. \]
+
+(b) Out of the 4 factors we need $x_1$ once, $(2x_2)$ twice and $(3x_3)$
+once. The number of ways to decide which factor gives what is the
+multinomial coefficient $\binom{4}{1,2,1} = \frac{4!}{1!\,2!\,1!} = 12$, and
+the constants contribute $1\cdot2^2\cdot3 = 12$. Coefficient:
+$12\cdot12 = 144$.
+
+(c) \say To add up all coefficients, set every variable equal to 1:
+$(1+2+3)^4 = 6^4 = 1296$.
+
+\say The same substitution trick gives three useful identities --- this is
+AK06:
+\[ \sum_k\binom nk = (1+1)^n = 2^n,\quad
+	\sum_k\binom nk2^k = (2+1)^n = 3^n,\quad
+	\sum_k(-1)^k\binom nk = (1-1)^n = 0. \]
+The first says: a set with $n$ elements has $2^n$ subsets (each element is
+in or out), and it is the row sum of Pascal's triangle.
+
+\subsection{Exercise 2.4 (part (a): AK05) --- Stars and bars (6 min)}\slide{27}
+
+\begin{task}{Exercise 2.4 (part (a): AK05)}
+	(a) We roll two identical (indistinguishable) dice. How many outcomes can we
+	observe? (b) 8 identical blackboards are divided among 4 schools. How many
+	divisions? How many if each school gets at least one?
+\end{task}
+
+(a) Since we cannot tell the dice apart, $(1,2)$ and $(2,1)$ look the same.
+Outcomes with two different numbers: $\binom62 = 15$. Doubles: 6. Total 21.
+
+\say Alternatively: we choose 2 numbers out of 6, order does not matter,
+repetition is allowed: $\binom{6+2-1}{2} = \binom72 = 21$.
+
+\begin{cue}
+	Warn them: the 21 outcomes are \emph{not} equally likely (a double has
+	probability $1/36$, a mixed pair $2/36$). This is an important point for
+	next week.
+\end{cue}
+
+(b) Encode a division as 8 stars and 3 bars; the bars separate the 4
+schools.
+\board \texttt{**|***||***} means $(2,3,0,3)$: 2 boards to school 1, 3 to
+school 2, none to school 3, 3 to school 4.
+
+Every division gives exactly one code and every code gives one division. A
+code has $8+3 = 11$ symbols and is fixed once we choose the positions of the
+3 bars: $\binom{11}{3} = 165$.
+
+At least one each: first give every school one board, then divide the
+remaining $4$ freely: 4 stars, 3 bars, $\binom{4+3}{3}=\binom{7}{3} = 35$.
+
+\subsection{Finance example 7 --- Allocating capital (6 min)}\slide{28}
+
+\begin{fin}{Finance example 7}
+	We have 20 thousand euros to invest in 4 opportunities, in whole units of
+	1000. The minimal investments are 2, 2, 3 and 4 thousand. How many
+	strategies if (a) we invest in each opportunity; (b) we invest in at least 3
+	of the 4? (All 20 units are invested.)
+\end{fin}
+
+(a) First pay the minimums: $2+2+3+4 = 11$ units. The remaining $9$ identical
+units can be distributed freely among the 4 opportunities --- 9 stars, 3
+bars: $\binom{9+3}{3}=\binom{12}{3} = 220$.
+
+(b) Add the strategies in which exactly one opportunity gets nothing. If the
+first is left out, we pay the other three minimums, $2+3+4 = 9$, and
+distribute the remaining 11 units among 3 opportunities (11 stars, 2 bars):
+$\binom{13}{2} = 78$. The other cases are in the table:
+
+\begin{center}
+	\begin{tabular}{lccc}\toprule
+		left out    & minimums paid & left to divide & count                 \\\midrule
+		1st (min 2) & $2+3+4=9$     & 11 among 3     & $\binom{13}{2} = 78$  \\
+		2nd (min 2) & $2+3+4=9$     & 11 among 3     & $78$                  \\
+		3rd (min 3) & $2+2+4=8$     & 12 among 3     & $\binom{14}{2} = 91$  \\
+		4th (min 4) & $2+2+3=7$     & 13 among 3     & $\binom{15}{2} = 105$ \\\bottomrule
+	\end{tabular}
+\end{center}
+
+Total: $220+78+78+91+105 = 572$.
+
+\begin{cue}
+	If asked why we cannot leave out two opportunities: (b) says ``at least
+	3 of the 4''. Leaving out two would be a different question.
+\end{cue}
+
+\begin{bg}{capital allocation with minimum investments}
+	\emph{Capital allocation}: deciding how to split a budget among
+	investment opportunities. Real opportunities often come in \emph{lots} and
+	have \emph{minimum tickets}: a private-equity fund may accept commitments
+	only above a threshold, some bonds trade in minimum denominations (e.g.\
+	100\,000 euros), and many funds have a minimum subscription. That is why
+	the amounts are integers and each opportunity is either skipped or gets at
+	least its minimum.
+
+	Counting the strategies tells you the size of the search space: 572
+	strategies is tiny, a computer can evaluate every one of them (brute
+	force). With 50 opportunities and a budget of 1000 units the count would
+	be astronomically large, and one uses \emph{integer programming} instead
+	--- the same algorithms engineers use for scheduling and network design.
+
+	\terms capital allocation; minimum ticket (minimum subscription); lot
+	size; integer programming; search space.
+
+	\sq{Why not invest fractional amounts?}
+	\ans Then the set of strategies is continuous (a simplex) and one uses
+	ordinary optimization; the integer version is what you face with lots and
+	minimum tickets.
+
+	\sq{Which of the 572 strategies is best?}
+	\ans Counting cannot say; it depends on expected returns and risks. That
+	is the portfolio-selection problem from Finance example 4.
+\end{bg}
+
+\subsection{Exercise 2.5 (AK07) --- A combinatorial proof (3 min)}\slide{29}
+
+\begin{task}{Exercise 2.5 (AK07)}
+	Prove Pascal's rule: $\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$.
+\end{task}
+
+\say This is the rule that builds Pascal's triangle, which we saw before the
+break. Here are two proofs.
+
+\emph{Algebra} \emph{(optional if you are short of time --- it is on the
+	slide).} Bring both fractions to the common denominator $(k+1)!\,(n-k)!$:
+\[ \frac{n!}{k!(n-k)!}+\frac{n!}{(k+1)!(n-k-1)!}
+	= \frac{n!\,\big[(k+1)+(n-k)\big]}{(k+1)!\,(n-k)!}
+	= \frac{(n+1)!}{(k+1)!\,(n-k)!} = \binom{n+1}{k+1}, \]
+because $n!\,(n+1) = (n+1)!$ and $n-k = (n+1)-(k+1)$.
+
+\emph{Story.} \say Here is a proof with no algebra at all. A bowl contains
+$n$ apples and 1 pear. In how many ways can we take $k+1$ fruits? Obviously
+$\binom{n+1}{k+1}$. Now split the choices according to the pear. If the pear
+is not taken, all $k+1$ fruits are apples: $\binom n{k+1}$. If the pear is
+taken, we need $k$ more apples from $n$: $\binom nk$. We counted the same set
+in two ways, so the two answers are equal.
+
+\say Extra practice, AK08: prove
+$\sum_{j=0}^k\binom nj\binom m{k-j} = \binom{n+m}k$ in the same way.
+\emph{(Hint, if asked: $n$ apples and $m$ pears, choose $k$ fruits, split by
+	the number $j$ of apples.)}
+
+\subsection{Finance example 5 --- The binomial tree (6 min)}\slide{30}
+
+\begin{fin}{Finance example 5}
+	A stock moves up (factor $u$) or down (factor $d$) every day. After $n=10$
+	days the price is $S_0u^kd^{10-k}$, where $k$ is the number of up-days.
+	(a) How many price paths are there? (b) How many paths end with $k=6$
+	up-days? (c) How many different final prices are there?
+\end{fin}
+
+\begin{cue}
+	Point at the small tree on the slide: the number in each node is the
+	number of paths reaching it, and each node is the sum of the two nodes
+	feeding it --- Pascal's rule, which we have just proved. The same
+	lattice-path idea as in Exercise 1.9, rotated by 45 degrees.
+\end{cue}
+
+\say Before the break we counted lattice paths; here is the same counting
+in finance.
+
+(a) Two choices on each of 10 days: $2^{10} = 1024$ paths.
+
+(b) A path is a word of 6 U's and 4 D's; choose the 6 up-days:
+$\binom{10}{6} = 210$.
+
+(c) The order of the factors does not change the product ($ud = du$), so the
+final price depends only on $k\in\{0,1,\dots,10\}$: 11 final prices. The
+tree \emph{recombines}: ``up then down'' gives the same price as ``down then
+up''.
+
+\say Check: grouping the paths by $k$ gives all paths,
+$\sum_{k=0}^{10}\binom{10}{k} = 2^{10}$. This is exactly the combinatorics
+behind the Cox--Ross--Rubinstein option-pricing model you will meet in
+derivatives courses.
+
+\begin{bg}{the binomial tree and the binomial option-pricing model}
+	\emph{Option.} A \emph{call option} with strike $K$ and maturity $n$ gives
+	the right to buy the stock at price $K$ at time $n$. If the stock then
+	costs $S_n$, the call pays $\max(S_n-K,0)$ (you buy at $K$ and can sell at
+	$S_n$; if $S_n<K$ you simply do not use the right). A \emph{put} pays
+	$\max(K-S_n,0)$. The question is: what is a fair price \emph{today}?
+
+	\emph{The model} (Cox, Ross and Rubinstein, 1979). Time is split into $n$
+	steps; in each step the price is multiplied by $u>1$ or $d<1$. Engineering
+	view: a discretisation of a continuous random process (geometric Brownian
+	motion), much like a finite-difference grid; as $n\to\infty$ the price
+	converges to the Black--Scholes formula. Typically
+	$u = e^{\sigma\sqrt{\Delta t}}$, $d=1/u$, where $\sigma$ is the
+	volatility.
+
+	\emph{Pricing by no-arbitrage.} One can build a portfolio of stock and
+	cash that pays exactly what the option pays in both successor nodes
+	(\emph{replication}); the option must cost what that portfolio costs, or
+	someone could make riskless profit (\emph{arbitrage}). The result can be
+	written as an expectation with an artificial ``risk-neutral'' probability
+	$q = \frac{(1+r)-d}{u-d}$ of an up-step ($r$ = risk-free interest per
+	step):
+	\[ C_0 = \frac{1}{(1+r)^n}\sum_{k=0}^n \binom nk q^k(1-q)^{n-k}
+		\max\big(S_0u^kd^{n-k}-K,\,0\big). \]
+	\emph{Why paths are counted}: the payoff depends only on the final node
+	$k$, and every one of the $\binom nk$ paths into node $k$ has the same
+	probability $q^k(1-q)^{n-k}$. So the binomial coefficient is the number of
+	ways to get there. The recombining tree has only $n+1$ final nodes instead
+	of $2^n$ leaves --- that is what makes the model computable.
+
+	\emph{Tiny example.} $S_0=100$, $u=1.1$, $d=0.9$, $r=0$, $n=2$, $K=100$:
+	$q=0.5$; final prices $121, 99, 81$ with $1,2,1$ paths; the call pays
+	$21,0,0$; price $= \frac14\cdot21 = 5.25$.
+
+	\terms call/put; strike; maturity; volatility; replication; arbitrage;
+	risk-neutral probability; recombining tree.
+
+	\sq{Why not use the real probability of an up-move?}
+	\ans Because the price comes from replication, not from a bet on the
+	direction: two investors who disagree about the real probability must
+	still agree on the cost of the replicating portfolio. The real probability
+	does not appear in the formula.
+
+	\sq{Are daily up/down moves of fixed size realistic?}
+	\ans Not for a single day, but with many small steps the tree approximates
+	a continuous price process very well; it is a numerical method, like a
+	grid in engineering.
+\end{bg}
+
+%----------------------------------------------------------------------
+\subsection{Sample space and events (5 min)}\slide{31}
+
+\say Now we switch to the language of probability.
+
+The \emph{sample space} $\Om$ is the set of all possible outcomes of an
+experiment. An \emph{event} is a subset $E\subseteq\Om$. We say that $E$
+\emph{occurs} if the outcome of the experiment is an element of $E$.
+
+Because events are sets, we can combine them:
+\begin{itemize}
+	\item $E\cup F$: $E$ \emph{or} $F$ occurs (at least one of them);
+	\item $E\cap F$, often written $EF$: \emph{both} occur;
+	\item $E^c$: $E$ does \emph{not} occur;
+	\item $E\subseteq F$: whenever $E$ occurs, $F$ occurs too ($E$ implies $F$);
+	\item $E$ and $F$ are \emph{mutually exclusive} if $EF=\emptyset$: they
+	      cannot occur together.
+\end{itemize}
+
+\begin{center}
+	\setlength{\tabcolsep}{5mm}
+	\begin{tabular}{ccc}
+		\venn{\fill[teal!35] (0,0) circle (.85);}
+		          & \venn{\fill[teal!35] (1,0) circle (.85);}
+		          & \venn{\fill[teal!35] (0,0) circle (.85); \fill[white] (1,0) circle (.85);}                       \\
+		$E$       & $F$                                                                        & $E\setminus F=EF^c$ \\[2mm]
+		\venn{\fill[teal!35] (0,0) circle (.85); \fill[teal!35] (1,0) circle (.85);}
+		          & \venn{\begin{scope}\clip (0,0) circle (.85);
+				            \fill[teal!35] (1,0) circle (.85);\end{scope}}
+		          & \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}                                        \\
+		$E\cup F$ & $EF$                                                                       & $E^c$
+	\end{tabular}
+\end{center}
+
+\say A Venn diagram is a picture of this: the rectangle is $\Om$, the circles
+are the events, and the shaded region is the event we are talking about.
+Let's read the six pictures.
+
+\begin{itemize}
+	\item Top row: $E$ alone is the left circle, $F$ alone the right circle.
+	      The third picture is $E\setminus F$, ``$E$ but not $F$'': the left
+	      circle without the lens. In event notation this is $EF^c$ ---
+	      $E$ occurs \emph{and} $F$ does not.
+	\item Bottom row: $E\cup F$ shades both circles (at least one occurs);
+	      $EF$ shades only the lens in the middle (both occur); $E^c$ shades
+	      everything outside the left circle ($E$ does not occur).
+\end{itemize}
+
+\ask Which picture shows ``$F$ occurs but $E$ does not''? \emph{(None of the
+	six: it is $FE^c=F\setminus E$, the right circle without the lens.)}
+
+\subsection{De Morgan's laws for two events (5 min)}\slide{32}
+
+\board
+\[ (E\cup F)^c = E^c\cap F^c, \qquad (E\cap F)^c = E^c\cup F^c. \]
+
+\say In words: ``not ($E$ or $F$)'' is the same as ``neither $E$ nor $F$''.
+And ``not (both $E$ and $F$)'' is the same as ``at least one of them fails''.
+
+\begin{center}
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabular}{ccccc}
+		\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+		                  & $\cap$ &
+		\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+		                  & $=$    &
+		\venn{\shadeall{navy!35}\fill[white] (0,0) circle (.85);
+			\fill[white] (1,0) circle (.85);}       \\[-1mm]
+		\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+		\scriptsize $E^c\cap F^c$: outside both $=(E\cup F)^c$        \\
+		\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+		                  & $\cup$ &
+		\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+		                  & $=$    &
+		\venn{\shadeall{navy!35}\begin{scope}\clip (0,0) circle (.85);
+				\fill[white] (1,0) circle (.85);\end{scope}} \\[-1mm]
+		\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+		\scriptsize $E^c\cup F^c$: all but the lens $=(E\cap F)^c$
+	\end{tabular}
+\end{center}
+
+\say Look at the pictures. Shade $E^c$ --- everything outside $E$ --- in one
+color, and $F^c$ in another. The region shaded \emph{twice} is the
+intersection $E^c\cap F^c$: that is the part outside both circles, which is
+exactly the complement of $E\cup F$. The region shaded \emph{at least once}
+is the union $E^c\cup F^c$: that is everything except the lens in the
+middle, and the lens is $E\cap F$. So the union is $(E\cap F)^c$.
+
+\ask Give me an everyday example of the second law. \emph{(``It is not true
+	that I passed both exams'' = ``I failed at least one of them''.)}
+
+\subsection{De Morgan's laws: general form (2 min)}\slide{33}
+
+\say The same laws hold for any number of events: the complement of a union
+is the intersection of the complements, and the complement of an
+intersection is the union of the complements.
+
+\board General form, $n$ events:
+\[ \Big(\bigcup_{i=1}^n E_i\Big)^c = \bigcap_{i=1}^n E_i^c,\qquad
+	\Big(\bigcap_{i=1}^n E_i\Big)^c = \bigcup_{i=1}^n E_i^c. \]
+
+\say Next week, in AK09(c), we will use exactly this:
+$P(A^cB^c) = 1-P(A\cup B)$.
+
+\subsection{Exercise 2.6 --- Writing down the sample space (3 min)}\slide{34}
+
+\begin{task}{Exercise 2.6}
+	A box has 3 marbles: red, green, blue. We draw one, put it back, then draw a
+	second one. Describe $\Om$. Repeat without putting the first one back.
+\end{task}
+
+\say Record the outcome as an ordered pair: (first draw, second draw).
+
+With replacement: 3 choices, then again 3 choices:
+\[ \Om = \{rr,rg,rb,gr,gg,gb,br,bg,bb\},\qquad |\Om| = 3\cdot3 = 9. \]
+
+Without replacement: the second draw cannot repeat the first, so the pairs
+$rr, gg, bb$ disappear:
+\[ \Om = \{rg,rb,gr,gb,br,bg\},\qquad |\Om| = 3\cdot2 = 6. \]
+
+\subsection{Finance example 8 --- Events of a stock path (4 min)}\slide{35}
+
+\begin{fin}{Finance example 8}
+	A stock moves Up or Down on each of 3 days. The sample space is
+	\[ \Om=\{UUU,UUD,UDU,UDD,DUU,DUD,DDU,DDD\},\qquad |\Om| = 2^3 = 8. \]
+	Let $A$ =
+	``ends above the start'', $B$ = ``up on day 1'', $C$ = ``never below the
+	start''. List them and compare.
+\end{fin}
+
+\say Track the position --- the number of ups minus the number of downs ---
+after each day. (Up and down steps have the same size here.)
+
+\begin{itemize}
+	\item $A$: at least 2 U's, so the net position is $+1$ or $+3$:
+	      $A = \{UUU,UUD,UDU,DUU\}$.
+	\item $B$: the first letter is U: $B = \{UUU,UUD,UDU,UDD\}$.
+	\item $C$: the positions must stay $\ge 0$. $UDD$ goes $+1,0,-1$, so it
+	      drops below; any path starting with $D$ goes to $-1$ immediately.
+	      Hence $C = \{UUU,UUD,UDU\}$.
+\end{itemize}
+
+\ask What is the relation between $C$ and $A$? \emph{(After 3 steps the
+	position is odd, so ``never below'' forces it to end at $\ge1$: $C\subseteq
+		A$.)}
+
+Further: $AB = \{UUU,UUD,UDU\} = C$; $A^cB = \{UDD\}$ (up first, but ends
+below); $AB^c = \{DUU\}$ (down first, but ends above).
+
+\begin{bg}{path-dependent events and barrier options}
+	Event $A$ depends only on the final price; event $C$ depends on the whole
+	path. Derivatives whose payoff depends on the path are called
+	\emph{path-dependent}. The classic example is a \emph{barrier option}: a
+	\emph{down-and-out call} is an ordinary call option that is canceled
+	(``knocked out'') if the price ever falls below a barrier. If the barrier
+	is the starting price, the option is alive at maturity exactly on event $C$.
+	Because it can be knocked out, it is cheaper than the plain call --- you
+	give up the scenarios in $A\setminus C=\{DUU\}$ (ends above, but touched the
+	barrier). Engineering analogy: a circuit breaker --- it does not matter
+	where the current ends up, only whether it ever exceeded the limit.
+
+	\terms path-dependent; barrier; knock-out / knock-in; Asian option (pays
+	on the average price).
+
+	\sq{Why would anyone buy a knock-out option?}
+	\ans It is cheaper, and an investor who believes the price will not fall
+	below the barrier does not want to pay for the scenarios where it does.
+\end{bg}
+
+\subsection{Exercise 2.7 --- Two dice: event algebra (5 min)}\slide{36}
+
+\begin{task}{Exercise 2.7}
+	Two dice are rolled. $E$: the sum is odd; $F$: at least one die shows 1;
+	$G$: the sum is 5. Describe $EF$, $E\cup F$, $FG$, $EF^c$, $EFG$.
+\end{task}
+
+$\Om = \{(i,j): i,j = 1,\dots,6\}$, $|\Om| = 36$. The sum is odd exactly when
+one die is even and the other odd: 3 even values, 3 odd values, and 2 ways
+to decide which die is the even one, so $|E| = 3\cdot3\cdot2 = 18$. The
+complement of $F$ is ``no 1 on either die'', which has $5\cdot5 = 25$
+outcomes, so $|F| = 36-25 = 11$.
+
+\begin{itemize}
+	\item $EF$: one die is 1, which is odd, so the other must be even:
+	      $\{(1,2),(1,4),(1,6),(2,1),(4,1),(6,1)\}$, 6 outcomes.
+	\item $E\cup F$: $|E|+|F|-|EF| = 18+11-6 = 23$ outcomes: the 18 odd sums
+	      plus the elements of $F$ with an even sum,
+	      $(1,1),(1,3),(1,5),(3,1),(5,1)$.
+	\item $G = \{(1,4),(2,3),(3,2),(4,1)\}$, so $FG = \{(1,4),(4,1)\}$.
+	\item $EF^c$: odd sum and no 1: $|E|-|EF| = 18-6 = 12$ outcomes.
+	\item $5$ is odd, so $G\subseteq E$, and $EFG = FG = \{(1,4),(4,1)\}$.
+\end{itemize}
+
+\say The count in the second bullet is the inclusion--exclusion formula,
+$|E\cup F| = |E|+|F|-|EF|$: in $|E|+|F|$ the overlap was counted twice.
+Next week it becomes $P(E\cup F) = P(E)+P(F)-P(EF)$.
+
+\subsection{Finance example 10 --- A credit basket (5 min)}\slide{37}
+
+\begin{cue}
+	The numbering jumps on purpose: there is no Exercise 2.8 and no Finance
+	example 9 on the slides (the reliability problem was dropped from class; it
+	is in the extra practice of the handout). If students ask, just say so.
+\end{cue}
+
+\begin{fin}{Finance example 10}
+	A basket contains 3 bonds; $D_i$ = ``bond $i$ defaults within a year''.
+	$\Om = \{0,1\}^3$ (1 = default), $|\Om| = 8$. Express: (a) at least one
+	default; (b) no default; (c) exactly one default; (d) at least two
+	defaults.
+\end{fin}
+
+\begin{enumerate}[label=(\alph*)]
+	\item $D_1\cup D_2\cup D_3$. This is where a \emph{first-to-default swap}
+	      pays. It contains all outcomes except $000$: $8-1 = 7$ outcomes.
+	\item $(D_1\cup D_2\cup D_3)^c = D_1^cD_2^cD_3^c$ by De Morgan: only $000$,
+	      1 outcome.
+	\item $D_1D_2^cD_3^c\ \cup\ D_1^cD_2D_3^c\ \cup\ D_1^cD_2^cD_3$: ``bond 1
+	      alone'', ``bond 2 alone'', ``bond 3 alone''. The three pieces are
+	      mutually exclusive: $100, 010, 001$, i.e.\ $\binom31 = 3$ outcomes.
+	\item $D_1D_2\cup D_1D_3\cup D_2D_3$: some pair defaults. This is where a
+	      \emph{second-to-default swap} pays. Outcomes $110, 101, 011, 111$:
+	      exactly two defaults, $\binom32=3$, plus all three, $\binom33=1$;
+	      4 outcomes.
+\end{enumerate}
+Check: (b) $+$ (c) $+$ (d) $= 1+3+4 = 8 = |\Om|$, and (a) $=$ (c) $+$ (d) $=
+	3+4 = 7$.
+
+\begin{bg}{credit default swaps, first- and second-to-default}
+	\emph{Credit default swap (CDS)}: insurance on a bond. The protection
+	buyer pays a regular premium (the \emph{CDS spread}, quoted in basis
+	points per year); if the reference company defaults, the protection seller
+	pays the loss, i.e.\ face value minus what can be recovered (the
+	\emph{recovery rate}, often around 40\%).
+
+	\emph{Basket default swap}: protection on a basket of several names
+	(typically 3--10). An \emph{$n$-th-to-default swap} pays when the $n$-th
+	default in the basket happens, and then terminates.
+	\begin{itemize}[nosep]
+		\item \emph{First-to-default (FtD)}: pays at the first default, i.e.\ on
+		      the event ``at least one default'' $=D_1\cup D_2\cup D_3$.
+		\item \emph{Second-to-default (StD)}: pays at the second default, i.e.\
+		      on ``at least two defaults'' $=D_1D_2\cup D_1D_3\cup D_2D_3$.
+	\end{itemize}
+	The FtD is the riskier position for the seller (its event is bigger), so
+	its spread is higher. Illustration (next week's material): if each bond
+	defaults with probability 2\% independently, $P(\text{at least one})
+		= 1-0.98^3 \approx 5.9\%$, while $P(\text{at least two}) = 3(0.02)^2(0.98)
+		+0.02^3\approx 0.12\%$.
+
+	\emph{Correlation} matters: if defaults tend to happen together, ``at least
+	one'' becomes less likely than under independence (defaults cluster in the
+	same scenarios) and ``at least two'' becomes more likely; FtD gets cheaper
+	and StD more expensive.
+
+	\emph{Structured products} push the same idea further: a \emph{CDO
+		tranche} or a \emph{credit-linked note} pays depending on \emph{which}
+	combination of names in a pool survives --- in engineering terms a
+	reliability block diagram of series and parallel ``routes''. The lesson
+	that transfers best from engineering is \emph{common-cause failure}:
+	redundancy helps only if failures are not strongly correlated. In 2008
+	mortgage defaults all depended on house prices, so ``redundant''
+	structures failed together, like parallel components sharing one power
+	supply.
+
+	\terms CDS spread; protection buyer/seller; recovery rate; basket; default
+	correlation; structured product; CDO tranche; common-cause failure.
+
+	\sq{Why buy an FtD instead of three separate CDSs?}
+	\ans It is cheaper; it covers only the first loss, which is enough if you
+	think one default is plausible but several are not.
+
+	\sq{What happens to the swap after the first default?}
+	\ans The FtD pays and ends; the StD keeps running and now waits for one
+	more default.
+\end{bg}
+
+\subsection{Exercise 2.9 --- Venn diagrams and inclusion--exclusion (6 min)}\slide{38--39}
+
+\begin{task}{Exercise 2.9}
+	A town of 100\,000 has newspapers I, II, III. Percentages of readers: I: 10,
+	II: 30, III: 5, I\&II: 8, I\&III: 2, II\&III: 4, all three: 1. How many
+	people read (a) exactly one paper? (b) at least two? (c) a morning paper (I
+	or III) and the evening paper II? (d) no paper? (e) exactly one morning paper
+	and the evening paper?
+\end{task}
+
+\say Fill the Venn diagram from the inside out: first the center, then the
+regions of exactly two papers, then the regions of exactly one paper.
+
+\begin{center}
+	\begin{tikzpicture}[scale=.75]
+		\draw[navy,thick] (0,0) circle (1.5);
+		\draw[teal,thick] (1.8,0) circle (1.5);
+		\draw[gold,thick] (.9,-1.5) circle (1.5);
+		\node at (-.7,.3) {1}; \node at (2.5,.3) {19}; \node at (.9,-2.3) {0};
+		\node at (.9,.6) {7}; \node at (.1,-.95) {1}; \node at (1.7,-.95) {3};
+		\node at (.9,-.45) {1};
+		\node[navy] at (-1.4,1.4) {I}; \node[teal] at (3.2,1.4) {II};
+		\node[gold] at (.9,-3.3) {III};
+	\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+	\item Center (all three): $1$.
+	\item Only I\&II: $8-1 = 7$; only I\&III: $2-1 = 1$; only II\&III:
+	      $4-1 = 3$. (The 8\% reading I and II include the 1\% reading all
+	      three.)
+	\item Only I: $10-7-1-1 = 1$; only II: $30-7-3-1 = 19$; only III:
+	      $5-1-3-1 = 0$.
+\end{itemize}
+
+\begin{cue}
+	Slide 39 (``(cont.)'') shows the answers; let the class read them off the
+	diagram first.
+\end{cue}
+
+(a) Exactly one: only I $+$ only II $+$ only III $= 1+19+0 = 20\%$, i.e.\
+20\,000 people.
+
+(b) At least two: the four inner regions, $7+1+3+1 = 12\%$: 12\,000.
+
+(c) $(I\cup III)\cap II = (I\cap II)\cup(III\cap II)$; the two overlap in
+``all three'', so $8+4-1 = 11\%$: 11\,000.
+
+(d) Inclusion--exclusion: $|I\cup II\cup III| = 10+30+5-8-2-4+1 = 32\%$, so
+$100-32 = 68\%$ read no paper: 68\,000.
+
+(e) II together with exactly one of I, III: only I\&II $+$ only II\&III
+$= 7+3 = 10\%$: 10\,000.
+
+\board Inclusion--exclusion for three sets:
+\[ |E\cup F\cup G| = |E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|. \]
+\say Adding the three sets counts the pairwise overlaps twice, so we subtract
+them; but then the center has been added three times and subtracted three
+times, so we add it back once.
+
+\subsection{Finance example 11 --- Bank products (5 min)}\slide{40}
+
+\begin{fin}{Finance example 11}
+	A bank has 1000 retail clients: 820 have a current account ($C$), 350 a
+	credit card ($K$), 240 a mortgage ($M$); 300 have $C$\&$K$, 200 have
+	$C$\&$M$, 90 have $K$\&$M$, 70 have all three. (a) How many have none of
+	the products? (b) Exactly one product? (c) A cross-selling campaign targets
+	clients with a current account but no credit card. How many?
+\end{fin}
+
+(a) Inclusion--exclusion for three sets:
+\[ |C\cup K\cup M| = 820+350+240-300-200-90+70 = 890, \]
+so $1000-890 = 110$ clients have none of the products.
+
+(b) ``Only $C$'' $= |C|-|CK|-|CM|+|CKM|$: we remove the two overlaps, but
+the clients with all three were removed twice, so we add them back once.
+Only $C$: $820-300-200+70 = 390$. Only $K$: $350-300-90+70 = 30$. Only $M$:
+$240-200-90+70 = 20$. Total: $390+30+20 = 440$.
+
+(c) $C$ splits into $CK$ and $CK^c$, so $|CK^c| = |C| - |CK| = 820-300 =
+	520$.
+
+\say Divide every number by 1000 and you have probabilities. That is where we
+start next week: the axioms of probability and $P(E\cup F) =
+	P(E)+P(F)-P(EF)$.
+
+\begin{bg}{retail banking and cross-selling}
+	\emph{Retail clients} are individuals (as opposed to companies). The three
+	products: a \emph{current account} (everyday account for salary and
+	payments), a \emph{credit card}, a \emph{mortgage} (a long-term loan for
+	buying a home, secured by the home). \emph{Cross-selling} means selling an
+	additional product to an existing client. Banks love it because acquiring
+	a new client is expensive, while an existing client is already known (the
+	bank sees their income on the current account, which lowers credit risk).
+	A common bank KPI is ``products per client''.
+
+	Part (c) is a \emph{target list}: clients with $C$ but not $K$ are the
+	natural candidates for a card offer --- in set language $C\setminus K =
+		CK^c$. The 110 clients with \emph{no} product are probably dormant
+	accounts or clients of other services, a different campaign.
+
+	\terms retail client; current account; mortgage; cross-selling; target
+	list; products per client (KPI).
+
+	\sq{Is aggressive cross-selling a problem?}
+	\ans It can be: in 2016 Wells Fargo was fined after employees, pushed by
+	sales targets, opened millions of accounts without customers' consent.
+	Regulators now watch sales incentives closely.
+\end{bg}
+
+\subsection{Summary and extra practice (3 min)}\slide{41}
+
+\begin{itemize}
+	\item Groups of given sizes: multinomial coefficient; identical objects
+	      into boxes: stars and bars.
+	\item Identities: count the same set in two ways (Pascal's rule).
+	\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves.
+	\item Events are sets: $\cup$ = or, $\cap$ = and, $^c$ = not. De Morgan:
+	      $(E\cup F)^c = E^cF^c$ and $(EF)^c = E^c\cup F^c$. Fill Venn diagrams
+	      from the inside out.
+\end{itemize}
+
+\say Next week, in week 9, we turn these counts into probabilities: the
+axioms of probability, with AK09--AK14. The extra practice on the slide is
+for self-study.
+
+\subsubsection*{Extra practice, Session 2 (with detailed answers for you)}
+\begin{enumerate}[label=\textbf{E\arabic*.}]
+	\item (AK06) $\sum_k\binom nk = 2^n$ and $\sum_k(-1)^k\binom nk = 0$:
+	      substitute $a=b=1$, resp.\ $a=-1$, $b=1$ in the binomial theorem:
+	      $(1+1)^n = 2^n$ and $(-1+1)^n = 0$. The second identity says that a
+	      nonempty set ($n\ge1$) has as many subsets of even size as of odd
+	      size.
+	\item (AK08) $\sum_{j=0}^k\binom nj\binom m{k-j} = \binom{n+m}k$: a bowl
+	      holds $n$ apples and $m$ pears; choose $k$ fruits. Directly:
+	      $\binom{n+m}k$. Split by the number $j$ of apples: $\binom nj$ ways
+	      for the apples and $\binom m{k-j}$ for the pears, and add over
+	      $j = 0,\dots,k$. Same set counted twice $\Rightarrow$ identity.
+	\item $A$, $B$, $C$ flip a coin in turn ($A$ first), the first head wins.
+	      With 1 = head and 0 = tail,
+	      $\Om = \{1, 01, 001, 0001, \dots\}\cup\{000\cdots\}$ (the last
+	      outcome: tails forever).
+	      \begin{itemize}[nosep]
+		      \item $A$ wins: $\{1, 0001, 0000001,\dots\}$ (first head on flip
+		            $1, 4, 7,\dots$);
+		      \item $B$ wins: $\{01, 00001, \dots\}$ (first head on flip
+		            $2, 5, 8, \dots$);
+		      \item $(A\cup B)^c$: $C$ wins (first head on flip $3,6,9,\dots$)
+		            or nobody ever wins ($000\cdots$).
+	      \end{itemize}
+	\item 15 team members, each blue/white collar and R/D/I: each person has
+	      $2\cdot3 = 6$ types, so $|\Om| = 6^{15} \approx 4.7\cdot10^{11}$.
+	      At least one blue-collar: complement of ``all white-collar'' ($3$
+	      types each): $6^{15}-3^{15}$. No Independent: $2\cdot2 = 4$ types
+	      each, $4^{15}$.
+\end{enumerate}
+
+\begin{cue}
+	Week 9 bridge: start with Exercise 2.9 and Finance example 11 in
+	probability form, then AK09--AK14 (including the double-counting traps in
+	AK11 and AK12).
+\end{cue}
+
+\end{document}

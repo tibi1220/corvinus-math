@@ -13,19 +13,19 @@
 
 % Exercise statement (identical in both versions)
 \newtcolorbox{task}[1]{enhanced,breakable,colback=navy!4,colframe=navy,
-  fonttitle=\bfseries,title={#1}}
+	fonttitle=\bfseries,title={#1}}
 % Finance example
 \newtcolorbox{fin}[1]{enhanced,breakable,colback=teal!5,colframe=teal,
-  fonttitle=\bfseries,title={#1}}
+	fonttitle=\bfseries,title={#1}}
 % Key formulas at the start of each part
 \newtcolorbox{key}[1]{enhanced,breakable,colback=white,colframe=navy!70,
-  fonttitle=\bfseries,title={#1}}
+	fonttitle=\bfseries,title={#1}}
 % Final answer (solutions version only)
 \newtcolorbox{answer}{enhanced,colback=teal!6,colframe=teal,boxrule=.5pt,
-  left=4pt,right=4pt,top=2pt,bottom=2pt}
+	left=4pt,right=4pt,top=2pt,bottom=2pt}
 % Remarks: common mistakes, alternative methods
 \newtcolorbox{remark}{enhanced,breakable,colback=gold!8,colframe=gold,
-  boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small}
+	boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small}
 
 % Labels inside solutions
 \newcommand{\soltitle}{\par\textbf{\color{teal}Solution.}\par\nobreak}
@@ -37,20 +37,20 @@
 
 % Small Venn diagram of two events E, F in Omega; #1 = shading commands
 \newcommand{\venn}[1]{%
-  \begin{tikzpicture}[scale=.5,baseline=(O.base)]
-    \node (O) at (.5,0) {\phantom{x}};
-    #1
-    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
-    \draw[thick,navy] (0,0) circle (.85);
-    \draw[thick,navy] (1,0) circle (.85);
-    \node at (-.35,0) {\scriptsize $E$};
-    \node at (1.35,0) {\scriptsize $F$};
-    \node at (2.15,.8) {\scriptsize $\Omega$};
-  \end{tikzpicture}}
+	\begin{tikzpicture}[scale=.5,baseline=(O.base)]
+		\node (O) at (.5,0) {\phantom{x}};
+		#1
+		\draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
+		\draw[thick,navy] (0,0) circle (.85);
+		\draw[thick,navy] (1,0) circle (.85);
+		\node at (-.35,0) {\scriptsize $E$};
+		\node at (1.35,0) {\scriptsize $F$};
+		\node at (2.15,.8) {\scriptsize $\Omega$};
+	\end{tikzpicture}}
 \newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
 
 \title{Mathematics for Finance}
 \author{Tibor SÁNDOR\\[2pt]
-  \normalsize Corvinus University of Budapest\\
-  \normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
+	\normalsize Corvinus University of Budapest\\
+	\normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
 \date{}

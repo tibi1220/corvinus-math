@@ -31,3 +31,6 @@ npm-debug.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated audio (large; regenerate from content/**/audio/*-spoken.txt)
+*.mp3

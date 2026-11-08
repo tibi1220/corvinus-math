@@ -35,7 +35,8 @@ export type CourseInfo = {
   dir: string;
   name: string;
   description: string;
-  // The folder the LaTeX sources are copied from by `pnpm sync`, relative to
+  // The old working folder that `pnpm sync` imports new weeks from (it never
+  // overwrites content/, the source of truth), relative to
   // this repository.
   source: string;
   weeks: WeekInfo[];
