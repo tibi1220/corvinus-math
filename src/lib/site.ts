@@ -29,5 +29,9 @@ export const operator = {
 
 export const repositoryUrl = 'https://github.com/tibi1220/corvinus-math';
 
+// The anonymous feedback form (Google Forms, no sign-in, no email addresses
+// collected), linked from the home page and described in the privacy policy.
+export const feedbackFormUrl = 'https://forms.gle/t3w2vrRpoRdqZMZw8';
+
 // The date the privacy and cookie policies were last changed.
-export const policyDate = 'November 8, 2026';
+export const policyDate = 'November 9, 2026';

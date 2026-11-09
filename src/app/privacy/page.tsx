@@ -4,7 +4,13 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { PageHeader } from '@/components/page-header';
 import { Prose } from '@/components/prose';
 import { pageMetadata } from '@/lib/metadata';
-import { operator, policyDate, repositoryUrl, siteName } from '@/lib/site';
+import {
+  feedbackFormUrl,
+  operator,
+  policyDate,
+  repositoryUrl,
+  siteName,
+} from '@/lib/site';
 
 export const metadata: Metadata = pageMetadata({
   title: 'Privacy policy',
@@ -43,10 +49,10 @@ export default function PrivacyPage() {
 
         <h2>What data does the site handle?</h2>
         <p>
-          None. There is no registration, login, form or newsletter, and the
-          site uses no analytics, ads, social media plugins or cookies. Every
-          file (the fonts too) is served by the site itself, so your browser
-          sends no requests to third parties.
+          None. There is no registration, login or newsletter, and the site uses
+          no analytics, ads, social media plugins or cookies. Every file (the
+          fonts too) is served by the site itself, so your browser sends no
+          requests to third parties.
         </p>
 
         <h2>Hosting</h2>
@@ -76,6 +82,22 @@ export default function PrivacyPage() {
           If you write to the email address on the home page, your message is
           handled like any other email: it is used only to answer you and is not
           shared with anyone.
+        </p>
+
+        <h2>Anonymous feedback form</h2>
+        <p>
+          The home page links to an{' '}
+          <a href={feedbackFormUrl}>anonymous feedback form</a>. It is not part
+          of the site: it is hosted by Google Forms (Google LLC), and opening it
+          takes you to Google&apos;s servers. The form does not ask for your
+          name or email address, does not require signing in, and only{' '}
+          {operator.name} can read the answers. They are used only to improve
+          the teaching. Google&apos;s handling of the data is described in{' '}
+          <a href='https://policies.google.com/privacy'>
+            Google&apos;s privacy policy
+          </a>
+          . Anything you write in the form yourself (for example your name) is
+          not anonymous, so leave it out if you want to stay anonymous.
         </p>
 
         <h2>Your rights</h2>

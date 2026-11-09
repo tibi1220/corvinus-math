@@ -1,9 +1,9 @@
-import { Mail } from 'lucide-react';
+import { Mail, MessageSquare } from 'lucide-react';
 import type { Metadata } from 'next';
 import { LinkCard } from '@/components/link-card';
 import { courseHref, courses, isPublished } from '@/lib/content';
 import { pageMetadata } from '@/lib/metadata';
-import { operator, siteDescription } from '@/lib/site';
+import { feedbackFormUrl, operator, siteDescription } from '@/lib/site';
 
 export const metadata: Metadata = pageMetadata({
   description: siteDescription,
@@ -26,7 +26,7 @@ export default function Home() {
         <p className='mt-0.5 text-zinc-600 dark:text-zinc-400'>
           {operator.role}
         </p>
-        <ul className='mt-3 text-sm'>
+        <ul className='mt-3 flex flex-col gap-1.5 text-sm sm:flex-row sm:gap-6'>
           <li>
             <a
               href={`mailto:${operator.email}`}
@@ -37,6 +37,20 @@ export default function Home() {
                 className='size-4'
               />
               {operator.email}
+            </a>
+          </li>
+          <li>
+            <a
+              href={feedbackFormUrl}
+              target='_blank'
+              rel='noopener noreferrer'
+              className={contactLink}
+            >
+              <MessageSquare
+                aria-hidden
+                className='size-4'
+              />
+              Anonymous feedback
             </a>
           </li>
         </ul>
