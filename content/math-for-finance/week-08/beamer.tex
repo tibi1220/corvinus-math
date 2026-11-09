@@ -88,13 +88,12 @@
 	% with a short break in between):
 	\begin{enumerate}
 		\item \textbf{Session 1 (90 min):} counting principle; permutations;
-		      permutations with repetition; combinations; lattice paths and
-		      Pascal's triangle.
+		      permutations with repetition; combinations; lattice paths.
 		\item[] \hspace*{-1.2em}\textit{--- short break ---}
 		\item \textbf{Session 2 (90 min):} multinomial coefficients; binomial and
 		      multinomial theorems; combinations with repetition (stars and bars);
-		      combinatorial proofs; the binomial tree; sample space and events; De Morgan's laws;
-		      Venn diagrams.
+		      combinatorial proofs; the binomial tree; Pascal's triangle;
+		      sample space and events; De Morgan's laws; Venn diagrams.
 	\end{enumerate}
 	\vspace{.3cm}
 	Problems marked \textbf{AK01, AK02, \ldots} are from the AK exercise
@@ -389,53 +388,11 @@
 	\end{columns}
 \end{frame}
 
-\begin{frame}[t]{Pascal's triangle}
-	\begin{columns}[T]
-		\begin{column}{.52\textwidth}
-			\centering
-			\begin{tikzpicture}[every node/.style={font=\small}]
-				\foreach \n in {0,...,6} {
-						\node[navy!70] at (-3.9,-.62*\n) {\scriptsize $n=\n$};
-						\foreach \k in {0,...,\n} {
-								\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
-								\node[inner sep=1pt,minimum size=13pt] (p\n-\k)
-								at ({(\k-\n/2)*.92},{-.62*\n}) {\c};
-							}
-					}
-				\draw[gold,thick] (p4-1) circle (7pt);
-				\draw[gold,thick] (p4-2) circle (7pt);
-				\draw[teal,thick,fill=teal!15,fill opacity=.5] (p5-2) circle (7pt);
-				\draw[gold,thick,->] (p4-1)--(p5-2);
-				\draw[gold,thick,->] (p4-2)--(p5-2);
-				\node[teal] at (p5-2) {\small 10};
-			\end{tikzpicture}\\[1mm]
-			\footnotesize row $n$, position $k=0,1,\dots,n$ holds $\binom nk$
-		\end{column}
-		\begin{column}{.46\textwidth}
-			\small
-			\begin{block}{Pascal's rule (proof: Exercise 2.5, AK07)}
-				$\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$\\[1mm]
-				each entry $=$ sum of the two above it, e.g.\
-				$\binom41+\binom42=4+6=10=\binom52$.
-			\end{block}
-			\textbf{Three readings of row $n$:}
-			\begin{itemize}
-				\item lattice paths: $\binom nk$ paths with $k$ up-steps among $n$
-				      moves (Exercise 1.9);
-				\item coefficients of $(a+b)^n$, e.g.\\
-				      $(a+b)^5=a^5+5a^4b+10a^3b^2$\\
-				      \hspace*{3.2em}$+\,10a^2b^3+5ab^4+b^5$;
-				\item row sum $=2^n$; symmetry $\binom nk=\binom n{n-k}$.
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-
 \begin{frame}{Session 1: summary and extra practice}
 	\small
 	\begin{itemize}
 		\item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
-		\item Unordered, no repetition: $\binom nk$ (Pascal's triangle);
+		\item Unordered, no repetition: $\binom nk$ (e.g.\ lattice paths);
 		      identical objects: divide by $n_1!\cdots n_r!$.
 		\item ``Together'' $\to$ block; ``not together'' $\to$ complement.
 	\end{itemize}
@@ -470,15 +427,15 @@
 		\item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
 		      \begin{center}
 			      \begin{tabular}{lcc}\toprule
-				                    & ordered     & unordered                        \\\midrule
-				      no repetition & $n!/(n-k)!$ & $\binom nk$                      \\
-				      repetition    & $n^k$       & \alert{$\binom{n+k-1}{k}$ (now)} \\\bottomrule
+				                    & ordered     & unordered          \\\midrule
+				      no repetition & $n!/(n-k)!$ & $\binom nk$        \\[2mm]
+				      repetition    & $n^k$       & $\binom{n+k-1}{k}$ \\\bottomrule
 			      \end{tabular}
 		      \end{center}
 		\item Identical objects in a row: $n!/(n_1!\cdots n_r!)$.
 		\item ``Together'' $\to$ block; ``not together'' or ``at least one''
 		      $\to$ complement.
-		\item Lattice paths $\to\binom nk$ $\to$ Pascal's triangle.
+		\item Lattice paths: choose which of the $n$ moves go up, $\binom nk$.
 	\end{itemize}
 	\vspace{2mm}
 	\textbf{Now:} dividing objects into several groups, identical objects into
@@ -544,7 +501,7 @@
 
 \begin{frame}[t]{Rating bonds}
 	\small
-	\finance{6}{A credit analyst must rate 10 bonds: exactly 4 get rating A,
+	\finance{5}{A credit analyst must rate 10 bonds: exactly 4 get rating A,
 		3 get rating B and 3 get rating C. How many rating assignments are possible?}
 	\pause
 	\sol Three labeled groups of sizes 4, 3, 3:
@@ -560,7 +517,7 @@
 	\pause
 	\sol
 	(a) Binomial theorem with $a=3x^2$, $b=y$: the $k$-th term is
-	$\binom5k3^kx^{2k}y^{5-k}$. Row 5 of Pascal's triangle is
+	$\binom5k3^kx^{2k}y^{5-k}$. The coefficients $\binom5k$ are
 	$1,5,10,10,5,1$; multiply by $3^k=1,3,9,27,81,243$:
 	\[ 243x^{10}+405x^8y+270x^6y^2+90x^4y^3+15x^2y^4+y^5. \]
 	(b) We need $x_1$ once, $(2x_2)$ twice, $(3x_3)$ once out of the 4 factors:
@@ -599,7 +556,7 @@
 
 \begin{frame}[t]{Allocating capital}
 	\small
-	\finance{7}{We have 20 thousand euros to invest in 4 opportunities, in
+	\finance{6}{We have 20 thousand euros to invest in 4 opportunities, in
 		whole units of 1000. The minimal investments are 2, 2, 3 and 4 thousand.
 		How many strategies if (a) we invest in each opportunity;
 		(b) we invest in at least 3 of the 4? (All 20 units are invested.)}
@@ -636,8 +593,8 @@
 	$\binom{n+1}{k+1}$ ways. Split the choices by the pear:
 	\emph{pear not chosen} (all $k+1$ are apples): $\binom n{k+1}$;
 	\emph{pear chosen} ($k$ more apples from $n$): $\binom nk$.
-	The same set counted in two ways $\Rightarrow$ the identity. This is
-	exactly the rule that builds Pascal's triangle.\\
+	The same set counted in two ways $\Rightarrow$ the identity. After the
+	binomial tree, this rule builds Pascal's triangle.\\
 	\textbf{Extra practice (AK08):} prove
 	$\sum_{j=0}^k\binom nj\binom m{k-j}=\binom{n+m}k$ the same way.
 \end{frame}
@@ -646,7 +603,7 @@
 	\small
 	\begin{columns}[T]
 		\begin{column}{.6\textwidth}
-			\finance{5}{A stock moves up (factor $u$) or down (factor $d$) every day.
+			\finance{7}{A stock moves up (factor $u$) or down (factor $d$) every day.
 				After $n=10$ days the price is $S_0u^kd^{10-k}$ where $k$ is the number
 				of up-days.
 				(a) How many price paths are there?
@@ -672,7 +629,7 @@
 					}
 			\end{tikzpicture}\\
 			\scriptsize paths reaching each node; each node $=$ sum of the two
-			nodes feeding it (Pascal's triangle)
+			nodes feeding it (Pascal's rule)
 		\end{column}
 	\end{columns}
 	\uncover<2->{\sol
@@ -685,6 +642,47 @@
 			\end{enumerate}
 			Check: grouping the paths by $k$ gives $\sum_{k=0}^{10}\binom{10}{k}=2^{10}$.
 			This is the combinatorics behind the Cox--Ross--Rubinstein model.}
+\end{frame}
+
+\begin{frame}[t]{Pascal's triangle}
+	\begin{columns}[T]
+		\begin{column}{.52\textwidth}
+			\centering
+			\begin{tikzpicture}[every node/.style={font=\small}]
+				\foreach \n in {0,...,6} {
+						\node[navy!70] at (-3.9,-.62*\n) {\scriptsize $n=\n$};
+						\foreach \k in {0,...,\n} {
+								\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+								\node[inner sep=1pt,minimum size=13pt] (p\n-\k)
+								at ({(\k-\n/2)*.92},{-.62*\n}) {\c};
+							}
+					}
+				\draw[gold,thick] (p4-1) circle (7pt);
+				\draw[gold,thick] (p4-2) circle (7pt);
+				\draw[teal,thick,fill=teal!15,fill opacity=.5] (p5-2) circle (7pt);
+				\draw[gold,thick,->] (p4-1)--(p5-2);
+				\draw[gold,thick,->] (p4-2)--(p5-2);
+				\node[teal] at (p5-2) {\small 10};
+			\end{tikzpicture}\\[1mm]
+			\footnotesize row $n$, position $k=0,1,\dots,n$ holds $\binom nk$\\[3mm]
+			\small $(a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5$
+		\end{column}
+		\begin{column}{.46\textwidth}
+			\small
+			\begin{block}{Pascal's rule (just proved: Exercise 2.5)}
+				$\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$\\[1mm]
+				builds the triangle: each entry is the sum of the two above,
+				$\binom41+\binom42=4+6=10=\binom52$.
+			\end{block}
+			\textbf{Readings of row $n$:}
+			\begin{itemize}
+				\item paths with $k$ up-moves among $n$: lattice paths
+				      (Exercise 1.9), the binomial tree (Finance example 7);
+				\item coefficients of $(a+b)^n$ (see row 5);
+				\item row sum $=2^n$; symmetry $\binom nk=\binom n{n-k}$.
+			\end{itemize}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 %----------------------------------------------------------------------
@@ -925,7 +923,8 @@
 		\item Groups of given sizes: multinomial coefficient; identical objects
 		      into boxes: stars and bars.
 		\item Identities: count the same set in two ways (Pascal's rule).
-		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves.
+		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves;
+		      Pascal's rule arranges these numbers in Pascal's triangle.
 		\item Events are sets: $\cup$ = or, $\cap$ = and, $^c$ = not;
 		      De Morgan: $(E\cup F)^c=E^cF^c$, $(EF)^c=E^c\cup F^c$;
 		      Venn diagrams from the inside out.

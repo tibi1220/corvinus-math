@@ -70,41 +70,6 @@
 	one'' $\to$ complement: $\#\text{good}=\#\text{all}-\#\text{bad}$.
 \end{key}
 
-% \clearpage
-\begin{key}{Pascal's triangle}
-	\begin{center}
-		\begin{tikzpicture}[every node/.style={font=\small}]
-			\foreach \n in {0,...,6} {
-					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
-					\foreach \k in {0,...,\n} {
-							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
-							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
-							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
-						}
-				}
-			\draw[gold,thick] (p4-1) circle (7.5pt);
-			\draw[gold,thick] (p4-2) circle (7.5pt);
-			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
-			\node[teal] at (p5-2) {10};
-			\draw[gold,thick,->] (p4-1)--(p5-2);
-			\draw[gold,thick,->] (p4-2)--(p5-2);
-			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
-			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
-		\end{tikzpicture}
-	\end{center}
-	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
-	holds $\binom nk$. \textbf{Pascal's rule} (proved in Exercise~2.5, AK07):
-	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1}, \]
-	i.e.\ every entry is the sum of the two entries just above it.
-	\textbf{Three readings of row $n$:}
-	(1) lattice paths: $\binom nk$ paths with $k$ up-steps among $n$ moves
-	(Exercise~1.9);
-	(2) the coefficients of $(a+b)^n$, e.g.\
-	$(a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5$;
-	(3) the row sum is $2^n$, and each row is symmetric:
-	$\binom nk=\binom n{n-k}$.
-\end{key}
-
 %----------------------------------------------------------------------
 \subsection{Exercise 1.1 and Finance example 1 --- License plates, PINs}
 
@@ -490,9 +455,9 @@
 
 \ifsolutions
 	\soltitle
-	\idea Unordered selections without repetition: binomial coefficients. ``At
+	{\emergencystretch=1.5em\idea Unordered selections without repetition: binomial coefficients. ``At
 	least one'' $\to$ complement ``none''. ``Exactly two'' $\to$ choose the two
-	groups separately.
+	groups separately.\par}
 
 	\step{(a)}
 	$\displaystyle\binom{30}{5}=\frac{30\cdot29\cdot28\cdot27\cdot26}{5\cdot4\cdot3\cdot2\cdot1}
@@ -608,9 +573,10 @@
 	\end{answer}
 	\begin{remark}
 		So $18/35\approx51\%$ of the paths pass through $(2,1)$. The same splitting
-		idea is used for binomial trees (Finance example~5 in Part~2): the number
+		idea is used for binomial trees (Finance example~7 in Part~2): the number
 		of paths through a node is (paths into the node) $\times$ (paths out of
-		the node).
+		the node). The numbers $\binom nk$ counted here reappear in Pascal's
+		triangle, right after Finance example~7.
 	\end{remark}
 \fi
 
@@ -741,9 +707,9 @@
 	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
 		(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
 		x_1^{n_1}\cdots x_r^{n_r}. \]
-	The coefficients of $(a+b)^n$ form row $n$ of Pascal's triangle.
-	\textbf{Binomial tree} (Finance example~5): $\binom nk$ of the $2^n$ paths
-	have $k$ up-moves.
+	\textbf{Binomial tree} (Finance example~7): $\binom nk$ of the $2^n$ paths
+	have $k$ up-moves. Pascal's rule (Exercise~2.5) arranges these numbers in
+	Pascal's triangle (after Finance example~7).
 
 	\textbf{Combinations with repetition (stars and bars).} $n$ identical
 	objects into $r$ distinct boxes: $\binom{n+r-1}{r-1}$ ways; if every box
@@ -855,7 +821,7 @@
 \fi
 
 %----------------------------------------------------------------------
-\subsection{Exercise 2.2 and Finance example 6 --- Dividing into groups}
+\subsection{Exercise 2.2 and Finance example 5 --- Dividing into groups}
 
 \begin{task}{Exercise 2.2}
 	(a) 12 people are divided into 3 committees of sizes 3, 4 and 5. How many
@@ -890,7 +856,7 @@
 	\end{remark}
 \fi
 
-\begin{fin}{Finance example 6 --- Rating bonds}
+\begin{fin}{Finance example 5 --- Rating bonds}
 	\context A \emph{credit rating} (e.g.\ AAA, A, BBB, \ldots, given by
 	agencies such as S\&P, Moody's, Fitch) summarizes how likely a borrower is
 	to repay. Here an analyst uses three classes A, B, C (best to worst).
@@ -928,7 +894,7 @@
 \ifsolutions
 	\soltitle
 	\idea (a) Binomial theorem with $a=3x^2$, $b=y$; the binomial coefficients
-	are row 5 of Pascal's triangle. (b) Multinomial theorem: each of the 4
+	are $\binom5k$: $1,5,10,10,5,1$. (b) Multinomial theorem: each of the 4
 	factors contributes one of the three terms. (c) Substitute $1$ for every
 	variable.
 
@@ -1012,9 +978,9 @@
 \fi
 
 %----------------------------------------------------------------------
-\subsection{Finance example 7 --- Allocating capital}
+\subsection{Finance example 6 --- Allocating capital}
 
-\begin{fin}{Finance example 7 --- Allocating capital}
+\begin{fin}{Finance example 6 --- Allocating capital}
 	\context \emph{Capital allocation} means deciding how much money goes into
 	each investment. Real opportunities often have a minimum ticket size (a
 	fund or a project accepts only investments above a threshold).
@@ -1097,20 +1063,19 @@
 	\end{itemize}
 	The same set was counted in two ways, so the two expressions are equal.
 	\begin{answer}
-		$\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$: each entry of Pascal's triangle
-		is the sum of the two entries above it.
+		$\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$
 	\end{answer}
 	\begin{remark}
-		Example: $\binom41+\binom42=4+6=10=\binom52$ (the highlighted entries in the
-		triangle at the start of Part~1). Counting proofs avoid long fraction
-		manipulations; see Extra practice 2.2 (AK08).
+		Example: $\binom41+\binom42=4+6=10=\binom52$. After the binomial tree
+		(Finance example~7), this rule builds Pascal's triangle. Counting proofs
+		avoid long fraction manipulations; see Extra practice 2.2 (AK08).
 	\end{remark}
 \fi
 
 %----------------------------------------------------------------------
-\subsection{Finance example 5 --- The binomial tree}
+\subsection{Finance example 7 --- The binomial tree}
 
-\begin{fin}{Finance example 5 --- The binomial tree}
+\begin{fin}{Finance example 7 --- The binomial tree}
 	\context In the \emph{binomial (Cox--Ross--Rubinstein) model} of option
 	pricing a stock price is modeled in discrete steps: in each step it is
 	multiplied either by an up-factor $u>1$ or by a down-factor $d<1$. An
@@ -1155,8 +1120,8 @@
 						}
 				}
 			\node[right,align=left,font=\small] at (6.6,0)
-			{number of paths reaching each node\\after 4 days: row 4 of
-				Pascal's triangle};
+			{number of paths reaching each node;\\each node is the sum of the\\two
+				feeding it (Pascal's rule)};
 		\end{tikzpicture}
 	\end{center}
 
@@ -1165,14 +1130,53 @@
 	\end{answer}
 	\begin{remark}
 		Grouping the 1024 paths by their final node gives
-		$\sum_{k=0}^{10}\binom{10}{k}=2^{10}$: row 10 of Pascal's triangle sums to
-		$2^{10}$. In the option-pricing model each path with $k$ up-moves gets
+		$\sum_{k=0}^{10}\binom{10}{k}=2^{10}$. In the option-pricing model each path with $k$ up-moves gets
 		weight $p^k(1-p)^{10-k}$, and $\binom{10}{k}$ tells how many such paths
 		there are --- this is the binomial distribution we will meet later.
 		In the figure every node is the sum of the two nodes feeding it: this is
 		Pascal's rule of Exercise~2.5, now read as ``paths into a node''.
 	\end{remark}
 \fi
+
+%----------------------------------------------------------------------
+\ifsolutions\else\clearpage\fi % keep the triangle box on one page
+\subsection{Pascal's triangle}
+
+\begin{key}{Pascal's triangle}
+	\begin{center}
+		\begin{tikzpicture}[every node/.style={font=\small}]
+			\foreach \n in {0,...,6} {
+					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
+					\foreach \k in {0,...,\n} {
+							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
+							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
+						}
+				}
+			\draw[gold,thick] (p4-1) circle (7.5pt);
+			\draw[gold,thick] (p4-2) circle (7.5pt);
+			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
+			\node[teal] at (p5-2) {10};
+			\draw[gold,thick,->] (p4-1)--(p5-2);
+			\draw[gold,thick,->] (p4-2)--(p5-2);
+			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
+			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
+		\end{tikzpicture}
+	\end{center}
+	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
+	holds $\binom nk$. \textbf{Pascal's rule}, just proved in Exercise~2.5
+	(AK07),
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1}, \]
+	builds the triangle: every entry is the sum of the two entries just above
+	it, e.g.\ $\binom41+\binom42=4+6=10=\binom52$.
+	\textbf{Readings of row $n$:}
+	(1) paths with $k$ up-moves among $n$ moves: the lattice paths of
+	Exercise~1.9 and the binomial tree of Finance example~7;
+	(2) the coefficients of $(a+b)^n$, e.g.\
+	$(a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5$ (row 5);
+	(3) the row sum is $2^n$, and each row is symmetric:
+	$\binom nk=\binom n{n-k}$.
+\end{key}
 
 %----------------------------------------------------------------------
 \subsection{Exercise 2.6 and Finance example 8 --- Writing down the sample space}
