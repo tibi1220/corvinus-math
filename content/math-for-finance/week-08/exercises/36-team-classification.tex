@@ -1,0 +1,31 @@
+% ---
+% title: Classifying a team
+% tags: counting, complement, sample-space
+% ---
+
+\begin{problem}
+	For each of the 15 members of a sports team we record the type of job
+	(blue-collar or white-collar) and the political affiliation (Republican,
+	Democrat or Independent). How many outcomes are (a) in the sample space?
+	(b) in the event ``at least one member is blue-collar''? (c) in the event
+	``no member is Independent''?
+\end{problem}
+
+\begin{solution}
+	\idea Each member gets one of $2\cdot3=6$ classifications, and the outcome
+	lists the classification of each of the 15 (distinct) members.
+	\step{(a)} $6^{15}=470\,184\,984\,576$.
+	\step{(b)} Complement: ``nobody is blue-collar'' means every member is
+	white-collar with one of 3 affiliations: $3^{15}=14\,348\,907$. So
+	$6^{15}-3^{15}=470\,170\,635\,669$.
+	\step{(c)} Each member has $2$ job types and $2$ affiliations (R or D):
+	$4^{15}=1\,073\,741\,824$.
+	\begin{answer}
+		(a) $6^{15}$ \quad (b) $6^{15}-3^{15}$ \quad (c) $4^{15}$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake in (b):} $15\cdot6^{14}$ (``choose the blue-collar
+		member, the others are free''): outcomes with several blue-collar members
+		are counted many times. ``At least one'' $\to$ complement.
+	\end{remark}
+\end{solution}

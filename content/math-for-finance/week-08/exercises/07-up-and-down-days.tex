@@ -1,0 +1,35 @@
+% ---
+% title: Up and down days
+% tags: finance, permutations-with-repetition, combinations
+% ---
+
+\begin{problem}
+	\begin{context}
+		Traders often summarize a stock by its daily moves: an
+		\emph{up-day} (price closes higher) or a \emph{down-day}. The order of the
+		moves describes the price path.
+	\end{context}
+	A trader had 7 up-days and 5 down-days in a 12-day period. How many
+	different up/down sequences are possible?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol A word of 7 U's and 5 D's: $\frac{12!}{7!\,5!}$. Equivalently,
+	choose which 5 of the 12 days were down: $\binom{12}{5} = 792$.
+\end{slides}
+
+\begin{solution}
+	\idea A sequence is a 12-letter word with 7 U's and 5 D's: a permutation
+	with repetition. Equivalently: choose which days were down.
+
+	\step{Permutation view.} $\dfrac{12!}{7!\,5!}$.
+	\step{Combination view.} Choose the 5 down-days among the 12 days:
+	\[ \binom{12}{5}=\frac{12\cdot11\cdot10\cdot9\cdot8}{5!}=\frac{95\,040}{120}=792. \]
+	The two expressions are the same number.
+	\begin{answer}
+		$\binom{12}{5}=\dfrac{12!}{7!\,5!}=792$
+	\end{answer}
+\end{solution}

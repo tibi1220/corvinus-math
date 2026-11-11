@@ -1,0 +1,73 @@
+% ---
+% title: Expansions
+% tags: binomial-theorem, multinomial
+% ---
+
+\begin{problem}
+	(a) Expand $(3x^2+y)^5$. \
+	(b) Find the coefficient of $x_1x_2^2x_3$ in $(x_1+2x_2+3x_3)^4$. \
+	(c) What is the sum of all coefficients of the expansion in (b)?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	(a) Binomial theorem with $a=3x^2$, $b=y$: the $k$-th term is
+	$\binom5k3^kx^{2k}y^{5-k}$. The coefficients $\binom5k$ are
+	$1,5,10,10,5,1$; multiply by $3^k=1,3,9,27,81,243$:
+	\[ 243x^{10}+405x^8y+270x^6y^2+90x^4y^3+15x^2y^4+y^5. \]
+	(b) We need $x_1$ once, $(2x_2)$ twice, $(3x_3)$ once out of the 4 factors:
+	$\binom{4}{1,2,1}\cdot 1\cdot 2^2\cdot 3 = \frac{4!}{1!\,2!\,1!}\cdot 12
+		= 12\cdot 12 = 144$.\\[1mm]
+	(c) The sum of the coefficients is the value at $x_1=x_2=x_3=1$:
+	$(1+2+3)^4 = 1296$.
+	\pause
+	\begin{alertblock}{Useful identities (Exercise~\exref{binomial-sums}): substitute into the binomial theorem}
+		$a=b=1$: $\sum_k\binom nk = 2^n$; \quad $a=2,b=1$:
+		$\sum_k\binom nk 2^k = 3^n$; \quad $a=-1,b=1$:
+		$\sum_k(-1)^k\binom nk = 0$.
+	\end{alertblock}
+\end{slides}
+
+\begin{solution}
+	\idea (a) Binomial theorem with $a=3x^2$, $b=y$; the binomial coefficients
+	are $\binom5k$: $1,5,10,10,5,1$. (b) Multinomial theorem: each of the 4
+	factors contributes one of the three terms. (c) Substitute $1$ for every
+	variable.
+
+	\step{(a)} The term with $k$ copies of $a=3x^2$ is
+	\[ \binom5k(3x^2)^ky^{5-k}=\binom5k3^kx^{2k}y^{5-k}. \]
+	\begin{center}
+		\begin{tabular}{ccccc}
+			\toprule $k$ & $\binom5k$ & $3^k$ & coefficient & term        \\\midrule
+			5            & 1          & 243   & 243         & $243x^{10}$ \\
+			4            & 5          & 81    & 405         & $405x^8y$   \\
+			3            & 10         & 27    & 270         & $270x^6y^2$ \\
+			2            & 10         & 9     & 90          & $90x^4y^3$  \\
+			1            & 5          & 3     & 15          & $15x^2y^4$  \\
+			0            & 1          & 1     & 1           & $y^5$       \\\bottomrule
+		\end{tabular}
+	\end{center}
+	\[ (3x^2+y)^5=243x^{10}+405x^8y+270x^6y^2+90x^4y^3+15x^2y^4+y^5. \]
+
+	\step{(b)} To get $x_1x_2^2x_3$ we must pick $x_1$ from one factor, $2x_2$
+	from two factors and $3x_3$ from one factor. The number of ways to decide
+	which factor gives which term is
+	\[ \binom{4}{1,2,1}=\frac{4!}{1!\,2!\,1!}=12. \]
+	Each such choice contributes $1\cdot2^2\cdot3=12$. So the coefficient is
+	$12\cdot12=144$.
+
+	\step{(c)} The sum of all coefficients is the value of the polynomial at
+	$x_1=x_2=x_3=1$: $(1+2+3)^4=6^4=1296$.
+	\begin{answer}
+		(a) $243x^{10}+405x^8y+270x^6y^2+90x^4y^3+15x^2y^4+y^5$ \quad
+		(b) $144$ \quad (c) $1296$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake in (a):} forgetting to raise the $3$ to the power
+		$k$ (writing $5\cdot3x^8y$ instead of $5\cdot81x^8y$). \textbf{In (b):}
+		forgetting the coefficients $2^2$ and $3$ of the variables.
+	\end{remark}
+\end{solution}

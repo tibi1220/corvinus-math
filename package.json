@@ -7,7 +7,7 @@
     "sync": "node scripts/sync-content.mjs",
     "content": "node scripts/build-content.mjs",
     "dev": "node scripts/dev.mjs",
-    "build": "node scripts/build-content.mjs && next build",
+    "build": "node scripts/build-content.mjs --production && next build",
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

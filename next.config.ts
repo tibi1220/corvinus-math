@@ -4,8 +4,16 @@ import type { NextConfig } from 'next';
 // would serve it under a path instead; nothing sets it now.
 const basePath = process.env.PAGES_BASE_PATH ?? '';
 
+// Pages named page.dev.tsx exist only in development (next dev): the
+// course-wide Exercises page, while a single week is published (see
+// showCourseExercises in src/lib/site.ts).
+const development = process.env.NODE_ENV === 'development';
+
 const nextConfig: NextConfig = {
   output: 'export',
+  pageExtensions: development
+    ? ['dev.tsx', 'tsx', 'ts', 'jsx', 'js']
+    : ['tsx', 'ts', 'jsx', 'js'],
   trailingSlash: true,
   basePath,
   // next/link applies basePath by itself; hand-built URLs (static files,

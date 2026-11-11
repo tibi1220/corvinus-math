@@ -1,0 +1,41 @@
+% ---
+% title: Identical objects: stars and bars
+% tags: stars-and-bars, combinations
+% ---
+
+\begin{problem}
+	8 identical blackboards are divided among 4 schools. (a) How many divisions
+	are possible? (b) How many, if each school gets at least one?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	(a) Encode a division as 8 stars and 3 bars (bars separate the 4 schools):
+	\ \texttt{**|***||***} \ means $(2,3,0,3)$. A code is fixed by choosing
+	the 3 bar positions among the $11$ symbols:
+	\[ \binom{11}{3} = 165. \]
+	(b) At least one each: first give every school one board, then divide the
+	remaining $4$ freely: $\binom{4+3}{3}=\binom{7}{3} = 35$.
+\end{slides}
+
+\begin{solution}
+	\idea When objects are identical, only the \emph{numbers} matter: how many
+	boards each school gets, not which boards.
+
+	\step{(a) Stars and bars.} Write the 8 boards as stars and separate the 4
+	schools by 3 bars. For example \texttt{**|***||***} means school~1 gets 2,
+	school~2 gets 3, school~3 gets 0, school~4 gets 3. Every division gives
+	exactly one such code of $8+3=11$ symbols and vice versa, and a code is
+	determined by the positions of the 3 bars among the 11 places:
+	\[ \binom{11}{3}=165. \]
+
+	\step{(b) At least one each.} Give every school one board first. The
+	remaining $8-4=4$ boards are divided freely: 4 stars and 3 bars,
+	$\binom{7}{3}=35$.
+	\begin{answer}
+		(a) $\binom{11}3=165$ \qquad (b) $\binom73=35$
+	\end{answer}
+\end{solution}

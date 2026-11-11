@@ -59,7 +59,8 @@ export default function Home() {
       <header className='mb-4'>
         <h2 className='text-lg font-semibold'>Choose a course</h2>
         <p className='mt-1 text-zinc-600 dark:text-zinc-400'>
-          Slides, exercise sheets and detailed solutions, week by week.
+          Slides, study guides and exercises with detailed solutions, week by
+          week.
         </p>
       </header>
       <ul className='grid gap-3 sm:grid-cols-2'>

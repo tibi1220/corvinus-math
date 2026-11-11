@@ -1,0 +1,79 @@
+% ---
+% title: Choosing a portfolio
+% tags: finance, combinations, complement
+% ---
+
+\begin{problem}
+	\begin{context}
+		A \emph{portfolio} is a collection of investments. Holding several
+		stocks instead of one (\emph{diversification}) reduces risk. Here the
+		portfolio is equally weighted, so only the \emph{set} of stocks matters.
+	\end{context}
+	An index has 30 stocks, 8 of them technology stocks. An analyst picks 5
+	stocks. (a) How many portfolios are possible? (b) How many contain at least
+	one tech stock? (c) How many contain exactly two tech stocks?
+	(d) \emph{Lottery.} The Hungarian \emph{ötöslottó} draws 5 numbers out of
+	90. How many different tickets are there?
+\end{problem}
+
+\begin{slideproblem}
+	An index has 30 stocks, 8 of them technology stocks. An analyst
+	picks 5 stocks (an equally weighted portfolio; order does not matter).
+	(a) How many portfolios are possible?
+	(b) How many contain at least one tech stock?
+	(c) How many contain exactly two tech stocks?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	\begin{enumerate}
+		\item[(a)] Unordered, no repetition: $\binom{30}{5} =
+			      \frac{30\cdot29\cdot28\cdot27\cdot26}{5!} = 142\,506$.
+		\item[(b)] ``At least one'' $\to$ complement ``none'': all 5 from the 22
+		      non-tech stocks, $\binom{22}{5}=26\,334$. So
+		      $142\,506-26\,334 = 116\,172$.
+		\item[(c)] Choose the tech part and the non-tech part separately, then
+		      multiply: $\binom82\binom{22}{3} = 28\cdot1540 = 43\,120$.
+	\end{enumerate}
+	\pause
+	\textbf{Lottery:} the Hungarian \emph{ötöslottó} draws 5 numbers out of 90,
+	order irrelevant: $\binom{90}{5} = 43\,949\,268$ tickets --- one ticket wins
+	the jackpot in 1 of about 44 million cases.
+\end{slides}
+
+\begin{solution}
+	{\emergencystretch=1.5em\idea Unordered selections without repetition: binomial coefficients. ``At
+	least one'' $\to$ complement ``none''. ``Exactly two'' $\to$ choose the two
+	groups separately.\par}
+
+	\step{(a)}
+	\[ \binom{30}{5}=\frac{30\cdot29\cdot28\cdot27\cdot26}{5\cdot4\cdot3\cdot2\cdot1}
+		=\frac{17\,100\,720}{120}=142\,506. \]
+
+	\step{(b)} The opposite of ``at least one tech stock'' is ``no tech stock'':
+	all 5 stocks come from the $30-8=22$ non-tech stocks, $\binom{22}{5}=26\,334$.
+	Hence $142\,506-26\,334=116\,172$.
+
+	\step{(c)} Choose 2 of the 8 tech stocks and 3 of the 22 others:
+	\[ \binom82\binom{22}{3}=28\cdot1540=43\,120. \]
+
+	\step{(d)} 5 numbers out of 90, order irrelevant:
+	$\binom{90}{5}=43\,949\,268$.
+
+	\begin{answer}
+		(a) $142\,506$ \quad (b) $116\,172$ \quad (c) $43\,120$ \quad
+		(d) $43\,949\,268$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake in (b):} $8\cdot\binom{29}{4}$ (``choose one tech
+		stock, then any 4 others''). This counts a portfolio with two tech stocks
+		twice, once for each of them. Use the complement.\\
+		\textbf{Lottery:} a single ticket wins the jackpot in 1 of about 44 million
+		equally likely draws. Only part of the ticket revenue is paid back as
+		prizes, so on average a ticket loses money (negative expected gain) --- we
+		will compute such numbers in later weeks.
+	\end{remark}
+\end{solution}

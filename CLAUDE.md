@@ -8,6 +8,11 @@
   audio/*-spoken.txt). Edit them here, never in ../MATH-FOR-FINANCE/ (the old
   working folder; `pnpm sync` only imports new weeks from it and never
   overwrites).
+- Each exercise is one file, content/<course>/week-NN/exercises/NN-slug.tex
+  (format: exercises/macros.tex). Exercises are numbered by week (8.1, ...),
+  finance examples are exercises tagged `finance` and share the numbering. Refer
+  to exercises with Exercise~\exref{slug}, never with a typed number. Exercises
+  never mention the AK exercise collection.
 - When script.tex changes, update audio/script-spoken.txt and
   audio/script-print-spoken.txt to match. Regenerate audio only when asked.
 - Only the documents listed in src/lib/catalog.ts are published. The lecturer's

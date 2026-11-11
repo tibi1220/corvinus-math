@@ -3,19 +3,26 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { Breadcrumbs } from '@/components/breadcrumbs';
+import { ExerciseDownloads } from '@/components/exercise-downloads';
 import { PageHeader } from '@/components/page-header';
 import {
   courseHref,
   courses,
   documentHref,
-  downloadHref,
+  documentDownload,
+  downloadLink,
   fileSize,
   getCourse,
   getWeek,
   isPublished,
+  pages,
+  weekExerciseDownloads,
+  weekExercises,
+  weekHeading,
   weekHref,
   weekLabel,
 } from '@/lib/content';
+import { exerciseAnchor } from '@/lib/exercises';
 import { pageMetadata } from '@/lib/metadata';
 
 type Params = PageProps<'/[course]/[week]'>['params'];
@@ -46,8 +53,8 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { course, week } = await load(params);
   return pageMetadata({
-    title: `${weekLabel(week)}: ${week.title} – ${course.name}`,
-    description: `${course.name}, ${weekLabel(week)}: ${week.topics}. Slides, exercises and detailed solutions, to read online or download as PDF.`,
+    title: `${weekHeading(week)} – ${course.name}`,
+    description: `${course.name}, ${weekHeading(week)}. Slides, a study guide and exercises with detailed solutions, to read online or download as PDF.`,
     path: weekHref(course, week),
   });
 }
@@ -57,6 +64,9 @@ const buttonClass =
 
 export default async function WeekPage({ params }: { params: Params }) {
   const { course, week } = await load(params);
+  // The exercises are listed one by one below the documents.
+  const exercises = weekExercises(week);
+  const documents = pages(week).filter(d => d.kind !== 'exercises');
 
   return (
     <>
@@ -68,12 +78,13 @@ export default async function WeekPage({ params }: { params: Params }) {
         ]}
       />
       <PageHeader
-        title={`${weekLabel(week)}: ${week.title}`}
+        title={weekHeading(week)}
         subtitle={week.topics}
       />
 
+      <h2 className='mb-3 text-lg font-semibold'>Documents</h2>
       <ul className='grid gap-3'>
-        {week.documents.map(document => (
+        {documents.map(document => (
           <li
             key={document.slug}
             className='flex flex-col gap-3 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-3 sm:flex-row sm:items-center sm:justify-between'
@@ -100,8 +111,7 @@ export default async function WeekPage({ params }: { params: Params }) {
                 {document.kind === 'slides' ? 'View online' : 'Read online'}
               </Link>
               <a
-                href={downloadHref(course, week, document)}
-                download
+                {...downloadLink(documentDownload(course, week, document))}
                 className={buttonClass}
               >
                 <Download
@@ -114,6 +124,45 @@ export default async function WeekPage({ params }: { params: Params }) {
           </li>
         ))}
       </ul>
+
+      {exercises?.exercises && exercises.exercises.length > 0 && (
+        <section className='mt-10'>
+          <div className='mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2'>
+            <h2 className='text-lg font-semibold'>Exercises</h2>
+            <div className='flex flex-wrap gap-2'>
+              <Link
+                href={documentHref(course, week, exercises)}
+                className={buttonClass}
+              >
+                Read online
+              </Link>
+              <ExerciseDownloads
+                downloads={weekExerciseDownloads(course, week)}
+              />
+            </div>
+          </div>
+          <ol className='grid gap-x-6 sm:grid-cols-2'>
+            {exercises.exercises.map(exercise => (
+              <li key={exercise.slug}>
+                <Link
+                  href={`${documentHref(course, week, exercises)}#${exerciseAnchor(exercise)}`}
+                  className='flex items-baseline gap-3 rounded-md px-2 py-1.5 -mx-2 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                >
+                  <span className='w-9 shrink-0 tabular-nums text-sm text-zinc-400 dark:text-zinc-500'>
+                    {exercise.number}
+                  </span>
+                  <span className='min-w-0 flex-1'>{exercise.title}</span>
+                  {exercise.tags.includes('finance') && (
+                    <span className='rounded-full bg-teal-700/10 px-2 py-0.5 text-xs font-medium text-teal-800 dark:bg-teal-400/10 dark:text-teal-300'>
+                      finance
+                    </span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
     </>
   );
 }

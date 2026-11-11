@@ -1,0 +1,275 @@
+% Body of the Week 8 study guide (study-guide.tex): key formulas, and every
+% exercise with its detailed solution. The exercises are in exercises/ (one
+% file each); \studyexercise prints the heading, the statement and the
+% solution.
+
+\maketitle
+
+\tableofcontents
+\clearpage
+
+%======================================================================
+\section{Part 1: Permutations and combinations}
+%======================================================================
+
+\subsection*{Key formulas}
+\addcontentsline{toc}{subsection}{Key formulas}
+
+\begin{key}{Counting toolbox}
+	\textbf{Basic principle of counting.} If experiment~1 has $m$ outcomes and,
+	for each of them, experiment~2 has $n$ outcomes, then together they have
+	$m\cdot n$ outcomes. For $r$ experiments: $n_1n_2\cdots n_r$.
+
+	\textbf{Permutations (order matters).} $n$ distinct objects in a row:
+	$n! = n(n-1)\cdots 2\cdot1$ (and $0!=1$). Ordered selection of $k$ out of
+	$n$ (no repetition):
+	\[ \frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1). \]
+
+	\textbf{Combinations (order does not matter).} Selection of $k$ out of $n$
+	as a set (no repetition):
+	\[ \binom nk=\frac{n!}{k!\,(n-k)!}=\frac{n!/(n-k)!}{k!}: \]
+	each set comes in $k!$ orders, so it was counted $k!$ times among the
+	ordered selections.
+
+	\textbf{Also used:} permutations with repetition:
+	$n$ objects, $n_i$ identical of kind $i$ ($n_1+\dots+n_r=n$), give
+	\[ \frac{n!}{n_1!\,n_2!\cdots n_r!} \]
+	different rows.
+
+	% \textbf{Two questions to ask every time.} Does the order matter? Can an
+	% element be used more than once?
+	% \begin{center}
+	% 	\begin{tabular}{lcc}
+	% 		\toprule
+	% 		                   & order matters & order does not matter       \\\midrule
+	% 		no repetition      & $n!/(n-k)!$   & $\binom nk$                 \\
+	% 		repetition allowed & $n^k$         & $\binom{n+k-1}{k}$ (Part 2) \\\bottomrule
+	% 	\end{tabular}
+	% \end{center}
+
+	\textbf{Tricks.} ``Must be together'' $\to$ glue into a block, permute the
+	blocks, then permute inside each block. ``Not together'' or ``at least
+	one'' $\to$ complement: $\#\text{good}=\#\text{all}-\#\text{bad}$.
+\end{key}
+
+%----------------------------------------------------------------------
+\studyexercise{license-plates}
+
+\studyexercise{pin-codes}
+
+\studyexercise{couples-at-a-concert}
+
+\studyexercise{bus-queue}
+
+\studyexercise{letter-arrangements}
+
+\studyexercise{eight-digit-numbers}
+
+\studyexercise{up-and-down-days}
+
+\studyexercise{awards}
+
+\studyexercise{ranking-funds}
+
+\studyexercise{committees}
+
+\studyexercise{portfolio}
+
+\studyexercise{dance-class}
+
+\studyexercise{lattice-paths}
+
+%----------------------------------------------------------------------
+\subsection*{Extra practice for Part 1}
+\addcontentsline{toc}{subsection}{Extra practice for Part 1}
+
+These exercises are for self-study.
+
+\studyexercise{boys-and-girls}
+
+\studyexercise{eight-in-a-row}
+
+\studyexercise{selling-books}
+
+\studyexercise{inviting-friends}
+
+\clearpage
+%======================================================================
+\section{Part 2: Multinomial coefficients, sample space, events}
+%======================================================================
+
+\subsection*{Key formulas}
+\addcontentsline{toc}{subsection}{Key formulas}
+
+\begin{key}{Multinomial coefficients, expansions, stars and bars}
+	\textbf{Multinomial coefficient.} The number of ways to divide $n$ distinct
+	objects into $r$ labeled groups of sizes $n_1,\dots,n_r$
+	($n_1+\dots+n_r=n$):
+	\[ \binom{n}{n_1,\dots,n_r}=\frac{n!}{n_1!\cdots n_r!}
+		=\binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+	\textbf{Binomial and multinomial theorems.}
+	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
+		(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+		x_1^{n_1}\cdots x_r^{n_r}. \]
+	\textbf{Binomial tree} (Exercise~\exref{binomial-tree}): $\binom nk$ of the
+	$2^n$ paths have $k$ up-moves. Pascal's rule
+	(Exercise~\exref{pascals-rule}) arranges these numbers in Pascal's triangle
+	(after Exercise~\exref{binomial-tree}).
+
+	\textbf{Combinations with repetition (stars and bars).} $n$ identical
+	objects into $r$ distinct boxes: $\binom{n+r-1}{r-1}$ ways; if every box
+	must be nonempty: $\binom{n-1}{r-1}$. Equivalently, choosing $k$ elements
+	out of $n$ with repetition, order irrelevant: $\binom{n+k-1}{k}$.
+\end{key}
+
+\begin{key}{Sample space, events and De Morgan's laws}
+	\textbf{Sample space} $\Om$: the set of all possible outcomes of an
+	experiment. An \textbf{event} is a subset $E\subseteq\Om$; it
+	\emph{occurs} if the outcome lies in $E$.
+	$E\cup F$ = ``$E$ or $F$'', \ $E\cap F=EF$ = ``$E$ and $F$'', \ $E^c$ =
+	``not $E$'', \ $E\subseteq F$ = ``$E$ implies $F$''. $E$ and $F$ are
+	\textbf{mutually exclusive} if $EF=\emptyset$.
+	\begin{center}
+		\setlength{\tabcolsep}{6mm}
+		\begin{tabular}{ccc}
+			\venn{\fill[teal!35] (0,0) circle (.85);}
+			          & \venn{\fill[teal!35] (1,0) circle (.85);}
+			          & \venn{\fill[teal!35] (0,0) circle (.85); \fill[white] (1,0) circle (.85);}                       \\
+			$E$       & $F$                                                                        & $E\setminus F=EF^c$ \\[2mm]
+			\venn{\fill[teal!35] (0,0) circle (.85); \fill[teal!35] (1,0) circle (.85);}
+			          & \venn{\begin{scope}\clip (0,0) circle (.85);
+					            \fill[teal!35] (1,0) circle (.85);\end{scope}}
+			          & \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}                                        \\
+			$E\cup F$ & $EF$                                                                       & $E^c$
+		\end{tabular}
+	\end{center}
+
+	\textbf{De Morgan's laws for two events.}
+	\[ \boxed{(E\cup F)^c=E^c\cap F^c}\qquad\qquad
+		\boxed{(E\cap F)^c=E^c\cup F^c} \]
+	In words: ``not ($E$ or $F$)'' = ``neither $E$ nor $F$''; ``not (both $E$
+	and $F$)'' = ``at least one of them fails''.
+	\begin{center}
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{ccccc}
+			\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+			                  & $\cap$ &
+			\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+			                  & $=$    &
+			\venn{\shadeall{navy!35}\fill[white] (0,0) circle (.85);
+				\fill[white] (1,0) circle (.85);}       \\
+			\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+			\scriptsize outside both $=(E\cup F)^c$                       \\[1mm]
+			\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+			                  & $\cup$ &
+			\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+			                  & $=$    &
+			\venn{\shadeall{navy!35}\begin{scope}\clip (0,0) circle (.85);
+					\fill[white] (1,0) circle (.85);\end{scope}} \\
+			\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+			\scriptsize all but the lens $=(E\cap F)^c$
+		\end{tabular}
+	\end{center}
+	Shade $E^c$ and $F^c$: shaded \emph{twice} $=$ intersection; shaded
+	\emph{at least once} $=$ union.
+
+	\textbf{General form ($n$ events).}
+	\[ \Big(\bigcup_{i=1}^nE_i\Big)^c=\bigcap_{i=1}^nE_i^c,\qquad
+		\Big(\bigcap_{i=1}^nE_i\Big)^c=\bigcup_{i=1}^nE_i^c. \]
+	Next week we use exactly this: $P(A^cB^c)=1-P(A\cup B)$.
+
+	\textbf{Inclusion--exclusion.} $|E\cup F|=|E|+|F|-|EF|$, and
+	\[ |E\cup F\cup G|=|E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|. \]
+	Venn diagrams with three sets are filled \emph{from the inside out}.
+\end{key}
+
+%----------------------------------------------------------------------
+\studyexercise{bridge}
+
+\studyexercise{dividing-into-groups}
+
+\studyexercise{rating-bonds}
+
+\studyexercise{expansions}
+
+\studyexercise{stars-and-bars}
+
+\studyexercise{identical-dice}
+
+\studyexercise{allocating-capital}
+
+\studyexercise{pascals-rule}
+
+\studyexercise{binomial-tree}
+
+%----------------------------------------------------------------------
+\subsection*{Pascal's triangle}
+\addcontentsline{toc}{subsection}{Pascal's triangle}
+
+\begin{key}{Pascal's triangle}
+	\begin{center}
+		\begin{tikzpicture}[every node/.style={font=\small}]
+			\foreach \n in {0,...,6} {
+					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
+					\foreach \k in {0,...,\n} {
+							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
+							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
+						}
+				}
+			\draw[gold,thick] (p4-1) circle (7.5pt);
+			\draw[gold,thick] (p4-2) circle (7.5pt);
+			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
+			\node[teal] at (p5-2) {10};
+			\draw[gold,thick,->] (p4-1)--(p5-2);
+			\draw[gold,thick,->] (p4-2)--(p5-2);
+			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
+			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
+		\end{tikzpicture}
+	\end{center}
+	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
+	holds $\binom nk$. \textbf{Pascal's rule}, just proved in
+	Exercise~\exref{pascals-rule},
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1}, \]
+	builds the triangle: every entry is the sum of the two entries just above
+	it, e.g.\
+	\[ \binom41+\binom42=4+6=10=\binom52. \]
+	\textbf{Readings of row $n$:}
+	(1) paths with $k$ up-moves among $n$ moves: the lattice paths of
+	Exercise~\exref{lattice-paths} and the binomial tree of
+	Exercise~\exref{binomial-tree};
+	(2) the coefficients of $(a+b)^n$, e.g.\
+	\[ (a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5 \]
+	(row 5);
+	(3) the row sum is $2^n$, and each row is symmetric:
+	$\binom nk=\binom n{n-k}$.
+\end{key}
+
+%----------------------------------------------------------------------
+\studyexercise{sample-space}
+
+\studyexercise{stock-path-events}
+
+\studyexercise{two-dice}
+
+\studyexercise{credit-basket}
+
+\studyexercise{newspapers}
+
+\studyexercise{bank-products}
+
+%----------------------------------------------------------------------
+\subsection*{Extra practice for Part 2}
+\addcontentsline{toc}{subsection}{Extra practice for Part 2}
+
+These exercises are for self-study.
+
+\studyexercise{binomial-sums}
+
+\studyexercise{vandermonde}
+
+\studyexercise{coin-game}
+
+\studyexercise{team-classification}
+
+\studyexercise{system-reliability}

@@ -1,0 +1,33 @@
+% ---
+% title: Vandermonde's identity
+% tags: combinatorial-proof, combinations
+% ---
+
+\begin{problem}
+	Prove Vandermonde's identity
+	\[ \sum_{j=0}^k\binom nj\binom m{k-j}=\binom{n+m}k \]
+	by a counting argument (apples and pears).
+\end{problem}
+
+\begin{solution}
+	\idea Count the same set in two ways, as in Exercise~\exref{pascals-rule}.
+	\step{Setting.} A bowl contains $n$ different apples and $m$ different
+	pears. Count the ways to choose $k$ fruits.
+	\step{Directly.} $k$ out of $n+m$ fruits: $\binom{n+m}k$.
+	\step{By the number of apples.} Let $j$ be the number of apples chosen
+	($j=0,1,\dots,k$). Then $k-j$ pears are chosen: $\binom nj\binom m{k-j}$
+	ways. The cases $j=0,\dots,k$ are disjoint and cover all choices, so the
+	total is
+	\[ \sum_{j=0}^k\binom nj\binom m{k-j}. \]
+	\begin{answer}
+		Both expressions count the $k$-element selections from $n+m$ fruits,
+		hence
+		\[ \sum_{j=0}^k\binom nj\binom m{k-j}=\binom{n+m}k. \]
+	\end{answer}
+	\begin{remark}
+		Terms with $j>n$ or $k-j>m$ are $0$ by convention, so the identity holds
+		for all $k$. Check with $n=4$, $m=5$, $k=3$:
+		\[ 1\cdot10+4\cdot10+6\cdot5+4\cdot1=84=\binom93. \]
+		Pascal's rule (Exercise~\exref{pascals-rule}) is the special case $m=1$.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,43 @@
+% ---
+% title: PIN codes
+% tags: finance, counting, permutations
+% ---
+
+\begin{problem}
+	\begin{context}
+		A bank card is protected by a 4-digit PIN; after three wrong attempts the
+		card is blocked. The number of possible PINs measures how hard it is to
+		guess one.
+	\end{context}
+	A bank card PIN has 4 digits. (a) How many PINs are there? (b) How many
+	have no repeated digit? (c) A thief makes three different random guesses.
+	Which fraction of all PINs does he cover?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) $10^4=10\,000$. \ (b)
+	\[ 10\cdot9\cdot8\cdot7=\frac{10!}{6!}=5040. \]
+	(c) $3/10\,000$ --- next week this is a probability.
+\end{slides}
+
+\begin{solution}
+	\idea A PIN is an ordered string of 4 digits (1234 and 4321 are different
+	PINs), so order matters.
+
+	\step{(a)} Each of the 4 places has 10 choices: $10^4=10\,000$ (from 0000 to
+	9999).
+
+	\step{(b)} Each digit used removes one option for the next place:
+	\[ 10\cdot9\cdot8\cdot7=\frac{10!}{6!}=5040. \]
+
+	\step{(c)} Three different guesses are 3 of the $10\,000$ equally possible
+	PINs, so they cover a fraction $3/10\,000 = 0.0003$. Next week we will call
+	this a probability.
+
+	\begin{answer}
+		(a) $10\,000$ \qquad (b) $5040$ \qquad (c) $3/10\,000=0.03\%$
+	\end{answer}
+\end{solution}

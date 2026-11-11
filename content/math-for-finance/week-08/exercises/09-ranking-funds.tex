@@ -1,0 +1,42 @@
+% ---
+% title: Ranking mutual funds
+% tags: finance, permutations, combinations
+% ---
+
+\begin{problem}
+	\begin{context}
+		Rating agencies and financial newspapers rank investment funds by
+		performance; being on the ``podium'' brings new investors to a fund.
+	\end{context}
+	10 mutual funds compete. How many possible results are there if a rating
+	agency publishes (a) the gold--silver--bronze podium; (b) only the
+	unordered ``top three''; (c) the full league table (ranking of all 10)?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Order matters, no fund twice: $10\cdot 9\cdot 8 = 720$.
+	\ (b) Each top three is a podium in $3!$ orders: $720/3! = \binom{10}{3}=120$.
+	\ (c) $10! = 3\,628\,800$.
+\end{slides}
+
+\begin{solution}
+	\idea Ask the two questions. A podium is ordered (gold $\ne$ silver) and no
+	fund can win two medals; a ``top three'' list is a set; a league table orders
+	all 10 funds.
+	\step{(a)} Gold: 10 possible funds; silver: 9 (any fund except the gold
+	medallist); bronze: 8. Order matters, no fund twice:
+	\[ 10\cdot9\cdot8=\frac{10!}{7!}=720. \]
+	\step{(b)} Each unordered top three, e.g.\ $\{X,Y,Z\}$, appears among the
+	podiums once for every order of its three members, i.e.\ $3!=6$ times:
+	\[ XYZ,\quad XZY,\quad YXZ,\quad YZX,\quad ZXY,\quad ZYX. \]
+	Hence
+	$720/6=\binom{10}{3}=120$.
+	\step{(c)} All 10 funds in order: 10 choices for first place, 9 for second,
+	\ldots, 1 for last: $10! = 3\,628\,800$.
+	\begin{answer}
+		(a) $720$ \quad (b) $120$ \quad (c) $3\,628\,800$
+	\end{answer}
+\end{solution}

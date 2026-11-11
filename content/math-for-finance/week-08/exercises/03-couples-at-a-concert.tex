@@ -1,0 +1,71 @@
+% ---
+% title: Five couples at a concert
+% tags: counting, permutations
+% ---
+
+\begin{problem}
+	Five married couples have 10 seats next to each other in one row. In how
+	many ways can they sit (a) with no restriction? (b) if couples sit
+	together? (c) if the men sit together and the women sit together? (d) if
+	men and women alternate?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	\begin{enumerate}\setlength{\itemsep}{0pt}
+		\item[(a)] 10 distinct people on 10 seats: $10! = 3\,628\,800$.
+		\item[(b)] Glue each couple into a block $\Rightarrow$ 5 blocks:
+		      $5!=120$ orders. Inside each block 2 orders, independently for the
+		      5 couples: $2^5=32$. \ Total $120\cdot 32 = 3840$.
+		\item[(c)] Two blocks (men, women): $2$ orders (men left or women
+		      left); men inside $5!$, women inside $5!$:
+		      $2\cdot 120\cdot 120 = 28\,800$.
+		\item[(d)] Pattern MWMW\ldots\ or WMWM\ldots: 2 choices. Then the men
+		      fill their 5 seats in $5!$ ways, the women in $5!$ ways:
+		      $2\cdot 5!\cdot 5! = 28\,800$.
+	\end{enumerate}
+	\textbf{Trick:} ``together'' $\Rightarrow$ glue into a block, permute the
+	blocks, then permute inside each block.
+\end{slides}
+
+\begin{solution}
+	\idea The 10 people are all different and the seats are in a row, so we count
+	permutations. Restrictions of the type ``sit together'' are handled by
+	\emph{gluing} people into blocks.
+
+	\step{(a)} Ten different people in ten seats: the first seat has 10 choices,
+	the second 9, \ldots, the last 1:
+	$10! = 3\,628\,800$.
+
+	\step{(b) Couples together.} Glue each couple into one block. We now arrange
+	5 blocks in a row: $5!=120$ orders. Inside each block, the husband can be on
+	the left or on the right: 2 orders. This choice is made for each of the 5
+	couples independently, giving $2^5=32$. By the counting principle:
+	\[ 5!\cdot2^5 = 120\cdot32 = 3840. \]
+
+	\step{(c) Men together, women together.} There are two blocks: the men's
+	block and the women's block. They can be ordered in $2$ ways (men on the left
+	or women on the left). Inside the men's block the 5 men can be arranged in
+	$5!$ ways, and the same for the women:
+	\[ 2\cdot5!\cdot5! = 2\cdot120\cdot120 = 28\,800. \]
+
+	\step{(d) Alternating.} First decide the seat pattern: MWMWMWMWMW or
+	WMWMWMWMWM, 2 patterns. For a fixed pattern the 5 men fill the 5 ``M'' seats
+	in $5!$ ways and the 5 women fill the ``W'' seats in $5!$ ways:
+	\[ 2\cdot5!\cdot5! = 28\,800. \]
+
+	\begin{answer}
+		(a) $10!=3\,628\,800$ \quad (b) $5!\cdot2^5=3840$ \quad
+		(c) $2\cdot5!\cdot5!=28\,800$ \quad (d) $2\cdot5!\cdot5!=28\,800$
+	\end{answer}
+
+	\begin{remark}
+		(c) and (d) give the same number for a reason: in both cases we first
+		choose one of two gender patterns of the seats and then permute the men and
+		the women within their seats. \textbf{Common mistake in (b):} forgetting
+		the factor $2^5$ for the order inside the blocks.
+	\end{remark}
+\end{solution}

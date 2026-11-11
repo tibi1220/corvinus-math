@@ -1,0 +1,42 @@
+% ---
+% title: Writing down the sample space
+% tags: sample-space, counting
+% ---
+
+\begin{problem}
+	A box has 3 marbles: red, green and blue. We draw one, put it back, then
+	draw a second one. Describe $\Om$. Repeat the exercise if the first marble
+	is not put back.
+\end{problem}
+
+\begin{slides}
+	\exstatement
+	\pause
+	\sol Record the outcome as an ordered pair (first draw, second draw).
+	\begin{itemize}
+		\item With replacement: 3 choices, then again 3 choices:
+		      \[\Om=\{rr,rg,rb,gr,gg,gb,br,bg,bb\},\qquad |\Om|=3\cdot3=9.\]
+		\item Without replacement: the second draw cannot repeat the first, so
+		      the pairs $rr,gg,bb$ disappear:
+		      \[\Om=\{rg,rb,gr,gb,br,bg\},\qquad |\Om|=3\cdot 2=6.\]
+	\end{itemize}
+\end{slides}
+
+\begin{solution}
+	\idea Record an outcome as an ordered pair (first color, second color),
+	e.g.\ $rg$ = red first, green second.
+
+	\step{With replacement.} Both draws can be any of $r,g,b$:
+	\[ \Om=\{rr,rg,rb,gr,gg,gb,br,bg,bb\},\qquad|\Om|=3\cdot3=9. \]
+	\step{Without replacement.} The second marble cannot have the color of the
+	first one, so $rr,gg,bb$ are impossible:
+	\[ \Om=\{rg,rb,gr,gb,br,bg\},\qquad|\Om|=3\cdot2=6. \]
+	\begin{answer}
+		With replacement: 9 outcomes; without replacement: 6 outcomes (listed above).
+	\end{answer}
+	\begin{remark}
+		$rg$ and $gr$ are different outcomes: the draws happen at different
+		times. Writing $\{r,g\}$ for both would lose information that we will need
+		for probabilities.
+	\end{remark}
+\end{solution}

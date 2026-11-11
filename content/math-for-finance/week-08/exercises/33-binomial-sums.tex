@@ -1,0 +1,32 @@
+% ---
+% title: Binomial sums
+% tags: binomial-theorem
+% ---
+
+\begin{problem}
+	Using the binomial theorem, show that
+	\[ \sum_{k=0}^n\binom nk=2^n,\qquad
+		\sum_{k=0}^n\binom nk2^k=3^n \quad\text{and}\quad
+		\sum_{k=0}^n(-1)^k\binom nk=0 \qquad (n\ge1). \]
+\end{problem}
+
+\begin{solution}
+	\idea Substitute suitable numbers into
+	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k}. \]
+	\step{First identity.} $a=b=1$: every term becomes $\binom nk$, and the left
+	side is $2^n$.
+	\step{Second.} $a=2$, $b=1$:
+	\[ \sum_k\binom nk2^k=(2+1)^n=3^n. \]
+	\step{Third.} $a=-1$, $b=1$:
+	\[ \sum_k\binom nk(-1)^k=(-1+1)^n=0^n=0 \quad\text{for } n\ge1. \]
+	\begin{answer}
+		\[ \sum_k\binom nk=2^n,\qquad \sum_k\binom nk2^k=3^n,\qquad
+			\sum_k(-1)^k\binom nk=0. \]
+	\end{answer}
+	\begin{remark}
+		Counting meaning of the first identity: both sides count all subsets of an
+		$n$-element set (by size on the left; ``in or out'' for each element on the
+		right). The third says: an $n$-element set ($n\ge1$) has as many
+		even-sized as odd-sized subsets, e.g.\ for $n=4$: $1+6+1=4+4$.
+	\end{remark}
+\end{solution}

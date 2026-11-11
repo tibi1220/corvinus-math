@@ -1,0 +1,60 @@
+% ---
+% title: Committees with a conflict
+% tags: combinations, complement
+% ---
+
+\begin{problem}
+	From 8 women and 6 men a committee of 3 men and 3 women is formed. How many
+	committees are possible if (a) 2 of the men refuse to serve together?
+	(b) 2 of the women refuse to serve together? (c) 1 man and 1 woman refuse
+	to serve together?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol No restriction: men $\binom63=20$, women $\binom83=56$, total
+	$20\cdot 56 = 1120$. In each part subtract the bad committees.
+	\begin{enumerate}
+		\item[(a)] Bad male trios contain both feuding men; the third man comes
+		      from the other 4: $\binom41=4$. Good trios $20-4=16$; total
+		      $16\cdot 56 = 896$.
+		\item[(b)] Bad female trios: both feuding women $+$ one of the other 6:
+		      $6$. Good $56-6=50$; total $20\cdot 50 = 1000$.
+		\item[(c)] Bad: that man and that woman are both in; choose 2 more men of
+		      5 and 2 more women of 7: $\binom52\binom72=10\cdot21 = 210$. Hence
+		      $1120-210 = 910$.
+	\end{enumerate}
+\end{slides}
+
+\begin{solution}
+	\idea A committee is a set (no order): combinations. Choose the men and the
+	women separately and multiply. For each restriction, count the \emph{bad}
+	committees and subtract them from the total.
+
+	\step{Without restriction.} Men: $\binom63=20$, women: $\binom83=56$; total
+	$20\cdot56 = 1120$.
+
+	\step{(a)} A bad male trio contains both feuding men; its third member is one
+	of the other 4 men: $\binom41=4$ bad trios. Good male trios: $20-4=16$. The
+	women are unrestricted: $16\cdot56 = 896$.
+
+	\step{(b)} A bad female trio contains both feuding women plus one of the
+	other 6 women: $6$ bad trios. Good: $56-6=50$; total $20\cdot50=1000$.
+
+	\step{(c)} Bad committees contain that man \emph{and} that woman. Then 2
+	more men are chosen from the other 5, and 2 more women from the other 7:
+	$\binom52\binom72 = 10\cdot21 = 210$. Good: $1120-210=910$.
+
+	\begin{answer}
+		(a) $896$ \quad (b) $1000$ \quad (c) $910$
+	\end{answer}
+	\begin{remark}
+		In (c) the restriction links the men and the women, so we must subtract
+		from the \emph{total} $1120$, not from the male or female count alone.
+		Direct check of (c): committees without the man: $\binom53\binom83=560$;
+		with the man but without the woman: $\binom52\binom73=350$;
+		$560+350=910$.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,61 @@
+% ---
+% title: Queueing for the bus
+% tags: permutations, complement
+% ---
+
+\begin{problem}
+	Eight people line up for a bus. In how many ways can they line up (a) with
+	no restriction? (b) if 3 given people insist on standing together? (c) if 2
+	given people refuse to stand next to each other?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	\begin{enumerate}\setlength{\itemsep}{0pt}
+		\item[(a)] $8! = 40\,320$.
+		\item[(b)] Glue the 3 into one block: block $+$ 5 others $=6$ units,
+		      $6!=720$ orders; inside the block $3!=6$ orders:
+		      $6\cdot 720 = 4320$.
+		\item[(c)] Direct counting is messy, so count the \emph{bad} lines
+		      (the two \emph{are} adjacent): glue them, $7$ units: $7!=5040$,
+		      times $2!$ inside: $10\,080$. Hence
+		      \[ 8! - 2!\cdot 7! = 40\,320-10\,080 = 30\,240. \]
+	\end{enumerate}
+	\begin{alertblock}{Complement principle}
+		$\#(\text{good}) = \#(\text{all}) - \#(\text{bad})$ --- often much easier.
+	\end{alertblock}
+\end{slides}
+
+\begin{solution}
+	\idea (b) is a ``together'' condition $\to$ block. (c) is a ``not
+	together'' condition, which is awkward to count directly $\to$ count the
+	complement and subtract.
+
+	\step{(a)} $8! = 40\,320$.
+
+	\step{(b)} Glue the 3 friends into one block. Then we arrange 6 units (the
+	block and the 5 other people): $6!=720$ ways. Inside the block the 3 friends
+	can stand in $3!=6$ orders. Total:
+	\[ 3!\cdot6! = 6\cdot720 = 4320. \]
+
+	\step{(c)} Count the \emph{bad} lines, where the two people \emph{are}
+	adjacent. Glue them into a block: $7$ units, $7!=5040$ orders, and $2!$
+	orders inside the block, so $2\cdot5040=10\,080$ bad lines. All lines minus
+	bad lines:
+	\[ 8!-2!\cdot7! = 40\,320-10\,080 = 30\,240. \]
+
+	\begin{answer}
+		(a) $8!=40\,320$ \quad (b) $3!\cdot6!=4320$ \quad
+		(c) $8!-2!\cdot7!=30\,240$
+	\end{answer}
+
+	\begin{remark}
+		\textbf{Check for (c).} The two people occupy 2 of the 8 positions:
+		$\binom82=28$ position pairs, of which 7 are adjacent ($\{1,2\},\dots,
+			\{7,8\}$). So a quarter of all lines are bad: $40\,320/4=10\,080$. \
+		\textbf{Common mistake:} forgetting the $2!$ inside the block.
+	\end{remark}
+\end{solution}

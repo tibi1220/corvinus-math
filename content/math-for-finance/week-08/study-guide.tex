@@ -1,6 +1,6 @@
 % Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
-% Week 8 student handout WITHOUT solutions.
-% The body is shared with handout-solutions.tex: see handout-content.tex.
+% Week 8 study guide: the key formulas and every exercise with a detailed
+% solution. The body is in study-guide-content.tex.
 
 \documentclass[11pt,a4paper,parskip=half]{scrartcl}
 \usepackage{amsmath}
@@ -11,17 +11,15 @@
 \usepackage{cancel}
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
-\usepackage[a4paper,margin=2cm]{geometry}
+\usepackage[a4paper,margin=1in]{geometry}
 \usepackage[hidelinks]{hyperref}
 
-\newif\ifsolutions
-\solutionsfalse   % this file: WITHOUT solutions
+\input{preamble}
+\documentinfo{Study guide}
 
-\input{handout-preamble}
-
-\subtitle{Week 8 -- Exercises\\[2pt]
+\subtitle{Week 8 -- Study guide\\[2pt]
   \normalsize Combinatorial analysis, sample space, events}
 
 \begin{document}
-\input{handout-content}
+\input{study-guide-content}
 \end{document}

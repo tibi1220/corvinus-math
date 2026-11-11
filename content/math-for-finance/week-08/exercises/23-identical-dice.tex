@@ -1,0 +1,42 @@
+% ---
+% title: Two identical dice
+% tags: stars-and-bars, combinations
+% ---
+
+\begin{problem}
+	We roll two identical (indistinguishable) dice. How many different outcomes
+	can we observe?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	$(1,2)$ and $(2,1)$ look the same. Pairs with two different numbers:
+	$\binom62=15$; doubles: $6$; total $21$.\\[1mm]
+	Or: choose 2 out of 6 numbers, order irrelevant, repetition allowed (stars
+	and bars, as in Exercise~\exref{stars-and-bars}):
+	$\binom{6+2-1}{2}=\binom72 = 21$.
+\end{slides}
+
+\begin{solution}
+	\idea Because the dice look the same, only \emph{which} numbers appear
+	matters, not on which die.
+
+	\step{First way.} $(1,2)$ and $(2,1)$ are one observation. Outcomes with two
+	different numbers: choose 2 of 6 numbers, $\binom62=15$. Doubles: $6$.
+	Total $15+6=21$.
+
+	\step{Second way.} We choose 2 numbers out of 6, order irrelevant,
+	repetition allowed. This is stars and bars (Exercise~\exref{stars-and-bars}):
+	2 stars distributed among the 6 numbers, $\binom{6+2-1}{2}=\binom72=21$.
+	\begin{answer}
+		$21$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} $36/2=18$. Halving is wrong because the doubles
+		$(1,1),\dots,(6,6)$ appear only once among the 36 ordered outcomes, not
+		twice: $(36-6)/2+6=21$.
+	\end{remark}
+\end{solution}

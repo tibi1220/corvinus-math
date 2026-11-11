@@ -1,0 +1,62 @@
+% ---
+% title: Two dice: event algebra
+% tags: events, inclusion-exclusion
+% ---
+
+\begin{problem}
+	Two dice are rolled. Let $E$ = ``the sum is odd'', $F$ = ``at least one die
+	shows 1'', $G$ = ``the sum is 5''. Describe the events $EF$, $E\cup F$,
+	$FG$, $EF^c$ and $EFG$.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol $|\Om|=36$. Odd sum $\iff$ one die even, one odd:
+	$|E|=3\cdot3\cdot2=18$. Complement of $F$ is ``no 1'': $|F|=36-25=11$.
+	\begin{itemize}
+		\item $EF$: one die is 1 (odd), so the other must be even:
+		      $EF=\{(1,2),(1,4),(1,6),(2,1),(4,1),(6,1)\}$, 6 outcomes.
+		\item $E\cup F$: $|E|+|F|-|EF|=18+11-6=23$ outcomes (the 18 odd sums
+		      plus $(1,1),(1,3),(1,5),(3,1),(5,1)$).
+		\item $G=\{(1,4),(2,3),(3,2),(4,1)\}$, so $FG=\{(1,4),(4,1)\}$.
+		\item $EF^c$: odd sum and no 1: $|E|-|EF|=18-6=12$ outcomes.
+		\item $5$ is odd, so $G\subseteq E$ and $EFG=FG=\{(1,4),(4,1)\}$.
+	\end{itemize}
+\end{slides}
+
+\begin{solution}
+	\idea $\Om=\{(i,j):i,j=1,\dots,6\}$, $|\Om|=36$. Find the sizes of $E$ and
+	$F$ first, then combine them.
+
+	\step{Basic events.} The sum is odd exactly when one die is even and the
+	other odd:
+	\[ 3\cdot3\ \text{(first odd, second even)}\ +\ 3\cdot3\ \text{(first even,
+			second odd)}\ =18, \]
+	so $|E|=18$. $F^c$ = ``no die shows 1'' has $5\cdot5=25$
+	outcomes, so $|F|=36-25=11$.
+
+	\step{$EF$.} One die shows 1 (odd), so for an odd sum the other must be even:
+	\[ EF=\{(1,2),(1,4),(1,6),(2,1),(4,1),(6,1)\},\quad 6\text{ outcomes}. \]
+	\step{$E\cup F$.}
+	\[ |E\cup F|=|E|+|F|-|EF|=18+11-6=23: \]
+	all 18 odd-sum outcomes plus the outcomes of $F$ with an even sum:
+	\[ (1,1),(1,3),(1,5),(3,1),(5,1). \]
+	\step{$FG$.}
+	\[ G=\{(1,4),(2,3),(3,2),(4,1)\}; \]
+	those containing a 1: $FG=\{(1,4),(4,1)\}$.
+	\step{$EF^c$.} Odd sum and no 1: $|E|-|EF|=18-6=12$ outcomes. One die
+	is in $\{2,4,6\}$, the other in $\{3,5\}$ (odd, but not 1): $3\cdot2\cdot2=12$:
+	\[ EF^c=\{(2,3),(2,5),(4,3),(4,5),(6,3),(6,5),(3,2),(5,2),(3,4),(5,4),
+		(3,6),(5,6)\}. \]
+	\step{$EFG$.} $5$ is odd, so $G\subseteq E$ and $EFG=FG=\{(1,4),(4,1)\}$.
+	\begin{answer}
+		$|EF|=6$, \ $|E\cup F|=23$, \ $FG=\{(1,4),(4,1)\}$, \ $|EF^c|=12$, \
+		$EFG=\{(1,4),(4,1)\}$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} $|F|=12$ (``6 outcomes with a 1 on the first die,
+		6 on the second''). The outcome $(1,1)$ is counted twice; $6+6-1=11$.
+	\end{remark}
+\end{solution}

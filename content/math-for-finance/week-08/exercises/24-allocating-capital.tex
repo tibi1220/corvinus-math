@@ -1,0 +1,69 @@
+% ---
+% title: Allocating capital
+% tags: finance, stars-and-bars
+% ---
+
+\begin{problem}
+	\begin{context}
+		\emph{Capital allocation} means deciding how much money goes into
+		each investment. Real opportunities often have a minimum ticket size (a
+		fund or a project accepts only investments above a threshold).
+	\end{context}
+	We have 20 thousand euros to invest in 4 opportunities, in whole units of
+	1000. The minimal investments are 2, 2, 3 and 4 thousand. How many
+	investment strategies are there if (a) we invest in each opportunity;
+	(b) we invest in at least 3 of the 4? (All 20 units are invested.)
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) First pay the minimums: $2+2+3+4=11$ units. The remaining $9$
+	identical units go to 4 boxes freely (stars and bars, $9$ stars, $3$ bars):
+	$\binom{9+3}{3}=\binom{12}{3} = 220$.\\[1mm]
+	(b) Add the cases where exactly one opportunity gets nothing:\par\smallskip
+	{\centering
+		\begin{tabular}{lccc}\toprule
+			left out & minimums paid & left to divide & count               \\\midrule
+			1st (2)  & $2+3+4=9$     & 11 among 3     & $\binom{13}{2}=78$  \\
+			2nd (2)  & $2+3+4=9$     & 11 among 3     & $78$                \\
+			3rd (3)  & $2+2+4=8$     & 12 among 3     & $\binom{14}{2}=91$  \\
+			4th (4)  & $2+2+3=7$     & 13 among 3     & $\binom{15}{2}=105$ \\\bottomrule
+		\end{tabular}\par}\smallskip
+	Total: $220+78+78+91+105 = 572$.
+\end{slides}
+
+\begin{solution}
+	\idea The units of 1000 euros are identical, the opportunities are
+	different: stars and bars. Minimums are handled by paying them first.
+
+	\step{(a)} Pay the minimums: $2+2+3+4=11$ units. The remaining $20-11=9$
+	units can be divided freely among the 4 opportunities (some may get nothing
+	extra): 9 stars and 3 bars,
+	\[ \binom{9+3}{3}=\binom{12}{3}=220. \]
+
+	\step{(b)} ``At least 3'' = ``all 4'' (part (a)) or ``exactly 3''. These
+	cases are disjoint, so we add. If exactly one opportunity is left out, we pay
+	the minimums of the other three and divide the rest among those three
+	(2 bars):
+	\begin{center}
+		\begin{tabular}{lccc}\toprule
+			left out    & minimums paid & left to divide & count               \\\midrule
+			1st (min 2) & $2+3+4=9$     & 11 among 3     & $\binom{13}{2}=78$  \\
+			2nd (min 2) & $2+3+4=9$     & 11 among 3     & $\binom{13}{2}=78$  \\
+			3rd (min 3) & $2+2+4=8$     & 12 among 3     & $\binom{14}{2}=91$  \\
+			4th (min 4) & $2+2+3=7$     & 13 among 3     & $\binom{15}{2}=105$ \\\bottomrule
+		\end{tabular}
+	\end{center}
+	Total:
+	\[ 220+78+78+91+105=572. \]
+	\begin{answer}
+		(a) $220$ \qquad (b) $572$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in the ``left out'' cases still paying the left-out
+		opportunity's minimum, or dividing among 4 boxes instead of 3. A left-out
+		opportunity gets exactly $0$.
+	\end{remark}
+\end{solution}

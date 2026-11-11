@@ -1,0 +1,78 @@
+% ---
+% title: Events of a stock path
+% tags: finance, events, sample-space
+% ---
+
+\begin{problem}
+	\begin{context}
+		A stock moves Up or Down on each of 3 days (a three-step binomial
+		tree). Questions like ``did the stock end above its starting price?'' or
+		``did it ever fall below it?'' are events --- some options (e.g.\
+		\emph{barrier options}) pay depending on such path properties.
+	\end{context}
+	A stock moves Up or Down on each of 3 days:
+	\[ \Om=\{UUU,UUD,UDU,UDD,DUU,DUD,DDU,DDD\}. \]
+	Let $A$ = ``the stock ends above the start'', $B$ = ``up on day 1'', $C$ = ``never below the start''. List
+	$A$, $B$, $C$, and find $AB$, $A^cB$ and $AB^c$. Which inclusion holds
+	between $A$ and $C$?
+\end{problem}
+
+\begin{slideproblem}
+	A stock moves Up or Down on each of 3 days:\newline
+	$\Om=\{UUU,UUD,UDU,UDD,DUU,DUD,DDU,DDD\}$. Let $A$ = ``the stock ends above
+	the start'', $B$ = ``up on day 1'', $C$ = ``never below the start''. List
+	$A$, $B$, $C$, and find $AB$, $A^cB$ and $AB^c$. Which inclusion holds
+	between $A$ and $C$?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol Track the position (number of ups minus downs) after each day.
+	\begin{itemize}
+		\item $A$: at least 2 U's (net $+1$ or $+3$): $A=\{UUU,UUD,UDU,DUU\}$.
+		\item $B$: first letter U: $B=\{UUU,UUD,UDU,UDD\}$.
+		\item $C$: positions stay $\ge 0$; $UDD$ goes to $-1$, any path starting
+		      with $D$ goes to $-1$: $C=\{UUU,UUD,UDU\}$.
+	\end{itemize}
+	Then: $C\subseteq A$ (after 3 steps the position is odd, so $\ge0$ means
+	$\ge1$); \ $AB=\{UUU,UUD,UDU\}=C$; \ $A^cB=\{UDD\}$ (up first, but ends
+	below); \ $AB^c=\{DUU\}$ (down first, but ends above).
+\end{slides}
+
+\begin{solution}
+	\idea Track the position (number of ups minus number of downs) after each
+	day. For example $UDD$: $+1,0,-1$.
+
+	\step{$A$.} The end position is (ups) $-$ (downs) and must be positive, so
+	at least 2 U's:
+	\[ A=\{UUU,UUD,UDU,DUU\}. \]
+
+	\step{$B$.} First letter U:
+	\[ B=\{UUU,UUD,UDU,UDD\}. \]
+
+	\step{$C$.} Positions:
+	\[ UUU\colon 1,2,3;\quad UUD\colon 1,2,1;\quad UDU\colon 1,0,1;\quad
+		UDD\colon 1,0,-1\ \text{(falls below)}; \]
+	every path starting with D is at $-1$ after day 1. So
+	\[ C=\{UUU,UUD,UDU\}. \]
+
+	\step{Combinations.}
+	\[ \begin{aligned}
+			AB   & =\{UUU,UUD,UDU\};                               \\
+			A^cB & =\{UDD\}\quad\text{(up first but ends below)};   \\
+			AB^c & =\{DUU\}\quad\text{(down first but ends above)}.
+		\end{aligned} \]
+	Every element of $C$ is in $A$, so $C\subseteq A$; in fact $C=AB$.
+	\begin{answer}
+		\[ A=\{UUU,UUD,UDU,DUU\},\quad B=\{UUU,UUD,UDU,UDD\},\quad
+			C=\{UUU,UUD,UDU\}; \]
+		$AB=C$, $A^cB=\{UDD\}$, $AB^c=\{DUU\}$; $C\subseteq A$.
+	\end{answer}
+	\begin{remark}
+		Why $C\subseteq A$: after 3 steps the position is odd ($\pm1$ or $\pm3$),
+		so ``not below 0'' at the end means ``at least $+1$'', i.e.\ ending above
+		the start.
+	\end{remark}
+\end{solution}

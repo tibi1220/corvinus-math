@@ -1,0 +1,38 @@
+% ---
+% title: A coin-flipping game
+% tags: sample-space, events, complement
+% ---
+
+\begin{problem}
+	$A$, $B$ and $C$ take turns flipping a coin, $A$ first, then $B$, then $C$,
+	then $A$ again, and so on. The first one to get a head wins. Write down the
+	sample space and the events ``$A$ wins'', ``$B$ wins'' and $(A\cup B)^c$.
+\end{problem}
+
+\begin{solution}
+	\idea Record the sequence of flips until the first head: 1 = head, 0 =
+	tail. The game stops at the first 1, so an outcome is some tails followed by
+	one head --- or tails for ever.
+	\step{Sample space.}
+	\[ \Om=\{1,\ 01,\ 001,\ 0001,\ 00001,\ \dots\}\cup\{000\cdots\}. \]
+	A string of $m$ zeros followed by a 1 means that the first head comes at flip
+	$m+1$; the infinite string $000\cdots$ means that no head ever comes.
+	\step{Who flips when?} $A$ flips at flips $1,4,7,\dots$, $B$ at
+	$2,5,8,\dots$, $C$ at $3,6,9,\dots$.
+	\step{Events.}
+	\[ \text{“$A$ wins”}=\{1,\ 0001,\ 0000001,\dots\} \]
+	(the number of leading zeros is a multiple of 3);
+	\[ \text{“$B$ wins”}=\{01,\ 00001,\ 00000001,\dots\} \]
+	(number of zeros $\equiv1\pmod 3$).
+	$(A\cup B)^c$ = neither $A$ nor $B$ wins = $C$ wins or nobody wins:
+	\[ \{001,\ 000001,\dots\}\cup\{000\cdots\}. \]
+	\begin{answer}
+		$A$ wins: $3j$ zeros then 1; $B$ wins: $3j+1$ zeros then 1;
+		$(A\cup B)^c$: $3j+2$ zeros then 1, or $000\cdots$ \ ($j=0,1,2,\dots$).
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} forgetting the outcome $000\cdots$ (no head ever).
+		It is in the sample space; next week we will see that its probability is
+		0, but it still belongs to $(A\cup B)^c$.
+	\end{remark}
+\end{solution}

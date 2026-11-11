@@ -1,0 +1,66 @@
+% ---
+% title: A combinatorial proof
+% tags: combinatorial-proof, combinations
+% ---
+
+\begin{problem}
+	Prove Pascal's rule:
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1} \qquad (0\le k<n), \]
+	(a) by algebra, (b) by a counting argument.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol \textbf{Algebra.} Common denominator $(k+1)!\,(n-k)!$:
+	\[
+		\frac{n!}{k!(n-k)!}+\frac{n!}{(k+1)!(n-k-1)!}
+		= \frac{n!\,\big[(k+1)+(n-k)\big]}{(k+1)!\,(n-k)!}
+		= \frac{(n+1)!}{(k+1)!\,(n-k)!} = \binom{n+1}{k+1},
+	\]
+	since $n!\,(n+1)=(n+1)!$ and $n-k=(n+1)-(k+1)$.\\[1mm]
+	\textbf{Story.} A bowl holds $n$ apples and $1$ pear. Choose $k+1$ fruits:
+	$\binom{n+1}{k+1}$ ways. Split the choices by the pear:
+	\emph{pear not chosen} (all $k+1$ are apples): $\binom n{k+1}$;
+	\emph{pear chosen} ($k$ more apples from $n$): $\binom nk$.
+	The same set counted in two ways $\Rightarrow$ the identity. After the
+	binomial tree, this rule builds Pascal's triangle.
+\end{slides}
+
+\begin{solution}
+	\idea (a) Bring the two fractions to a common denominator. (b) Find a
+	counting question whose answer is $\binom{n+1}{k+1}$, and answer it a second
+	way, by splitting into two cases.
+
+	\step{(a) Algebra.} Write both terms with the common denominator
+	$(k+1)!\,(n-k)!$. Since $(k+1)!=(k+1)\,k!$ and $(n-k)!=(n-k)\,(n-k-1)!$:
+	\[
+		\frac{n!}{k!\,(n-k)!}+\frac{n!}{(k+1)!\,(n-k-1)!}
+		=\frac{n!\,(k+1)}{(k+1)!\,(n-k)!}+\frac{n!\,(n-k)}{(k+1)!\,(n-k)!}
+		=\frac{n!\,(n+1)}{(k+1)!\,(n-k)!}.
+	\]
+	Now $n!\,(n+1)=(n+1)!$ and $n-k=(n+1)-(k+1)$, so this equals
+	\[ \frac{(n+1)!}{(k+1)!\,\big((n+1)-(k+1)\big)!}=\binom{n+1}{k+1}. \]
+
+	\step{(b) Counting (the ``apple and pear'' argument).} A bowl contains $n$
+	apples and $1$ pear, all different. Count the ways to choose $k+1$ fruits.
+	\begin{itemize}[nosep]
+		\item Directly: $k+1$ out of $n+1$ fruits: $\binom{n+1}{k+1}$.
+		\item By whether the pear is chosen. \emph{Pear not chosen}: all $k+1$
+		      fruits are apples, $\binom n{k+1}$ ways. \emph{Pear chosen}: the
+		      other $k$ fruits are apples, $\binom nk$ ways. These two cases are
+		      disjoint and cover everything, so the total is
+		      $\binom nk+\binom n{k+1}$.
+	\end{itemize}
+	The same set was counted in two ways, so the two expressions are equal.
+	\begin{answer}
+		$\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$
+	\end{answer}
+	\begin{remark}
+		Example: $\binom41+\binom42=4+6=10=\binom52$. After the binomial tree
+		(Exercise~\exref{binomial-tree}), this rule builds Pascal's triangle.
+		Counting proofs avoid long fraction manipulations; see
+		Exercise~\exref{vandermonde}.
+	\end{remark}
+\end{solution}

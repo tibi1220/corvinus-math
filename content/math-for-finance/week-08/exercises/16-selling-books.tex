@@ -1,0 +1,27 @@
+% ---
+% title: Selling books
+% tags: combinations, counting
+% ---
+
+\begin{problem}
+	A student has 6 mathematics, 7 science and 4 economics books (all
+	different) and sells 2 of them. How many choices are there if the two books
+	are on (a) the same subject; (b) different subjects?
+\end{problem}
+
+\begin{solution}
+	\idea The two books form an unordered pair. Split by subjects and add the
+	disjoint cases.
+	\step{(a)} Both math: $\binom62=15$; both science: $\binom72=21$; both
+	economics: $\binom42=6$; total $15+21+6=42$.
+	\step{(b)} One book from each of two different subjects:
+	math--science $6\cdot7=42$, math--economics $6\cdot4=24$,
+	science--economics $7\cdot4=28$; total $94$.
+	\begin{answer}
+		(a) $42$ \qquad (b) $94$
+	\end{answer}
+	\begin{remark}
+		Check: every pair is either same-subject or different-subject, and
+		$42+94=136=\binom{17}{2}$, the number of all pairs from the 17 books.
+	\end{remark}
+\end{solution}

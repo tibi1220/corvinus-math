@@ -1,0 +1,47 @@
+% ---
+% title: Eight-digit numbers
+% tags: permutations-with-repetition, complement
+% ---
+
+\begin{problem}
+	The digits $0,1,1,2,3,3,3,4$ are written on eight cards. Using all eight
+	cards, how many 8-digit numbers can be formed?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol \textbf{All arrangements:} 8 cards, the 1 appears twice and the 3
+	three times:
+	\[ \frac{8!}{2!\,3!} = \frac{40\,320}{12} = 3360. \]
+	\textbf{Bad ones} start with $0$ (not an 8-digit number). Fix the $0$ in
+	front and arrange the other 7 cards $1,1,2,3,3,3,4$:
+	\[ \frac{7!}{2!\,3!}=\frac{5040}{12}=420. \]
+	Therefore
+	\[ \frac{8!}{2!\,3!}-\frac{7!}{2!\,3!} = 3360-420 = \mathbf{2940}. \]
+\end{slides}
+
+\begin{solution}
+	\idea Permutations with repetition, minus the arrangements that start with
+	$0$ (such a string is not an 8-digit number).
+
+	\step{Step 1: all arrangements.} 8 cards; the digit 1 appears twice and the
+	digit 3 three times:
+	\[ \frac{8!}{2!\,3!} = \frac{40\,320}{12} = 3360. \]
+
+	\step{Step 2: bad arrangements.} Fix the $0$ in the first place and arrange
+	the other 7 cards $1,1,2,\allowbreak 3,3,3,4$:
+	\[ \frac{7!}{2!\,3!} = \frac{5040}{12} = 420. \]
+
+	\step{Step 3: subtract.}
+	\begin{answer}
+		\[ \frac{8!}{2!\,3!}-\frac{7!}{2!\,3!} = 3360-420 = 2940. \]
+	\end{answer}
+
+	\begin{remark}
+		\textbf{Alternative:} by symmetry each of the 8 cards is equally often in
+		front, so the $0$ is in front in $1/8$ of the arrangements:
+		$3360\cdot\frac78 = 2940$.
+	\end{remark}
+\end{solution}

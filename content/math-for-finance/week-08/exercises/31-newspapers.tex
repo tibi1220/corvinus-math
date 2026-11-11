@@ -1,0 +1,137 @@
+% ---
+% title: Venn diagrams and inclusion–exclusion
+% tags: venn-diagrams, inclusion-exclusion
+% ---
+
+\begin{problem}
+	A town of 100\,000 inhabitants has three newspapers I, II, III. The
+	percentages of readers: I: 10, II: 30, III: 5, I and II: 8, I and III: 2,
+	II and III: 4, all three: 1. I and III are morning papers, II is an
+	evening paper. How many people read (a) exactly one paper? (b) at least two
+	papers? (c) at least one morning paper and the evening paper? (d) no paper?
+	(e) exactly one morning paper and the evening paper?
+\end{problem}
+
+\begin{slideproblem}
+	A town of 100\,000 has newspapers I, II, III. Readers (\%):
+	I: 10, II: 30, III: 5, I\&II: 8, I\&III: 2, II\&III: 4, all: 1.
+	How many read (a) exactly one paper? (b) at least two?
+	(c) a morning paper (I or III) and the evening paper II?
+	(d) no paper? (e) exactly one morning paper and the evening paper?
+\end{slideproblem}
+
+\begin{slides}
+	\begin{columns}[T]
+		\begin{column}{.6\textwidth}
+			\small
+			\exstatement
+			\uncover<2->{\sol Fill the Venn diagram \textbf{from the inside out}:
+					\begin{itemize}
+						\item center (all three): $1$;
+						\item only I\&II: $8-1=7$; only I\&III: $2-1=1$; only II\&III:
+						      $4-1=3$;
+						\item only I: $10-7-1-1=1$; only II: $30-7-3-1=19$; only III:
+						      $5-1-3-1=0$.
+					\end{itemize}}
+		\end{column}
+		\begin{column}{.38\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.6]
+				\draw[navy,thick] (0,0) circle (1.5);
+				\draw[teal,thick] (1.8,0) circle (1.5);
+				\draw[gold,thick] (.9,-1.5) circle (1.5);
+				\uncover<2->{
+						\node at (-.7,.3) {\scriptsize 1};
+						\node at (2.5,.3) {\scriptsize 19};
+						\node at (.9,-2.3) {\scriptsize 0};
+						\node at (.9,.6) {\scriptsize 7};
+						\node at (.1,-.95) {\scriptsize 1};
+						\node at (1.7,-.95) {\scriptsize 3};
+						\node at (.9,-.45) {\scriptsize 1};}
+				\node[navy] at (-1.4,1.4) {I};
+				\node[teal] at (3.2,1.4) {II};
+				\node[gold] at (.9,-3.3) {III};
+			\end{tikzpicture}\\
+			\footnotesize (in \%)
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	\sol (percentages of 100\,000 people; read off the diagram)
+	\begin{enumerate}
+		\item[(a)] Exactly one: only I $+$ only II $+$ only III
+		      $=1+19+0=20\%$: \textbf{20\,000}.
+		\item[(b)] At least two: the four inner regions $7+1+3+1=12\%$:
+		      \textbf{12\,000}.
+		\item[(c)] $(I\cup III)\cap II = (I\cap II)\cup(III\cap II)$; the two
+		      overlap in ``all three'': $8+4-1=11\%$: \textbf{11\,000}.
+		\item[(d)] Inclusion--exclusion:
+		      \[ |I\cup II\cup III| = 10+30+5-8-2-4+1 = 32\%, \]
+		      so $100-32=68\%$ read none: \textbf{68\,000}.
+		\item[(e)] II together with exactly one of I, III: only I\&II $+$ only
+		      II\&III $=7+3=10\%$: \textbf{10\,000}.
+	\end{enumerate}
+	\begin{block}{Inclusion--exclusion for three sets}
+		$|E\cup F\cup G| = |E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|$
+	\end{block}
+\end{slides}
+
+\begin{solution}
+	\idea The given numbers overlap (``I and II'' includes those who also read
+	III). Fill the Venn diagram \emph{from the inside out}; then every region
+	holds the people of exactly that combination, and we can simply add regions.
+
+	\begin{minipage}{.58\linewidth}
+		\step{Filling the diagram (in \%).}
+		\begin{itemize}[nosep]
+			\item center (all three): $1$;
+			\item only I\&II: $8-1=7$; only I\&III: $2-1=1$; only II\&III: $4-1=3$;
+			\item only I: $10-7-1-1=1$;\\ only II: $30-7-3-1=19$;\\ only III:
+			      $5-1-3-1=0$.
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.38\linewidth}
+		\centering
+		\begin{tikzpicture}[scale=.65]
+			\draw[navy,thick] (0,0) circle (1.5);
+			\draw[teal,thick] (1.8,0) circle (1.5);
+			\draw[gold,thick] (.9,-1.5) circle (1.5);
+			\node at (-.7,.3) {\small 1};
+			\node at (2.5,.3) {\small 19};
+			\node at (.9,-2.3) {\small 0};
+			\node at (.9,.6) {\small 7};
+			\node at (.1,-.95) {\small 1};
+			\node at (1.7,-.95) {\small 3};
+			\node at (.9,-.45) {\small 1};
+			\node[navy] at (-1.4,1.4) {I};
+			\node[teal] at (3.2,1.4) {II};
+			\node[gold] at (.9,-3.3) {III};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\step{(a)} Exactly one: $1+19+0=20\%$, i.e.\ $20\,000$ people.
+	\step{(b)} At least two: the four inner regions $7+1+3+1=12\%$: $12\,000$.
+	\step{(c)}
+	\[ (\mathrm{I}\cup\mathrm{III})\cap\mathrm{II}=
+		(\mathrm{I}\cap\mathrm{II})\cup(\mathrm{III}\cap\mathrm{II}). \]
+	Inclusion--exclusion:
+	$8+4-1=11\%$ (the readers of all three were counted twice). Or from the
+	diagram: $7+3+1=11\%$: $11\,000$.
+	\step{(d)}
+	\[ |\mathrm{I}\cup\mathrm{II}\cup\mathrm{III}|=10+30+5-8-2-4+1=32\% \]
+	(check: the seven regions sum to $1+19+0+7+1+3+1=32$), so $100-32=68\%$ read
+	none: $68\,000$.
+	\step{(e)} II together with exactly one of I, III (not both): only I\&II
+	plus only II\&III: $7+3=10\%$: $10\,000$.
+	\begin{answer}
+		(a) $20\,000$ \quad (b) $12\,000$ \quad (c) $11\,000$ \quad
+		(d) $68\,000$ \quad (e) $10\,000$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing ``only I'' as $10-8-2=0$. This
+		subtracts the center (readers of all three) twice. Always start from the
+		center.
+	\end{remark}
+\end{solution}

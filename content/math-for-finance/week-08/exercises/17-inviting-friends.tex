@@ -1,0 +1,25 @@
+% ---
+% title: Inviting friends
+% tags: combinations, complement
+% ---
+
+\begin{problem}
+	You invite 5 of your 8 friends to a party. How many choices are there if
+	(a) 2 of the friends are feuding and will not come together; (b) 2 of the
+	friends will only come together (both or neither)?
+\end{problem}
+
+\begin{solution}
+	\idea The guest list is a set: combinations. (a) is a ``not together''
+	condition $\to$ complement; (b) splits into two disjoint cases.
+	\step{(a)} Without restriction: $\binom85=56$ guest lists. A bad list
+	contains both feuding friends; the other 3 guests come from the remaining
+	6 friends: $\binom63=20$ bad lists. Good: $56-20=36$.
+	\step{(b)} Call the two friends $X$ and $Y$. \emph{Case 1: both invited.}
+	Then 3 more guests from the other 6: $\binom63=20$. \emph{Case 2: neither
+		invited.} All 5 guests from the other 6: $\binom65=6$. The cases are
+	disjoint, so we add: $20+6=26$.
+	\begin{answer}
+		(a) $36$ \qquad (b) $26$
+	\end{answer}
+\end{solution}

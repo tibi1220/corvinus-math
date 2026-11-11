@@ -1,0 +1,36 @@
+% ---
+% title: Boys and girls in a row
+% tags: permutations, counting
+% ---
+
+\begin{problem}
+	3 boys and 3 girls sit in a row. In how many ways can they sit if (a) there
+	is no restriction; (b) the boys sit together and the girls sit together;
+	(c) only the boys must sit together; (d) no two people of the same sex sit
+	next to each other?
+\end{problem}
+
+\begin{solution}
+	\idea Same techniques as Exercise~\exref{couples-at-a-concert}:
+	``together'' $\to$ glue into a block; ``alternate'' $\to$ first fix the
+	pattern of the seats.
+	\step{(a)} Six different people in six seats: $6!=720$.
+	\step{(b)} Two blocks (boys, girls) can be ordered in $2$ ways (boys on the
+	left or girls on the left). Inside the boys' block $3!=6$ orders, inside the
+	girls' block also $3!=6$:
+	\[ 2\cdot3!\cdot3!=2\cdot6\cdot6=72. \]
+	\step{(c)} Glue only the boys into one block; together with the 3 girls we
+	arrange 4 units: $4!=24$ orders. Inside the block the boys can stand in
+	$3!=6$ orders: $24\cdot6=144$.
+	\step{(d)} ``No two of the same sex next to each other'' with 3 boys and 3
+	girls means that the sexes alternate: BGBGBG or GBGBGB (2 patterns). For a
+	fixed pattern the boys fill their 3 seats in $3!$ ways and the girls theirs
+	in $3!$ ways: $2\cdot3!\cdot3!=72$.
+	\begin{answer}
+		(a) $720$ \quad (b) $72$ \quad (c) $144$ \quad (d) $72$
+	\end{answer}
+	\begin{remark}
+		In (c) the girls need not sit together: e.g.\ G\,[BBB]\,G\,G is allowed
+		in (c) but not in (b). That is why (c) is larger than (b).
+	\end{remark}
+\end{solution}

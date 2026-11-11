@@ -1,0 +1,44 @@
+% ---
+% title: Dance class: choose, then pair
+% tags: combinations, permutations
+% ---
+
+\begin{problem}
+	A dance class has 10 women and 12 men. 5 men and 5 women are chosen and then
+	paired off. How many results are possible?
+\end{problem}
+
+\begin{slides}
+	\exstatement
+	\pause
+	\sol Three independent steps, multiply:
+	\begin{enumerate}
+		\item choose the women: $\binom{10}{5}=252$;
+		\item choose the men: $\binom{12}{5}=792$;
+		\item match them: line up the 5 chosen women; the first has 5 possible
+		      partners, the second 4, \ldots, the last 1: $5!=120$.
+	\end{enumerate}
+	\[
+		\binom{10}{5}\binom{12}{5}\,5! = 252\cdot 792\cdot 120 = 23\,950\,080.
+	\]
+	\textbf{Lesson:} combinations (who?) times permutations (how arranged?).
+\end{slides}
+
+\begin{solution}
+	\idea Split the process into independent steps: choose the women, choose
+	the men, match them. Choosing is a combination; matching is a permutation.
+
+	\step{Step 1.} Choose 5 of the 10 women: $\binom{10}{5}=252$.
+	\step{Step 2.} Choose 5 of the 12 men: $\binom{12}{5}=792$.
+	\step{Step 3.} Line up the 5 chosen women. The first has 5 possible
+	partners, the second 4, \ldots, the last 1: $5!=120$ matchings.
+	\begin{answer}
+		\[ \binom{10}{5}\binom{12}{5}\,5! = 252\cdot792\cdot120 =
+			23\,950\,080 \]
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} $5!\cdot5!$ for the matching. Arranging both
+		the men and the women counts every set of pairs $5!$ times; only the
+		partner of each woman matters.
+	\end{remark}
+\end{solution}

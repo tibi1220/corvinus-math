@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Builds everything the website needs from the LaTeX sources in content/:
 //
-// - documents (exercise sheets, solutions) are converted to HTML with lwarp,
+// - documents (study guides, exercises) are converted to HTML with lwarp,
 //   their math rendered with KaTeX, and written to src/generated/content.json;
 // - every document and every slide deck is compiled to a PDF under
 //   public/downloads/<course>/<week>/<slug>.pdf;
@@ -9,14 +9,18 @@
 //   public/slides/<course>/<week>/<slug>/<page>.png, for the slide viewer.
 //
 // The documents to build are listed in src/lib/catalog.ts. A document may
-// \input other files from its folder; they are inlined before compiling.
+// \input other files from its folder; they are inlined before compiling. The
+// exercises/ folder of a week (one file per exercise) is copied next to every
+// document of that week, as the documents read it while compiling.
 //
-// Usage: pnpm content [--force] [--watch] [--verbose]
+// Usage: pnpm content [--force] [--watch] [--verbose] [--production]
 //
 // Each converted file is cached by the hash of its (inlined) source, so only
 // changed documents are recompiled. --force ignores the cache. --watch
 // rebuilds whenever a .tex file under content/ changes (pnpm dev runs it next
 // to next dev). --verbose (on by default with --watch) logs every step.
+// --production (pnpm build) leaves out what is only shown in development: the
+// course-wide exercise PDFs (see showCourseExercises in src/lib/site.ts).
 
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -26,9 +30,18 @@ import os from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import katex from 'katex';
-import { courses, weekDir, weekSlug } from '../src/lib/catalog.ts';
+import { courses, pdfName, weekDir, weekSlug } from '../src/lib/catalog.ts';
 
-const run = promisify(execFile);
+const execFileAsync = promisify(execFile);
+
+// Runs a command. Its stdin is closed, so that TeX stops at an error instead
+// of waiting for an answer at its prompt (lwarpmk runs lualatex
+// interactively).
+function run(command, args, options) {
+  const promise = execFileAsync(command, args, options);
+  promise.child.stdin?.end();
+  return promise;
+}
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 const CONTENT_DIR = path.join(ROOT, 'content');
@@ -46,6 +59,7 @@ const SLIDE_WIDTH = 1600;
 let force = process.argv.includes('--force');
 const watchMode = process.argv.includes('--watch');
 const verbose = watchMode || process.argv.includes('--verbose');
+const production = process.argv.includes('--production');
 
 function debug(message) {
   if (!verbose) return;
@@ -79,8 +93,9 @@ const hash = (...parts) => {
 // The source of a .tex file with every \input{file} (from the same folder)
 // replaced by that file's source, recursively. Commented-out lines are left
 // alone.
-async function inlineInputs(dir, file, depth = 0) {
+async function inlineInputs(dir, file, used = new Set(), depth = 0) {
   if (depth > 10) throw new Error(`${file}: \\input nested too deeply`);
+  used.add(path.join(dir, file));
   const source = await fs.readFile(path.join(dir, file), 'utf8');
   const parts = [];
   let last = 0;
@@ -88,11 +103,151 @@ async function inlineInputs(dir, file, depth = 0) {
     const name = match[2].endsWith('.tex') ? match[2] : `${match[2]}.tex`;
     const start = match.index + match[1].length;
     parts.push(source.slice(last, start));
-    parts.push(await inlineInputs(dir, name, depth + 1));
+    parts.push(await inlineInputs(dir, name, used, depth + 1));
     last = match.index + match[0].length;
   }
   parts.push(source.slice(last));
   return parts.join('');
+}
+
+// ---------------------------------------------------------------------------
+// Last-modified dates
+//
+// The date of a document is the latest date any of its sources changed: the
+// date of the last commit that touched the file, or, for a file with
+// uncommitted changes (or outside git), the day it was last saved. Dates are
+// YYYY-MM-DD.
+
+const isoDate = date =>
+  `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+// Absolute path → date of the last commit that touched it, for the files
+// under content/ without uncommitted changes.
+async function commitDates() {
+  const dates = new Map();
+  try {
+    const options = { cwd: ROOT, maxBuffer: 64 * 1024 * 1024 };
+    const log = await run(
+      'git',
+      ['log', '--format=format:%x00%cs', '--name-only', '--', 'content'],
+      options,
+    );
+    let date = null;
+    for (const line of log.stdout.split('\n')) {
+      if (line.startsWith('\0')) date = line.slice(1);
+      else if (line && date && !dates.has(path.join(ROOT, line))) {
+        dates.set(path.join(ROOT, line), date);
+      }
+    }
+    const status = await run(
+      'git',
+      ['status', '--porcelain', '--untracked-files=all', '--', 'content'],
+      options,
+    );
+    for (const line of status.stdout.split('\n').filter(Boolean)) {
+      dates.delete(path.join(ROOT, line.slice(3).split(' -> ').at(-1)));
+    }
+  } catch {
+    // Not a git checkout: every file gets the day it was last saved.
+  }
+  return dates;
+}
+
+async function lastModified(files, dates) {
+  let latest = '';
+  for (const file of files) {
+    const date = dates.get(file) ?? isoDate((await fs.stat(file)).mtime);
+    if (date > latest) latest = date;
+  }
+  return latest;
+}
+
+// The files of a week's exercises/ folder, which its documents read while
+// compiling (see exercises/macros.tex): [{ name, data }], sorted by name.
+async function exerciseFiles(dir) {
+  const folder = path.join(dir, 'exercises');
+  const names = await fs.readdir(folder).catch(() => []);
+  const files = [];
+  for (const name of names.sort()) {
+    if (name.startsWith('.')) continue;
+    const data = await fs.readFile(path.join(folder, name));
+    files.push({ name: `exercises/${name}`, data });
+  }
+  return files;
+}
+
+async function writeFiles(dir, files) {
+  for (const { name, data } of files) {
+    await fs.mkdir(path.dirname(path.join(dir, name)), { recursive: true });
+    await fs.writeFile(path.join(dir, name), data);
+  }
+}
+
+const filesHash = files =>
+  hash(...files.flatMap(({ name, data }) => [name, '\0', data, '\0']));
+
+// The exercises of a week, from the docstrings of exercises/NN-slug.tex (the
+// same rules as exercises/exercises.lua): number, slug, title and tags.
+function exerciseIndex(files, week) {
+  const index = [];
+  for (const { name, data } of files) {
+    const match = /^exercises\/(\d+)-([\w-]+)\.tex$/.exec(name);
+    if (!match) continue;
+    const meta = {};
+    let inside = false;
+    for (const line of data.toString('utf8').split('\n')) {
+      if (/^%\s*---\s*$/.test(line)) {
+        if (inside) break;
+        inside = true;
+      } else if (inside) {
+        const field = /^%\s*([\w-]+)\s*:\s*(.*?)\s*$/.exec(line);
+        if (field) meta[field[1]] = field[2];
+      } else if (/\S/.test(line)) {
+        break;
+      }
+    }
+    if (!meta.title) throw new Error(`${name} has no title in its docstring`);
+    index.push({
+      number: `${week.number}.${Number(match[1])}`,
+      order: Number(match[1]),
+      slug: match[2],
+      title: meta.title,
+      tags: (meta.tags ?? '').split(/[,\s]+/).filter(Boolean),
+    });
+  }
+  return index.sort((a, b) => a.order - b.order);
+}
+
+// Splits the HTML of a week's exercise collection (exercises.tex, built from
+// \collectionexercise) at the markers it prints around each exercise.
+function splitExercises(html, index) {
+  const marker =
+    /(?:<p>\s*)?\[\[exercise:([\w-]+):(problem|solution|end)\]\](?:\s*<\/p>)?/g;
+  const parts = new Map();
+  let open = null;
+  let last = 0;
+  for (const match of html.matchAll(marker)) {
+    if (open)
+      parts.get(open.slug)[open.part] = html.slice(last, match.index).trim();
+    const [, slug, part] = match;
+    if (!parts.has(slug)) parts.set(slug, {});
+    open = part === 'end' ? null : { slug, part };
+    last = match.index + match[0].length;
+  }
+  return index.map(exercise => {
+    const found = parts.get(exercise.slug);
+    if (!found?.problem) {
+      throw new Error(`exercise ${exercise.slug} is missing from the HTML`);
+    }
+    return {
+      number: exercise.number,
+      slug: exercise.slug,
+      title: exercise.title,
+      tags: exercise.tags,
+      problem: found.problem,
+      solution: found.solution ?? '',
+    };
+  });
 }
 
 // The documents of every week, from the catalog.
@@ -179,9 +334,10 @@ function toLwarpSource(source) {
     .replace(/\\tableofcontents\b/, '');
 }
 
-async function runLwarp(source, label) {
+async function runLwarp(source, files, label) {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'lwarp-'));
   try {
+    await writeFiles(dir, files);
     await fs.writeFile(path.join(dir, 'document.tex'), toLwarpSource(source));
     const options = { cwd: dir, maxBuffer: 64 * 1024 * 1024 };
     try {
@@ -446,13 +602,17 @@ async function writeIfChanged(file, data) {
 }
 
 // Two lualatex runs resolve the table of contents and cross-references.
-async function compilePdf(source, label, runs = 2) {
-  const cached = path.join(CACHE_DIR, `${hash(`${runs}`, source)}.pdf`);
+async function compilePdf(source, files, label, runs = 2) {
+  const cached = path.join(
+    CACHE_DIR,
+    `${hash(`${runs}`, source, filesHash(files))}.pdf`,
+  );
   const hit = await fs.readFile(cached).catch(() => null);
   if (hit && !force) return hit;
 
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), 'pdf-'));
   try {
+    await writeFiles(dir, files);
     await fs.writeFile(path.join(dir, 'document.tex'), source);
     try {
       for (let i = 0; i < runs; i++) {
@@ -522,20 +682,87 @@ async function slideImages(pdf, label) {
 // ---------------------------------------------------------------------------
 // Driver
 
-async function convertDocument(source, label) {
+async function convertDocument(source, files, label) {
   const macros = documentMacros(source);
   const cached = path.join(
     CACHE_DIR,
-    `${hash(PIPELINE_VERSION.document, katex.version, source)}.html`,
+    `${hash(PIPELINE_VERSION.document, katex.version, source, filesHash(files))}.html`,
   );
   let html = force ? null : await fs.readFile(cached, 'utf8').catch(() => null);
   const fromCache = html !== null;
   if (!fromCache) {
-    html = toFragment(await runLwarp(source, label), macros);
+    html = toFragment(await runLwarp(source, files, label), macros);
     await fs.mkdir(CACHE_DIR, { recursive: true });
     await fs.writeFile(cached, html);
   }
   return { html: glueMathPunctuation(html), fromCache };
+}
+
+// 2026-11-11 → November 11, 2026
+const longDate = iso =>
+  new Date(`${iso}T12:00:00`).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+const escapeTex = text =>
+  text.replace(/[&%$#_{}]/g, char => `\\${char}`).replace(/~/g, '\\~{}');
+
+// The course-wide exercise collections, made of the PDFs of the weeks with
+// the same name (see the catalog): every exercise, with and without
+// solutions.
+const COLLECTIONS = [
+  { name: 'exercises', title: 'Exercises' },
+  { name: 'exercises-solutions', title: 'Exercises with solutions' },
+];
+
+// A course-wide collection: a title page and a table of contents, then the
+// PDF of every week, page by page.
+async function exerciseCollection(course, collection, parts, modified, label) {
+  const weeks = parts.map(job => job.week);
+  const first = weeks[0].number;
+  const last = weeks.at(-1).number;
+  const subtitle = `${collection.title}, ${first === last ? `week ${first}` : `weeks ${first}–${last}`}`;
+  const pdfDate = `D:${modified.replaceAll('-', '')}000000`;
+  const files = parts.map(job => ({
+    name: `week-${job.week.number}.pdf`,
+    data: job.pdf,
+  }));
+  const includes = parts.map(
+    ({ week }) =>
+      `\\includepdf[pages=-,addtotoc={1,section,1,{Week ${week.number}${week.title ? `: ${escapeTex(week.title)}` : ''}},week${week.number}}]{week-${week.number}.pdf}`,
+  );
+  const source = [
+    '\\documentclass[11pt,a4paper]{scrartcl}',
+    '\\usepackage[stixtwo]{fontsetup}',
+    '\\usepackage[english]{babel}',
+    '\\usepackage{pdfpages}',
+    '\\usepackage[a4paper,margin=2cm]{geometry}',
+    '\\usepackage[hidelinks]{hyperref}',
+    '\\hypersetup{',
+    `  pdftitle={${escapeTex(`${course.name} – ${subtitle}`)}},`,
+    `  pdfauthor={${escapeTex(`${course.lecturer.name} <${course.lecturer.email}>`)}},`,
+    `  pdfsubject={${escapeTex(`${course.name}, ${subtitle}`)}},`,
+    `  pdfkeywords={${escapeTex(course.keywords)}},`,
+    `  pdfcreationdate={${pdfDate}},`,
+    `  pdfmoddate={${pdfDate}},`,
+    '  pdflang={en-US},',
+    '}',
+    `\\title{${escapeTex(course.name)}}`,
+    `\\subtitle{${escapeTex(subtitle)}}`,
+    `\\author{${escapeTex(course.lecturer.name)}\\\\[2pt]`,
+    '  \\normalsize Corvinus University of Budapest\\\\',
+    `  \\normalsize\\href{mailto:${course.lecturer.email}}{\\texttt{${course.lecturer.email}}}}`,
+    `\\date{Last updated: ${longDate(modified)}}`,
+    '\\begin{document}',
+    '\\maketitle',
+    '\\tableofcontents',
+    ...includes,
+    '\\end{document}',
+    '',
+  ].join('\n');
+  return compilePdf(source, files, label);
 }
 
 async function mapConcurrent(items, limit, fn) {
@@ -562,10 +789,22 @@ async function listFiles(dir) {
     .map(e => path.join(e.parentPath, e.name));
 }
 
-// Removes the files in `dir` that the build did not write.
+// Removes the files in `dir` that the build did not write, then the folders
+// left empty.
 async function prune(dir, keep) {
   for (const file of await listFiles(dir)) {
     if (!keep.has(file)) await fs.rm(file);
+  }
+  const folders = (
+    await fs
+      .readdir(dir, { recursive: true, withFileTypes: true })
+      .catch(() => [])
+  )
+    .filter(entry => entry.isDirectory())
+    .map(entry => path.join(entry.parentPath, entry.name))
+    .sort((a, b) => b.length - a.length);
+  for (const folder of folders) {
+    if ((await fs.readdir(folder)).length === 0) await fs.rmdir(folder);
   }
 }
 
@@ -574,6 +813,7 @@ async function prune(dir, keep) {
 async function build() {
   const buildStart = performance.now();
   const jobs = discover();
+  const dates = await commitDates();
   const limit = Math.max(1, Math.min(4, os.availableParallelism() - 1));
   debug(`build started: ${jobs.length} documents (${limit} in parallel)`);
 
@@ -587,11 +827,27 @@ async function build() {
       if (!existsSync(job.file)) {
         throw new Error(`${label} is missing; run pnpm sync`);
       }
-      const source = await inlineInputs(job.dir, document.file);
+      const used = new Set();
+      const source = await inlineInputs(job.dir, document.file, used);
+      const files = await exerciseFiles(job.dir);
       const base = path.join(course.slug, weekSlug(week), document.slug);
+      const modified = await lastModified(
+        [...used, ...files.map(({ name }) => path.join(job.dir, name))],
+        dates,
+      );
 
-      const pdf = await compilePdf(source, label);
-      const pdfFile = path.join(DOWNLOADS_DIR, `${base}.pdf`);
+      // The date on the title page and in the PDF (see document-info.tex).
+      const pdf = await compilePdf(
+        `\\def\\lastmodified{${modified}}\n${source}`,
+        files,
+        label,
+      );
+      const pdfFile = path.join(
+        DOWNLOADS_DIR,
+        course.slug,
+        weekSlug(week),
+        `${pdfName(course.slug, week, document.pdf ?? document.slug)}.pdf`,
+      );
       if (await writeIfChanged(pdfFile, pdf)) {
         console.log(`compiled ${path.relative(ROOT, pdfFile)}`);
       }
@@ -600,22 +856,37 @@ async function build() {
         slug: document.slug,
         kind: document.kind,
         size: pdf.length,
+        modified,
       };
 
       if (document.kind === 'slides') {
-        const { files, aspect } = await slideImages(pdf, label);
-        for (const [i, file] of files.entries()) {
+        const { files: images, aspect } = await slideImages(pdf, label);
+        for (const [i, file] of images.entries()) {
           const target = path.join(SLIDES_DIR, base, `${i + 1}.png`);
           await writeIfChanged(target, await fs.readFile(file));
           written.add(target);
         }
-        return { ...entry, pages: files.length, aspect };
+        return { ...entry, pages: images.length, aspect };
       }
 
-      const { html, fromCache } = await convertDocument(source, label);
+      if (document.kind === 'pdf') {
+        job.pdf = pdf;
+        job.modified = modified;
+        return entry;
+      }
+
+      const { html, fromCache } = await convertDocument(source, files, label);
       if (!fromCache) {
         compiled++;
         console.log(`converted ${label}`);
+      }
+      if (document.kind === 'exercises') {
+        job.pdf = pdf;
+        job.modified = modified;
+        return {
+          ...entry,
+          exercises: splitExercises(html, exerciseIndex(files, week)),
+        };
       }
       return {
         ...entry,
@@ -636,12 +907,57 @@ async function build() {
     return false;
   }
 
+  // The exercises of every week of a course in one PDF, with and without
+  // solutions: course → { [name]: { size, modified } }.
+  const collections = new Map();
+  for (const course of production ? [] : courses) {
+    for (const collection of COLLECTIONS) {
+      const parts = jobs.filter(
+        job =>
+          job.course === course &&
+          job.pdf &&
+          (job.document.pdf ?? job.document.slug) === collection.name,
+      );
+      if (parts.length === 0) continue;
+      const label = `${course.slug} ${collection.name} collection`;
+      try {
+        const modified = parts
+          .map(job => job.modified)
+          .reduce((a, b) => (a > b ? a : b));
+        const pdf = await exerciseCollection(
+          course,
+          collection,
+          parts,
+          modified,
+          label,
+        );
+        const pdfFile = path.join(
+          DOWNLOADS_DIR,
+          course.slug,
+          `${pdfName(course.slug, null, collection.name)}.pdf`,
+        );
+        if (await writeIfChanged(pdfFile, pdf)) {
+          console.log(`compiled ${path.relative(ROOT, pdfFile)}`);
+        }
+        written.add(pdfFile);
+        collections.set(course, {
+          ...collections.get(course),
+          [collection.name]: { size: pdf.length, modified },
+        });
+      } catch (error) {
+        console.error(`\n✗ ${label}\n${error.message}\n`);
+        return false;
+      }
+    }
+  }
+
   await prune(DOWNLOADS_DIR, written);
   await prune(SLIDES_DIR, written);
 
   const output = {
     courses: courses.map(course => ({
       slug: course.slug,
+      collections: collections.get(course),
       weeks: course.weeks
         .filter(week => week.documents.length > 0)
         .map(week => ({
@@ -694,11 +1010,13 @@ function watchContent() {
   }
 
   watch(CONTENT_DIR, { recursive: true }, (_event, filename) => {
-    if (!filename?.endsWith('.tex')) return;
+    if (!/\.(tex|lua)$/.test(filename ?? '')) return;
     clearTimeout(timer);
     timer = setTimeout(rebuild, 200);
   });
-  console.log(`watching ${path.relative(ROOT, CONTENT_DIR)}/ for .tex changes`);
+  console.log(
+    `watching ${path.relative(ROOT, CONTENT_DIR)}/ for .tex and .lua changes`,
+  );
   rebuild();
 }
 

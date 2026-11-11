@@ -6,12 +6,18 @@
 // - 'document': converted to HTML with lwarp (readable on the page, with a
 //   table of contents), and published as a PDF;
 // - 'slides': a beamer deck, published as a PDF and shown on the page as
-//   images of its pages.
-export type DocumentKind = 'document' | 'slides';
+//   images of its pages;
+// - 'exercises': every exercise of the week with its solution (built from the
+//   exercise files in exercises/), split into exercises and shown on the
+//   Exercises page with their tags, and published as a PDF;
+// - 'pdf': only published as a PDF, with no page of its own.
+export type DocumentKind = 'document' | 'slides' | 'exercises' | 'pdf';
 
 export type DocumentInfo = {
-  // The URL slug, also the name of the PDF: slides → slides.pdf.
+  // The URL slug, also the name of the PDF (see pdfName) unless pdf says
+  // otherwise.
   slug: string;
+  pdf?: string;
   // The main .tex file in the week's folder. Files it \input's must be next
   // to it; they are inlined before compiling.
   file: string;
@@ -22,9 +28,10 @@ export type DocumentInfo = {
 
 export type WeekInfo = {
   number: number;
-  title: string;
-  // What the week covers, shown on the course page.
-  topics: string;
+  // The title and what the week covers, shown on the course page. Left out
+  // until the week's materials are ready, as they may still change.
+  title?: string;
+  topics?: string;
   // Empty until the week's materials are published.
   documents: DocumentInfo[];
 };
@@ -35,6 +42,10 @@ export type CourseInfo = {
   dir: string;
   name: string;
   description: string;
+  // The lecturer, and keywords: the PDF properties of the course-wide exercise
+  // collection. (The documents of a week set theirs in document-info.tex.)
+  lecturer: { name: string; email: string };
+  keywords: string;
   // The old working folder that `pnpm sync` imports new weeks from (it never
   // overwrites content/, the source of truth), relative to
   // this repository.
@@ -42,7 +53,9 @@ export type CourseInfo = {
   weeks: WeekInfo[];
 };
 
-// The three documents of a regular week: slides, exercises, solutions.
+// The documents of a regular week: slides, the study guide (key formulas and
+// every exercise with a detailed solution), and the exercises one by one (a
+// page, and plain PDFs with and without solutions).
 function weekDocuments(): DocumentInfo[] {
   return [
     {
@@ -53,18 +66,28 @@ function weekDocuments(): DocumentInfo[] {
       description: 'The slides of both sessions',
     },
     {
-      slug: 'exercises',
-      file: 'handout.tex',
+      slug: 'study-guide',
+      file: 'study-guide.tex',
       kind: 'document',
-      title: 'Exercises',
-      description: 'The exercise sheet, without solutions',
+      title: 'Study guide',
+      description:
+        'Key formulas and every exercise with a detailed, step-by-step solution',
     },
     {
-      slug: 'solutions',
-      file: 'handout-solutions.tex',
-      kind: 'document',
-      title: 'Exercises with solutions',
-      description: 'Every exercise with a detailed solution',
+      slug: 'exercises',
+      file: 'exercises-solutions.tex',
+      kind: 'exercises',
+      pdf: 'exercises-solutions',
+      title: 'Exercises',
+      description: 'Every exercise of the week, by topic, with its solution',
+    },
+    {
+      slug: 'exercises-pdf',
+      file: 'exercises.tex',
+      kind: 'pdf',
+      pdf: 'exercises',
+      title: 'Exercises',
+      description: 'Every exercise of the week, without solutions',
     },
   ];
 }
@@ -75,6 +98,9 @@ export const courses: CourseInfo[] = [
     dir: 'math-for-finance',
     name: 'Mathematics for Finance',
     description: 'MSc · Probability theory, weeks 8–12',
+    lecturer: { name: 'Tibor SÁNDOR', email: 'tiborsandor2001@gmail.com' },
+    keywords:
+      'probability, combinatorics, mathematics for finance, Corvinus University of Budapest',
     source: '../MATH-FOR-FINANCE',
     weeks: [
       {
@@ -86,42 +112,43 @@ export const courses: CourseInfo[] = [
       },
       {
         number: 9,
-        title:
-          'Probability, conditional probability, discrete random variables',
-        topics:
-          'Axioms of probability, conditional probability, Bayes’ formula, odds, independence, discrete random variables',
         documents: [],
       },
       {
         number: 10,
-        title: 'Continuous random variables, joint distributions',
-        topics:
-          'Densities, uniform, exponential and normal distributions, joint distributions, independence of random variables',
         documents: [],
       },
       {
         number: 11,
-        title: 'Sums of random variables, limit theorems',
-        topics:
-          'Sums of random variables, covariance, correlation, the law of large numbers, the central limit theorem',
         documents: [],
       },
       {
         number: 12,
-        title: 'Review and the fourth midterm',
-        topics: 'Review of weeks 8–11 and a mock midterm',
         documents: [],
       },
     ],
   },
 ];
 
-// The folder of a week in content/<course>/, and its URL slug: week-08 and
-// week-8.
+// The folder of a week in content/<course>/ and its URL slug (also in the
+// names of its PDFs), both with two digits: week-08.
 export function weekDir(week: { number: number }) {
   return `week-${String(week.number).padStart(2, '0')}`;
 }
 
 export function weekSlug(week: { number: number }) {
-  return `week-${week.number}`;
+  return weekDir(week);
+}
+
+// The name of a downloadable PDF, from the course, the week (none for the
+// course-wide exercise collection) and the document:
+// math-for-finance_week-8_slides. The file is published under this name; the
+// browser saves it with the date it was last modified appended
+// (math-for-finance_week-8_slides_20261111.pdf).
+export function pdfName(
+  course: string,
+  week: { number: number } | null,
+  document: string,
+) {
+  return [course, ...(week ? [weekSlug(week)] : []), document].join('_');
 }

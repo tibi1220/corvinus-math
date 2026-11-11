@@ -1,0 +1,29 @@
+% ---
+% title: Eight people in a row
+% tags: permutations, counting
+% ---
+
+\begin{problem}
+	8 people sit in a row. In how many ways if (a) two given people $A$ and
+	$B$ must sit next to each other; (b) there are 4 men and 4 women and no two
+	men and no two women sit next to each other; (c) there are 4 married
+	couples and each couple must sit together?
+\end{problem}
+
+\begin{solution}
+	\idea Blocks for ``together'', seat patterns for ``alternating''.
+	\step{(a)} Glue $A$ and $B$ into one block. The block and the 6 other people
+	are 7 units: $7!=5040$ orders. Inside the block $AB$ or $BA$: 2 orders.
+	Total $2\cdot7!=10\,080$.
+	\step{(b)} No two men and no two women adjacent means the sexes alternate,
+	starting either with a man (\texttt{MWMWMWMW}) or with a woman
+	(\texttt{WMWMWMWM}): 2 patterns. The 4 men fill their seats in $4!=24$
+	ways, the 4 women theirs in $4!=24$ ways:
+	\[ 2\cdot4!\cdot4!=2\cdot24\cdot24=1152. \]
+	\step{(c)} Each couple is a block: 4 blocks in $4!=24$ orders. Inside each
+	block 2 orders, independently for the 4 couples: $2^4=16$. Total
+	$4!\cdot2^4=24\cdot16=384$.
+	\begin{answer}
+		(a) $10\,080$ \quad (b) $1152$ \quad (c) $384$
+	\end{answer}
+\end{solution}

@@ -1,0 +1,49 @@
+% ---
+% title: Dividing into groups
+% tags: multinomial, permutations-with-repetition
+% ---
+
+\begin{problem}
+	(a) 12 people are divided into 3 committees of sizes 3, 4 and 5. How many
+	divisions are possible?
+	(b) 8 new teachers are assigned to 4 schools. How many assignments are
+	possible? How many, if each school gets exactly 2 teachers?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	(a) Fill the committees one after the other:
+	\[ \binom{12}{3}\binom{9}{4}\binom55 = 220\cdot126\cdot 1
+		= \dfrac{12!}{3!\,4!\,5!} = 27\,720. \]
+	(b) Each teacher independently chooses one of 4 schools: $4^8 = 65\,536$.
+	With exactly 2 each: groups of sizes $2,2,2,2$:
+	\[ \binom82\binom62\binom42\binom22 = 28\cdot15\cdot6\cdot1 =
+		\dfrac{8!}{2!\,2!\,2!\,2!} = 2520. \]
+\end{slides}
+
+\begin{solution}
+	\idea Labeled groups of given sizes $\to$ multinomial coefficient. If the
+	group sizes are \emph{not} fixed, each person simply chooses a group.
+
+	\step{(a)} Fill the committees one after the other:
+	\[ \binom{12}{3}\binom94\binom55=220\cdot126\cdot1=27\,720
+		=\frac{12!}{3!\,4!\,5!}. \]
+
+	\step{(b) Free assignment.} Each of the 8 teachers is sent to one of 4
+	schools, independently: $4^8=65\,536$.
+
+	\step{(b) Exactly 2 per school.} Groups of sizes $2,2,2,2$:
+	\[ \binom82\binom62\binom42\binom22=28\cdot15\cdot6\cdot1=2520
+		=\frac{8!}{2!\,2!\,2!\,2!}. \]
+	\begin{answer}
+		(a) $27\,720$ \qquad (b) $4^8=65\,536$; with 2 per school $2520$
+	\end{answer}
+	\begin{remark}
+		The schools are different (labeled groups). If the groups were
+		\emph{unlabeled} (e.g.\ 8 people split into 4 unnamed pairs), we would
+		divide by $4!$ for the order of the groups: $2520/24=105$.
+	\end{remark}
+\end{solution}

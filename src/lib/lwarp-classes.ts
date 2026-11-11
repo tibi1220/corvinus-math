@@ -50,7 +50,7 @@ const boxClasses = [
   '[&_.box-plain]:border-zinc-300 dark:[&_.box-plain]:border-zinc-700',
 ].join(' ');
 
-// A whole document (an exercise sheet, solutions): sections, boxes, figures
+// A whole document (a study guide): sections, boxes, figures
 // and tables, on top of lwarpClasses.
 export const documentClasses = [
   lwarpClasses,

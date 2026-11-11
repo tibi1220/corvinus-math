@@ -1,0 +1,71 @@
+% The properties of every PDF of Week 8: author (with email address), title,
+% subject, keywords and the date the document last changed, in the PDF
+% (hyperref) and on its title page (\date), and the header and footer of the
+% printed documents (below). Each document loads this file after hyperref and
+% then calls \documentinfo{<what it is>}, e.g. \documentinfo{Slides}.
+%
+% The date: the website build (scripts/build-content.mjs) puts
+% \def\lastmodified{YYYY-MM-DD} in front of the document, the date of the last
+% commit that changed its sources. Compiled locally, it is today.
+
+\newcommand{\courseinfo}{Mathematics for Finance}
+\newcommand{\weeklabel}{Week 8}
+\newcommand{\weekinfo}{\weeklabel: Combinatorial analysis, sample space, events}
+\newcommand{\authorname}{Tibor SÁNDOR}
+\providecommand{\myemail}{tiborsandor2001@gmail.com}
+
+\makeatletter
+\ifdefined\lastmodified\else
+	\edef\lastmodified{\the\year-\two@digits{\the\month}-\two@digits{\the\day}}
+\fi
+\def\di@split#1-#2-#3\@nil{%
+	\def\di@year{#1}\def\di@month{#2}\def\di@day{#3}}
+\expandafter\di@split\lastmodified\@nil
+% November 11, 2026
+\edef\lastmodifiedtext{%
+	\ifcase\numexpr\di@month\relax\or January\or February\or March\or April\or
+		May\or June\or July\or August\or September\or October\or November\or
+		December\fi\space\number\di@day, \di@year}
+% D:20261111000000, the date format of PDF metadata
+\edef\di@pdfdate{D:\di@year\di@month\di@day000000}
+
+\newcommand{\documentinfo}[1]{%
+	\hypersetup{
+		pdftitle={\courseinfo, \weekinfo\space -- #1},
+		pdfauthor={\authorname\space<\myemail>},
+		pdfsubject={\courseinfo, \weekinfo},
+		pdfkeywords={probability, combinatorics, mathematics for finance,
+				Corvinus University of Budapest},
+		pdfcreationdate={\di@pdfdate},
+		pdfmoddate={\di@pdfdate},
+		pdflang={en-US},
+	}%
+	\date{Last updated: \lastmodifiedtext}%
+	\gdef\documentkind{#1}%
+}
+
+% Header and footer of the printed documents (KOMA-Script, scrlayer-scrpage;
+% the slides have beamer's footline, the website neither): the course, the
+% week and the document on the left of the header (the week's topic is on the
+% title page), the university on the right; in the footer the author and the
+% page as <current>/<total>. The title page gets only the footer.
+\newcommand{\documentkind}{}
+\IfClassLoadedTF{beamer}{}{\IfPackageLoadedTF{lwarp}{}{%
+	\usepackage{lastpage}%
+	\usepackage[headsepline=1.5pt,footsepline=1.5pt,plainfootsepline]
+		{scrlayer-scrpage}%
+	\clearpairofpagestyles
+	\setkomafont{pageheadfoot}{\small\sffamily\color{navy}}%
+	\setkomafont{pagenumber}{}%
+	\setkomafont{headsepline}{\color{navy!35}}%
+	\setkomafont{footsepline}{\color{navy!35}}%
+	\ihead{\courseinfo\ \textperiodcentered\ \weeklabel\ \textperiodcentered\ 
+		\documentkind}%
+	\ohead{Corvinus University of Budapest}%
+	\ifoot*{\authorname\ \textperiodcentered\ \myemail}%
+	\ofoot*{\pagemark/\pageref*{LastPage}}%
+	\pagestyle{scrheadings}%
+	% Extra stretch for breaking lines with long inline formulas.
+	\setlength{\emergencystretch}{1.5em}%
+}}
+\makeatother

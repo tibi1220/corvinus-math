@@ -1,0 +1,57 @@
+% ---
+% title: Permutations with repetition
+% tags: permutations-with-repetition
+% ---
+
+\begin{problem}
+	How many different letter arrangements can be made from the letters of
+	(a) \mbox{FLUKE} \quad (b) \mbox{PROPOSE} \quad (c) \mbox{MISSISSIPPI} \quad (d) \mbox{ARRANGE}?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol If all letters were different we would have $n!$ arrangements. Swapping
+	identical letters does not change the word, so every word is counted
+	$n_1!\,n_2!\cdots$ times: divide by the factorials of the multiplicities.
+	\begin{enumerate}
+		\item[(a)] 5 different letters: $5! = 120$.
+		\item[(b)] P,R,O,P,O,S,E: P and O twice: $\dfrac{7!}{2!\,2!} =
+			      \dfrac{5040}{4} = 1260$.
+		\item[(c)] M$\times1$, I$\times4$, S$\times4$, P$\times2$: each word is
+		      counted $4!\,4!\,2!=1152$ times among the $11!$ orders:
+		      $\dfrac{11!}{4!\,4!\,2!} = \dfrac{39\,916\,800}{1152} = 34\,650$.
+		\item[(d)] A,R,R,A,N,G,E: A and R twice: $\dfrac{7!}{2!\,2!} = 1260$.
+	\end{enumerate}
+\end{slides}
+
+\begin{solution}
+	\idea If all $n$ letters were different there would be $n!$ arrangements.
+	If a letter occurs $m$ times, swapping its copies gives the same word, so
+	each word has been counted $m!$ times; we divide by the factorials of all
+	multiplicities.
+
+	\step{(a) FLUKE.} 5 different letters: $5! = 120$.
+
+	\step{(b) PROPOSE.} 7 letters: P twice, O twice, R, S, E once.
+	\[ \frac{7!}{2!\,2!} = \frac{5040}{4} = 1260. \]
+
+	\step{(c) MISSISSIPPI.} 11 letters: M once, I four times, S four times,
+	P twice ($1+4+4+2=11$, always check this). Each word is counted
+	$4!\cdot4!\cdot2! = 24\cdot24\cdot2 = 1152$ times among the $11!$ orders:
+	\[ \frac{11!}{1!\,4!\,4!\,2!} = \frac{39\,916\,800}{1152} = 34\,650. \]
+
+	\step{(d) ARRANGE.} 7 letters: A twice, R twice, N, G, E once:
+	\[ \frac{7!}{2!\,2!}=1260. \]
+
+	\begin{answer}
+		(a) $120$ \quad (b) $1260$ \quad (c) $34\,650$ \quad (d) $1260$
+	\end{answer}
+
+	\begin{remark}
+		\textbf{Common mistake:} dividing by $2!+2!$ instead of $2!\cdot2!$. The
+		over-counting factors multiply: the two P's and the two O's can be swapped
+		independently.
+	\end{remark}
+\end{solution}

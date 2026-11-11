@@ -1,0 +1,37 @@
+% ---
+% title: Rating bonds
+% tags: finance, multinomial
+% ---
+
+\begin{problem}
+	\begin{context}
+		A \emph{credit rating} (e.g.\ AAA, A, BBB, \ldots, given by
+		agencies such as S\&P, Moody's, Fitch) summarizes how likely a borrower is
+		to repay. Here an analyst uses three classes A, B, C (best to worst).
+	\end{context}
+	A credit analyst must rate 10 bonds: exactly 4 get rating A, 3 get
+	rating B and 3 get rating C. How many rating assignments are possible?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol Three labeled groups of sizes 4, 3, 3:
+	\[ \binom{10}{4,3,3} = \frac{10!}{4!\,3!\,3!}
+		= \binom{10}{4}\binom63 = 210\cdot 20 = 4200. \]
+\end{slides}
+
+\begin{solution}
+	\idea The 10 bonds are different; we divide them into three labeled groups
+	(A, B, C) of sizes 4, 3, 3.
+	\[ \binom{10}{4,3,3}=\frac{10!}{4!\,3!\,3!}=\binom{10}{4}\binom63\binom33
+		=210\cdot20\cdot1=4200. \]
+	\begin{answer}
+		$4200$
+	\end{answer}
+	\begin{remark}
+		Groups B and C have the same size, but they are \emph{not} interchangeable
+		(rating B is not rating C), so we do not divide by $2!$.
+	\end{remark}
+\end{solution}

@@ -1,12 +1,15 @@
 import type { MetadataRoute } from 'next';
 import {
+  courseExercises,
   courseHref,
   courses,
   documentHref,
+  exercisesHref,
   isPublished,
+  pages,
   weekHref,
 } from '@/lib/content';
-import { absoluteUrl } from '@/lib/site';
+import { absoluteUrl, showCourseExercises } from '@/lib/site';
 
 // Static export: written to out/ at build time.
 export const dynamic = 'force-static';
@@ -17,13 +20,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/',
     ...courses.flatMap(course => [
       courseHref(course),
+      ...(showCourseExercises && courseExercises(course).length > 0
+        ? [exercisesHref(course)]
+        : []),
       ...course.weeks
         .filter(isPublished)
         .flatMap(week => [
           weekHref(course, week),
-          ...week.documents.map(document =>
-            documentHref(course, week, document),
-          ),
+          ...pages(week).map(document => documentHref(course, week, document)),
         ]),
     ]),
     '/privacy',

@@ -1,0 +1,87 @@
+% ---
+% title: Reliability of a system
+% tags: sample-space, events
+% ---
+
+\begin{problem}
+	A system has 5 components, each working (1) or failed (0); the outcome is
+	$(x_1,\dots,x_5)$. The system works if components 1 and 2 work, or 3 and 4
+	work, or 1, 3 and 5 work. (a) What is $|\Om|$? (b) List $W$ = ``the system
+	works''. (c) Let $A$ = ``components 4 and 5 failed''. What is $|A|$?
+	(d) List $AW$.
+	\begin{context}
+		Read ``component working'' as ``issuer has not defaulted''. A
+		\emph{structured product} built on issuers 1--5 keeps paying as long as at
+		least one route survives, i.e.\ as long as the system works. (e) Does the
+		product keep paying if any single issuer defaults? Which pairs of defaults
+		stop the payments?
+	\end{context}
+\end{problem}
+
+\begin{solution}
+	\idea The system is three parallel routes; a route works if all its
+	components work. To list $W$ without double counting, split it into
+	\emph{disjoint} pieces.
+
+	\begin{center}
+		\begin{tikzpicture}[x=1cm,y=.8cm,every node/.style={font=\small},
+				c/.style={draw,circle,fill=navy!10,inner sep=1.5pt}]
+			\coordinate (in) at (0,0); \coordinate (out) at (5,0);
+			\node[left] at (in) {in}; \node[right] at (out) {out};
+			\foreach \y in {1,0,-1} {
+					\draw (in) |- (.6,\y) -- (4.4,\y) -| (out);
+				}
+			\node[c] at (1.8,1) {1}; \node[c] at (3.2,1) {2};
+			\node[c] at (1.8,0) {3}; \node[c] at (3.2,0) {4};
+			\node[c] at (1.4,-1) {1}; \node[c] at (2.5,-1) {3};
+			\node[c] at (3.6,-1) {5};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(a)} Each $x_i\in\{0,1\}$: $|\Om|=2^5=32$.
+
+	\step{(b)}
+	\[ W=\{x_1=x_2=1\}\cup\{x_3=x_4=1\}\cup\{x_1=x_3=x_5=1\}. \]
+	\begin{itemize}[nosep]
+		\item Piece 1: $x_1=x_2=1$, the others free: $2^3=8$ outcomes:
+		      \texttt{11000, 11001, 11010, 11011, 11100, 11101, 11110, 11111}.
+		\item Piece 2: $x_3=x_4=1$ but \emph{not} $x_1=x_2=1$: $(x_1,x_2)\in
+			      \{00,01,10\}$ (3 options), $x_5$ free (2 options): $6$ outcomes:
+		      \texttt{00110, 00111, 01110, 01111, 10110, 10111}.
+		\item Piece 3: works only through route $1,3,5$: then $x_1=x_3=x_5=1$,
+		      and routes 1--2 and 3--4 are broken, so $x_2=0$ and $x_4=0$:
+		      \texttt{10101}.
+	\end{itemize}
+	$|W|=8+6+1=15$.
+
+	\step{(c)} $A=\{x_4=x_5=0\}$, with $x_1,x_2,x_3$ free: $|A|=2^3=8$.
+
+	\step{(d)} If 4 and 5 failed, routes 3--4 and 1--3--5 are broken, so the
+	system works only if $x_1=x_2=1$; $x_3$ is free:
+	$AW=\{11000,\,11100\}$.
+	\begin{answer}
+		(a) $32$ \quad (b) $|W|=15$ (listed above) \quad (c) $|A|=8$ \quad
+		(d) $AW=\{11000,11100\}$
+	\end{answer}
+	\begin{remark}
+		Check: $|W^c|=32-15=17$ states in which the system fails.
+	\end{remark}
+
+	\step{(e) Finance context.} The product stops paying exactly when
+	\emph{every} route contains a defaulted issuer. One default breaks at most the
+	routes through that issuer: issuer 1 lies on routes 1--2 and 1--3--5 (route
+	3--4 survives), issuer 3 on routes 3--4 and 1--3--5 (route 1--2 survives),
+	issuers 2, 4, 5 on one route each. So any single default is survived. A pair
+	of defaults must hit route $\{1,2\}$ and route $\{3,4\}$, so it is one of
+	\[ \{1,3\},\quad \{1,4\},\quad \{2,3\},\quad \{2,4\}; \]
+	of these, $\{1,3\}$, $\{1,4\}$ and
+	$\{2,3\}$ also hit route $\{1,3,5\}$, but $\{2,4\}$ does not.
+	\begin{answer}
+		(e) Yes, every single default is survived; exactly the pairs $\{1,3\}$,
+		$\{1,4\}$, $\{2,3\}$ stop the payments.
+	\end{answer}
+	\begin{remark}
+		Issuers 1 and 3 appear on two routes each: they matter most for the
+		product, like critical components in an engineering system.
+	\end{remark}
+\end{solution}

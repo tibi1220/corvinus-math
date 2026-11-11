@@ -1,0 +1,68 @@
+% ---
+% title: Bank products
+% tags: finance, inclusion-exclusion, complement
+% ---
+
+\begin{problem}
+	\begin{context}
+		Banks try to sell additional products to existing clients
+		(\emph{cross-selling}), because an existing client is cheaper to reach than
+		a new one. Knowing who already has which product tells the bank whom to
+		target.
+	\end{context}
+	A bank has 1000 retail clients: 820 have a current account ($C$), 350 a
+	credit card ($K$), 240 a mortgage ($M$); 300 have both $C$ and $K$, 200
+	have $C$ and $M$, 90 have $K$ and $M$, and 70 have all three. (a) How many
+	clients have none of the products? (b) How many have exactly one product?
+	(c) A campaign targets clients with a current account but no credit card.
+	How many are they?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol
+	(a) Inclusion--exclusion:
+	$|C\cup K\cup M| = 820+350+240-300-200-90+70 = 890$; so $1000-890=110$
+	clients have none.\\[1mm]
+	(b) ``Only $C$'' $=|C|-|CK|-|CM|+|CKM|$ ($CKM$ was removed twice):
+	only $C$: $820-300-200+70=390$; only $K$: $350-300-90+70=30$;
+	only $M$: $240-200-90+70=20$; total $440$.\\[1mm]
+	(c) $C$ splits into $CK$ and $CK^c$: $|CK^c| = |C|-|CK| = 820-300 = 520$.
+	\pause
+	\begin{alertblock}{Next week}
+		Divide by 1000: these become probabilities, and
+		$P(E\cup F)=P(E)+P(F)-P(EF)$.
+	\end{alertblock}
+\end{slides}
+
+\begin{solution}
+	\idea Inclusion--exclusion for three sets, and ``from the inside out'' for the
+	``only'' regions.
+
+	\step{(a)}
+	\[ |C\cup K\cup M|=820+350+240-300-200-90+70=890. \]
+	None: $1000-890=110$.
+
+	\step{(b)} ``Only $C$'' $=|C|-|CK|-|CM|+|CKM|$: removing $CK$ and $CM$
+	removes the 70 clients with all three products twice, so we add them back
+	once.
+	\[ \begin{aligned}
+			\text{Only }C & \colon\ 820-300-200+70=390; \\
+			\text{only }K & \colon\ 350-300-90+70=30;   \\
+			\text{only }M & \colon\ 240-200-90+70=20.
+		\end{aligned} \]
+	Exactly one product: $390+30+20=440$.
+
+	\step{(c)} $C$ splits into $CK$ (has a card) and $CK^c$ (no card):
+	\[ |CK^c|=|C|-|CK|=820-300=520. \]
+	\begin{answer}
+		(a) $110$ \quad (b) $440$ \quad (c) $520$
+	\end{answer}
+	\begin{remark}
+		Dividing by 1000 turns these counts into probabilities for a randomly
+		chosen client; e.g.\ $P(C\cup K\cup M)=0.89$. This is exactly how
+		probabilities will be computed next week.
+	\end{remark}
+\end{solution}

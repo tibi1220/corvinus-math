@@ -1,0 +1,48 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Every exercise of Week 8, in number order, as a plain PDF without colored
+% boxes. exercises-solutions.tex is the same with each solution right after
+% its statement; on the website it is also the Exercises page (the pipeline
+% splits it at the markers that \collectionexercise prints). The exercises
+% themselves are in exercises/.
+
+\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+\usepackage{amsmath}
+\usepackage[stixtwo]{fontsetup}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+% exercises-solutions.tex defines \withsolutions
+\newif\ifsolutions
+\ifdefined\withsolutions\solutionstrue\else\solutionsfalse\fi
+
+\input{preamble}
+\documentinfo{Exercises\ifsolutions\space with solutions\fi}
+
+% The PDF is plain, with a little color: navy headings (from the preamble) and
+% a teal "Solution." label. Statements, answers and remarks (common mistakes,
+% other methods) are set off like quotes in Markdown, by a bar on the left in
+% the color of their boxes in the study guide (the quote style of
+% exercises/macros.tex): statements navy (finance teal), answers teal, remarks
+% gold. (The website styles the boxes itself.)
+\IfPackageLoadedTF{lwarp}{}{%
+  \RenewDocumentEnvironment{answer}{}
+    {\begin{tcolorbox}[quote=teal]\textbf{\color{teal}Answer:}\ }
+    {\end{tcolorbox}}%
+  \RenewDocumentEnvironment{remark}{}
+    {\begin{tcolorbox}[quote=gold,fontupper=\small]}
+    {\end{tcolorbox}}%
+}
+
+\subtitle{Week 8 -- Exercises\ifsolutions\ with solutions\fi\\[2pt]
+  \normalsize Combinatorial analysis, sample space, events}
+
+\begin{document}
+\maketitle
+\allexercises
+\end{document}

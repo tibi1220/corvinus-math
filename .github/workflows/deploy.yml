@@ -27,14 +27,21 @@ jobs:
     # Full TeX Live: lualatex, lwarp, KOMA-Script, beamer, TikZ, STIX Two, ...
     container: texlive/texlive:latest
     steps:
-      - uses: actions/checkout@v4
-
       # lwarp converts PDF to HTML with pdftotext; the slide images come from
-      # pdftoppm.
-      - name: Install poppler
+      # pdftoppm. git must be there before the checkout, so that it is a real
+      # clone: the date in the name of a downloaded PDF is the date of the
+      # last commit that changed its sources.
+      - name: Install poppler and git
         run:
           apt-get update && apt-get install -y --no-install-recommends
-          poppler-utils
+          poppler-utils git ca-certificates
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # The container runs as root; the checkout belongs to another user.
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
 
       - uses: actions/setup-node@v4
         with:

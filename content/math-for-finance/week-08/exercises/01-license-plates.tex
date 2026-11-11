@@ -1,0 +1,56 @@
+% ---
+% title: License plates
+% tags: counting, permutations
+% ---
+
+\begin{problem}
+	A license plate has 7 places: the first 2 are letters (26 options each), the
+	other 5 are digits. (a) How many plates are possible? (b) How many, if no
+	letter and no digit may be repeated?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol Fill the 7 places one by one and multiply (basic principle).
+	\begin{enumerate}
+		\item[(a)] Repetition allowed: 26 choices for each letter, 10 for each
+		      digit:
+		      \[ 26^2\cdot 10^5 = 676\cdot 100\,000 = 67\,600\,000. \]
+		\item[(b)] Each choice uses up one symbol: letters $26\cdot 25=650$,
+		      digits $10\cdot 9\cdot 8\cdot 7\cdot 6=30\,240$;
+		      \[ 650\cdot 30\,240 = 19\,656\,000. \]
+	\end{enumerate}
+\end{slides}
+
+\begin{solution}
+	\idea Fill the 7 places one after the other and multiply the numbers of
+	choices (basic principle of counting). The order matters (AB12345 and
+	BA12345 are different plates); the only question is whether symbols may be
+	repeated.
+
+	\step{(a) Repetition allowed.} Each letter place has 26 choices regardless of
+	what was chosen before, and each digit place has 10 choices:
+	\[ \underbrace{26\cdot26}_{\text{letters}}\cdot
+		\underbrace{10\cdot10\cdot10\cdot10\cdot10}_{\text{digits}}
+		= 676\cdot100\,000 = 67\,600\,000. \]
+
+	\step{(b) No repetition.} The first letter has 26 choices, the second only
+	25 (it must differ from the first). The first digit has 10 choices, the next
+	9, then 8, 7, 6:
+	\[ (26\cdot25)\cdot(10\cdot9\cdot8\cdot7\cdot6) = 650\cdot30\,240
+		= 19\,656\,000. \]
+	The letters and the digits are separate pools: a letter never uses up a
+	digit, so the digit count starts again from 10.
+
+	\begin{answer}
+		(a) $26^2\cdot10^5 = 67\,600\,000$ \qquad
+		(b) $26\cdot25\cdot10\cdot9\cdot8\cdot7\cdot6 = 19\,656\,000$
+	\end{answer}
+
+	\begin{remark}
+		\textbf{Common mistake:} using $\binom{26}{2}$ for the letters. Combinations
+		ignore the order, but on a plate the order of the letters matters.
+	\end{remark}
+\end{solution}

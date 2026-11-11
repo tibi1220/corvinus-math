@@ -1,0 +1,251 @@
+% Exercises of Week 8, shared by beamer.tex, the study guide, the script and
+% exercises.tex. Every exercise lives in a file of its own,
+% exercises/NN-slug.tex, numbered 8.NN (see exercises.lua for the docstring).
+% The body of an exercise file:
+%
+%   \begin{problem} ... \end{problem}      the statement, used everywhere;
+%                                          inside it, \begin{context} ...
+%                                          \end{context} is background that
+%                                          the slides leave out
+%   \begin{slideproblem} ... \end{slideproblem}
+%                                          (optional) a shorter statement
+%                                          for the slides
+%   \begin{slides} ... \end{slides}        one frame of the deck: \exstatement
+%                                          places the statement; repeat the
+%                                          environment for more frames
+%   \begin{solution} ... \end{solution}    the detailed solution (study
+%                                          guide, exercise PDFs, website)
+%
+% Commands for the documents (the argument is the slug: 01-license-plates.tex
+% has the slug license-plates):
+%
+%   \exref{slug}                 the number, e.g. 8.1, for "Exercise~\exref{...}"
+%   \extitle{slug}               the title from the docstring
+%   \exerciseframe[opts]{slug}   beamer: the frames of the exercise
+%   \studyexercise{slug}         study guide: heading, statement, solution
+%   \scriptexercise{slug}        script: the statement box, as on the slide
+%   \allexercises                exercises.tex: every exercise, in order; on
+%                                the website statement and solution with
+%                                markers where the pipeline splits the HTML
+%                                (\collectionexercise), in the PDF plain:
+%                                each statement, followed by its solution if
+%                                \ifsolutions (exercises-solutions.tex)
+
+\def\exweek{8}
+
+\directlua{exercises = dofile("exercises/exercises.lua")
+  exercises.scan("exercises", "\exweek")}
+
+\ExplSyntaxOn
+
+\msg_new:nnn { exercises } { unknown } { Unknown~exercise~`#1'. }
+
+\cs_new_protected:Npn \__ex_missing:n #1
+  { \msg_error:nnn { exercises } { unknown } {#1} ?? }
+\cs_new:Npn \exref #1
+  {
+    \cs_if_exist:cTF { exnum@#1 }
+      { \use:c { exnum@#1 } } { \__ex_missing:n {#1} }
+  }
+\cs_new:Npn \extitle #1
+  {
+    \cs_if_exist:cTF { extitle@#1 }
+      { \use:c { extitle@#1 } } { \__ex_missing:n {#1} }
+  }
+
+% ---------------------------------------------------------------------------
+% Loading an exercise: its parts are stored, nothing is typeset. The slides
+% typeset the stored parts; the other documents read the part they need from
+% the file again (\__ex_input_part:nn), as stored tables do not survive lwarp.
+
+\tl_new:N \g__ex_current_tl
+\tl_new:N \g__ex_problem_tl
+\tl_new:N \g__ex_slideproblem_tl
+\tl_new:N \g__ex_solution_tl
+\seq_new:N \g__ex_slides_seq
+\box_new:N \l__ex_scratch_box
+
+\cs_new_protected:Npn \__ex_load:n #1
+  {
+    \cs_if_exist:cF { exfile@#1 } { \__ex_missing:n {#1} }
+    \tl_gset:Nn \g__ex_current_tl {#1}
+    \tl_gclear:N \g__ex_problem_tl
+    \tl_gclear:N \g__ex_slideproblem_tl
+    \tl_gclear:N \g__ex_solution_tl
+    \seq_gclear:N \g__ex_slides_seq
+    \vbox_set:Nn \l__ex_scratch_box
+      {
+        \DeclareDocumentEnvironment { problem } { +b }
+          { \tl_gset:Nn \g__ex_problem_tl {##1} } { }
+        \DeclareDocumentEnvironment { slideproblem } { +b }
+          { \tl_gset:Nn \g__ex_slideproblem_tl {##1} } { }
+        \DeclareDocumentEnvironment { slides } { +b }
+          { \seq_gput_right:Nn \g__ex_slides_seq {##1} } { }
+        \DeclareDocumentEnvironment { solution } { +b }
+          { \tl_gset:Nn \g__ex_solution_tl {##1} } { }
+        \exp_args:Nv \input { exfile@#1 }
+      }
+  }
+
+% Typesets one part (problem, slideproblem, solution) of an exercise straight
+% from its file; the other parts are skipped.
+\cs_new_protected:Npn \__ex_input_part:nn #1#2
+  {
+    \group_begin:
+      \clist_map_inline:nn { problem, slideproblem, slides, solution }
+        {
+          \str_if_eq:nnTF {##1} {#2}
+            { \DeclareDocumentEnvironment {##1} { } { } { } }
+            { \DeclareDocumentEnvironment {##1} { +b } { } { } }
+        }
+      \exp_args:Nv \input { exfile@#1 }
+    \group_end:
+  }
+
+% Exercise 8.1, or Exercise 8.2 · Finance
+\cs_new:Npn \__ex_heading:
+  {
+    Exercise~\exref { \g__ex_current_tl }
+    \cs_if_exist:cT { exfinance@ \g__ex_current_tl } { ~·~Finance }
+  }
+\prg_new_conditional:Npnn \__ex_if_finance: { T, F, TF }
+  {
+    \cs_if_exist:cTF { exfinance@ \g__ex_current_tl }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+
+% ---------------------------------------------------------------------------
+% Beamer
+
+% The finance context is printed in the study guide, the exercise PDFs and on
+% the website; the
+% slides and the script (which shows what the slide shows) leave it out.
+\bool_new:N \l__ex_context_bool
+\bool_set_true:N \l__ex_context_bool
+\DeclareDocumentEnvironment { context } { }
+  {
+    \bool_if:NTF \l__ex_context_bool
+      { \par \textit { Finance~context. } ~ }
+      { \__ex_gobble_context:w }
+  }
+  { \bool_if:NT \l__ex_context_bool { \par } }
+\cs_new_protected:Npn \__ex_gobble_context:w #1 \end #2
+  { \str_if_eq:nnTF {#2} { context } { \end { context } } { \__ex_gobble_context:w } }
+
+\IfClassLoadedTF { beamer }
+  {
+    \bool_set_false:N \l__ex_context_bool
+
+    \cs_new:Npn \__ex_block: { \__ex_if_finance:TF { exampleblock } { block } }
+    \NewDocumentCommand \exstatement { }
+      {
+        \begin { \__ex_block: } { \__ex_heading: }
+          \tl_if_empty:NTF \g__ex_slideproblem_tl
+            { \g__ex_problem_tl } { \g__ex_slideproblem_tl }
+        \end { \__ex_block: }
+      }
+
+    \tl_new:N \l__ex_frames_tl
+    \NewDocumentCommand \exerciseframe { O{t} m }
+      {
+        \__ex_load:n {#2}
+        \tl_clear:N \l__ex_frames_tl
+        \seq_map_indexed_inline:Nn \g__ex_slides_seq
+          {
+            \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}[#1] }
+            \tl_put_right:Ne \l__ex_frames_tl
+              {
+                {
+                  \exp_not:N \extitle {#2}
+                  \int_compare:nNnT {##1} > { 1 } { \c_space_tl (cont.) }
+                }
+              }
+            \tl_put_right:Nn \l__ex_frames_tl { ##2 \end{frame} }
+          }
+        \tl_use:N \l__ex_frames_tl
+      }
+  }
+  {
+    \cs_new:Npn \__ex_box: { \__ex_if_finance:TF { fin } { task } }
+    \cs_new_protected:Npn \__ex_statement_box:n #1
+      {
+        \begin { \__ex_box: } { \__ex_heading: }
+          \__ex_input_part:nn { \g__ex_current_tl } {#1}
+        \end { \__ex_box: }
+      }
+
+    \NewDocumentCommand \studyexercise { m }
+      {
+        \__ex_load:n {#1}
+        \subsection* { Exercise~\exref{#1}~---~\extitle{#1} }
+        \addcontentsline { toc } { subsection }
+          { Exercise~\exref{#1}~---~\extitle{#1} }
+        \__ex_statement_box:n { problem }
+        \soltitle \__ex_input_part:nn {#1} { solution }
+      }
+
+    \NewDocumentCommand \scriptexercise { m }
+      {
+        \__ex_load:n {#1}
+        \group_begin:
+          \bool_set_false:N \l__ex_context_bool
+          \tl_if_empty:NTF \g__ex_slideproblem_tl
+            { \__ex_statement_box:n { problem } }
+            { \__ex_statement_box:n { slideproblem } }
+        \group_end:
+      }
+
+    % The website (lwarp): statement and solution of each exercise, between
+    % markers where the pipeline splits the HTML.
+    \NewDocumentCommand \collectionexercise { m }
+      {
+        \__ex_load:n {#1}
+        \par [[exercise:#1:problem]] \par
+        \__ex_input_part:nn {#1} { problem }
+        \par [[exercise:#1:solution]] \par
+        \__ex_input_part:nn {#1} { solution }
+        \par [[exercise:#1:end]] \par
+      }
+    % The PDF: plain, each statement, followed by its solution in the
+    % version with solutions (\ifsolutions). The statement is set off like a
+    % quote in Markdown, by a bar on the left (quote=<color>, also used by
+    % exercises.tex) in the color of its box in the study guide: navy, or teal
+    % for a finance exercise.
+    \tcbset
+      {
+        quote/.style =
+          {
+            enhanced, breakable, frame~hidden, interior~hidden,
+            sharp~corners, boxrule = 0pt, borderline~west = {2pt}{0pt}{#1},
+            left = 8pt, right = 0pt, top = 1pt, bottom = 1pt,
+            before~skip = 6pt, after~skip = 6pt,
+            % the document's paragraph spacing (parskip=half)
+            before~upper = { \setlength { \parskip } { .5\baselineskip } }
+          }
+      }
+    \NewDocumentCommand \plainexercise { m }
+      {
+        \__ex_load:n {#1}
+        \subsection* { Exercise~\exref{#1}~---~\extitle{#1} }
+        \addcontentsline { toc } { subsection }
+          { Exercise~\exref{#1}~---~\extitle{#1} }
+        \__ex_if_finance:TF
+          { \begin{tcolorbox}[quote=teal] }
+          { \begin{tcolorbox}[quote=navy] }
+          \__ex_input_part:nn {#1} { problem }
+        \end{tcolorbox}
+        \legacy_if:nT { solutions }
+          {
+            \soltitle
+            \__ex_input_part:nn {#1} { solution }
+          }
+      }
+    \NewDocumentCommand \allexercises { }
+      {
+        \IfPackageLoadedTF { lwarp }
+          { \directlua { exercises.each("collectionexercise") } }
+          { \directlua { exercises.each("plainexercise") } }
+      }
+  }
+
+\ExplSyntaxOff

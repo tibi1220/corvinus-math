@@ -1,0 +1,108 @@
+% ---
+% title: The binomial tree
+% tags: finance, combinations, counting
+% ---
+
+\begin{problem}
+	\begin{context}
+		In the \emph{binomial (Cox--Ross--Rubinstein) model} of option
+		pricing a stock price is modeled in discrete steps: in each step it is
+		multiplied either by an up-factor $u>1$ or by a down-factor $d<1$. An
+		option's value depends on the final price, so we need to know how many
+		paths lead to each final price.
+	\end{context}
+	A stock moves up (factor $u$) or down (factor $d$) every day. After $n=10$
+	days the price is $S_0u^kd^{10-k}$, where $k$ is the number of up-days.
+	(a) How many price paths are there? (b) How many paths end with $k=6$
+	up-days? (c) How many different final prices are there?
+\end{problem}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.6\textwidth}
+			\exstatement
+		\end{column}
+		\begin{column}{.38\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.75,every node/.style={font=\scriptsize}]
+				\foreach \t in {0,...,3}
+				\foreach \k in {0,...,\t} {
+						\pgfmathtruncatemacro{\c}{factorial(\t)/(factorial(\k)*factorial(\t-\k))}
+						\node[circle,draw=navy,fill=navy!8,inner sep=1.5pt] (n\t\k)
+						at (1.4*\t,\k-\t/2) {\c};
+					}
+				\foreach \t in {0,...,2} {
+						\pgfmathtruncatemacro{\tn}{\t+1}
+						\foreach \k in {0,...,\t} {
+								\pgfmathtruncatemacro{\kn}{\k+1}
+								\draw[->,gray] (n\t\k)--(n\tn\kn);
+								\draw[->,gray] (n\t\k)--(n\tn\k);
+							}
+					}
+			\end{tikzpicture}\\
+			\scriptsize paths reaching each node; each node $=$ sum of the two
+			nodes feeding it (Pascal's rule)
+		\end{column}
+	\end{columns}
+	\vspace{-1.5mm}
+	\uncover<2->{\sol
+			\begin{enumerate}\setlength{\itemsep}{0pt}
+				\item[(a)] 2 choices on each of 10 days: $2^{10}=1024$.
+				\item[(b)] A path is a word of 6 U's and 4 D's; choose the 6 up-days:
+				      $\binom{10}{6}=210$.
+				\item[(c)] The order of the factors does not change the product, so the
+				      final price depends only on $k\in\{0,\dots,10\}$: $11$ prices.
+			\end{enumerate}
+			Check: grouping the paths by $k$ gives $\sum_{k=0}^{10}\binom{10}{k}=2^{10}$.
+			This is the combinatorics behind the Cox--Ross--Rubinstein model.}
+\end{slides}
+
+\begin{solution}
+	\idea A path is a word of 10 letters U/D. The final price depends only on
+	how many U's the word contains, not on where they are.
+
+	\step{(a)} 2 choices on each of the 10 days: $2^{10}=1024$.
+
+	\step{(b)} A path with 6 up-days is a word with 6 U's and 4 D's; choose the
+	positions of the U's: $\binom{10}{6}=210$.
+
+	\step{(c)} The product $S_0u^kd^{10-k}$ does not depend on the order of the
+	factors, so the final price is determined by $k\in\{0,1,\dots,10\}$: 11
+	possible prices (they are different because $u>d$).
+
+	\begin{center}
+		\begin{tikzpicture}[scale=.85,every node/.style={font=\scriptsize}]
+			\foreach \t in {0,...,4}
+			\foreach \k in {0,...,\t} {
+					\pgfmathtruncatemacro{\c}{factorial(\t)/(factorial(\k)*factorial(\t-\k))}
+					\node[circle,draw=navy,fill=navy!8,inner sep=1.5pt,minimum size=13pt]
+					(n\t\k) at (1.5*\t,\k-\t/2) {\c};
+				}
+			\foreach \t in {0,...,3} {
+					\pgfmathtruncatemacro{\tn}{\t+1}
+					\foreach \k in {0,...,\t} {
+							\pgfmathtruncatemacro{\kn}{\k+1}
+							\draw[->,gray] (n\t\k)--(n\tn\kn);
+							\draw[->,gray] (n\t\k)--(n\tn\k);
+						}
+				}
+			\node[right,align=left,font=\small] at (6.6,0)
+			{number of paths reaching each node;\\each node is the sum of the\\two
+				feeding it (Pascal's rule)};
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{answer}
+		(a) $2^{10}=1024$ \quad (b) $\binom{10}{6}=210$ \quad (c) $11$
+	\end{answer}
+	\begin{remark}
+		Grouping the 1024 paths by their final node gives
+		\[ \sum_{k=0}^{10}\binom{10}{k}=2^{10}. \]
+		In the option-pricing model each path with $k$ up-moves gets
+		weight $p^k(1-p)^{10-k}$, and $\binom{10}{k}$ tells how many such paths
+		there are --- this is the binomial distribution we will meet later.
+		In the figure every node is the sum of the two nodes feeding it: this is
+		Pascal's rule of Exercise~\exref{pascals-rule}, now read as ``paths into a node''.
+	\end{remark}
+\end{solution}

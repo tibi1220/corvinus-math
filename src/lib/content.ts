@@ -1,8 +1,10 @@
 import generated from '@/generated/content.json';
 import { withBasePath } from '@/lib/base-path';
+import type { Exercise } from '@/lib/exercises';
 import {
   courses as courseInfos,
   weekSlug,
+  pdfName,
   type CourseInfo,
   type DocumentInfo,
   type WeekInfo,
@@ -17,11 +19,17 @@ export type TocEntry = {
   title: string;
 };
 
+// A PDF the pipeline wrote: its size in bytes, and when its sources last
+// changed (YYYY-MM-DD).
+type PdfInfo = { size: number; modified: string };
+
 // What the content pipeline (scripts/build-content.mjs) wrote for a document.
 type GeneratedDocument = {
   slug: string;
   kind: string;
-  // The size of the PDF in bytes.
+  // When its sources last changed (YYYY-MM-DD).
+  modified: string;
+  // The size of the PDF in bytes (0: no PDF, as for the exercises).
   size: number;
   // Documents: the HTML and its table of contents.
   html?: string;
@@ -29,10 +37,14 @@ type GeneratedDocument = {
   // Slides: the number of pages and their width / height.
   pages?: number;
   aspect?: number;
+  // Exercises: one by one, in number order.
+  exercises?: Exercise[];
 };
 
 type GeneratedCourse = {
   slug: string;
+  // The PDF of every exercise of the course (all weeks), if any.
+  collections?: Record<string, PdfInfo>;
   weeks: { number: number; documents: GeneratedDocument[] }[];
 };
 
@@ -47,12 +59,19 @@ export type Week = Omit<WeekInfo, 'documents'> & {
   documents: Document[];
 };
 
-export type Course = Omit<CourseInfo, 'weeks'> & { weeks: Week[] };
+export type Course = Omit<CourseInfo, 'weeks'> & {
+  weeks: Week[];
+  // The PDF of every exercise of the course (all weeks), if any.
+  // The PDFs of every exercise of the course (all weeks), by name:
+  // exercises, exercises-solutions.
+  collections: Record<string, PdfInfo>;
+};
 
 function buildCourse(info: CourseInfo): Course {
   const data = generatedCourses.find(course => course.slug === info.slug);
   return {
     ...info,
+    collections: data?.collections ?? {},
     weeks: info.weeks.map(week => {
       const built = data?.weeks.find(w => w.number === week.number);
       const documents = week.documents.flatMap(document => {
@@ -82,6 +101,16 @@ export function courseHref(course: Course) {
   return `/${course.slug}`;
 }
 
+// The exercises of every week of a course (empty if none is published).
+export function courseExercises(course: Course) {
+  return course.weeks.flatMap(week => weekExercises(week)?.exercises ?? []);
+}
+
+// Every exercise of the course, week by week.
+export function exercisesHref(course: Course) {
+  return `/${course.slug}/exercises`;
+}
+
 export function weekHref(course: Course, week: Week) {
   return `/${course.slug}/${week.slug}`;
 }
@@ -90,11 +119,76 @@ export function documentHref(course: Course, week: Week, document: Document) {
   return `${weekHref(course, week)}/${document.slug}`;
 }
 
-// The PDF written by the content pipeline.
-export function downloadHref(course: Course, week: Week, document: Document) {
-  return withBasePath(
-    `/downloads/${course.slug}/${week.slug}/${document.slug}.pdf`,
-  );
+// A downloadable PDF: the link (without a date, so it stays the same) and the
+// name the browser saves it under, with the date it was last modified:
+// math-for-finance_week-8_slides_20261111.pdf.
+export type Download = { href: string; filename: string; size: number };
+
+function download(
+  course: Course,
+  week: Week | null,
+  document: string,
+  pdf: PdfInfo,
+): Download {
+  const name = pdfName(course.slug, week, document);
+  const folder = week ? `${course.slug}/${week.slug}` : course.slug;
+  return {
+    href: withBasePath(`/downloads/${folder}/${name}.pdf`),
+    filename: `${name}_${pdf.modified.replaceAll('-', '')}.pdf`,
+    size: pdf.size,
+  };
+}
+
+// The attributes of a download link: <a {...downloadLink(file)}>.
+export function downloadLink(file: Download) {
+  return { href: file.href, download: file.filename };
+}
+
+// The PDF of a document of a week.
+export function documentDownload(
+  course: Course,
+  week: Week,
+  document: Document,
+) {
+  return download(course, week, document.pdf ?? document.slug, document);
+}
+
+// The plain PDFs of the exercises, without and with solutions.
+export type ExerciseDownloads = {
+  exercises?: Download;
+  solutions?: Download;
+};
+
+// ... of a week,
+export function weekExerciseDownloads(
+  course: Course,
+  week: Week,
+): ExerciseDownloads {
+  const find = (pdf: string) => {
+    const document = week.documents.find(d => d.pdf === pdf);
+    return document && documentDownload(course, week, document);
+  };
+  return {
+    exercises: find('exercises'),
+    solutions: find('exercises-solutions'),
+  };
+}
+
+// ... and of the whole course.
+export function courseExerciseDownloads(course: Course): ExerciseDownloads {
+  const find = (name: string) => {
+    const pdf = course.collections[name];
+    return pdf && download(course, null, name, pdf);
+  };
+  return {
+    exercises: find('exercises'),
+    solutions: find('exercises-solutions'),
+  };
+}
+
+// The documents that have a page of their own (not the PDF-only ones).
+export function pages(week: Week) {
+  return week.documents.filter(document => document.kind !== 'pdf');
 }
 
 // The image of a slide (pages count from 1).
@@ -107,6 +201,17 @@ export function slideImageHref(
   return withBasePath(
     `/slides/${course.slug}/${week.slug}/${document.slug}/${page}.png`,
   );
+}
+
+// The exercises of a week, if the week has them.
+export function weekExercises(week: Week) {
+  return week.documents.find(document => document.kind === 'exercises');
+}
+
+// "Week 8: Combinatorial analysis, ...", or "Week 9" for a week without a
+// title yet.
+export function weekHeading(week: Week) {
+  return week.title ? `${weekLabel(week)}: ${week.title}` : weekLabel(week);
 }
 
 // "Week 8"

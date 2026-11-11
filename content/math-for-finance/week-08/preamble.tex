@@ -1,4 +1,5 @@
-% Shared definitions for handout.tex and handout-solutions.tex (Week 8).
+% Shared definitions for study-guide.tex and exercises.tex
+% (Week 8).
 % Same colors and box look as script.tex; no lecturer cues.
 
 \definecolor{navy}{RGB}{24,48,75}
@@ -31,9 +32,6 @@
 \newcommand{\soltitle}{\par\textbf{\color{teal}Solution.}\par\nobreak}
 \newcommand{\idea}{\textbf{Idea.}\ }
 \newcommand{\step}[1]{\par\textbf{#1}\ }
-\newcommand{\context}{\textit{Finance context.}\ }
-% Writing space in the student version only
-\newcommand{\workspace}[1]{\ifsolutions\else\par\vspace*{#1}\fi}
 
 % Small Venn diagram of two events E, F in Omega; #1 = shading commands
 \newcommand{\venn}[1]{%
@@ -53,4 +51,9 @@
 \author{Tibor SÁNDOR\\[2pt]
 	\normalsize Corvinus University of Budapest\\
 	\normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
-\date{}
+
+% The exercises (one file each in exercises/) and the commands that place them
+\input{exercises/macros}
+
+% PDF properties and the date on the title page (\documentinfo)
+\input{document-info}

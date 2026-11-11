@@ -8,7 +8,7 @@ export const siteName = 'Corvinus Math';
 export const siteOrigin = 'https://corvinus.tibi1220.hu';
 
 export const siteDescription =
-  'Slides, exercise sheets and detailed solutions for the math courses I teach at Corvinus University of Budapest.';
+  'Slides, study guides and exercises with detailed solutions for the math courses I teach at Corvinus University of Budapest.';
 
 // The absolute URL of a route, e.g. '/math-for-finance' →
 // 'https://corvinus.tibi1220.hu/math-for-finance/'. Pages are
@@ -28,6 +28,13 @@ export const operator = {
 };
 
 export const repositoryUrl = 'https://github.com/tibi1220/corvinus-math';
+
+// The course-wide Exercises page (every week's exercises together, with its
+// PDFs): only in development for now, while a single week is published. The
+// page itself is src/app/[course]/exercises/page.dev.tsx, which only next dev
+// builds (see next.config.ts); this flag hides the links to it, and pnpm build
+// does not make the PDFs (build-content.mjs --production).
+export const showCourseExercises = process.env.NODE_ENV === 'development';
 
 // The anonymous feedback form (Google Forms, no sign-in, no email addresses
 // collected), linked from the home page and described in the privacy policy.

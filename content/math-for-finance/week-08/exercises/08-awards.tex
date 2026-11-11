@@ -1,0 +1,45 @@
+% ---
+% title: Awards: with or without repetition
+% tags: counting, permutations
+% ---
+
+\begin{problem}
+	Five different awards are given to students of a class of 30. How many
+	outcomes are possible if (a) a student may receive any number of awards?
+	(b) each student receives at most one award?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol Hand out the awards one by one.
+	\begin{enumerate}
+		\item[(a)] Every award can go to any of the 30 students (repetition
+		      allowed, order matters because the awards differ):
+		      $30^5 = 24\,300\,000$.
+		\item[(b)] After each award one student fewer is eligible:
+		      \[ 30\cdot29\cdot28\cdot27\cdot26 = \frac{30!}{25!} = 17\,100\,720. \]
+	\end{enumerate}
+\end{slides}
+
+\begin{solution}
+	\idea Hand out the awards one by one. The awards are different, so it
+	matters who gets which award: order matters. The two parts differ only in
+	whether a student can be chosen again.
+
+	\step{(a)} Each of the 5 awards can go to any of the 30 students:
+	$30^5 = 24\,300\,000$.
+
+	\step{(b)} The first award has 30 possible recipients, the second 29 (the
+	first winner is excluded), then 28, 27, 26:
+	\[ 30\cdot29\cdot28\cdot27\cdot26 = \frac{30!}{25!} = 17\,100\,720. \]
+	\begin{answer}
+		(a) $30^5=24\,300\,000$ \qquad (b) $30!/25!=17\,100\,720$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} $5^{30}$ in (a). Ask ``who chooses?'': each
+		\emph{award} chooses a student (30 options, 5 times), not each student an
+		award.
+	\end{remark}
+\end{solution}
