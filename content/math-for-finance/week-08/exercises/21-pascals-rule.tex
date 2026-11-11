@@ -24,8 +24,8 @@
 	$\binom{n+1}{k+1}$ ways. Split the choices by the pear:
 	\emph{pear not chosen} (all $k+1$ are apples): $\binom n{k+1}$;
 	\emph{pear chosen} ($k$ more apples from $n$): $\binom nk$.
-	The same set counted in two ways $\Rightarrow$ the identity. After the
-	binomial tree, this rule builds Pascal's triangle.
+	The same set counted in two ways $\Rightarrow$ the identity. This is the
+	rule that builds Pascal's triangle.
 \end{slides}
 
 \begin{solution}
@@ -58,9 +58,10 @@
 		$\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$
 	\end{answer}
 	\begin{remark}
-		Example: $\binom41+\binom42=4+6=10=\binom52$. After the binomial tree
-		(Exercise~\exref{binomial-tree}), this rule builds Pascal's triangle.
-		Counting proofs avoid long fraction manipulations; see
-		Exercise~\exref{vandermonde}.
+		Example: $\binom41+\binom42=4+6=10=\binom52$. This rule builds Pascal's
+		triangle; in the binomial tree (Exercise~\exref{binomial-tree}) it says
+		that the paths into a node come from the two nodes feeding it.
+		Counting proofs avoid long fraction manipulations; Vandermonde's identity
+		(Exercise~\exref{vandermonde}) is another example.
 	\end{remark}
 \end{solution}

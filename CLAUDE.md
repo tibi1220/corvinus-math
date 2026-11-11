@@ -9,8 +9,10 @@
   working folder; `pnpm sync` only imports new weeks from it and never
   overwrites).
 - Each exercise is one file, content/<course>/week-NN/exercises/NN-slug.tex
-  (format: exercises/macros.tex). Exercises are numbered by week (8.1, ...),
-  finance examples are exercises tagged `finance` and share the numbering. Refer
+  (format: exercises/macros.tex). Exercises are numbered by week (8.1, ...), in
+  topic order (the order in which the lecture covers the topics); the exercises
+  that are not on the slides sit next to those of their topic, not at the end.
+  Finance examples are exercises tagged `finance` and share the numbering. Refer
   to exercises with Exercise~\exref{slug}, never with a typed number. Exercises
   never mention the AK exercise collection.
 - When script.tex changes, update audio/script-spoken.txt and

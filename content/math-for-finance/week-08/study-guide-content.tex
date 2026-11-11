@@ -1,5 +1,6 @@
-% Body of the Week 8 study guide (study-guide.tex): key formulas, and every
-% exercise with its detailed solution. The exercises are in exercises/ (one
+% Body of the Week 8 study guide (study-guide.tex): the key formulas with
+% short explanations, and every exercise of the slides with its detailed
+% solution, in the order of the slides. The exercises are in exercises/ (one
 % file each); \studyexercise prints the heading, the statement and the
 % solution.
 
@@ -18,12 +19,17 @@
 \begin{key}{Counting toolbox}
 	\textbf{Basic principle of counting.} If experiment~1 has $m$ outcomes and,
 	for each of them, experiment~2 has $n$ outcomes, then together they have
-	$m\cdot n$ outcomes. For $r$ experiments: $n_1n_2\cdots n_r$.
+	$m\cdot n$ outcomes. For $r$ experiments: $n_1n_2\cdots n_r$. Think of a
+	tree: the first step gives $m$ branches, each of them splits into $n$
+	branches, so the tree has $m\cdot n$ leaves.
 
-	\textbf{Permutations (order matters).} $n$ distinct objects in a row:
-	$n! = n(n-1)\cdots 2\cdot1$ (and $0!=1$). Ordered selection of $k$ out of
-	$n$ (no repetition):
+	\textbf{Permutations (order matters).} $n$ distinct objects in a row: the
+	first place can be filled in $n$ ways, the second in $n-1$ ways, and so
+	on, so there are $n! = n(n-1)\cdots 2\cdot1$ orders (and $0!=1$). An
+	ordered selection of $k$ out of $n$ (no repetition) stops after $k$
+	factors:
 	\[ \frac{n!}{(n-k)!}=n(n-1)\cdots(n-k+1). \]
+	If repetition is allowed, every place has $n$ choices: $n^k$.
 
 	\textbf{Combinations (order does not matter).} Selection of $k$ out of $n$
 	as a set (no repetition):
@@ -31,21 +37,25 @@
 	each set comes in $k!$ orders, so it was counted $k!$ times among the
 	ordered selections.
 
-	\textbf{Also used:} permutations with repetition:
-	$n$ objects, $n_i$ identical of kind $i$ ($n_1+\dots+n_r=n$), give
-	\[ \frac{n!}{n_1!\,n_2!\cdots n_r!} \]
-	different rows.
+	\textbf{Two questions to ask every time.} Does the order matter? Can an
+	element be used more than once?
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			                   & order matters & order does not matter \\\midrule
+			no repetition      & $n!/(n-k)!$   & $\binom nk$           \\
+			repetition allowed & $n^k$         & $\binom{n+k-1}{k}$    \\\bottomrule
+		\end{tabular}
+	\end{center}
+	The last entry is explained in Part~2 (stars and bars).
 
-	% \textbf{Two questions to ask every time.} Does the order matter? Can an
-	% element be used more than once?
-	% \begin{center}
-	% 	\begin{tabular}{lcc}
-	% 		\toprule
-	% 		                   & order matters & order does not matter       \\\midrule
-	% 		no repetition      & $n!/(n-k)!$   & $\binom nk$                 \\
-	% 		repetition allowed & $n^k$         & $\binom{n+k-1}{k}$ (Part 2) \\\bottomrule
-	% 	\end{tabular}
-	% \end{center}
+	\textbf{Permutations with repetition.} $n$ objects in a row, $n_i$ of them
+	identical of kind $i$ ($n_1+\dots+n_r=n$), give
+	\[ \frac{n!}{n_1!\,n_2!\cdots n_r!} \]
+	different rows: if the identical objects had labels there would be $n!$
+	rows, and every row was counted $n_1!\,n_2!\cdots n_r!$ times, once for
+	each way of swapping identical objects among themselves
+	(Exercise~\exref{letter-arrangements}).
 
 	\textbf{Tricks.} ``Must be together'' $\to$ glue into a block, permute the
 	blocks, then permute inside each block. ``Not together'' or ``at least
@@ -54,73 +64,161 @@
 
 %----------------------------------------------------------------------
 \studyexercise{license-plates}
-
-\studyexercise{pin-codes}
-
 \studyexercise{couples-at-a-concert}
-
 \studyexercise{bus-queue}
-
 \studyexercise{letter-arrangements}
-
 \studyexercise{eight-digit-numbers}
 
-\studyexercise{up-and-down-days}
-
-\studyexercise{awards}
-
-\studyexercise{ranking-funds}
-
-\studyexercise{committees}
-
-\studyexercise{portfolio}
-
-\studyexercise{dance-class}
-
-\studyexercise{lattice-paths}
-
 %----------------------------------------------------------------------
-\subsection*{Extra practice for Part 1}
-\addcontentsline{toc}{subsection}{Extra practice for Part 1}
+\subsection*{Multinomial coefficients}
+\addcontentsline{toc}{subsection}{Multinomial coefficients}
 
-These exercises are for self-study.
+\begin{key}{Multinomial coefficient}
+	The number of ways to divide $n$ distinct objects into $r$ labeled groups
+	of sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$) is
+	\[ \binom{n}{n_1,\dots,n_r}=\frac{n!}{n_1!\cdots n_r!}
+		=\binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+	\textbf{Why.} Choose the first group in $\binom n{n_1}$ ways, the second
+	from the remaining objects in $\binom{n-n_1}{n_2}$ ways, and so on; in the
+	product the factorials cancel one after the other.
 
-\studyexercise{boys-and-girls}
+	\textbf{The same formula as permutations with repetition.} Write under
+	every object the name of its group. A division is then a word with $n_1$
+	letters ``1'', $n_2$ letters ``2'', \dots, and the number of such words is
+	$n!/(n_1!\cdots n_r!)$. With two groups this is the binomial coefficient:
+	\[ \binom{n}{k,\,n-k}=\binom nk. \]
+	\textbf{Careful.} The formula needs \emph{given} group sizes. If every
+	object simply chooses one of $r$ groups, with no condition on the sizes,
+	the count is $r^n$ (Exercise~\exref{dividing-into-groups}).
+\end{key}
 
-\studyexercise{eight-in-a-row}
-
-\studyexercise{selling-books}
-
-\studyexercise{inviting-friends}
+\studyexercise{dividing-into-groups}
+\studyexercise{rating-bonds}
+\studyexercise{up-and-down-days}
+\studyexercise{committees}
+\studyexercise{lattice-paths}
 
 \clearpage
 %======================================================================
-\section{Part 2: Multinomial coefficients, sample space, events}
+\section{Part 2: Pascal's triangle, sample space, events}
 %======================================================================
 
-\subsection*{Key formulas}
-\addcontentsline{toc}{subsection}{Key formulas}
+\subsection*{Pascal's triangle}
+\addcontentsline{toc}{subsection}{Pascal's triangle}
 
-\begin{key}{Multinomial coefficients, expansions, stars and bars}
-	\textbf{Multinomial coefficient.} The number of ways to divide $n$ distinct
-	objects into $r$ labeled groups of sizes $n_1,\dots,n_r$
-	($n_1+\dots+n_r=n$):
-	\[ \binom{n}{n_1,\dots,n_r}=\frac{n!}{n_1!\cdots n_r!}
-		=\binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
-	\textbf{Binomial and multinomial theorems.}
+\begin{key}{Pascal's triangle}
+	\begin{center}
+		\begin{tikzpicture}[every node/.style={font=\small}]
+			\foreach \n in {0,...,6} {
+					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
+					\foreach \k in {0,...,\n} {
+							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
+							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
+						}
+				}
+			\draw[gold,thick] (p4-1) circle (7.5pt);
+			\draw[gold,thick] (p4-2) circle (7.5pt);
+			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
+			\node[teal] at (p5-2) {10};
+			\draw[gold,thick,->] (p4-1)--(p5-2);
+			\draw[gold,thick,->] (p4-2)--(p5-2);
+			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
+			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
+		\end{tikzpicture}
+	\end{center}
+	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
+	holds $\binom nk$. \textbf{Pascal's rule}, proved in
+	Exercise~\exref{pascals-rule} below,
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1}, \]
+	builds the triangle: every entry is the sum of the two entries just above
+	it, e.g.\
+	\[ \binom41+\binom42=4+6=10=\binom52. \]
+	\textbf{Readings of row $n$:}
+	(1) paths with $k$ up-moves among $n$ moves: the lattice paths of
+	Exercise~\exref{lattice-paths} and the binomial tree of
+	Exercise~\exref{binomial-tree};
+	(2) the coefficients of $(a+b)^n$, e.g.\
+	\[ (a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5 \]
+	(row 5);
+	(3) the row sum is $2^n$, and each row is symmetric:
+	$\binom nk=\binom n{n-k}$.
+\end{key}
+
+\studyexercise{pascals-rule}
+\studyexercise{binomial-tree}
+
+%----------------------------------------------------------------------
+\subsection*{Binomial and multinomial theorems}
+\addcontentsline{toc}{subsection}{Binomial and multinomial theorems}
+
+\begin{key}{Binomial and multinomial theorems}
 	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
 		(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
 		x_1^{n_1}\cdots x_r^{n_r}. \]
-	\textbf{Binomial tree} (Exercise~\exref{binomial-tree}): $\binom nk$ of the
-	$2^n$ paths have $k$ up-moves. Pascal's rule
-	(Exercise~\exref{pascals-rule}) arranges these numbers in Pascal's triangle
-	(after Exercise~\exref{binomial-tree}).
+	\textbf{Why.} Multiply out $(a+b)(a+b)\cdots(a+b)$: from every factor we
+	take either $a$ or $b$. We get $a^kb^{n-k}$ when we take $a$ from exactly
+	$k$ of the $n$ factors, and there are $\binom nk$ ways to choose these
+	factors. This is why the numbers $\binom nk$ are called \emph{binomial
+		coefficients}, and why the coefficients of $(a+b)^n$ are row $n$ of
+	Pascal's triangle.
 
-	\textbf{Combinations with repetition (stars and bars).} $n$ identical
-	objects into $r$ distinct boxes: $\binom{n+r-1}{r-1}$ ways; if every box
-	must be nonempty: $\binom{n-1}{r-1}$. Equivalently, choosing $k$ elements
-	out of $n$ with repetition, order irrelevant: $\binom{n+k-1}{k}$.
+	With $r$ terms it is the same: we get $x_1^{n_1}\cdots x_r^{n_r}$ when we
+	take $x_1$ from $n_1$ factors, $x_2$ from $n_2$ factors, \dots: a division
+	of the $n$ factors into groups of sizes $n_1,\dots,n_r$, counted by the
+	multinomial coefficient.
+
+	\textbf{Substitution trick.} The sum of all coefficients of an expansion is
+	its value when every variable equals 1. For example
+	\[ \sum_{k=0}^n\binom nk=(1+1)^n=2^n,\qquad
+		\sum_{k=0}^n(-1)^k\binom nk=(1-1)^n=0\quad(n\ge1). \]
 \end{key}
+
+\studyexercise{expansions}
+
+%----------------------------------------------------------------------
+\subsection*{Stars and bars}
+\addcontentsline{toc}{subsection}{Stars and bars}
+
+\begin{key}{Combinations with repetition (stars and bars)}
+	\textbf{Question.} In how many ways can $n$ identical objects be put into
+	$r$ distinct boxes?
+
+	\textbf{Example.} 5 identical coins for 3 children. Write a star for each
+	coin and a bar between two children:
+	\begin{center}
+		\begin{tabular}{cc@{\hspace{12mm}}cc}
+			\texttt{**|*|**} & means $(2,1,2)$ & \texttt{*****||} & means $(5,0,0)$ \\
+			\texttt{|***|**} & means $(0,3,2)$ & \texttt{*||****} & means $(1,0,4)$
+		\end{tabular}
+	\end{center}
+	Every division is a row of 5 stars and 2 bars, and every such row is a
+	division. The row has 7 places, and it is fixed once we choose the places
+	of the 2 bars: $\binom72=21$ divisions.
+
+	\textbf{In general.} $n$ identical objects into $r$ distinct boxes: $n$
+	stars and $r-1$ bars,
+	\[ \binom{n+r-1}{r-1}\ \text{ways.} \]
+	If every box must be nonempty, first put one object into each box, then
+	divide the other $n-r$ freely:
+	\[ \binom{(n-r)+r-1}{r-1}=\binom{n-1}{r-1}\ \text{ways.} \]
+	\textbf{The last entry of the table.} Choosing $k$ times from $n$ kinds,
+	with repetition and without order, is the same problem: only the number
+	of times each kind is chosen matters. These are $k$ stars in $n$ boxes,
+	so $n-1$ bars:
+	\[ \binom{n+k-1}{k} \]
+	(Exercise~\exref{identical-dice}).
+\end{key}
+
+\studyexercise{stars-and-bars}
+\studyexercise{identical-dice}
+\begin{minipage}{\textwidth}
+	\studyexercise{allocating-capital}
+\end{minipage}
+
+%----------------------------------------------------------------------
+\subsection*{Sample space and events}
+\addcontentsline{toc}{subsection}{Sample space and events}
 
 \begin{key}{Sample space, events and De Morgan's laws}
 	\textbf{Sample space} $\Om$: the set of all possible outcomes of an
@@ -178,98 +276,20 @@ These exercises are for self-study.
 		\Big(\bigcap_{i=1}^nE_i\Big)^c=\bigcup_{i=1}^nE_i^c. \]
 	Next week we use exactly this: $P(A^cB^c)=1-P(A\cup B)$.
 
-	\textbf{Inclusion--exclusion.} $|E\cup F|=|E|+|F|-|EF|$, and
-	\[ |E\cup F\cup G|=|E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|. \]
-	Venn diagrams with three sets are filled \emph{from the inside out}.
+	\textbf{Inclusion--exclusion.} For two events
+	\[ |E\cup F|=|E|+|F|-|EF|: \]
+	in $|E|+|F|$ the outcomes of the overlap $EF$ were counted twice, so we
+	subtract them once. For three events
+	\[ |E\cup F\cup G|=|E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|: \]
+	adding the three sets counts the pairwise overlaps twice, so we subtract
+	them; but then the center $EFG$ was added three times and subtracted three
+	times, so we add it back once. A Venn diagram with three sets is filled
+	\emph{from the inside out}: first the center, then the regions of exactly
+	two sets, then the regions of exactly one set
+	(Exercise~\exref{bank-products}).
 \end{key}
 
-%----------------------------------------------------------------------
-\studyexercise{bridge}
-
-\studyexercise{dividing-into-groups}
-
-\studyexercise{rating-bonds}
-
-\studyexercise{expansions}
-
-\studyexercise{stars-and-bars}
-
-\studyexercise{identical-dice}
-
-\studyexercise{allocating-capital}
-
-\studyexercise{pascals-rule}
-
-\studyexercise{binomial-tree}
-
-%----------------------------------------------------------------------
-\subsection*{Pascal's triangle}
-\addcontentsline{toc}{subsection}{Pascal's triangle}
-
-\begin{key}{Pascal's triangle}
-	\begin{center}
-		\begin{tikzpicture}[every node/.style={font=\small}]
-			\foreach \n in {0,...,6} {
-					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
-					\foreach \k in {0,...,\n} {
-							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
-							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
-							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
-						}
-				}
-			\draw[gold,thick] (p4-1) circle (7.5pt);
-			\draw[gold,thick] (p4-2) circle (7.5pt);
-			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
-			\node[teal] at (p5-2) {10};
-			\draw[gold,thick,->] (p4-1)--(p5-2);
-			\draw[gold,thick,->] (p4-2)--(p5-2);
-			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
-			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
-		\end{tikzpicture}
-	\end{center}
-	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
-	holds $\binom nk$. \textbf{Pascal's rule}, just proved in
-	Exercise~\exref{pascals-rule},
-	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1}, \]
-	builds the triangle: every entry is the sum of the two entries just above
-	it, e.g.\
-	\[ \binom41+\binom42=4+6=10=\binom52. \]
-	\textbf{Readings of row $n$:}
-	(1) paths with $k$ up-moves among $n$ moves: the lattice paths of
-	Exercise~\exref{lattice-paths} and the binomial tree of
-	Exercise~\exref{binomial-tree};
-	(2) the coefficients of $(a+b)^n$, e.g.\
-	\[ (a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5 \]
-	(row 5);
-	(3) the row sum is $2^n$, and each row is symmetric:
-	$\binom nk=\binom n{n-k}$.
-\end{key}
-
-%----------------------------------------------------------------------
 \studyexercise{sample-space}
-
 \studyexercise{stock-path-events}
-
-\studyexercise{two-dice}
-
 \studyexercise{credit-basket}
-
-\studyexercise{newspapers}
-
 \studyexercise{bank-products}
-
-%----------------------------------------------------------------------
-\subsection*{Extra practice for Part 2}
-\addcontentsline{toc}{subsection}{Extra practice for Part 2}
-
-These exercises are for self-study.
-
-\studyexercise{binomial-sums}
-
-\studyexercise{vandermonde}
-
-\studyexercise{coin-game}
-
-\studyexercise{team-classification}
-
-\studyexercise{system-reliability}

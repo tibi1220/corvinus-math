@@ -54,7 +54,7 @@ export type CourseInfo = {
 };
 
 // The documents of a regular week: slides, the study guide (key formulas and
-// every exercise with a detailed solution), and the exercises one by one (a
+// the exercises of the slides with detailed solutions), and all exercises one by one (a
 // page, and plain PDFs with and without solutions).
 function weekDocuments(): DocumentInfo[] {
   return [
@@ -71,7 +71,7 @@ function weekDocuments(): DocumentInfo[] {
       kind: 'document',
       title: 'Study guide',
       description:
-        'Key formulas and every exercise with a detailed, step-by-step solution',
+        'Key formulas and the exercises of the slides, each with a detailed, step-by-step solution',
     },
     {
       slug: 'exercises',

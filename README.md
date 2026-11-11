@@ -21,9 +21,10 @@ website and into downloadable PDFs, so the same source serves both.
 
 - **Courses and weeks**: each course lists the weeks I teach; a week opens once
   its materials are published.
-- **Read online or download**: study guides (key formulas and every exercise
-  with a detailed solution) are converted to HTML (typeset math, figures,
-  colored boxes, table of contents); every document is also a PDF.
+- **Read online or download**: study guides (key formulas and the exercises of
+  the slides, each with a detailed solution) are converted to HTML (typeset
+  math, figures, colored boxes, table of contents); every document is also a
+  PDF.
 - **Exercises one by one**: every exercise, numbered by week (8.1, 8.2, …), with
   its topics as tags to filter by and its solution on demand, on each week's
   page and in one collection for the whole course (filter by week and topic; for
@@ -56,10 +57,11 @@ edited here. The documents to publish are listed in
 
 Every exercise is a file of its own in the week's `exercises/` folder,
 `NN-slug.tex`: `NN` is its number within the week (`01-license-plates.tex` is
-Exercise 8.1 in week 8), the slug is how the documents refer to it. Finance
-examples are ordinary exercises with the tag `finance`, so all exercises share
-one numbering. A file starts with a docstring, then holds every version of the
-exercise:
+Exercise 8.1 in week 8), the slug is how the documents refer to it. The numbers
+follow the topics in the order of the lecture; exercises that are not on the
+slides are numbered with their topic, not after the others. Finance examples are
+ordinary exercises with the tag `finance`, so all exercises share one numbering.
+A file starts with a docstring, then holds every version of the exercise:
 
 ```latex
 % ---
