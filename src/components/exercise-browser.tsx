@@ -3,6 +3,7 @@
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { TableOfContents } from '@/components/table-of-contents';
 import { exerciseAnchor, tagLabel, type Exercise } from '@/lib/exercises';
 import { documentClasses } from '@/lib/lwarp-classes';
 
@@ -116,9 +117,38 @@ export function ExerciseBrowser({ sections }: { sections: ExerciseSection[] }) {
       count + section.exercises.filter(e => visible(section, e)).length,
     0,
   );
+  // Match the filtered cards, so the TOC never links to a hidden exercise.
+  const toc = sections.flatMap(section => {
+    const exercises = section.exercises.filter(e => visible(section, e));
+    if (!exercises.length) return [];
+    return [
+      ...(section.title
+        ? [
+            {
+              id: `section-${section.key}`,
+              level: 1,
+              number: '',
+              title: section.title,
+            },
+          ]
+        : []),
+      ...exercises.map(exercise => ({
+        id: exerciseAnchor(exercise),
+        level: section.title ? 2 : 1,
+        number: exercise.number,
+        title: exercise.title,
+      })),
+    ];
+  });
 
   return (
     <>
+      {toc.length > 0 && (
+        <TableOfContents
+          entries={toc}
+          plainTextTitles
+        />
+      )}
       <div className='mb-6 flex flex-col gap-2'>
         {titled.length > 1 && (
           <div
@@ -191,8 +221,9 @@ export function ExerciseBrowser({ sections }: { sections: ExerciseSection[] }) {
         return (
           <section
             key={section.key}
+            id={`section-${section.key}`}
             hidden={hidden}
-            className='mb-8'
+            className='mb-8 scroll-mt-8'
           >
             {section.title && (
               <h2 className='mb-3 text-lg font-semibold'>

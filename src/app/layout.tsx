@@ -67,7 +67,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <ThemeToggle />
           </nav>
         </header>
-        <main className='mx-auto w-full max-w-3xl flex-1 px-4 py-8'>
+        <main className='relative mx-auto w-full max-w-3xl flex-1 px-4 py-8'>
           {children}
         </main>
         <Footer />

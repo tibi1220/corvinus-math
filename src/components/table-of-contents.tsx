@@ -11,13 +11,62 @@ function TocList({
   entries,
   active,
   onNavigate,
+  plainTextTitles,
 }: {
   entries: TocEntry[];
   active: string | null;
   onNavigate?: () => void;
+  plainTextTitles: boolean;
 }) {
+  const list = useRef<HTMLOListElement>(null);
+
+  useEffect(() => {
+    const element = list.current;
+    const scroller = element?.closest<HTMLElement>('[data-toc-scroll]');
+    if (!element || !scroller) return;
+
+    const keepActiveVisible = () => {
+      const link = element.querySelector<HTMLElement>(
+        '[aria-current="location"]',
+      );
+      if (!link || !scroller.clientHeight) return;
+      const bounds = scroller.getBoundingClientRect();
+      const item = link.getBoundingClientRect();
+      const top = Math.max(bounds.top, 0) + 12;
+      const bottom = Math.min(bounds.bottom, window.innerHeight) - 12;
+      const delta =
+        item.top < top
+          ? item.top - top
+          : item.bottom > bottom
+            ? item.bottom - bottom
+            : 0;
+
+      // Scroll only this list: scrollIntoView can also move the document.
+      if (delta) {
+        scroller.scrollBy({
+          top: delta,
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)')
+            .matches
+            ? 'instant'
+            : 'smooth',
+        });
+      }
+    };
+
+    keepActiveVisible();
+    // Also reveal the current link when a popup opens, a breakpoint changes,
+    // or the list's available height changes without changing the section.
+    const observer = new ResizeObserver(keepActiveVisible);
+    observer.observe(scroller);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [active]);
+
   return (
-    <ol className='space-y-1'>
+    <ol
+      ref={list}
+      className='space-y-1'
+    >
       {entries.map(entry => (
         <li
           key={entry.id}
@@ -34,7 +83,11 @@ function TocList({
             }`}
           >
             <span className='tabular-nums'>{entry.number}</span>
-            <span dangerouslySetInnerHTML={{ __html: entry.title }} />
+            {plainTextTitles ? (
+              <span>{entry.title}</span>
+            ) : (
+              <span dangerouslySetInnerHTML={{ __html: entry.title }} />
+            )}
           </a>
         </li>
       ))}
@@ -45,8 +98,17 @@ function TocList({
 // The table of contents of a material. On wide screens it is a sidebar left
 // of the text; on smaller ones a button floating in the bottom left corner
 // opens it. Either way it highlights the section being read.
-export function TableOfContents({ entries }: { entries: TocEntry[] }) {
-  const [active, setActive] = useState<string | null>(null);
+export function TableOfContents({
+  entries,
+  plainTextTitles = false,
+}: {
+  entries: TocEntry[];
+  plainTextTitles?: boolean;
+}) {
+  const [active, setActive] = useState<string | null>(entries[0]?.id ?? null);
+  const current = entries.some(entry => entry.id === active)
+    ? active
+    : (entries[0]?.id ?? null);
   const [open, setOpen] = useState(false);
   const popup = useRef<HTMLDivElement>(null);
 
@@ -56,20 +118,25 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
       .filter(heading => heading !== null);
     let frame = 0;
     // The current section is the last one whose heading has scrolled past
-    // the top of the window.
+    // the top of the window, or the first section at the top of the page.
     const update = () => {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const passed = headings.filter(
           heading => heading.getBoundingClientRect().top <= ACTIVE_OFFSET,
         );
-        setActive(passed.at(-1)?.id ?? null);
+        setActive(passed.at(-1)?.id ?? headings[0]?.id ?? null);
       });
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
     window.addEventListener('resize', update);
+    // Opening exercise solutions can move headings without scrolling.
+    const observer = new ResizeObserver(update);
+    const main = popup.current?.closest('main');
+    if (main) observer.observe(main);
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(frame);
       window.removeEventListener('scroll', update);
       window.removeEventListener('resize', update);
@@ -95,20 +162,24 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
 
   return (
     <>
-      {/* Left of the text column (max-w-3xl, i.e. 24rem on each side of the
-          center), where xl screens have room. */}
-      <nav
-        aria-label='Table of contents'
-        className='fixed top-24 right-[calc(50%+24.5rem)] hidden max-h-[calc(100vh-8rem)] w-56 overflow-y-auto text-sm xl:block'
-      >
-        <p className='mb-2 font-medium text-zinc-900 dark:text-zinc-100'>
-          Contents
-        </p>
-        <TocList
-          entries={entries}
-          active={active}
-        />
-      </nav>
+      {/* The rail is bounded by main, so the sticky list moves up before
+          reaching the footer. Keep it outside the centered text column. */}
+      <div className='absolute inset-y-8 right-[calc(100%+0.5rem)] hidden w-56 xl:block'>
+        <nav
+          aria-label='Table of contents'
+          data-toc-scroll
+          className='toc-scroll sticky top-24 max-h-[min(100%,calc(100dvh-8rem))] overflow-y-auto pr-2 text-sm'
+        >
+          <p className='mb-2 font-medium text-zinc-900 dark:text-zinc-100'>
+            Contents
+          </p>
+          <TocList
+            entries={entries}
+            active={current}
+            plainTextTitles={plainTextTitles}
+          />
+        </nav>
+      </div>
 
       <div
         ref={popup}
@@ -120,11 +191,13 @@ export function TableOfContents({ entries }: { entries: TocEntry[] }) {
           <nav
             id='toc-popup'
             aria-label='Table of contents'
-            className='absolute bottom-full left-0 mb-2 max-h-[70vh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-sm shadow-lg'
+            data-toc-scroll
+            className='toc-scroll absolute bottom-full left-0 mb-2 max-h-[70dvh] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-sm shadow-lg'
           >
             <TocList
               entries={entries}
-              active={active}
+              active={current}
+              plainTextTitles={plainTextTitles}
               onNavigate={() => setOpen(false)}
             />
           </nav>
