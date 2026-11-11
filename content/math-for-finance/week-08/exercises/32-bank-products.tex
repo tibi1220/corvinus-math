@@ -22,28 +22,87 @@
 	\small
 	\exstatement
 	\pause
-	\sol
-	(a) Inclusion--exclusion:
-	$|C\cup K\cup M| = 820+350+240-300-200-90+70 = 890$; so $1000-890=110$
-	clients have none.\\[1mm]
-	(b) ``Only $C$'' $=|C|-|CK|-|CM|+|CKM|$ ($CKM$ was removed twice):
-	only $C$: $820-300-200+70=390$; only $K$: $350-300-90+70=30$;
-	only $M$: $240-200-90+70=20$; total $440$.\\[1mm]
-	(c) $C$ splits into $CK$ and $CK^c$: $|CK^c| = |C|-|CK| = 820-300 = 520$.
+	\begin{columns}[T]
+		\begin{column}{.68\textwidth}
+			\sol
+			(a) Inclusion--exclusion:
+			$|C\cup K\cup M| = 820+350+240-300-200-90+70 = 890$; so
+			$1000-890=110$ clients have none.\\[.5mm]
+			(b) Fill the diagram from the inside out: center $70$; then
+			$300-70=230$, $200-70=130$, $90-70=20$; then only $C$:
+			$820-230-130-70=390$, only $K$: $30$, only $M$: $20$; total
+			$440$.\\[.5mm]
+			(c) $|CK^c| = |C|-|CK| = 820-300 = 520$ (in the diagram: $390+130$).
+		\end{column}
+		\begin{column}{.3\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.52]
+				\draw[thick] (-2.2,-3.6) rectangle (4,2.1);
+				\draw[navy,thick] (0,0) circle (1.5);
+				\draw[teal,thick] (1.8,0) circle (1.5);
+				\draw[gold,thick] (.9,-1.5) circle (1.5);
+				\node at (-.7,.3) {\scriptsize 390};
+				\node at (2.5,.3) {\scriptsize 30};
+				\node at (.9,-2.3) {\scriptsize 20};
+				\node at (.9,.6) {\scriptsize 230};
+				\node at (.05,-.95) {\scriptsize 130};
+				\node at (1.75,-.95) {\scriptsize 20};
+				\node at (.9,-.45) {\scriptsize 70};
+				\node at (3.3,-3.1) {\scriptsize 110};
+				\node[navy] at (-1.4,1.4) {$C$};
+				\node[teal] at (3.2,1.4) {$K$};
+				\node[gold] at (-.9,-2.7) {$M$};
+				\node at (.9,1.8) {\scriptsize $\Omega$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
 	\pause
-	\begin{alertblock}{Next week}
-		Divide by 1000: these become probabilities, and
-		$P(E\cup F)=P(E)+P(F)-P(EF)$.
-	\end{alertblock}
+	\smallskip
+	\alert{Next week:} divide by 1000 and these become probabilities, with
+	$P(E\cup F)=P(E)+P(F)-P(EF)$.
 \end{slides}
 
 \begin{solution}
 	\idea Inclusion--exclusion for three sets, and ``from the inside out'' for the
 	``only'' regions.
 
+	\begin{minipage}{.56\linewidth}
+		\step{Filling the Venn diagram.}
+		\begin{itemize}[nosep]
+			\item center (all three): $70$;
+			\item only $C$ and $K$: $300-70=230$;\\ only $C$ and $M$:
+			      $200-70=130$;\\ only $K$ and $M$: $90-70=20$;
+			\item only $C$: $820-230-130-70=390$;\\ only $K$:
+			      $350-230-20-70=30$;\\ only $M$: $240-130-20-70=20$;
+			\item outside: $1000-890=110$ (part (a)).
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.4\linewidth}
+		\centering
+		\begin{tikzpicture}[scale=.65]
+				\draw[thick] (-2.2,-3.6) rectangle (4,2.1);
+				\draw[navy,thick] (0,0) circle (1.5);
+				\draw[teal,thick] (1.8,0) circle (1.5);
+				\draw[gold,thick] (.9,-1.5) circle (1.5);
+				\node at (-.7,.3) {\small 390};
+				\node at (2.5,.3) {\small 30};
+				\node at (.9,-2.3) {\small 20};
+				\node at (.9,.6) {\small 230};
+				\node at (.05,-.95) {\small 130};
+				\node at (1.75,-.95) {\small 20};
+				\node at (.9,-.45) {\small 70};
+				\node at (3.3,-3.1) {\small 110};
+				\node[navy] at (-1.4,1.4) {$C$};
+				\node[teal] at (3.2,1.4) {$K$};
+				\node[gold] at (-.9,-2.7) {$M$};
+				\node at (.9,1.8) {\small $\Omega$};
+			\end{tikzpicture}
+	\end{minipage}
+
 	\step{(a)}
 	\[ |C\cup K\cup M|=820+350+240-300-200-90+70=890. \]
-	None: $1000-890=110$.
+	None: $1000-890=110$. Check: the seven regions of the diagram sum to
+	$390+30+20+230+130+20+70=890$.
 
 	\step{(b)} ``Only $C$'' $=|C|-|CK|-|CM|+|CKM|$: removing $CK$ and $CM$
 	removes the 70 clients with all three products twice, so we add them back
@@ -53,10 +112,12 @@
 			\text{only }K & \colon\ 350-300-90+70=30;   \\
 			\text{only }M & \colon\ 240-200-90+70=20.
 		\end{aligned} \]
-	Exactly one product: $390+30+20=440$.
+	Exactly one product: $390+30+20=440$, the three outer regions of the
+	diagram.
 
 	\step{(c)} $C$ splits into $CK$ (has a card) and $CK^c$ (no card):
 	\[ |CK^c|=|C|-|CK|=820-300=520. \]
+	In the diagram these are the two regions of $C$ outside $K$: $390+130$.
 	\begin{answer}
 		(a) $110$ \quad (b) $440$ \quad (c) $520$
 	\end{answer}

@@ -82,9 +82,10 @@
 \begin{frame}{Plan for today}
 	\begin{enumerate}
 		\item \textbf{Session 1 (90 min):} counting principle; permutations;
-		      permutations with repetition; combinations; Pascal's triangle;
-		      the binomial tree.
-		\item \textbf{Session 2 (90 min):} multinomial coefficients; binomial and multinomial theorems; stars and bars;
+		      permutations with repetition; multinomial coefficients;
+		      combinations; lattice paths.
+		\item \textbf{Session 2 (90 min):} Pascal's triangle; the binomial tree;
+		      binomial and multinomial theorems; stars and bars;
 		      sample space and events; De Morgan's laws; inclusion--exclusion.
 	\end{enumerate}
 	\vspace{.3cm}
@@ -143,8 +144,64 @@
 \exerciseframe{bus-queue}
 \exerciseframe{letter-arrangements}
 \exerciseframe{eight-digit-numbers}
+
+\begin{frame}{Multinomial coefficient}
+	\begin{block}{Multinomial coefficient}
+		Number of ways to divide $n$ distinct objects into $r$ labeled groups of
+		sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$):
+		\[ \binom{n}{n_1,\dots,n_r} = \frac{n!}{n_1!\cdots n_r!}
+			= \binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+	\end{block}
+	The same formula as for identical objects in a row: a division into groups
+	is a word with $n_1$ letters ``1'', $n_2$ letters ``2'', \dots
+\end{frame}
+
+\exerciseframe{dividing-into-groups}
+\exerciseframe{rating-bonds}
 \exerciseframe{up-and-down-days}
 \exerciseframe{committees}
+\exerciseframe{lattice-paths}
+
+\begin{frame}{Session 1: summary}
+	\small
+	\begin{itemize}
+		\item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
+		\item Unordered, no repetition: $\binom nk$ (e.g.\ lattice paths).
+		\item Identical objects in a row, or groups of given sizes: the
+		      multinomial coefficient $n!/(n_1!\cdots n_r!)$.
+		\item ``Together'' $\to$ block; ``not together'' $\to$ complement.
+	\end{itemize}
+\end{frame}
+
+%======================================================================
+\section{Session 2: Pascal's triangle, events}
+%======================================================================
+
+\begin{frame}
+	\centering\Large\color{navy}Session 2:
+	Pascal's triangle, sample space, events
+\end{frame}
+
+\begin{frame}{Recap of Session 1}
+	\begin{itemize}
+		\item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
+		      \begin{center}
+			      \begin{tabular}{lcc}\toprule
+				                    & ordered              & unordered                       \\\midrule
+				      no repetition & $\dfrac{n!}{(n-k)!}$ & $\displaystyle\binom nk$        \\[5mm]
+				      repetition    & $n^k$                & $\displaystyle\binom{n+k-1}{k}$ \\\bottomrule
+			      \end{tabular}
+		      \end{center}
+		\item Identical objects in a row, or groups of given sizes:
+		      $n!/(n_1!\cdots n_r!)$.
+		\item ``Together'' $\to$ block; ``not together'' or ``at least one''
+		      $\to$ complement.
+		\item Lattice paths: choose which of the $n$ moves go up, $\binom nk$.
+	\end{itemize}
+	\vspace{2mm}
+	\textbf{Now:} Pascal's triangle, the binomial theorem, identical objects
+	into boxes, and the language of events.
+\end{frame}
 
 \begin{frame}[t]{Pascal's triangle}
 	\begin{columns}[T]
@@ -178,7 +235,8 @@
 			\end{block}
 			\textbf{Readings of row $n$:}
 			\begin{itemize}
-				\item paths with $k$ up-moves among $n$: the binomial tree
+				\item paths with $k$ up-moves among $n$: lattice paths
+				      (Exercise~\exref{lattice-paths}), the binomial tree
 				      (Exercise~\exref{binomial-tree});
 				\item coefficients of $(a+b)^n$ (see row 5);
 				\item row sum $=2^n$; symmetry $\binom nk=\binom n{n-k}$.
@@ -191,75 +249,53 @@
 
 \exerciseframe{binomial-tree}
 
-\begin{frame}{Session 1: summary}
-	\small
-	\begin{itemize}
-		\item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
-		\item Unordered, no repetition: $\binom nk$; identical objects: divide
-		      by $n_1!\cdots n_r!$.
-		\item ``Together'' $\to$ block; ``not together'' $\to$ complement.
-		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves;
-		      Pascal's rule arranges these numbers in Pascal's triangle.
-		\item Identities: count the same set in two ways (Pascal's rule).
-	\end{itemize}
-\end{frame}
-
-%======================================================================
-\section{Session 2: Multinomials, events}
-%======================================================================
-
-\begin{frame}
-	\centering\Large\color{navy}Session 2:
-	Multinomial coefficients, sample space, events
-\end{frame}
-
-\begin{frame}{Recap of Session 1}
-	\begin{itemize}
-		\item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
-		      \begin{center}
-			      \begin{tabular}{lcc}\toprule
-				                    & ordered              & unordered                       \\\midrule
-				      no repetition & $\dfrac{n!}{(n-k)!}$ & $\displaystyle\binom nk$        \\[5mm]
-				      repetition    & $n^k$                & $\displaystyle\binom{n+k-1}{k}$ \\\bottomrule
-			      \end{tabular}
-		      \end{center}
-		\item Identical objects in a row: $n!/(n_1!\cdots n_r!)$.
-		\item ``Together'' $\to$ block; ``not together'' or ``at least one''
-		      $\to$ complement.
-		\item Binomial tree: choose which of the $n$ days are up-days,
-		      $\binom nk$; these numbers form Pascal's triangle.
-	\end{itemize}
-	\vspace{2mm}
-	\textbf{Now:} dividing objects into several groups, identical objects into
-	boxes, and the language of events.
-\end{frame}
-
-\begin{frame}{Toolbox}
-	\small
-	\begin{block}{Multinomial coefficient}
-		Number of ways to divide $n$ distinct objects into $r$ labeled groups of
-		sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$):
-		\[ \binom{n}{n_1,\dots,n_r} = \frac{n!}{n_1!\cdots n_r!}
-			= \binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
-	\end{block}
-	\begin{block}{Binomial and multinomial theorems}
+\begin{frame}{Binomial and multinomial theorems}
+	\begin{block}{Expanding a power of a sum}
 		\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
 			(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
 			x_1^{n_1}\cdots x_r^{n_r}. \]
 	\end{block}
-	\begin{block}{Combinations with repetition (stars and bars)}
-		$n$ identical objects into $r$ distinct boxes:
-		$\binom{n+r-1}{r-1}$; \ with every box nonempty: $\binom{n-1}{r-1}$.
-	\end{block}
+	The coefficients of $(a+b)^n$ are row $n$ of Pascal's triangle; the
+	multinomial coefficients count the ways to pick $x_1$ from $n_1$ of the
+	$n$ factors, $x_2$ from $n_2$ of them, \dots
 \end{frame}
-
-\exerciseframe{dividing-into-groups}
-
-\exerciseframe{rating-bonds}
 
 \exerciseframe{expansions}
 
+\begin{frame}{Stars and bars}
+	\small
+	\textbf{Question:} in how many ways can $n$ identical objects be put into
+	$r$ distinct boxes?
+
+	\textbf{Example:} 5 identical coins for 3 children. Write a star for each
+	coin and a bar between two children:
+	\begin{center}
+		\begin{tabular}{c@{\quad means\quad}c@{\hspace{12mm}}c@{\quad means\quad}c}
+			\texttt{**|*|**} & $(2,1,2)$ & \texttt{*****||} & $(5,0,0)$ \\
+			\texttt{|***|**} & $(0,3,2)$ & \texttt{*||****} & $(1,0,4)$
+		\end{tabular}
+	\end{center}
+	\vspace{-2mm}\pause
+	\begin{itemize}
+		\item Every division is a row of $5$ stars and $2$ bars, and every such
+		      row is a division.
+		\item The row has $7$ places; it is fixed by the places of the 2 bars:
+		      \alert{$\binom72=21$} divisions.
+	\end{itemize}
+	\pause
+	\begin{block}{Combinations with repetition (stars and bars)}
+		$n$ identical objects into $r$ distinct boxes: $n$ stars and $r-1$ bars,
+		\alert{$\binom{n+r-1}{r-1}$} ways.\\
+		Every box nonempty: first put one object into each box, then divide the
+		other $n-r$ freely: $\binom{n-1}{r-1}$ ways.
+	\end{block}
+	This is the ``unordered, with repetition'' entry of the table: choosing
+	$k$ times from $n$ kinds is $k$ stars and $n-1$ bars, $\binom{n+k-1}{k}$.
+\end{frame}
+
 \exerciseframe{stars-and-bars}
+
+\exerciseframe{identical-dice}
 
 \exerciseframe{allocating-capital}
 
@@ -343,10 +379,11 @@
 \begin{frame}{Session 2: summary}
 	\small
 	\begin{itemize}
-		\item Groups of given sizes: multinomial coefficient; identical objects
-		      into boxes: stars and bars.
+		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves;
+		      Pascal's rule arranges these numbers in Pascal's triangle.
 		\item Binomial and multinomial theorems: the same coefficients appear
 		      in $(a+b)^n$ and $(x_1+\dots+x_r)^n$.
+		\item Identical objects into boxes: stars and bars.
 		\item Events are sets: $\cup$ = or, $\cap$ = and, $^c$ = not;
 		      De Morgan: $(E\cup F)^c=E^cF^c$, $(EF)^c=E^c\cup F^c$;
 		      inclusion--exclusion with a Venn diagram, from the inside out.
