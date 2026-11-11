@@ -3,12 +3,12 @@ import { basePath } from '@/lib/base-path';
 // Where the site is published. The canonical URLs of the pages, the sitemap
 // (app/sitemap.ts) and robots.txt (app/robots.ts) are built from it.
 
-export const siteName = 'Corvinus Math';
+export const siteName = "Tibor Sándor's Math Courses";
 
 export const siteOrigin = 'https://corvinus.tibi1220.hu';
 
 export const siteDescription =
-  'Slides, study guides and exercises with detailed solutions for the math courses I teach at Corvinus University of Budapest.';
+  'Slides, study guides and exercises with detailed solutions for the Math courses I teach at Corvinus University of Budapest.';
 
 // The absolute URL of a route, e.g. '/math-for-finance' →
 // 'https://corvinus.tibi1220.hu/math-for-finance/'. Pages are
