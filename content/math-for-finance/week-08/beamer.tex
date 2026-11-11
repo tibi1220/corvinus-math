@@ -80,16 +80,12 @@
 \end{frame}
 
 \begin{frame}{Plan for today}
-	% \textbf{Two sessions back to back, on the same day} (2 $\times$ 90 min,
-	% with a short break in between):
 	\begin{enumerate}
 		\item \textbf{Session 1 (90 min):} counting principle; permutations;
-		      permutations with repetition; combinations; lattice paths.
-		\item[] \hspace*{-1.2em}\textit{--- short break ---}
-		\item \textbf{Session 2 (90 min):} multinomial coefficients; binomial and
-		      multinomial theorems; combinations with repetition (stars and bars);
-		      combinatorial proofs; the binomial tree; Pascal's triangle;
-		      sample space and events; De Morgan's laws; Venn diagrams.
+		      permutations with repetition; combinations; Pascal's triangle;
+		      the binomial tree.
+		\item \textbf{Session 2 (90 min):} multinomial coefficients; binomial and multinomial theorems; stars and bars;
+		      sample space and events; De Morgan's laws; inclusion--exclusion.
 	\end{enumerate}
 	\vspace{.3cm}
 	\textbf{Contact:} Tibor SÁNDOR,
@@ -110,134 +106,45 @@
 		$m$ ways, then $n$ ways for each of them
 		$\;\Longrightarrow\;$ \alert{$m\cdot n$} ways together
 	\end{block}
-	\begin{columns}[T]
-		\begin{column}{.48\textwidth}
-			\begin{block}{Permutations \hfill\normalfont\small order matters}
-				\centering
-				$n$ objects in a row: \ \alert{$n!$}\\[3mm]
-				$k$ of $n$, in order:\\[1mm]
-				\alert{$\dfrac{n!}{(n-k)!}$} $=n(n-1)\cdots(n-k+1)$
-			\end{block}
-		\end{column}
-		\begin{column}{.48\textwidth}
-			\begin{block}{Combinations \hfill\normalfont\small order does not matter}
-				\centering
-				$k$ of $n$, as a set:\\[1mm]
-				\alert{$\dbinom nk$} $=\dfrac{n!}{k!\,(n-k)!}$\\[2mm]
-				{\small each set comes in $k!$ orders}
-			\end{block}
-		\end{column}
-	\end{columns}
-	\begin{alertblock}{Two questions to ask every time}
+	% \begin{columns}[T]
+	% 	\begin{column}{.48\textwidth}
+	% 		\begin{block}{Permutations \hfill\normalfont\small order matters}
+	% 			\centering
+	% 			$n$ objects in a row: \ \alert{$n!$}\\[3mm]
+	% 			$k$ of $n$, in order:\\[1mm]
+	% 			\alert{$\dfrac{n!}{(n-k)!}$} $=n(n-1)\cdots(n-k+1)$
+	% 		\end{block}
+	% 	\end{column}
+	% 	\begin{column}{.48\textwidth}
+	% 		\begin{block}{Combinations \hfill\normalfont\small order does not matter}
+	% 			\centering
+	% 			$k$ of $n$, as a set:\\[1mm]
+	% 			\alert{$\dbinom nk$} $=\dfrac{n!}{k!\,(n-k)!}$\\[2mm]
+	% 			{\small each set comes in $k!$ orders}
+	% 		\end{block}
+	% 	\end{column}
+	% \end{columns}
+	\begin{block}{Two questions to ask every time}
 		\centering
 		\textbf{1.} Does the order matter? \qquad
 		\textbf{2.} Can an element be used more than once?
-	\end{alertblock}
+		\begin{center}
+			\begin{tabular}{lcc}\toprule
+				              & ordered              & unordered                       \\\midrule
+				no repetition & $\dfrac{n!}{(n-k)!}$ & $\displaystyle\binom nk$        \\[5mm]
+				repetition    & $n^k$                & $\displaystyle\binom{n+k-1}{k}$ \\\bottomrule
+			\end{tabular}
+		\end{center}
+	\end{block}
 \end{frame}
 
 \exerciseframe{license-plates}
-
-\exerciseframe{pin-codes}
-
 \exerciseframe{couples-at-a-concert}
-
 \exerciseframe{bus-queue}
-
 \exerciseframe{letter-arrangements}
-
 \exerciseframe{eight-digit-numbers}
-
 \exerciseframe{up-and-down-days}
-
-\exerciseframe{awards}
-
-\exerciseframe{ranking-funds}
-
 \exerciseframe{committees}
-
-\exerciseframe{portfolio}
-
-\exerciseframe{dance-class}
-
-\exerciseframe{lattice-paths}
-
-\begin{frame}{Session 1: summary}
-	\small
-	\begin{itemize}
-		\item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
-		\item Unordered, no repetition: $\binom nk$ (e.g.\ lattice paths);
-		      identical objects: divide by $n_1!\cdots n_r!$.
-		\item ``Together'' $\to$ block; ``not together'' $\to$ complement.
-	\end{itemize}
-	\vfill
-	\centering\textit{Short break --- Session 2 follows right after.}
-\end{frame}
-
-%======================================================================
-\section{Session 2: Multinomials, events}
-%======================================================================
-
-\begin{frame}
-	\centering\Large\color{navy}Session 2 (after the break):\\
-	Multinomial coefficients, sample space, events
-\end{frame}
-
-\begin{frame}{After the break: a two-minute recap of Session 1}
-	\begin{itemize}
-		\item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
-		      \begin{center}
-			      \begin{tabular}{lcc}\toprule
-				                    & ordered     & unordered          \\\midrule
-				      no repetition & $n!/(n-k)!$ & $\binom nk$        \\[2mm]
-				      repetition    & $n^k$       & $\binom{n+k-1}{k}$ \\\bottomrule
-			      \end{tabular}
-		      \end{center}
-		\item Identical objects in a row: $n!/(n_1!\cdots n_r!)$.
-		\item ``Together'' $\to$ block; ``not together'' or ``at least one''
-		      $\to$ complement.
-		\item Lattice paths: choose which of the $n$ moves go up, $\binom nk$.
-	\end{itemize}
-	\vspace{2mm}
-	\textbf{Now:} dividing objects into several groups, identical objects into
-	boxes, and the language of events.
-\end{frame}
-
-\begin{frame}{Toolbox}
-	\small
-	\begin{block}{Multinomial coefficient}
-		Number of ways to divide $n$ distinct objects into $r$ labeled groups of
-		sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$):
-		\[ \binom{n}{n_1,\dots,n_r} = \frac{n!}{n_1!\cdots n_r!}
-			= \binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
-	\end{block}
-	\begin{block}{Binomial and multinomial theorems}
-		\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
-			(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
-			x_1^{n_1}\cdots x_r^{n_r}. \]
-	\end{block}
-	\begin{block}{Combinations with repetition (stars and bars)}
-		$n$ identical objects into $r$ distinct boxes:
-		$\binom{n+r-1}{r-1}$; \ with every box nonempty: $\binom{n-1}{r-1}$.
-	\end{block}
-\end{frame}
-
-\exerciseframe{bridge}
-
-\exerciseframe{dividing-into-groups}
-
-\exerciseframe{rating-bonds}
-
-\exerciseframe{expansions}
-
-\exerciseframe{stars-and-bars}
-
-\exerciseframe{identical-dice}
-
-\exerciseframe{allocating-capital}
-
-\exerciseframe{pascals-rule}
-
-\exerciseframe{binomial-tree}
 
 \begin{frame}[t]{Pascal's triangle}
 	\begin{columns}[T]
@@ -264,15 +171,14 @@
 		\end{column}
 		\begin{column}{.46\textwidth}
 			\small
-			\begin{block}{Pascal's rule (just proved: Exercise~\exref{pascals-rule})}
+			\begin{block}{Pascal's rule (proof: Exercise~\exref{pascals-rule})}
 				$\displaystyle\binom nk+\binom n{k+1}=\binom{n+1}{k+1}$\\[1mm]
 				builds the triangle: each entry is the sum of the two above,
 				$\binom41+\binom42=4+6=10=\binom52$.
 			\end{block}
 			\textbf{Readings of row $n$:}
 			\begin{itemize}
-				\item paths with $k$ up-moves among $n$: lattice paths
-				      (Exercise~\exref{lattice-paths}), the binomial tree
+				\item paths with $k$ up-moves among $n$: the binomial tree
 				      (Exercise~\exref{binomial-tree});
 				\item coefficients of $(a+b)^n$ (see row 5);
 				\item row sum $=2^n$; symmetry $\binom nk=\binom n{n-k}$.
@@ -280,6 +186,82 @@
 		\end{column}
 	\end{columns}
 \end{frame}
+
+\exerciseframe{pascals-rule}
+
+\exerciseframe{binomial-tree}
+
+\begin{frame}{Session 1: summary}
+	\small
+	\begin{itemize}
+		\item Ordered, no repetition: $n!/(n-k)!$; ordered, repetition: $n^k$.
+		\item Unordered, no repetition: $\binom nk$; identical objects: divide
+		      by $n_1!\cdots n_r!$.
+		\item ``Together'' $\to$ block; ``not together'' $\to$ complement.
+		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves;
+		      Pascal's rule arranges these numbers in Pascal's triangle.
+		\item Identities: count the same set in two ways (Pascal's rule).
+	\end{itemize}
+\end{frame}
+
+%======================================================================
+\section{Session 2: Multinomials, events}
+%======================================================================
+
+\begin{frame}
+	\centering\Large\color{navy}Session 2:
+	Multinomial coefficients, sample space, events
+\end{frame}
+
+\begin{frame}{Recap of Session 1}
+	\begin{itemize}
+		\item Ask: \textbf{does order matter?} \ \textbf{repetition allowed?}
+		      \begin{center}
+			      \begin{tabular}{lcc}\toprule
+				                    & ordered              & unordered                       \\\midrule
+				      no repetition & $\dfrac{n!}{(n-k)!}$ & $\displaystyle\binom nk$        \\[5mm]
+				      repetition    & $n^k$                & $\displaystyle\binom{n+k-1}{k}$ \\\bottomrule
+			      \end{tabular}
+		      \end{center}
+		\item Identical objects in a row: $n!/(n_1!\cdots n_r!)$.
+		\item ``Together'' $\to$ block; ``not together'' or ``at least one''
+		      $\to$ complement.
+		\item Binomial tree: choose which of the $n$ days are up-days,
+		      $\binom nk$; these numbers form Pascal's triangle.
+	\end{itemize}
+	\vspace{2mm}
+	\textbf{Now:} dividing objects into several groups, identical objects into
+	boxes, and the language of events.
+\end{frame}
+
+\begin{frame}{Toolbox}
+	\small
+	\begin{block}{Multinomial coefficient}
+		Number of ways to divide $n$ distinct objects into $r$ labeled groups of
+		sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$):
+		\[ \binom{n}{n_1,\dots,n_r} = \frac{n!}{n_1!\cdots n_r!}
+			= \binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+	\end{block}
+	\begin{block}{Binomial and multinomial theorems}
+		\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
+			(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+			x_1^{n_1}\cdots x_r^{n_r}. \]
+	\end{block}
+	\begin{block}{Combinations with repetition (stars and bars)}
+		$n$ identical objects into $r$ distinct boxes:
+		$\binom{n+r-1}{r-1}$; \ with every box nonempty: $\binom{n-1}{r-1}$.
+	\end{block}
+\end{frame}
+
+\exerciseframe{dividing-into-groups}
+
+\exerciseframe{rating-bonds}
+
+\exerciseframe{expansions}
+
+\exerciseframe{stars-and-bars}
+
+\exerciseframe{allocating-capital}
 
 %----------------------------------------------------------------------
 \begin{frame}{Sample space and events}
@@ -354,11 +336,7 @@
 
 \exerciseframe{stock-path-events}
 
-\exerciseframe{two-dice}
-
 \exerciseframe{credit-basket}
-
-\exerciseframe{newspapers}
 
 \exerciseframe{bank-products}
 
@@ -367,12 +345,11 @@
 	\begin{itemize}
 		\item Groups of given sizes: multinomial coefficient; identical objects
 		      into boxes: stars and bars.
-		\item Identities: count the same set in two ways (Pascal's rule).
-		\item Binomial tree: $\binom nk$ of the $2^n$ paths have $k$ up-moves;
-		      Pascal's rule arranges these numbers in Pascal's triangle.
+		\item Binomial and multinomial theorems: the same coefficients appear
+		      in $(a+b)^n$ and $(x_1+\dots+x_r)^n$.
 		\item Events are sets: $\cup$ = or, $\cap$ = and, $^c$ = not;
 		      De Morgan: $(E\cup F)^c=E^cF^c$, $(EF)^c=E^c\cup F^c$;
-		      Venn diagrams from the inside out.
+		      inclusion--exclusion with a Venn diagram, from the inside out.
 	\end{itemize}
 \end{frame}
 
