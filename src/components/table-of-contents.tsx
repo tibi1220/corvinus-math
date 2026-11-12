@@ -32,7 +32,7 @@ function TocList({
       if (!link || !scroller.clientHeight) return;
       const bounds = scroller.getBoundingClientRect();
       const item = link.getBoundingClientRect();
-      const top = Math.max(bounds.top, 0) + 12;
+      const top = Math.max(bounds.top, 65) + 12;
       const bottom = Math.min(bounds.bottom, window.innerHeight) - 12;
       const delta =
         item.top < top

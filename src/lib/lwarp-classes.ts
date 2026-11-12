@@ -2,7 +2,7 @@
 // inline .listmarker spans, tables, pictures, colored boxes) and the KaTeX
 // output inside it.
 export const lwarpClasses = [
-  'leading-relaxed text-zinc-800 dark:text-zinc-200',
+  'math-document min-w-0 leading-relaxed text-zinc-800 dark:text-zinc-200',
   '[&_p]:my-2',
   '[&_ul]:my-3 [&_ul]:space-y-2',
   '[&_li]:relative [&_li]:pl-7 [&_li>p:first-child]:-indent-7',

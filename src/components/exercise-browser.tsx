@@ -52,7 +52,7 @@ function ExerciseCard({
     <li
       id={exerciseAnchor(exercise)}
       hidden={hidden}
-      className='scroll-mt-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-4'
+      className='min-w-0 scroll-mt-8 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 py-4 sm:px-5'
     >
       <header className='flex flex-wrap items-baseline gap-x-3 gap-y-1.5'>
         <h3 className='font-semibold text-zinc-900 dark:text-zinc-100'>
@@ -239,7 +239,7 @@ export function ExerciseBrowser({ sections }: { sections: ExerciseSection[] }) {
                 )}
               </h2>
             )}
-            <ol className='grid gap-4'>
+            <ol className='grid grid-cols-1 gap-4'>
               {section.exercises.map(exercise => (
                 <ExerciseCard
                   key={exercise.slug}

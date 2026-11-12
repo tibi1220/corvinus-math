@@ -56,16 +56,23 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
       </head>
       <body className='flex min-h-full flex-col bg-zinc-50 dark:bg-zinc-950 font-sans text-zinc-900 dark:text-zinc-100'>
-        <header className='border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900'>
-          <nav className='mx-auto flex max-w-3xl items-center justify-between px-4 py-3'>
+        <header className='site-header sticky top-0 z-50 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900'>
+          <div className='mx-auto flex h-16 max-w-3xl items-center justify-between gap-3 px-4'>
             <Link
               href='/'
-              className='font-semibold tracking-tight'
+              data-site-title
+              className='min-w-0 truncate font-semibold tracking-tight'
             >
               {siteName}
             </Link>
-            <ThemeToggle />
-          </nav>
+            <div
+              id='header-breadcrumbs'
+              className='min-w-0 flex-1 empty:hidden'
+            />
+            <div className='shrink-0'>
+              <ThemeToggle />
+            </div>
+          </div>
         </header>
         <main className='relative mx-auto w-full max-w-3xl flex-1 px-4 py-8'>
           {children}

@@ -178,7 +178,7 @@ export function SlideViewer({
             />
           </button>
         </div>
-        <label className='flex flex-1 items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400'>
+        <label className='flex min-w-0 flex-1 items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400'>
           <span className='sr-only'>Page</span>
           <input
             type='range'
@@ -186,7 +186,7 @@ export function SlideViewer({
             max={last}
             value={page}
             onChange={event => go(Number(event.target.value))}
-            className='flex-1 accent-zinc-700 dark:accent-zinc-300'
+            className='min-w-0 flex-1 accent-zinc-700 dark:accent-zinc-300'
           />
           <span className='tabular-nums whitespace-nowrap'>
             {page} / {last}
