@@ -1,0 +1,94 @@
+% ---
+% title: Lost cards: aces
+% tags: generalized-bayes, total-probability, equally-likely
+% ---
+
+\begin{problem}
+	Two cards have been lost from a deck of 52 cards, and we do not know which
+	ones. We draw 4 of the remaining 50 cards at random.
+	(a) Find the probability that there are exactly 2 aces among the 4 drawn
+	cards.
+	(b) There are exactly 2 aces among the 4 drawn cards. What is the
+	probability that both lost cards were aces?
+\end{problem}
+
+\begin{solution}
+	\idea The result of the draw depends on how many aces were lost. If we knew
+	that number, the draw would be a simple equally-likely problem. So we split
+	the possibilities by the number of lost aces, use the law of total
+	probability in (a), and turn the conditioning around with the generalized
+	Bayes formula in (b), as in Exercise~\exref{three-cooks}.
+
+	\textbf{The partition.} Let $B_0$, $B_1$, $B_2$ be the events that $0$, $1$
+	or $2$ aces were lost. Exactly one of them happens, so they are mutually
+	exclusive and their union is $\Om$. The two lost cards are a random pair of
+	the 52 cards, and every pair is equally likely. There are
+	$\binom{52}{2}=1326$ pairs. A pair with no ace uses 2 of the 48 non-aces, a
+	pair with one ace uses 1 of the 4 aces and 1 of the 48 non-aces, and a pair
+	with two aces uses 2 of the 4 aces:
+	\[ P(B_0)=\frac{\binom{48}{2}}{1326}=\frac{1128}{1326},\qquad
+		P(B_1)=\frac{4\cdot48}{1326}=\frac{192}{1326},\qquad
+		P(B_2)=\frac{\binom{4}{2}}{1326}=\frac{6}{1326}. \]
+	Check: $1128+192+6=1326$.
+
+	\textbf{The draw, for a known loss.} Let $A$ be the event that exactly 2 of
+	the 4 drawn cards are aces. If $B_i$ happened, then $4-i$ aces and $46+i$
+	non-aces are left among the 50 cards. Every set of 4 of these 50 cards is
+	equally likely, and there are $\binom{50}{4}=230300$ such sets. For a
+	favorable set we choose 2 of the remaining aces and 2 of the remaining
+	non-aces:
+	\[ P(A\mid B_0)=\frac{\binom{4}{2}\binom{46}{2}}{230300}
+		=\frac{6\cdot1035}{230300}=\frac{6210}{230300}, \]
+	\[ P(A\mid B_1)=\frac{\binom{3}{2}\binom{47}{2}}{230300}
+		=\frac{3\cdot1081}{230300}=\frac{3243}{230300}, \]
+	\[ P(A\mid B_2)=\frac{\binom{2}{2}\binom{48}{2}}{230300}
+		=\frac{1\cdot1128}{230300}=\frac{1128}{230300}. \]
+	The fewer aces were lost, the more aces are left, so the more likely it is
+	to draw two of them.
+
+	\step{(a)} The event $A$ is the union of the disjoint events $AB_0$,
+	$AB_1$, $AB_2$, so their probabilities add up. By the multiplication rule,
+	$P(AB_i)=P(B_i)P(A\mid B_i)$. This is the law of total probability:
+	\[ P(A)=P(B_0)P(A\mid B_0)+P(B_1)P(A\mid B_1)+P(B_2)P(A\mid B_2). \]
+	All three terms have the same denominator $1326\cdot230300=305\,377\,800$,
+	so we add the numerators:
+	\[ P(A)=\frac{1128\cdot6210+192\cdot3243+6\cdot1128}{305\,377\,800}
+		=\frac{7\,004\,880+622\,656+6\,768}{305\,377\,800}
+		=\frac{7\,634\,304}{305\,377\,800}. \]
+	This fraction simplifies to
+	\[ P(A)=\frac{6768}{270725}\approx0.0250. \]
+
+	\step{(b)} Now we know that $A$ happened, and we ask for $P(B_2\mid A)$. By
+	the definition of conditional probability, the numerator is the third term
+	of the sum in (a), and the denominator is the whole sum. This is the
+	generalized Bayes formula:
+	\[ P(B_2\mid A)=\frac{P(B_2)P(A\mid B_2)}{P(A)}
+		=\frac{6\cdot1128}{7\,634\,304}=\frac{6768}{7\,634\,304}
+		=\frac{1}{1128}\approx0.00089. \]
+	(The common denominator $305\,377\,800$ cancels.) For comparison, before
+	the draw $P(B_2)=\frac{6}{1326}=\frac{1}{221}\approx0.0045$. Seeing two aces
+	among the drawn cards makes it less likely that two aces were lost: if two
+	aces were missing, only 2 would be left in the deck, and drawing both of
+	them is unlikely.
+
+	\begin{answer}
+		(a) $P(A)=\frac{6768}{270725}\approx0.0250$ \quad
+		(b) $P(B_2\mid A)=\frac{1}{1128}\approx0.00089$
+	\end{answer}
+	\begin{remark}
+		The answer to (a) is exactly the probability of drawing 2 aces among 4
+		cards from a full deck:
+		\[ \frac{\binom{4}{2}\binom{48}{2}}{\binom{52}{4}}
+			=\frac{6\cdot1128}{270725}=\frac{6768}{270725}. \]
+		This is no accident. The lost cards are just two more cards taken at
+		random, and nobody looks at them. Taking out 2 unseen cards and then
+		drawing 4 is the same as drawing 4 cards from the full deck: every set of
+		4 cards has the same chance either way. Losing cards changes nothing as
+		long as we do not know which cards were lost. The information arrives
+		only in (b), where we use the observed draw to learn about the lost
+		cards.
+		\textbf{Common mistake:} answering (b) with $P(B_2)=\frac{1}{221}$. That
+		is the probability before the draw; the question asks for the
+		probability after we have seen two aces.
+	\end{remark}
+\end{solution}

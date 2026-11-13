@@ -1,0 +1,204 @@
+% ---
+% title: Three exams in a row
+% tags: multiplication-rule, conditional-probability
+% ---
+
+\begin{problem}
+	A graduate takes three professional (actuarial) exams, one after the other.
+	After a failure she stops and takes no further exam. She passes the first
+	exam with probability $0.9$. If she passed the first exam, she passes the
+	second with probability $0.8$. If she passed the first two exams, she passes
+	the third with probability $0.7$.
+	(a) What is the probability that she passes all three exams?
+	(b) What is the probability that she fails exactly at the third exam?
+	(c) She did not pass all three exams. What is the conditional probability
+	that she failed the second exam?
+\end{problem}
+
+\begin{slideproblem}
+	Three exams in a row; after a failure she stops. $P(\text{pass 1st})=0.9$;
+	if she passed the 1st: $P(\text{pass 2nd})=0.8$; if she passed the first
+	two: $P(\text{pass 3rd})=0.7$. Probability that she (a) passes all three;
+	(b) fails exactly at the third; (c) failed the second, given that she did
+	not pass all three?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			\uncover<2->{\sol $E_i$ = ``she passes exam $i$''.
+				The numbers are \emph{conditional}:\\[.5mm]
+				$P(E_1)=0.9$,\quad $P(E_2\mid E_1)=0.8$,\\
+				$P(E_3\mid E_1E_2)=0.7$.}\\[1mm]
+			\uncover<3->{Tree: these numbers on the branches.}\\[1mm]
+			\uncover<4->{Multiplication rule (multiply along the path):
+				\[ P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2). \]}%
+			\uncover<5->{(a) $P(E_1E_2E_3)=0.9\cdot0.8\cdot0.7=\alert{0.504}$.}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			\centering
+			\uncover<3->{%
+				\begin{tikzpicture}[scale=.78,
+						lab/.style={font=\scriptsize},
+						ev/.style={font=\scriptsize,inner sep=1pt}]
+					\coordinate (S) at (0,0);
+					\node[ev] (P1) at (1.6,.9) {$E_1$};
+					\node[ev] (F1) at (1.6,-.9) {$E_1^c$};
+					\node[ev] (P2) at (3.2,1.6) {$E_2$};
+					\node[ev] (F2) at (3.2,.3) {$E_2^c$};
+					\node[ev] (P3) at (4.8,2.1) {$E_3$};
+					\node[ev] (F3) at (4.8,1.1) {$E_3^c$};
+					\fill (S) circle (1.5pt);
+					\draw[navy,thick] (S) -- node[lab,above left=-1pt] {0.9} (P1);
+					\draw[gold,thick] (S) -- node[lab,below left=-1pt] {0.1} (F1);
+					\draw[navy,thick] (P1) -- node[lab,above left=-1pt] {0.8} (P2);
+					\draw[gold,thick] (P1) -- node[lab,below left=-1pt] {0.2} (F2);
+					\draw[navy,thick] (P2) -- node[lab,above left=-1pt] {0.7} (P3);
+					\draw[gold,thick] (P2) -- node[lab,below left=-1pt] {0.3} (F3);
+					\node[lab,right=1pt] at (F1.east) {stops};
+					\node[lab,right=1pt] at (F2.east) {stops};
+					\uncover<5->{\node[lab,right=1pt,navy] at (P3.east)
+						{$0.504$};}
+				\end{tikzpicture}}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.52\textwidth}
+			(b) Fails exactly at the third: passes 1st, passes 2nd, fails 3rd:
+			\[ P(E_1E_2E_3^c)=0.9\cdot0.8\cdot0.3=\alert{0.216}. \]
+			\uncover<2->{(c) Condition: \emph{not all three},
+				$(E_1E_2E_3)^c$. Complement rule:
+				\[ P\big((E_1E_2E_3)^c\big)=1-0.504=0.496. \]}%
+			\uncover<3->{Failed the 2nd: $P(E_1E_2^c)=0.9\cdot0.2=0.18$.
+				Check: $0.1+0.18+0.216=0.496$.}\\[1mm]
+			\uncover<4->{Failing the 2nd means she did not pass all three: the
+				intersection is $E_1E_2^c$ itself.}
+		\end{column}
+		\begin{column}{.46\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.78,
+					lab/.style={font=\scriptsize},
+					ev/.style={font=\scriptsize,inner sep=1pt}]
+				\coordinate (S) at (0,0);
+				\node[ev] (P1) at (1.6,.9) {$E_1$};
+				\node[ev] (F1) at (1.6,-.9) {$E_1^c$};
+				\node[ev] (P2) at (3.2,1.6) {$E_2$};
+				\node[ev] (F2) at (3.2,.3) {$E_2^c$};
+				\node[ev] (P3) at (4.8,2.1) {$E_3$};
+				\node[ev] (F3) at (4.8,1.1) {$E_3^c$};
+				\fill (S) circle (1.5pt);
+				\draw[navy,thick] (S) -- node[lab,above left=-1pt] {0.9} (P1);
+				\draw[gold,thick] (S) -- node[lab,below left=-1pt] {0.1} (F1);
+				\draw[navy,thick] (P1) -- node[lab,above left=-1pt] {0.8} (P2);
+				\draw[gold,thick] (P1) -- node[lab,below left=-1pt] {0.2} (F2);
+				\draw[navy,thick] (P2) -- node[lab,above left=-1pt] {0.7} (P3);
+				\draw[gold,thick] (P2) -- node[lab,below left=-1pt] {0.3} (F3);
+				\node[lab,right=1pt] at (P3.east) {$0.504$};
+				\node[lab,right=1pt,teal] at (F3.east) {$0.216$};
+				\uncover<3->{\node[lab,right=1pt,teal] at (F2.east)
+					{$0.18$};}
+				\uncover<3->{\node[lab,right=1pt,teal] at (F1.east)
+					{$0.1$};}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	\uncover<5->{\[ P\big(E_1E_2^c\mid (E_1E_2E_3)^c\big)
+			=\frac{P(E_1E_2^c)}{P\big((E_1E_2E_3)^c\big)}
+			=\frac{0.18}{0.496}=\frac{45}{124}\approx\alert{0.363}. \]}
+\end{slides}
+
+\begin{solution}
+	\idea The exams come one after the other, and each probability in the
+	statement is \emph{conditional} on what happened before. A probability tree
+	shows this: one branching per exam, the conditional probabilities on the
+	branches. The probability of a path is the product of the probabilities
+	along it (the multiplication rule).
+
+	\step{Events and data.} Let $E_i$ = ``she passes exam $i$'' ($i=1,2,3$).
+	The statement gives
+	\[ P(E_1)=0.9,\qquad P(E_2\mid E_1)=0.8,\qquad P(E_3\mid E_1E_2)=0.7. \]
+	The second number is \emph{not} $P(E_2)$: it is the probability of passing
+	the second exam among the cases where she passed the first. By the complement
+	rule for a fixed condition, the failure probabilities are
+	\[ P(E_1^c)=0.1,\qquad P(E_2^c\mid E_1)=0.2,\qquad
+		P(E_3^c\mid E_1E_2)=0.3. \]
+
+	\begin{center}
+		\begin{tikzpicture}[scale=1.05,
+				lab/.style={font=\small},
+				ev/.style={inner sep=1.5pt}]
+			\coordinate (S) at (0,0);
+			\node[ev] (P1) at (2,1.1) {$E_1$};
+			\node[ev] (F1) at (2,-1.1) {$E_1^c$};
+			\node[ev] (P2) at (4,1.9) {$E_2$};
+			\node[ev] (F2) at (4,.4) {$E_2^c$};
+			\node[ev] (P3) at (6,2.5) {$E_3$};
+			\node[ev] (F3) at (6,1.3) {$E_3^c$};
+			\fill (S) circle (1.5pt);
+			\draw[navy,thick] (S) -- node[lab,above left=-1pt] {0.9} (P1);
+			\draw[gold,thick] (S) -- node[lab,below left=-1pt] {0.1} (F1);
+			\draw[navy,thick] (P1) -- node[lab,above left=-1pt] {0.8} (P2);
+			\draw[gold,thick] (P1) -- node[lab,below left=-1pt] {0.2} (F2);
+			\draw[navy,thick] (P2) -- node[lab,above left=-1pt] {0.7} (P3);
+			\draw[gold,thick] (P2) -- node[lab,below left=-1pt] {0.3} (F3);
+			\node[lab,right=2pt] at (P3.east) {all three: $0.504$};
+			\node[lab,right=2pt] at (F3.east) {fails 3rd: $0.216$};
+			\node[lab,right=2pt] at (F2.east) {fails 2nd: $0.18$};
+			\node[lab,right=2pt] at (F1.east) {fails 1st: $0.1$};
+		\end{tikzpicture}
+	\end{center}
+	After a failure she stops, so a failure branch ends the path. The tree has
+	four paths, and every possible history is exactly one of them.
+
+	\step{(a)} Passing all three is the top path, $E_1E_2E_3$. The
+	multiplication rule says: the probability that several events all happen is
+	the probability of the first, times the probability of the second given the
+	first, times the probability of the third given the first two:
+	\[ P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2)
+		=0.9\cdot0.8\cdot0.7=0.504. \]
+	In words: 90\% pass the first exam; 80\% of these pass the second
+	($0.72$); 70\% of those pass the third ($0.504$).
+
+	\step{(b)} Failing exactly at the third exam means passing the first two
+	and then failing the third: the path $E_1E_2E_3^c$. Multiply along it:
+	\[ P(E_1E_2E_3^c)=P(E_1)\,P(E_2\mid E_1)\,P(E_3^c\mid E_1E_2)
+		=0.9\cdot0.8\cdot0.3=0.216. \]
+
+	\step{(c)} The condition is ``she did not pass all three'', the complement
+	of $E_1E_2E_3$. By the complement rule,
+	\[ P\big((E_1E_2E_3)^c\big)=1-0.504=0.496. \]
+	Check with the tree: not passing all three means failing the first, the
+	second or the third exam (three separate paths, which cannot happen
+	together):
+	\[ 0.1+0.18+0.216=0.496. \]
+	``She failed the second exam'' means she passed the first and failed the
+	second: the path $E_1E_2^c$, with probability
+	\[ P(E_1E_2^c)=P(E_1)\,P(E_2^c\mid E_1)=0.9\cdot0.2=0.18. \]
+	If she failed the second exam, she certainly did not pass all three, so
+	$E_1E_2^c$ lies inside $(E_1E_2E_3)^c$ and their intersection is
+	$E_1E_2^c$ itself. The definition of conditional probability gives
+	\[ P\big(E_1E_2^c\mid(E_1E_2E_3)^c\big)
+		=\frac{P(E_1E_2^c)}{P\big((E_1E_2E_3)^c\big)}
+		=\frac{0.18}{0.496}=\frac{45}{124}\approx0.363. \]
+	\begin{answer}
+		(a) $0.504$ \quad (b) $0.216$ \quad (c) $\frac{45}{124}\approx0.363$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (c), writing the event as $E_2^c$ alone.
+		She also does not pass the second exam if she fails the first one and
+		stops, so $P(E_2^c)=0.1+0.18=0.28$. ``Failed the second exam'' means she
+		took it and failed: $E_1E_2^c$.
+	\end{remark}
+	\begin{remark}
+		Among the graduates who did not pass all three exams, $0.1/0.496\approx
+		0.202$ failed the first, $0.363$ the second and $0.216/0.496\approx0.435$
+		the third. These three conditional probabilities add up to $1$: given the
+		condition, exactly one of the three failure paths happened.
+	\end{remark}
+\end{solution}

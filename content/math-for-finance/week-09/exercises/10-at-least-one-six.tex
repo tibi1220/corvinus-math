@@ -1,0 +1,44 @@
+% ---
+% title: At least one six
+% tags: equally-likely, complement
+% ---
+
+\begin{problem}
+	A fair die is rolled 4 times. (a) What is the probability of at least one
+	six? (b) What is the probability that the four rolls are all different?
+\end{problem}
+
+\begin{solution}
+	\idea Write the result of the four rolls as an ordered quadruple, e.g.\
+	$(2,6,6,1)$. All quadruples are equally likely, so every probability is
+	(number of favorable quadruples)/(number of all quadruples). For ``at least
+	one'' count the complement, ``none'', instead.
+	\step{Sample space} Each roll has 6 possible results, and the rolls are
+	ordered (first, second, third, fourth). So
+	\[ |\Om|=6\cdot6\cdot6\cdot6=6^4=1296. \]
+	The die is fair and the rolls do not influence each other, so the 1296
+	quadruples are equally likely.
+	\step{(a)} Let $E$ be the event ``at least one six''. Counting $E$ directly
+	is awkward: one six, two sixes, three or four sixes, each in several
+	positions. The complement is much simpler: $E^c$ = ``no six at all''. Then
+	each roll shows one of the 5 numbers $1,\dots,5$, so $|E^c|=5^4=625$ and
+	$P(E^c)=625/1296$. Since $P(E)=1-P(E^c)$,
+	\[ P(E)=1-\frac{5^4}{6^4}=1-\frac{625}{1296}=\frac{671}{1296}\approx0.5177. \]
+	So at least one six is slightly more likely than not.
+	\step{(b)} Let $F$ be the event ``the four rolls are all different''. Count
+	the favorable quadruples position by position. The first roll can be any of
+	the 6 numbers. The second must differ from the first: 5 choices. The third
+	must differ from both: 4 choices. The fourth: 3 choices. So
+	$|F|=6\cdot5\cdot4\cdot3=360$, and
+	\[ P(F)=\frac{6\cdot5\cdot4\cdot3}{6^4}=\frac{360}{1296}=\frac{5}{18}\approx0.2778. \]
+	\begin{answer}
+		(a) $\dfrac{671}{1296}\approx0.5177$ \quad (b) $\dfrac{5}{18}\approx0.2778$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (a), adding up $1/6$ four times gives
+		$4/6\approx0.667$. This is wrong: the events ``six on roll 1'', ``six
+		on roll 2'', \dots{} are not mutually exclusive (both rolls can be
+		sixes), so their probabilities cannot simply be added. Whenever a
+		question says ``at least one'', first try the complement ``none''.
+	\end{remark}
+\end{solution}

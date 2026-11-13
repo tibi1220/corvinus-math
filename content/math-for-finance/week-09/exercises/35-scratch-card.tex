@@ -1,0 +1,66 @@
+% ---
+% title: A scratch card
+% tags: expectation, variance
+% ---
+
+\begin{problem}
+	A scratch card costs 2 euros. It pays 100 euros with probability $0.001$,
+	10 euros with probability $0.02$, 2 euros with probability $0.10$, and
+	nothing otherwise. Let $Y$ be the prize (in euros) and let $G=Y-2$ be the
+	net gain of a player who buys one card. (a) Find $\E[Y]$ and $\E[G]$.
+	(b) Find $\SD(Y)$ and $\SD(G)$.
+\end{problem}
+
+\begin{solution}
+	\idea Write down the pmf of $Y$ and use $\E[Y]=\sum y\,p(y)$ and
+	$\Var(Y)=\E[Y^2]-(\E[Y])^2$. Since $G=Y-2$, the expectation shifts by $-2$
+	and the variance does not change.
+	\step{The distribution of $Y$} The prize takes four values: $100$, $10$,
+	$2$ and $0$. The first three probabilities are given. The card pays exactly
+	one of these amounts, so the four probabilities add up to $1$. Hence
+	\[ P(Y=0)=1-0.001-0.02-0.10=0.879. \]
+	The probability mass function is
+	\begin{center}
+		\begin{tabular}{c|cccc}
+			$y$      & $0$     & $2$    & $10$   & $100$   \\ \hline
+			$p(y)$   & $0.879$ & $0.10$ & $0.02$ & $0.001$
+		\end{tabular}
+	\end{center}
+	\step{(a)} Multiply each value by its probability and add:
+	\[ \E[Y]=0\cdot0.879+2\cdot0.10+10\cdot0.02+100\cdot0.001
+		=0+0.2+0.2+0.1=0.5 \text{ euros}. \]
+	The value $0$ contributes nothing, so we may leave it out. The net gain is
+	$G=Y-2$: the player always pays 2 euros, whatever the prize. By linearity,
+	$\E[aY+b]=a\E[Y]+b$ with $a=1$ and $b=-2$:
+	\[ \E[G]=\E[Y]-2=0.5-2=-1.5 \text{ euros}. \]
+	On average a player loses 1.5 euros per card.
+	\step{(b)} First compute $\E[Y^2]$. Square each value and weight it with the
+	same probabilities (the probabilities do not get squared):
+	\[ \E[Y^2]=2^2\cdot0.10+10^2\cdot0.02+100^2\cdot0.001
+		=0.4+2+10=12.4. \]
+	Then
+	\[ \Var(Y)=\E[Y^2]-(\E[Y])^2=12.4-0.5^2=12.4-0.25=12.15, \]
+	and
+	\[ \SD(Y)=\sqrt{12.15}\approx3.486 \text{ euros}. \]
+	For $G$ use $\Var(aY+b)=a^2\Var(Y)$ with $a=1$, $b=-2$. Subtracting the
+	fixed price moves every possible value by the same amount, so the spread
+	does not change:
+	\[ \Var(G)=\Var(Y-2)=\Var(Y)=12.15, \qquad \SD(G)=\SD(Y)\approx3.486
+		\text{ euros}. \]
+	\begin{answer}
+		(a) $\E[Y]=0.5$ euros, $\E[G]=-1.5$ euros \quad
+		(b) $\SD(Y)=\SD(G)=\sqrt{12.15}\approx3.486$ euros
+	\end{answer}
+	\begin{remark}
+		The expected loss of 1.5 euros is $75\%$ of the 2-euro price: on
+		average only a quarter of the money paid for the cards comes back as
+		prizes. The standard deviation (about 3.5 euros) is large compared with
+		the expected prize of 0.5 euros. This comes from the rare 100-euro
+		prize: it contributes only $0.1$ to $\E[Y]$ but $10$ of the $12.4$ in
+		$\E[Y^2]$.
+
+		\textbf{Common mistake:} computing $\Var(Y)$ as $\E[Y^2]$ and forgetting
+		to subtract $(\E[Y])^2$, or writing $\Var(G)=\Var(Y)-2$. A constant
+		shift changes the expectation but never the variance.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,248 @@
+% ---
+% title: A game with an urn
+% tags: random-variables, distribution-function, expectation, variance
+% ---
+
+\begin{problem}
+	Two balls are drawn at random, without replacement, from an urn that
+	contains 8 white, 4 black and 2 orange balls. We win 2 euros for each black
+	ball drawn and lose 1 euro for each white ball drawn; an orange ball brings
+	nothing. Let $X$ be our net winnings (in euros).
+	(a) Find the probability mass function of $X$.
+	(b) Find the distribution function $F(x)=P(X\le x)$ and sketch its graph.
+	(c) Find $P(X>0)$ and $F(1)$.
+	(d) Find $\E[X]$, $\Var(X)$ and $\SD(X)$.
+\end{problem}
+
+\begin{slideproblem}
+	Two balls are drawn without replacement from an urn with 8 white, 4 black
+	and 2 orange balls. Each black ball wins 2 euros, each white ball loses
+	1 euro, orange: nothing. $X$ = net winnings.
+	(a) pmf of $X$; \ (b) distribution function $F(x)=P(X\le x)$, with a sketch;
+	\ (c) $P(X>0)$ and $F(1)$; \ (d) $\E[X]$, $\Var(X)$, $\SD(X)$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) All pairs of balls are equally likely:
+	$\binom{14}{2}=\frac{14\cdot13}{2}=91$ pairs.
+	\pause
+	List the possible pairs by colors, count them, and find the winnings:
+	\begin{center}
+		\renewcommand{\arraystretch}{1.15}
+		\begin{tabular}{l|cccccc|c}
+			colors & WW & WO & OO & WB & BO & BB & total \\
+			\hline
+			number of pairs & $\binom82=28$ & $8\cdot2=16$ & $1$ & $8\cdot4=32$
+			& $4\cdot2=8$ & $\binom42=6$ & $91$ \\
+			\pause
+			value $x$ of $X$ & $-2$ & $-1$ & $0$ & $1$ & $2$ & $4$ & \\
+			\pause
+			$p(x)=P(X=x)$ & $\frac{28}{91}$ & $\frac{16}{91}$ & $\frac{1}{91}$
+			& $\frac{32}{91}$ & $\frac{8}{91}$ & $\frac{6}{91}$ & $1$ \\
+		\end{tabular}
+	\end{center}
+	\pause
+	Check: the probabilities add up to $\frac{91}{91}=1$.
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.42\textwidth}
+			(b) Add up the pmf from the left:
+			\[ F(x)=\begin{cases}
+					0,                & x<-2,         \\[.5mm]
+					\frac{28}{91},    & -2\le x<-1,   \\[.5mm]
+					\frac{44}{91},    & -1\le x<0,    \\[.5mm]
+					\frac{45}{91},    & 0\le x<1,     \\[.5mm]
+					\frac{77}{91},    & 1\le x<2,     \\[.5mm]
+					\frac{85}{91},    & 2\le x<4,     \\[.5mm]
+					1,                & x\ge 4.
+				\end{cases} \]
+		\end{column}
+		\begin{column}{.56\textwidth}
+			\centering
+			\begin{tikzpicture}[xscale=.62,yscale=3.4]
+				\draw[->] (-3.4,0) -- (5.4,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,-.05) -- (0,1.15) node[above] {\scriptsize $F(x)$};
+				\foreach \x in {-3,-2,-1,1,2,3,4,5}
+				\draw (\x,.02) -- (\x,-.02) node[below] {\tiny $\x$};
+				\draw (.06,1) -- (-.06,1) node[left] {\tiny $1$};
+				\draw[navy,thick] (-3.4,0) -- (-2,0);
+				\foreach \a/\b/\v/\t in {-2/-1/28/{28},-1/0/44/{44},0/1/45/{45},
+						1/2/77/{77},2/4/85/{85}}
+					{
+						\draw[navy,thick] (\a,\v/91) -- (\b,\v/91);
+						\fill[navy] (\a,\v/91) circle (.07 and .013);
+						\draw[navy,fill=white] (\b,\v/91) circle (.07 and .013);
+					}
+				\draw[navy,thick] (4,1) -- (5.4,1);
+				\fill[navy] (4,1) circle (.07 and .013);
+				\node[above,teal] at (-1.5,28/91) {\tiny $\frac{28}{91}$};
+				\node[above,teal] at (-.5,44/91+.04) {\tiny $\frac{44}{91}$};
+				\node[above,teal] at (.55,45/91) {\tiny $\frac{45}{91}$};
+				\node[above,teal] at (1.5,77/91) {\tiny $\frac{77}{91}$};
+				\node[above,teal] at (3,85/91) {\tiny $\frac{85}{91}$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	\smallskip
+	Right-continuous step function; the jump at $x$ is $p(x)$; filled dot = the
+	value at the jump point.
+	\pause
+	\smallskip
+
+	(c) $P(X>0)=1-F(0)=1-\frac{45}{91}=\frac{46}{91}\approx0.505$
+	\ (or $\frac{32+8+6}{91}$).\\
+	\phantom{(c) }$F(1)=P(X\le1)=\frac{77}{91}=\frac{11}{13}\approx0.846$.
+\end{slides}
+
+\begin{slides}
+	\small
+	(d) Expected value: each value times its probability, then add.
+	\[ \E[X]=\frac{(-2)\cdot28+(-1)\cdot16+0\cdot1+1\cdot32+2\cdot8+4\cdot6}{91}
+		=\frac{-56-16+0+32+16+24}{91}=0. \]
+	On average we neither win nor lose: a \alert{fair game}.
+	\pause
+	\medskip
+
+	Variance: $\Var(X)=\E[X^2]-(\E[X])^2$. First $\E[X^2]$: square the values,
+	keep the probabilities.
+	\[ \E[X^2]=\frac{4\cdot28+1\cdot16+0\cdot1+1\cdot32+4\cdot8+16\cdot6}{91}
+		=\frac{112+16+0+32+32+96}{91}=\frac{288}{91}. \]
+	\pause
+	\[ \Var(X)=\frac{288}{91}-0^2=\frac{288}{91}\approx3.165, \qquad
+		\SD(X)=\sqrt{\frac{288}{91}}\approx1.779 \text{ euros}. \]
+	\pause
+	The game is fair, but risky: a typical deviation from 0 is about
+	1.78 euros.
+\end{slides}
+
+\begin{solution}
+	\idea Every pair of balls is equally likely. Group the pairs by their colors,
+	count each group, and read off the winnings. The distribution function adds
+	up the probabilities from the left; $\E[X]$ and $\E[X^2]$ are weighted
+	averages with the probabilities as weights.
+
+	\step{(a)} The urn has $8+4+2=14$ balls. The number of ways to choose 2 of
+	them (order does not matter) is
+	\[ \binom{14}{2}=\frac{14\cdot13}{2}=91, \]
+	and each of these 91 pairs is equally likely. Now list the possible color
+	combinations. For each one, count the pairs and compute the winnings
+	($+2$ for black, $-1$ for white, $0$ for orange):
+	\begin{itemize}
+		\item two white (WW): $\binom82=28$ pairs, $X=-1-1=-2$;
+		\item white and orange (WO): $8\cdot2=16$ pairs (one of 8 white balls
+		      and one of 2 orange balls), $X=-1+0=-1$;
+		\item two orange (OO): $\binom22=1$ pair, $X=0$;
+		\item white and black (WB): $8\cdot4=32$ pairs, $X=-1+2=1$;
+		\item black and orange (BO): $4\cdot2=8$ pairs, $X=2+0=2$;
+		\item two black (BB): $\binom42=6$ pairs, $X=2+2=4$.
+	\end{itemize}
+	Check: $28+16+1+32+8+6=91$, so no pair is missing. Different color
+	combinations give different values, so each probability is the number of
+	pairs divided by 91:
+	\begin{center}
+		\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{c|cccccc}
+			$x$      & $-2$ & $-1$ & $0$ & $1$ & $2$ & $4$ \\
+			\hline
+			$p(x)$   & $\frac{28}{91}$ & $\frac{16}{91}$ & $\frac{1}{91}$
+			         & $\frac{32}{91}$ & $\frac{8}{91}$ & $\frac{6}{91}$
+		\end{tabular}
+	\end{center}
+
+	\step{(b)} $F(x)=P(X\le x)$ is the sum of $p(k)$ over all values
+	$k\le x$. Below $-2$ there is no value, so $F(x)=0$. At each value of $X$
+	the function jumps up by the probability of that value, and between two
+	values it stays constant. Adding the probabilities from the left:
+	$28$, $28+16=44$, $44+1=45$, $45+32=77$, $77+8=85$, $85+6=91$ (over 91).
+	So
+	\[ F(x)=\begin{cases}
+			0,             & x<-2,       \\
+			28/91,         & -2\le x<-1, \\
+			44/91,         & -1\le x<0,  \\
+			45/91,         & 0\le x<1,   \\
+			77/91,         & 1\le x<2,   \\
+			85/91,         & 2\le x<4,   \\
+			1,             & x\ge 4.
+		\end{cases} \]
+	The graph is a step function. Each step includes its left endpoint (filled
+	dot) but not its right endpoint (open circle): for example $F(-2)=28/91$,
+	because $X\le-2$ includes $X=-2$. This is why a distribution function is
+	right-continuous.
+	\begin{center}
+		\begin{tikzpicture}[xscale=.8,yscale=3.4]
+			\draw[->] (-3.4,0) -- (5.4,0) node[right] {\small $x$};
+			\draw[->] (0,-.05) -- (0,1.15) node[above] {\small $F(x)$};
+			\foreach \x in {-3,-2,-1,1,2,3,4,5}
+			\draw (\x,.02) -- (\x,-.02) node[below] {\scriptsize $\x$};
+			\draw (.06,1) -- (-.06,1) node[left] {\scriptsize $1$};
+			\draw[navy,thick] (-3.4,0) -- (-2,0);
+			\foreach \a/\b/\v in {-2/-1/28,-1/0/44,0/1/45,1/2/77,2/4/85}
+				{
+					\draw[navy,thick] (\a,\v/91) -- (\b,\v/91);
+					\fill[navy] (\a,\v/91) circle (.06 and .014);
+					\draw[navy,fill=white] (\b,\v/91) circle (.06 and .014);
+				}
+			\draw[navy,thick] (4,1) -- (5.4,1);
+			\fill[navy] (4,1) circle (.06 and .014);
+			\node[above,teal] at (-1.5,28/91) {\scriptsize $\frac{28}{91}$};
+			\node[above,teal] at (-.5,44/91+.04) {\scriptsize $\frac{44}{91}$};
+			\node[above,teal] at (.55,45/91) {\scriptsize $\frac{45}{91}$};
+			\node[above,teal] at (1.5,77/91) {\scriptsize $\frac{77}{91}$};
+			\node[above,teal] at (3,85/91) {\scriptsize $\frac{85}{91}$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(c)} ``$X>0$'' is the complement of ``$X\le0$'', so
+	\[ P(X>0)=1-F(0)=1-\frac{45}{91}=\frac{46}{91}\approx0.505. \]
+	Directly: the positive values are 1, 2 and 4, and
+	$p(1)+p(2)+p(4)=\frac{32+8+6}{91}=\frac{46}{91}$. Next, $F(1)$ is read off
+	the step that starts at 1:
+	\[ F(1)=P(X\le1)=\frac{77}{91}=\frac{11}{13}\approx0.846. \]
+	Note that $F(1)$ includes $X=1$; the probability $P(X<1)$ would be only
+	$45/91$.
+
+	\step{(d)} The expected value is the sum of the values, each multiplied by
+	its probability:
+	\[ \begin{aligned}
+			\E[X] & =\frac{(-2)\cdot28+(-1)\cdot16+0\cdot1+1\cdot32+2\cdot8+4\cdot6}{91} \\
+			      & =\frac{-56-16+0+32+16+24}{91}=\frac{0}{91}=0.
+		\end{aligned} \]
+	On average we neither win nor lose: the game is fair.
+
+	For the variance we use $\Var(X)=\E[X^2]-(\E[X])^2$. To get $\E[X^2]$,
+	square each value and keep the same probabilities:
+	\[ \begin{aligned}
+			\E[X^2] & =\frac{(-2)^2\cdot28+(-1)^2\cdot16+0^2\cdot1+1^2\cdot32
+			+2^2\cdot8+4^2\cdot6}{91} \\
+			        & =\frac{112+16+0+32+32+96}{91}=\frac{288}{91}.
+		\end{aligned} \]
+	Hence
+	\[ \Var(X)=\frac{288}{91}-0^2=\frac{288}{91}\approx3.165,\qquad
+		\SD(X)=\sqrt{\frac{288}{91}}\approx1.779 \text{ euros}. \]
+	The variance is measured in squared euros; the standard deviation is back
+	in euros, so it is the number to interpret: a typical deviation of the
+	winnings from their mean 0 is about 1.78 euros.
+	\begin{answer}
+		(a) $p(-2)=\frac{28}{91}$, $p(-1)=\frac{16}{91}$, $p(0)=\frac{1}{91}$,
+		$p(1)=\frac{32}{91}$, $p(2)=\frac{8}{91}$, $p(4)=\frac{6}{91}$
+		\quad (b) step function with values $0$, $\frac{28}{91}$, $\frac{44}{91}$,
+		$\frac{45}{91}$, $\frac{77}{91}$, $\frac{85}{91}$, $1$ (jumps at
+		$-2,-1,0,1,2,4$)
+		\quad (c) $P(X>0)=\frac{46}{91}\approx0.505$, $F(1)=\frac{11}{13}\approx0.846$
+		\quad (d) $\E[X]=0$, $\Var(X)=\frac{288}{91}\approx3.165$,
+		$\SD(X)\approx1.779$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing $\Var(X)$ as $\E[X^2]$ without
+		subtracting $(\E[X])^2$. Here it makes no difference only because
+		$\E[X]=0$. Another common mistake in (b) is to put the filled dot at the
+		right end of a step: $F$ jumps \emph{at} the value, so $F(x)$ already
+		contains $p(x)$.
+	\end{remark}
+\end{solution}

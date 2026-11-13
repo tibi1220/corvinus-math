@@ -1,0 +1,68 @@
+% ---
+% title: Conditional probability: special cases
+% tags: conditional-probability
+% ---
+
+\begin{problem}
+	Let $A$ and $B$ be events with $P(B)>0$. Determine $P(A\mid B)$ if
+	(a) $B$ implies $A$, that is, $B\subseteq A$;
+	(b) $A$ implies $B$, that is, $A\subseteq B$;
+	(c) $A$ and $B$ are mutually exclusive.
+	In each case, also give an example with one roll of a fair die and check
+	the result by counting.
+\end{problem}
+
+\begin{solution}
+	\idea Start from the definition
+	\[ P(A\mid B)=\frac{P(AB)}{P(B)}. \]
+	In each special case the intersection $AB$ is something simple: $B$, $A$,
+	or the empty set.
+	\step{(a)} If $B\subseteq A$, then every outcome of $B$ is also in $A$. So
+	the outcomes that are in both $A$ and $B$ are exactly the outcomes of $B$:
+	$AB=B$. Therefore
+	\[ P(A\mid B)=\frac{P(AB)}{P(B)}=\frac{P(B)}{P(B)}=1. \]
+	In words: if we know that $B$ happened, then $A$ surely happened too.
+
+	Example: roll a fair die, let $A=\{2,4,6\}$ (``even'') and $B=\{6\}$
+	(``six''). A six is always even, so $B\subseteq A$. Given that the die shows
+	a six, the result is certainly even: $P(A\mid B)=1$.
+	Check by counting: if we know the die shows a six, there is $1$ equally
+	likely outcome left ($6$), and it is even. So $P(A\mid B)=1/1=1$.
+	\step{(b)} If $A\subseteq B$, then every outcome of $A$ is also in $B$, so
+	$AB=A$. Therefore
+	\[ P(A\mid B)=\frac{P(AB)}{P(B)}=\frac{P(A)}{P(B)}. \]
+	Since $P(B)\le1$, this is at least $P(A)$: learning that $B$ happened never
+	makes $A$ less likely. It strictly increases the probability of $A$ when
+	$P(A)>0$ and $P(B)<1$.
+
+	Example: $A=\{6\}$ and $B=\{2,4,6\}$. Now $A\subseteq B$, and
+	\[ P(A\mid B)=\frac{1/6}{1/2}=\frac13. \]
+	Check by counting: if we know the result is even, there are $3$ equally
+	likely outcomes left ($2$, $4$, $6$), and exactly one of them is a six.
+	So the probability is $1/3$, twice the unconditional $P(A)=1/6$.
+	\step{(c)} If $A$ and $B$ are mutually exclusive, they have no common
+	outcome: $AB=\emptyset$, so $P(AB)=0$. Therefore
+	\[ P(A\mid B)=\frac{0}{P(B)}=0. \]
+	In words: if $B$ happened, then $A$ cannot have happened.
+
+	Example: $A=\{1\}$ and $B=\{2,4,6\}$. A one is not even, so the two events
+	are mutually exclusive. Given that the result is even, it is certainly not
+	a one: $P(A\mid B)=0$.
+	Check by counting: if we know the result is even, there are $3$ equally
+	likely outcomes left ($2$, $4$, $6$), and none of them is a one. So
+	$P(A\mid B)=0/3=0$.
+	\begin{answer}
+		(a) $1$ \quad (b) $\dfrac{P(A)}{P(B)}$ \quad (c) $0$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} mixing up $P(A\mid B)$ and $P(B\mid A)$. In
+		the example of (a), $P(A\mid B)=1$, but
+		\[ P(B\mid A)=\frac{1/6}{1/2}=\frac13. \]
+		A six is always even, but an even result is not always a six. Cases (a)
+		and (b) are the same situation seen from the two sides.
+
+		Also, case (c) shows that mutually exclusive events (with positive
+		probabilities) strongly influence each other: knowing that $B$
+		happened changes the probability of $A$ all the way to $0$.
+	\end{remark}
+\end{solution}

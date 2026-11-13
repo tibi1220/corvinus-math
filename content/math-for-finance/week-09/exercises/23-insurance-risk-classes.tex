@@ -1,0 +1,85 @@
+% ---
+% title: Risk classes of an insurer
+% tags: finance, generalized-bayes, total-probability
+% ---
+
+\begin{problem}
+	\begin{context}
+		An insurer does not know in advance how careful a client is. It sorts its
+		clients into \emph{risk classes} (for example good, average and bad risks)
+		and charges a higher premium in a riskier class. In a
+		\emph{bonus-malus} system the premium is updated after each year: a client
+		with no accident pays less next year, a client with an accident pays more.
+		This is reasonable because an accident is evidence about the risk class.
+	\end{context}
+	A car insurer classifies its clients as good (20\%), average (50\%) and bad
+	(30\%) risks. The probability of at least one accident in a year is $0.05$,
+	$0.15$ and $0.30$ for the three classes, respectively.
+	(a) What proportion of the clients has an accident in a year?
+	(b) A client had no accident this year. What is the probability that she is
+	a good or an average risk?
+	(c) A client had an accident this year. What is the probability that she is
+	a bad risk?
+\end{problem}
+
+\begin{solution}
+	\idea The three risk classes split the clients into three groups. Use the
+	law of total probability for (a), and the generalized Bayes formula for (b)
+	and (c): it turns $P(\text{accident}\mid\text{class})$ around into
+	$P(\text{class}\mid\text{accident})$.
+
+	Let $G$, $M$ and $B$ be the events that the chosen client is a good, an
+	average and a bad risk, and let $A$ be the event that she has at least one
+	accident in the year. The data are
+	\[ P(G)=0.2,\qquad P(M)=0.5,\qquad P(B)=0.3, \]
+	\[ P(A\mid G)=0.05,\qquad P(A\mid M)=0.15,\qquad P(A\mid B)=0.30. \]
+	Every client is in exactly one class, so $G$, $M$, $B$ are mutually
+	exclusive and their union is $\Om$ (check: $0.2+0.5+0.3=1$).
+
+	\step{(a)} The event $A$ splits into three mutually exclusive pieces: an
+	accident by a good, by an average and by a bad risk, $A=AG\cup AM\cup AB$.
+	So we add their probabilities. Each piece comes from the multiplication
+	rule, for example $P(AG)=P(A\mid G)P(G)=0.05\cdot0.2=0.01$:
+	\[ P(A)=P(A\mid G)P(G)+P(A\mid M)P(M)+P(A\mid B)P(B)
+		=0.01+0.075+0.09=0.175. \]
+	So 17.5\% of the clients have an accident in a year.
+
+	\step{(b)} Now the condition is ``no accident'', the event $A^c$. Its
+	probability is the complement of (a):
+	\[ P(A^c)=1-0.175=0.825. \]
+	Inside each class the chance of no accident is $1$ minus the chance of an
+	accident: $P(A^c\mid G)=0.95$, $P(A^c\mid M)=0.85$, $P(A^c\mid B)=0.70$.
+	The event ``good or average'' is $G\cup M$; since $G$ and $M$ are mutually
+	exclusive, the pieces $A^cG$ and $A^cM$ are too, and we add them:
+	\[ P(G\cup M\mid A^c)=\frac{P(A^cG)+P(A^cM)}{P(A^c)}
+		=\frac{0.95\cdot0.2+0.85\cdot0.5}{0.825}
+		=\frac{0.19+0.425}{0.825}=\frac{0.615}{0.825}\approx0.745. \]
+	A quicker way: ``good or average'' is the complement of ``bad''. Since
+	$P(A^cB)=0.70\cdot0.3=0.21$,
+	\[ P(G\cup M\mid A^c)=1-P(B\mid A^c)=1-\frac{0.21}{0.825}
+		\approx1-0.255=0.745. \]
+
+	\step{(c)} We need $P(B\mid A)=P(AB)/P(A)$. The numerator is the third term
+	of the sum in (a), the denominator is the whole sum. This is the
+	generalized Bayes formula:
+	\[ P(B\mid A)=\frac{P(A\mid B)P(B)}
+		{P(A\mid G)P(G)+P(A\mid M)P(M)+P(A\mid B)P(B)}
+		=\frac{0.09}{0.175}\approx0.514. \]
+	\begin{answer}
+		(a) $P(A)=0.175$ \quad (b) $P(G\cup M\mid A^c)\approx0.745$ \quad
+		(c) $P(B\mid A)\approx0.514$
+	\end{answer}
+	\begin{remark}
+		\textbf{Interpretation:} before the year, a client is a bad risk with
+		probability $0.3$. After an accident this rises to about $0.514$: more
+		than half of the clients with an accident are bad risks. After a year
+		without an accident it falls to $1-0.745=0.255$. This is why a
+		bonus-malus system raises the premium after an accident and lowers it
+		after a quiet year.
+
+		\textbf{Common mistake:} in (b), using the accident probabilities
+		$0.05$ and $0.15$ instead of the no-accident probabilities $0.95$ and
+		$0.85$. The condition is ``no accident'', so every number in the
+		fraction must refer to no accident.
+	\end{remark}
+\end{solution}

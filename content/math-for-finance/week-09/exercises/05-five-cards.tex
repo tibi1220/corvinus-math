@@ -1,0 +1,102 @@
+% ---
+% title: Five cards
+% tags: equally-likely, complement
+% ---
+
+\begin{problem}
+	Five cards are dealt from a well-shuffled deck of 52 cards. Find the
+	probability that the hand contains
+	(a) exactly 2 spades and 3 diamonds;
+	(b) at least one ace.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol Outcome: a hand of 5 cards (order does not matter):
+	$|\Om|=\binom{52}{5}=2\,598\,960$.
+	\pause\\[1mm]
+	Well shuffled $\Rightarrow$ every hand is equally likely, so
+	$P(E)=\dfrac{|E|}{|\Om|}$.
+	\pause\\[1mm]
+	(a) Choose the 2 spades from the 13 spades: $\binom{13}{2}=78$ ways.
+	\pause\\
+	Choose the 3 diamonds from the 13 diamonds: $\binom{13}{3}=286$ ways.
+	\pause\\
+	Every choice of spades combines with every choice of diamonds:
+	\[ P(\text{2 spades, 3 diamonds})=\frac{78\cdot286}{2\,598\,960}
+		=\frac{22\,308}{2\,598\,960}\approx0.00858. \]
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) ``At least one ace'' $=$ 1, 2, 3 or 4 aces: four cases to count.
+	\pause\\
+	The complement is a single case: \alert{no ace}.
+	\pause\\
+	No ace: all 5 cards come from the 48 non-aces:
+	\[ |\{\text{no ace}\}|=\binom{48}{5}=1\,712\,304. \]
+	\pause
+	\[ P(\text{at least one ace})=1-P(\text{no ace})
+		=1-\frac{1\,712\,304}{2\,598\,960}\approx1-0.6588=0.3412. \]
+	\pause
+	\alert{Wrong:} ``pick an ace, then any 4 other cards'':
+	$4\binom{51}{4}\big/\binom{52}{5}\approx0.385$.\\
+	A hand with two aces is counted twice (once for each ace as ``the'' ace).
+\end{slides}
+
+\begin{solution}
+	\idea All $\binom{52}{5}$ hands are equally likely, so every probability is
+	a count divided by $\binom{52}{5}$. In (b) count the complement (``no ace''),
+	which is a single case.
+
+	\step{The sample space.} An outcome is the set of 5 cards in the hand; the
+	order in which the cards arrive does not matter. The number of hands is
+	\[ |\Om|=\binom{52}{5}=2\,598\,960. \]
+	The deck is well shuffled, so no hand is more likely than any other: all
+	outcomes are equally likely. Then, for any event $E$,
+	\[ P(E)=\frac{|E|}{|\Om|}=\frac{\text{number of hands in }E}{2\,598\,960}. \]
+
+	\step{(a)} A hand with exactly 2 spades and 3 diamonds is built in two
+	stages. First choose which 2 of the 13 spades are in the hand:
+	$\binom{13}{2}=78$ ways. Then choose which 3 of the 13 diamonds are in the
+	hand: $\binom{13}{3}=286$ ways. Any choice of spades can be combined with
+	any choice of diamonds, so by the basic counting principle there are
+	$78\cdot286=22\,308$ such hands. The hand has $2+3=5$ cards, so no other
+	card fits in. Hence
+	\[ P(\text{2 spades and 3 diamonds})
+		=\frac{\binom{13}{2}\binom{13}{3}}{\binom{52}{5}}
+		=\frac{78\cdot286}{2\,598\,960}=\frac{22\,308}{2\,598\,960}
+		\approx0.00858. \]
+
+	\step{(b)} ``At least one ace'' means 1, 2, 3 or 4 aces. Counting it
+	directly needs four cases. Its complement, ``no ace'', is a single case, so
+	we use $P(E)=1-P(E^c)$.
+
+	A hand with no ace has all 5 cards from the $52-4=48$ cards that are not
+	aces:
+	\[ |\{\text{no ace}\}|=\binom{48}{5}=1\,712\,304,\qquad
+		P(\text{no ace})=\frac{1\,712\,304}{2\,598\,960}\approx0.6588. \]
+	Therefore
+	\[ P(\text{at least one ace})=1-\frac{1\,712\,304}{2\,598\,960}
+		=\frac{886\,656}{2\,598\,960}\approx0.3412. \]
+	\begin{answer}
+		(a) $\dfrac{22\,308}{2\,598\,960}\approx0.00858$ \quad
+		(b) $\dfrac{886\,656}{2\,598\,960}\approx0.3412$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (b), ``choose one ace ($4$ ways), then any 4
+		of the other 51 cards'', giving $4\binom{51}{4}\big/\binom{52}{5}\approx
+		0.385$. This counts a hand with two aces twice: once with the first ace
+		as ``the chosen ace'' and once with the second. Hands with three or four
+		aces are counted three or four times. The result is too large. The
+		complement avoids the problem.
+	\end{remark}
+	\begin{remark}
+		The direct count also works if we split by the number of aces:
+		\[ \binom41\binom{48}{4}+\binom42\binom{48}{3}+\binom43\binom{48}{2}
+			+\binom44\binom{48}{1}=778\,320+103\,776+4\,512+48=886\,656, \]
+		the same number as above, with more work.
+	\end{remark}
+\end{solution}

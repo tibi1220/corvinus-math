@@ -1,0 +1,164 @@
+% ---
+% title: Two exams
+% tags: union-intersection, complement, venn-diagrams
+% ---
+
+\begin{problem}
+	In an Economics class, a randomly selected student passed the Math exam
+	with probability $0.72$, the Microeconomics exam with probability $0.64$,
+	and both exams with probability $0.54$. Find the probability that the
+	student
+	(a) passed at least one of the two exams;
+	(b) passed Math but not Microeconomics;
+	(c) passed neither exam;
+	(d) passed exactly one of the two exams.
+\end{problem}
+
+\begin{slideproblem}
+	A random student passed Math with probability $0.72$, Microeconomics with
+	probability $0.64$, and both with probability $0.54$. Find the probability
+	that the student passed (a) at least one exam; (b) Math but not Micro;
+	(c) neither; (d) exactly one.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\begin{columns}[T]
+		\begin{column}{.6\textwidth}
+			\uncover<2->{\sol $A$ = ``passed Math'', $B$ = ``passed Micro'':
+				$P(A)=0.72$, $P(B)=0.64$, $P(AB)=0.54$.
+				Fill the diagram \alert{from the inside out}:}
+			\begin{itemize}\setlength{\itemsep}{0pt}
+				\item<3-> both: $P(AB)=0.54$
+				\item<4-> Math only:
+				      $P(AB^c)=P(A)-P(AB)=0.72-0.54=0.18$
+				\item<5-> Micro only:
+				      $P(A^cB)=P(B)-P(AB)=0.64-0.54=0.10$
+				\item<6-> neither: $1-(0.18+0.54+0.10)=0.18$
+			\end{itemize}
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\uncover<2->{%
+				\begin{tikzpicture}[scale=.62]
+					\draw[thick] (-2.3,-2) rectangle (4.1,2.2);
+					\draw[navy,thick] (0,0) circle (1.5);
+					\draw[teal,thick] (1.8,0) circle (1.5);
+					\node[navy] at (-1.3,1.55) {$A$};
+					\node[teal] at (3.1,1.55) {$B$};
+					\node at (-1.95,-1.65) {\scriptsize $\Om$};
+					\uncover<3->{\node at (.9,0) {\scriptsize $0.54$};}
+					\uncover<4->{\node at (-.6,0) {\scriptsize $0.18$};}
+					\uncover<5->{\node at (2.4,0) {\scriptsize $0.10$};}
+					\uncover<6->{\node at (3.4,-1.6) {\scriptsize $0.18$};}
+				\end{tikzpicture}}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			Read the answers from the diagram, and check them with the rules.
+			\begin{itemize}
+				\item<2->[(a)] At least one: $P(A\cup B)=P(A)+P(B)-P(AB)$\\
+				      $=0.72+0.64-0.54=0.82$ \ (or $0.18+0.54+0.10$)
+				\item<3->[(b)] Math, not Micro: $P(AB^c)=P(A)-P(AB)=0.18$
+				\item<4->[(c)] Neither: $P(A^cB^c)=1-P(A\cup B)=1-0.82=0.18$
+				\item<5->[(d)] Exactly one: $P(AB^c)+P(A^cB)=0.18+0.10=0.28$\\
+				      (or $P(A\cup B)-P(AB)=0.82-0.54=0.28$)
+			\end{itemize}
+		\end{column}
+		\begin{column}{.34\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.62]
+				\draw[thick] (-2.3,-2) rectangle (4.1,2.2);
+				\draw[navy,thick] (0,0) circle (1.5);
+				\draw[teal,thick] (1.8,0) circle (1.5);
+				\node[navy] at (-1.3,1.55) {$A$};
+				\node[teal] at (3.1,1.55) {$B$};
+				\node at (-1.95,-1.65) {\scriptsize $\Om$};
+				\node at (.9,0) {\scriptsize $0.54$};
+				\node at (-.6,0) {\scriptsize $0.18$};
+				\node at (2.4,0) {\scriptsize $0.10$};
+				\node at (3.4,-1.6) {\scriptsize $0.18$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea Name the events, draw a two-circle Venn diagram and fill it ``from the
+	inside out'': first the overlap, then the rest of each circle, then the
+	outside. Every answer is then a sum of regions, and we check it with a rule.
+
+	\step{Events.} Let $A$ = ``the student passed Math'' and $B$ = ``the
+	student passed Microeconomics''. We know
+	\[ P(A)=0.72,\qquad P(B)=0.64,\qquad P(AB)=0.54, \]
+	where $AB$ (also written $A\cap B$) is ``passed both''.
+
+	\begin{minipage}{.56\linewidth}
+		\step{Filling the Venn diagram.}
+		\begin{itemize}[nosep]
+			\item overlap (both): $P(AB)=0.54$;
+			\item Math only: $0.72-0.54=0.18$ (the circle $A$ has
+			      probability $0.72$, and $0.54$ of it is the overlap);
+			\item Micro only: $0.64-0.54=0.10$;
+			\item outside (neither): $1-(0.18+0.54+0.10)=0.18$, since the
+			      four regions make up the whole sample space, which has
+			      probability $1$.
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.4\linewidth}
+		\centering
+		\begin{tikzpicture}[scale=.75]
+			\draw[thick] (-2.3,-2) rectangle (4.1,2.2);
+			\draw[navy,thick] (0,0) circle (1.5);
+			\draw[teal,thick] (1.8,0) circle (1.5);
+			\node[navy] at (-1.3,1.55) {$A$};
+			\node[teal] at (3.1,1.55) {$B$};
+			\node at (-1.95,-1.65) {\small $\Om$};
+			\node at (.9,0) {\small $0.54$};
+			\node at (-.6,0) {\small $0.18$};
+			\node at (2.4,0) {\small $0.10$};
+			\node at (3.4,-1.6) {\small $0.18$};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\step{(a)} ``At least one'' is the union $A\cup B$. Adding $P(A)$ and
+	$P(B)$ counts the overlap $AB$ twice, so we subtract it once:
+	\[ P(A\cup B)=P(A)+P(B)-P(AB)=0.72+0.64-0.54=0.82. \]
+	In the diagram: the three regions inside the circles,
+	$0.18+0.54+0.10=0.82$.
+
+	\step{(b)} ``Math but not Micro'' is $AB^c$. The event $A$ splits into two
+	mutually exclusive parts: $AB$ (passed Micro too) and $AB^c$ (did not). So
+	$P(A)=P(AB)+P(AB^c)$, that is,
+	\[ P(AB^c)=P(A)-P(AB)=0.72-0.54=0.18. \]
+
+	\step{(c)} ``Neither'' is $A^cB^c$, the complement of ``at least one''. A
+	student either passed at least one exam or passed neither, so by the
+	complement rule $P(E^c)=1-P(E)$:
+	\[ P(A^cB^c)=1-P(A\cup B)=1-0.82=0.18. \]
+
+	\step{(d)} ``Exactly one'' means Math only or Micro only. These two events
+	are mutually exclusive, so their probabilities add:
+	\[ P(AB^c)+P(A^cB)=0.18+(0.64-0.54)=0.18+0.10=0.28. \]
+	Another way: from ``at least one'' remove ``both'':
+	$P(A\cup B)-P(AB)=0.82-0.54=0.28$.
+	\begin{answer}
+		(a) $0.82$ \quad (b) $0.18$ \quad (c) $0.18$ \quad (d) $0.28$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} answering (a) with $0.72+0.64=1.36$. A
+		probability can never exceed $1$: the students who passed both exams
+		were counted twice. Similarly, in (b) the answer is not $0.72$:
+		``passed Math'' includes the students who also passed Micro.
+		The rules here are the ones used for counting before, with
+		probabilities in place of counts:
+		$P(E\cup F)=P(E)+P(F)-P(EF)$, \ $P(EF^c)=P(E)-P(EF)$, \
+		$P(E^c)=1-P(E)$.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,116 @@
+% ---
+% title: A simple trading strategy
+% tags: finance, expectation, variance
+% ---
+
+\begin{problem}
+	\begin{context}
+		A trader's daily \emph{profit and loss} (P\&L) is the money the trading
+		account gains or loses in one day. The \emph{position size} is how much
+		is invested; doubling it doubles every gain and every loss. Taking a
+		larger position with borrowed money is called \emph{leverage}. The risk of a strategy is usually measured by
+		the standard deviation of its P\&L, also called its \emph{volatility}.
+	\end{context}
+	A day-trading strategy gains 300 euros with probability $0.55$ and loses
+	200 euros with probability $0.45$ on a given day. Let $X$ be the daily
+	profit and loss (P\&L) in euros.
+	(a) Find $\E[X]$, $\Var(X)$ and $\SD(X)$.
+	(b) The trader doubles the position size, so the daily P\&L becomes $2X$.
+	Find its expectation and standard deviation.
+	(c) Instead of (b), the broker charges a fixed fee of 20 euros per day, so
+	the daily P\&L becomes $X-20$. Find its expectation and standard deviation.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) The values of $X$: $300$ with probability $0.55$, $-200$ with
+	probability $0.45$.
+	\pause
+	\[ \E[X]=300\cdot0.55+(-200)\cdot0.45=165-90=75. \]
+	\pause
+	For the variance we need $\E[X^2]$ first:
+	\[ \E[X^2]=300^2\cdot0.55+(-200)^2\cdot0.45=49\,500+18\,000=67\,500. \]
+	\pause
+	\[ \Var(X)=\E[X^2]-\big(\E[X]\big)^2=67\,500-75^2=67\,500-5625=61\,875. \]
+\end{slides}
+
+\begin{slides}
+	\small
+	(a) continued: $\Var(X)=61\,875$ is in ``squared euros''; back to euros:
+	\[ \SD(X)=\sqrt{61\,875}\approx248.7\text{ euros}. \]
+	\pause
+	Rules for $aX+b$: \ $\E[aX+b]=a\E[X]+b$, \ $\SD(aX+b)=|a|\,\SD(X)$.
+	\pause
+	\medskip
+
+	(b) Doubled position: $a=2$, $b=0$.
+	\[ \E[2X]=2\cdot75=150,\qquad \SD(2X)=2\cdot\SD(X)\approx497.5. \]
+	\pause
+	Leverage doubles the expected profit, but it doubles the risk too.
+	\pause
+	\medskip
+
+	(c) Fixed fee: $a=1$, $b=-20$.
+	\[ \E[X-20]=75-20=55,\qquad \SD(X-20)=\SD(X)\approx248.7. \]
+	\pause
+	A constant shifts every outcome by the same amount: the center moves, the
+	spread does not change.
+\end{slides}
+
+\begin{solution}
+	\idea Write down the distribution of $X$ (two values), compute $\E[X]$ and
+	$\E[X^2]$, then use $\Var(X)=\E[X^2]-(\E[X])^2$. For (b) and (c) use the
+	rules for $aX+b$ instead of starting again.
+
+	\step{(a)} $X$ takes two values: $300$ (a gain) with probability $0.55$, and
+	$-200$ (a loss, so a negative number) with probability $0.45$. The
+	probabilities add up to $1$, as they should.
+
+	The expected value is the probability-weighted average of the values:
+	\[ \E[X]=300\cdot0.55+(-200)\cdot0.45=165-90=75. \]
+	So on average the strategy earns 75 euros a day.
+
+	For the variance we first compute $\E[X^2]$: square each value, keep the
+	probabilities.
+	\[ \E[X^2]=300^2\cdot0.55+(-200)^2\cdot0.45=90\,000\cdot0.55+40\,000\cdot0.45
+		=49\,500+18\,000=67\,500. \]
+	Then
+	\[ \Var(X)=\E[X^2]-\big(\E[X]\big)^2=67\,500-75^2=67\,500-5625=61\,875. \]
+	The variance is in ``squared euros'', which is hard to interpret. The
+	standard deviation is back in euros:
+	\[ \SD(X)=\sqrt{61\,875}\approx248.7\text{ euros}. \]
+	The typical deviation from the mean (about 249 euros) is much larger than
+	the mean itself (75 euros): on a single day the result is very uncertain.
+
+	\step{(b)} Doubling the position doubles every outcome: the P\&L is $2X$,
+	i.e.\ $600$ with probability $0.55$ and $-400$ with probability $0.45$. For
+	$aX+b$ we have
+	\[ \E[aX+b]=a\E[X]+b,\qquad \Var(aX+b)=a^2\Var(X),\qquad
+		\SD(aX+b)=|a|\,\SD(X). \]
+	Here $a=2$ and $b=0$:
+	\[ \E[2X]=2\cdot75=150,\qquad \Var(2X)=4\cdot61\,875=247\,500,\qquad
+		\SD(2X)=2\cdot\SD(X)\approx497.5. \]
+	Leverage doubles the expected profit, but it also doubles the risk measured
+	by the standard deviation.
+
+	\step{(c)} The fee is subtracted every day, whatever happens: the P\&L is
+	$X-20$, so $a=1$ and $b=-20$.
+	\[ \E[X-20]=75-20=55,\qquad \SD(X-20)=1\cdot\SD(X)\approx248.7. \]
+	The fee shifts both outcomes down by 20 euros ($280$ and $-220$). The center
+	moves down by 20, but the distance between the outcomes, and hence the
+	spread, does not change.
+	\begin{answer}
+		(a) $\E[X]=75$, $\Var(X)=61\,875$, $\SD(X)\approx248.7$ \quad
+		(b) $\E[2X]=150$, $\SD(2X)\approx497.5$ \quad
+		(c) $\E[X-20]=55$, $\SD(X-20)\approx248.7$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (b), $\Var(2X)=2\Var(X)$. The variance is
+		multiplied by $a^2=4$, not by $2$; only the standard deviation is
+		multiplied by $2$. Check directly:
+		\[ \E[(2X)^2]=600^2\cdot0.55+400^2\cdot0.45=198\,000+72\,000=270\,000, \]
+		and $270\,000-150^2=247\,500=4\cdot61\,875$.
+	\end{remark}
+\end{solution}

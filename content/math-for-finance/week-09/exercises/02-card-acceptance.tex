@@ -1,0 +1,59 @@
+% ---
+% title: Credit cards accepted
+% tags: union-intersection
+% ---
+
+\begin{problem}
+	A shop accepts American Express and VISA cards. 24\% of its customers carry
+	an American Express card, 61\% carry a VISA card, and 11\% carry both.
+	(a) What percentage of the customers carry a card that the shop accepts?
+	(b) What percentage carry a VISA card but no American Express card?
+	(c) What percentage carry exactly one of the two cards?
+\end{problem}
+
+\begin{solution}
+	\idea Pick a customer at random and translate each percentage into the
+	probability of an event. Then use the addition rule for two events,
+	$P(E\cup F)=P(E)+P(F)-P(EF)$, and split events into disjoint pieces.
+	\step{Events} Let $A$ be the event that the customer carries an American
+	Express card and $V$ the event that the customer carries a VISA card. The
+	data say
+	\[ P(A)=0.24,\qquad P(V)=0.61,\qquad P(AV)=0.11. \]
+	Here $AV$ (the intersection $A\cap V$) means ``carries both cards''.
+	\step{(a)} The shop accepts the customer's card if the customer carries
+	an American Express card \emph{or} a VISA card (or both). This is the
+	union $A\cup V$. If we simply add $P(A)$ and $P(V)$, the customers who
+	carry both cards are counted twice: once in $A$ and once in $V$. So we
+	subtract them once:
+	\[ P(A\cup V)=P(A)+P(V)-P(AV)=0.24+0.61-0.11=0.74. \]
+	So 74\% of the customers can pay by card.
+	\step{(b)} ``VISA but no American Express'' is the event $VA^c$. The VISA
+	holders split into two disjoint groups: those who also carry an American
+	Express card ($VA$) and those who do not ($VA^c$). Since the two groups are
+	mutually exclusive and together make up $V$,
+	\[ P(V)=P(VA)+P(VA^c), \]
+	so
+	\[ P(VA^c)=P(V)-P(AV)=0.61-0.11=0.50. \]
+	So 50\% carry a VISA card only.
+	\step{(c)} ``Exactly one card'' means: VISA but no American Express, or
+	American Express but no VISA. In the same way as in (b),
+	\[ P(AV^c)=P(A)-P(AV)=0.24-0.11=0.13. \]
+	The events $VA^c$ and $AV^c$ cannot happen together (a customer cannot have
+	and not have a VISA card), so their probabilities add up:
+	\[ P(VA^c)+P(AV^c)=0.50+0.13=0.63. \]
+	Another way: ``exactly one'' is ``at least one'' minus ``both'', that is,
+	$P(A\cup V)-P(AV)=0.74-0.11=0.63$.
+	\begin{answer}
+		(a) 74\% \quad (b) 50\% \quad (c) 63\%
+	\end{answer}
+	\begin{remark}
+		It helps to split the customers into the four disjoint regions of the
+		Venn diagram: only American Express $0.13$, only VISA $0.50$, both
+		$0.11$, neither $1-0.74=0.26$. These four numbers add up to $1$, and
+		every question about the two cards can be answered by adding some of
+		them.\par
+		\textbf{Common mistake:} answering (a) with $0.24+0.61=0.85$. This adds
+		the 11\% who carry both cards twice. The plain sum $P(E)+P(F)$ is
+		correct only for mutually exclusive events.
+	\end{remark}
+\end{solution}

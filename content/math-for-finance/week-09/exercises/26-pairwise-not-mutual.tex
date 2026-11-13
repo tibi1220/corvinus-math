@@ -1,0 +1,151 @@
+% ---
+% title: Pairwise but not mutually independent
+% tags: independence
+% ---
+
+\begin{problem}
+	Two fair coins are tossed. Let $A$ = ``the first coin shows heads'', $B$ =
+	``the second coin shows heads'' and $C$ = ``the two coins show the same
+	side''. (a) Are $A$ and $B$ independent? $A$ and $C$? $B$ and $C$? (b) Are
+	$A$, $B$, $C$ (mutually) independent? (c) Explain in words why knowing two
+	of the events tells you everything about the third.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.6\textwidth}
+			\sol $\Om=\{HH,HT,TH,TT\}$, four equally likely outcomes,
+			each with probability $\frac14$.
+			\pause
+
+			\smallskip
+			$A=\{HH,HT\}$, \ $B=\{HH,TH\}$, \ $C=\{HH,TT\}$, so
+			$P(A)=P(B)=P(C)=\frac24=\frac12$.
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\uncover<3->{
+				\centering
+				\begin{tabular}{c|ccc}
+					     & $A$ & $B$ & $C$ \\ \hline
+					$HH$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+					$HT$ & $\bullet$ &            &            \\
+					$TH$ &            & $\bullet$ &            \\
+					$TT$ &            &            & $\bullet$
+				\end{tabular}
+			}
+		\end{column}
+	\end{columns}
+	\pause
+	\smallskip
+	(a) Each pair has only $HH$ in common:
+	$AB=AC=BC=\{HH\}$.
+	\pause\\[1mm]
+	$P(AB)=\frac14=\frac12\cdot\frac12=P(A)P(B)$; in the same way
+	$P(AC)=P(A)P(C)$ and $P(BC)=P(B)P(C)$.
+	\pause\\[1mm]
+	\alert{Every pair is independent} (``pairwise independent'').
+\end{slides}
+
+\begin{slides}
+	\small
+	Three events $E,F,G$ are \alert{independent} if \emph{all four}
+	equations hold:
+	\[ P(EF)=P(E)P(F),\quad P(EG)=P(E)P(G),\quad P(FG)=P(F)P(G), \]
+	\[ P(EFG)=P(E)P(F)P(G). \]
+	\pause
+	(b) The first three hold by (a). The fourth: $ABC=\{HH\}$, so
+	\[ P(ABC)=\tfrac14, \qquad\text{but}\qquad
+		P(A)P(B)P(C)=\tfrac12\cdot\tfrac12\cdot\tfrac12=\tfrac18. \]
+	\pause
+	$\tfrac14\ne\tfrac18$: $A$, $B$, $C$ are \alert{not independent}.
+	\pause
+
+	\medskip
+	(c) If $A$ and $B$ both occur, the outcome is $HH$, so $C$ occurs:
+	\[ P(C\mid AB)=1\ne\tfrac12=P(C). \]
+	\pause
+	One coin alone says nothing about ``same side''; two of the events
+	together decide the third.
+	\pause
+
+	\medskip
+	\alert{Moral:} pairwise independence is not enough; check all four
+	equations.
+\end{slides}
+
+\begin{solution}
+	\idea List the four equally likely outcomes, write each event as a set of
+	outcomes, and compare the probability of each intersection with the
+	product of the probabilities.
+
+	\step{Sample space and events.} The coins are fair and tossed
+	independently, so the four outcomes
+	\[ \Om=\{HH,HT,TH,TT\} \]
+	are equally likely, each with probability $\frac14$ (the first letter is
+	the first coin). The events as sets:
+	\[ A=\{HH,HT\},\qquad B=\{HH,TH\},\qquad C=\{HH,TT\}. \]
+	Each contains two of the four outcomes, so
+	$P(A)=P(B)=P(C)=\frac24=\frac12$. In the table below, a dot means that
+	the event of the column occurs at the outcome of the row.
+
+	\begin{center}
+		\begin{tabular}{c|ccc}
+			     & $A$ & $B$ & $C$ \\ \hline
+			$HH$ & $\bullet$ & $\bullet$ & $\bullet$ \\
+			$HT$ & $\bullet$ &            &            \\
+			$TH$ &            & $\bullet$ &            \\
+			$TT$ &            &            & $\bullet$
+		\end{tabular}
+	\end{center}
+
+	\step{(a)} Two events $E$ and $F$ are independent when
+	$P(EF)=P(E)P(F)$. In the table, the only outcome in two columns at once is
+	$HH$. So every pair of events has the same intersection:
+	\[ AB=AC=BC=\{HH\}. \]
+	Each of these has probability $\frac14$, and each product of two
+	probabilities is $\frac12\cdot\frac12=\frac14$:
+	\[ P(AB)=\tfrac14=P(A)P(B),\quad P(AC)=\tfrac14=P(A)P(C),\quad
+		P(BC)=\tfrac14=P(B)P(C). \]
+	All three pairs are independent. For $A$ and $B$ this is expected (two
+	separate coins). For $A$ and $C$ it is less obvious: if the first coin
+	shows heads, ``same side'' means the second coin shows heads too, which
+	still has probability $\frac12$; so $P(C\mid A)=\frac12=P(C)$.
+
+	\step{(b)} Three events $E$, $F$, $G$ are independent only if \emph{all
+	four} equations hold:
+	\[ P(EF)=P(E)P(F),\quad P(EG)=P(E)P(G),\quad P(FG)=P(F)P(G),\quad
+		P(EFG)=P(E)P(F)P(G). \]
+	The first three hold by (a). For the fourth, all three events occur only
+	at $HH$, so $ABC=\{HH\}$ and
+	\[ P(ABC)=\frac14,\qquad\text{while}\qquad
+		P(A)P(B)P(C)=\frac12\cdot\frac12\cdot\frac12=\frac18. \]
+	Since $\frac14\ne\frac18$, the fourth equation fails, and $A$, $B$, $C$
+	are not independent.
+
+	\step{(c)} Suppose we know that $A$ and $B$ both occurred. Then both
+	coins show heads, so they show the same side, and $C$ certainly occurred:
+	\[ P(C\mid AB)=\frac{P(ABC)}{P(AB)}=\frac{1/4}{1/4}=1, \]
+	while $P(C)=\frac12$. In the same way, any two of the events decide the
+	third: if $A$ occurs and $C$ occurs, the second coin must be heads, so
+	$B$ occurs; if $A$ occurs and $C$ does not, $B$ does not occur either.
+	Knowing only one coin tells nothing about ``same side'' (that is
+	the pairwise independence of (a)), but knowing both coins tells
+	everything.
+	\begin{answer}
+		(a) yes, all three pairs are independent:
+		$P(AB)=P(AC)=P(BC)=\frac14=\frac12\cdot\frac12$ \quad
+		(b) no: $P(ABC)=\frac14\ne\frac18=P(A)P(B)P(C)$ \quad
+		(c) $P(C\mid AB)=1\ne\frac12=P(C)$: two of the events determine the
+		third
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} checking only the three pairs and concluding
+		that $A$, $B$, $C$ are independent. Pairwise independence does not
+		imply independence of all three; the equation for the triple
+		intersection must be checked separately. (The converse fails too: the
+		triple equation alone does not imply the pairwise ones.)
+	\end{remark}
+\end{solution}

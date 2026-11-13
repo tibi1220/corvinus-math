@@ -1,0 +1,174 @@
+% ---
+% title: Bond defaults: independent or not?
+% tags: finance, independence, inclusion-exclusion, complement, conditional-probability
+% ---
+
+\begin{problem}
+	\begin{context}
+		A bond \emph{defaults} when the issuer fails to pay what it promised. A
+		\emph{first-to-default swap} on a basket of bonds is an insurance-like
+		contract that pays as soon as at least one bond of the basket defaults;
+		a \emph{second-to-default swap} pays only when a second bond defaults as
+		well. Their prices depend on how the defaults are related: issuers that
+		depend on the same economy tend to get into trouble together. This is
+		called \emph{default correlation}.
+	\end{context}
+	A basket contains two bonds. Let $D_1$ and $D_2$ be the events that bond 1
+	and bond 2 default within a year; $P(D_1)=P(D_2)=0.05$. Find the
+	probability that at least one bond defaults (then a first-to-default swap
+	pays) and the probability that both bonds default (then a
+	second-to-default swap pays),
+	(a) if the two defaults are independent;
+	(b) if, because both issuers depend on the same economy, the probability
+	that both default is $P(D_1D_2)=0.02$.
+	(c) In case (b), find $P(D_2\mid D_1)$ and compare it with $P(D_2)$. Are
+	the defaults independent?
+	(d) Back to independence: a basket contains 10 bonds that default
+	independently of each other, each with probability $0.05$. What is the
+	probability that at least one of them defaults within a year?
+\end{problem}
+
+\begin{slideproblem}
+	Two bonds, $D_i$ = ``bond $i$ defaults within a year'',
+	$P(D_1)=P(D_2)=0.05$. Find $P(\text{at least one defaults})$ (a
+	first-to-default swap pays) and $P(\text{both default})$ (a
+	second-to-default swap pays),
+	(a) if the defaults are independent;
+	(b) if $P(D_1D_2)=0.02$ (same economy).
+	(c) In case (b): $P(D_2\mid D_1)=\,$? Compare with $P(D_2)$.
+	(d) 10 bonds default independently, each with probability $0.05$.
+	$P(\text{at least one default})=\,$?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol ``At least one defaults'' $=D_1\cup D_2$; \ ``both default''
+	$=D_1D_2$.
+	\pause\\[1mm]
+	(a) Independent: the probability of both is the product.
+	\[ P(D_1D_2)=P(D_1)P(D_2)=0.05\cdot0.05=\alert{0.0025}. \]
+	\pause
+	\vspace{-2mm}
+	\[ P(D_1\cup D_2)=P(D_1)+P(D_2)-P(D_1D_2)=0.05+0.05-0.0025
+		=\alert{0.0975}. \]
+	\pause
+	Check: no default $=D_1^cD_2^c$, also independent:
+	$1-0.95^2=0.0975$.
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) Same economy: $P(D_1D_2)=\alert{0.02}$ is given.
+	\pause\\[1mm]
+	This is 8 times as large as $0.0025$: no product rule here.
+	\pause
+	\[ P(D_1\cup D_2)=0.05+0.05-0.02=\alert{0.08}. \]
+	\pause
+	(c) Definition of conditional probability:
+	\[ P(D_2\mid D_1)=\frac{P(D_1D_2)}{P(D_1)}=\frac{0.02}{0.05}=\alert{0.4}. \]
+	\pause
+	$0.4\ne0.05=P(D_2)$: the defaults are \alert{not independent}.
+	\pause\\[1mm]
+	Once bond 1 has defaulted, bond 2 defaults with probability $0.4$
+	instead of $0.05$: \emph{positive} dependence.
+\end{slides}
+
+\begin{slides}
+	\small
+	(d) Complement: ``at least one default'' is the opposite of ``all 10
+	bonds survive''.
+	\pause\\[1mm]
+	Each bond survives with probability $0.95$; independent, so multiply:
+	\[ P(\text{no default})=0.95^{10}\approx0.599. \]
+	\pause
+	\vspace{-2mm}
+	\[ P(\text{at least one default})=1-0.95^{10}\approx\alert{0.401}. \]
+	\pause
+	Each bond is fairly safe, but with 10 of them a first-to-default swap
+	pays with probability about 40\%.
+	\pause
+	\begin{center}
+		\begin{tabular}{lcc}
+			two bonds    & at least one & both     \\ \hline
+			independent  & $0.0975$     & $0.0025$ \\
+			same economy & $0.08$       & $0.02$
+		\end{tabular}
+	\end{center}
+	\alert{Lesson:} positive dependence makes ``at least one'' slightly less
+	likely, but ``both'' much more likely.
+\end{slides}
+
+\begin{solution}
+	\idea Write the two swap events as $D_1\cup D_2$ and $D_1D_2$. Under
+	independence the probability of the intersection is the product; then the
+	union follows from inclusion--exclusion. Without independence the
+	intersection must be given. For many bonds, use the complement.
+
+	\step{Events.} The first-to-default swap pays if at least one bond
+	defaults: this is the union $D_1\cup D_2$. The second-to-default swap pays
+	if both bonds default: this is the intersection $D_1D_2$. For the union we
+	always have the inclusion--exclusion formula
+	\[ P(D_1\cup D_2)=P(D_1)+P(D_2)-P(D_1D_2). \]
+	So in every case the key number is $P(D_1D_2)$.
+
+	\step{(a)} The defaults are independent. By definition this means that the
+	probability of both is the product of the probabilities:
+	\[ P(D_1D_2)=P(D_1)P(D_2)=0.05\cdot0.05=0.0025. \]
+	Then inclusion--exclusion gives
+	\[ P(D_1\cup D_2)=0.05+0.05-0.0025=0.0975. \]
+	We subtract $0.0025$ because the outcomes where both bonds default are
+	counted once in $P(D_1)$ and once more in $P(D_2)$.
+
+	Check with the complement. ``At least one defaults'' is the complement of
+	``no bond defaults'', which is $D_1^cD_2^c$ (De Morgan). If $D_1$ and $D_2$
+	are independent, so are $D_1^c$ and $D_2^c$, and each has probability
+	$1-0.05=0.95$. So
+	\[ P(D_1\cup D_2)=1-P(D_1^cD_2^c)=1-0.95\cdot0.95=1-0.9025=0.0975. \]
+
+	\step{(b)} Now the two issuers depend on the same economy, and
+	$P(D_1D_2)=0.02$ is given. We cannot multiply here: multiplication is
+	allowed only for independent events. This number is $0.02/0.0025=8$ times
+	the value under independence. The probability that at least one bond
+	defaults is again inclusion--exclusion:
+	\[ P(D_1\cup D_2)=0.05+0.05-0.02=0.08. \]
+
+	\step{(c)} By the definition of conditional probability,
+	\[ P(D_2\mid D_1)=\frac{P(D_1D_2)}{P(D_1)}=\frac{0.02}{0.05}=0.4. \]
+	Two events are independent exactly when knowing that one happened does not
+	change the probability of the other, that is, $P(D_2\mid D_1)=P(D_2)$.
+	Here $0.4\ne0.05$, so the defaults are not independent. The dependence is
+	positive: once bond 1 has defaulted (probably because the economy is in
+	trouble), bond 2 defaults with probability $0.4$, eight times its
+	unconditional probability $0.05$. Equivalently,
+	$P(D_1D_2)=0.02\ne0.0025=P(D_1)P(D_2)$.
+
+	\step{(d)} With 10 bonds, ``at least one default'' would need
+	inclusion--exclusion with many terms. The complement is much simpler: ``at
+	least one bond defaults'' is the complement of ``no bond defaults'', that
+	is, of ``all 10 bonds survive''. Each bond survives with probability
+	$1-0.05=0.95$, and the survivals are independent (as the defaults are), so
+	the probability that all 10 survive is the product of 10 equal factors:
+	\[ P(\text{no default})=0.95^{10}\approx0.5987. \]
+	Therefore
+	\[ P(\text{at least one default})=1-0.95^{10}\approx1-0.5987=0.4013. \]
+	Although each bond is fairly safe, a first-to-default swap on 10 such
+	bonds pays with probability about 40\%.
+	\begin{answer}
+		(a) $P(D_1\cup D_2)=0.0975$, $P(D_1D_2)=0.0025$ \quad
+		(b) $P(D_1\cup D_2)=0.08$, $P(D_1D_2)=0.02$ \quad
+		(c) $P(D_2\mid D_1)=0.4\ne0.05=P(D_2)$: not independent \quad
+		(d) $1-0.95^{10}\approx0.401$
+	\end{answer}
+	\begin{remark}
+		Compare (a) and (b). Positive dependence makes ``at least one default''
+		slightly \emph{less} likely ($0.08$ instead of $0.0975$), but ``both
+		default'' much \emph{more} likely ($0.02$ instead of $0.0025$). The
+		defaults tend to come together, so they overlap more and cover less of
+		$\Om$. This is why the seller of a second-to-default swap cares a lot
+		about default correlation.
+		\textbf{Common mistake:} computing $P(D_1D_2)=0.05\cdot0.05$ in (b)
+		as well. The product rule holds only for independent events.
+	\end{remark}
+\end{solution}

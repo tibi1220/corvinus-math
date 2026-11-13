@@ -24,6 +24,10 @@ const TAG_LABELS: Record<string, string> = {
   'de-morgan': 'De Morgan’s laws',
   'venn-diagrams': 'Venn diagrams',
   'inclusion-exclusion': 'inclusion–exclusion',
+  'union-intersection': 'unions and intersections',
+  'equally-likely': 'equally likely outcomes',
+  bayes: 'Bayes’ formula',
+  'generalized-bayes': 'generalized Bayes formula',
 };
 
 export function tagLabel(tag: string) {

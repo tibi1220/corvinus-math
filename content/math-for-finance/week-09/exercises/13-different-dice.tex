@@ -1,0 +1,66 @@
+% ---
+% title: Two dice showing different numbers
+% tags: conditional-probability
+% ---
+
+\begin{problem}
+	Two fair dice are rolled. Given that they show different numbers, what is
+	the conditional probability that (a) at least one of them is a six;
+	(b) the sum of the two numbers is 7?
+\end{problem}
+
+\begin{solution}
+	\idea Write the result as an ordered pair (first die, second die). All
+	$36$ pairs are equally likely. The condition ``different numbers'' keeps
+	only some of these pairs, and they stay equally likely. So we can count
+	inside this reduced sample space. We also check the result with the
+	formula $P(E\mid F)=P(EF)/P(F)$.
+	\step{The condition} Let $F$ be the event ``the two dice show different
+	numbers''. Its complement $F^c$ consists of the $6$ pairs with equal
+	numbers: $(1,1),(2,2),\dots,(6,6)$. So
+	\[ |F|=36-6=30, \qquad P(F)=\frac{30}{36}=\frac56. \]
+	Knowing that $F$ happened, only these $30$ pairs are possible, and each of
+	them is equally likely. This is the reduced sample space.
+	\step{(a)} Let $E$ be the event ``at least one six''. We need the pairs in
+	$F$ that contain a six, that is, the pairs in $EF$. Since the numbers are
+	different, the pair cannot be $(6,6)$, so exactly one die shows a six and
+	the other shows one of $1,\dots,5$:
+	\begin{itemize}
+		\item six on the first die: $(6,1),\dots,(6,5)$, that is, $5$ pairs;
+		\item six on the second die: $(1,6),\dots,(5,6)$, that is, $5$ pairs.
+	\end{itemize}
+	These two groups have no common pair, so $|EF|=5+5=10$. Counting in the
+	reduced sample space:
+	\[ P(E\mid F)=\frac{|EF|}{|F|}=\frac{10}{30}=\frac13\approx0.3333. \]
+	With the formula we get the same:
+	\[ P(E\mid F)=\frac{P(EF)}{P(F)}=\frac{10/36}{30/36}=\frac{10}{30}=\frac13. \]
+	For comparison, without the condition $E$ contains $11$ pairs (the $10$
+	above and $(6,6)$), so $P(E)=11/36\approx0.3056$. The condition makes a six
+	slightly more likely: it removes $5$ pairs without a six but only $1$ pair
+	with a six.
+	\step{(b)} Let $G$ be the event ``the sum is 7''. It has $6$ pairs:
+	\[ (1,6),\ (2,5),\ (3,4),\ (4,3),\ (5,2),\ (6,1). \]
+	In each of them the two numbers are different (two equal numbers give an
+	even sum, and $7$ is odd). So all of $G$ lies inside $F$: $GF=G$ and
+	$|GF|=6$. Counting in the reduced sample space:
+	\[ P(G\mid F)=\frac{|GF|}{|F|}=\frac{6}{30}=\frac15=0.2. \]
+	With the formula:
+	\[ P(G\mid F)=\frac{P(GF)}{P(F)}=\frac{6/36}{30/36}=\frac{6}{30}=\frac15. \]
+	Without the condition, $P(G)=6/36=1/6\approx0.1667$. The condition removes
+	only pairs with a sum other than $7$, so the share of sum-$7$ pairs grows.
+	\begin{answer}
+		(a) $\dfrac13\approx0.3333$ \quad (b) $\dfrac15=0.2$
+	\end{answer}
+	\begin{remark}
+		Counting in the reduced sample space works because all outcomes of $F$
+		are equally likely. Then
+		\[ \frac{P(EF)}{P(F)}=\frac{|EF|/36}{|F|/36}=\frac{|EF|}{|F|}, \]
+		and the $36$ cancels. In (b) we have the special case $G\subseteq F$ of
+		Exercise~\exref{special-cases}, so
+		\[ P(G\mid F)=\frac{P(G)}{P(F)}=\frac{1/6}{5/6}=\frac15. \]
+
+		\textbf{Common mistake:} dividing by $36$ instead of $30$. Once we know
+		that the numbers are different, the $6$ pairs with equal numbers are
+		no longer possible, so they must not be counted in the denominator.
+	\end{remark}
+\end{solution}

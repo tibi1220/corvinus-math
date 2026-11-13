@@ -1,0 +1,148 @@
+% ---
+% title: Odds in betting and prediction markets
+% tags: finance, odds
+% ---
+
+\begin{problem}
+	\begin{context}
+		On a \emph{prediction market}, people trade contracts that pay 1 euro if
+		an event happens (for example, a candidate wins an election) and nothing
+		otherwise. The price of such a contract is read as the market's
+		probability of the event. Bookmakers quote \emph{decimal odds}: the total
+		amount a stake of 1 euro returns if the bet wins, the stake included.
+	\end{context}
+	(a) A prediction-market contract pays 1 euro if a candidate wins the
+	election and 0 otherwise. It trades at 0.40 euros. What probability and
+	what odds does the market assign to her winning?
+	(b) A bookmaker offers decimal odds 2.50 on team A and 1.60 on team B in a
+	match that cannot end in a draw: a stake of 1 euro returns 2.50 euros on
+	team A, or 1.60 euros on team B, stake included, if the bet wins. What
+	probabilities
+	do these quotes imply? Why do they not add up to 1?
+	(c) News arrives that is 3 times as likely if the candidate in (a) wins as
+	if she loses. What is the fair price of the contract now?
+\end{problem}
+
+\begin{slideproblem}
+	(a) A contract pays 1 euro if a candidate wins the election, 0 otherwise;
+	its price is 0.40 euros. What probability and what odds does the market
+	give to her winning?
+	(b) A bookmaker quotes decimal odds 2.50 on team A and 1.60 on team B (no
+	draw; a 1-euro stake returns 2.50 euros on A, or 1.60 euros on B, if it
+	wins). Implied
+	probabilities? Why is their sum not 1?
+	(c) News arrives that is 3 times as likely if the candidate wins as if she
+	loses. New fair price of the contract?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) $W$ = ``she wins''. A contract that pays 1 euro if $W$ happens
+	is priced at the probability of $W$: \ $P(W)=0.40$.\\[1mm]
+	\pause
+	Odds of $W$: \
+	$\dfrac{P(W)}{P(W^c)}=\dfrac{0.40}{0.60}=\dfrac23$, \ ``2 to 3 in favor''
+	(3 to 2 against).\\[1mm]
+	\pause
+	(b) Decimal odds $d$: a stake of $1/d$ euros returns exactly 1 euro. So
+	$1/d$ is the price of ``1 euro if the team wins'', the implied
+	probability.\\[1mm]
+	\pause
+	Team A: $\dfrac{1}{2.50}=0.40$, \qquad team B: $\dfrac{1}{1.60}=0.625$.
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) Implied probabilities $0.40$ and $0.625$.\\[1mm]
+	\pause
+	Their sum is $1.025>1$. Bet $0.40$ on A and $0.625$ on B: you get 1 euro
+	back for sure, but you paid $1.025$ euros. The extra $0.025$ (2.5\%) is
+	the bookmaker's margin (the \emph{overround}).\\[1mm]
+	\pause
+	Remove the margin by dividing by the sum:
+	\[ P(\text{A wins})\approx\frac{0.40}{1.025}\approx 0.390,\qquad
+		P(\text{B wins})\approx\frac{0.625}{1.025}\approx 0.610. \]
+	\pause
+	(c) Likelihood ratio of the news: $3$. New odds $=$ old odds $\times$
+	likelihood ratio:
+	\[ \frac23\cdot 3=2. \]
+	\pause
+	Back to a probability:
+	$P(W\mid\text{news})=\dfrac{2}{1+2}=\dfrac23\approx 0.667$. \ The fair
+	price rises from $0.40$ to about $0.667$ euros.
+\end{slides}
+
+\begin{solution}
+	\idea A contract that pays 1 euro if an event happens is worth the
+	probability of the event, so prices and decimal odds can be turned into
+	probabilities. Then we use the odds of an event,
+	\[ \text{odds of } H=\frac{P(H)}{P(H^c)},\qquad
+		P(H)=\frac{\text{odds}}{1+\text{odds}}, \]
+	and Bayes' formula in odds form: new odds $=$ old odds $\times$ likelihood
+	ratio.
+
+	\step{(a)} Let $W$ be the event ``the candidate wins''. The contract pays 1
+	euro if $W$ happens and 0 otherwise. Suppose the true probability of $W$ is
+	$q$. If the price were below $q$, buying contracts would be a good deal on
+	average; if it were above $q$, selling them would be. Trading pushes the
+	price towards $q$, so the price is read as the market's probability:
+	\[ P(W)=0.40. \]
+	The odds of $W$ compare the probability that she wins with the probability
+	that she loses:
+	\[ \frac{P(W)}{P(W^c)}=\frac{0.40}{1-0.40}=\frac{0.40}{0.60}=\frac23. \]
+	In words: ``2 to 3 in favor'', or equivalently ``3 to 2 against''. Out of
+	every 5 equally likely scenarios, she wins in 2 and loses in 3.
+
+	\step{(b)} With decimal odds $d$, a stake of 1 euro returns $d$ euros if
+	the bet wins. So a stake of $1/d$ euros returns exactly 1 euro if the bet
+	wins, and nothing otherwise. This is the contract of part (a), and its
+	price $1/d$ is the implied probability:
+	\[ \text{team A: } \frac{1}{2.50}=0.40,\qquad
+		\text{team B: } \frac{1}{1.60}=0.625. \]
+	The match has no draw, so exactly one team wins: the events ``A wins'' and
+	``B wins'' are mutually exclusive and together cover every outcome. Their
+	true probabilities must therefore add up to 1. The quotes, however, give
+	\[ 0.40+0.625=1.025>1. \]
+	The reason is the bookmaker's margin. Bet 0.40 euros on A and 0.625 euros
+	on B. Whichever team wins, you get exactly 1 euro back, but you paid
+	$1.025$ euros: you lose $0.025$ euros for sure. This extra 2.5\% is the
+	bookmaker's profit, called the \emph{overround}. A fair bookmaker would set
+	the quotes so that the implied probabilities add up to exactly 1.
+
+	To estimate the probabilities behind the quotes, remove the margin by
+	dividing each implied probability by their sum (then they add up to 1):
+	\[ P(\text{A wins})\approx\frac{0.40}{1.025}\approx 0.390,\qquad
+		P(\text{B wins})\approx\frac{0.625}{1.025}\approx 0.610. \]
+
+	\step{(c)} Call the news $N$. We are told that
+	$P(N\mid W)=3\,P(N\mid W^c)$, so the likelihood ratio of the news is
+	\[ \frac{P(N\mid W)}{P(N\mid W^c)}=3. \]
+	We do not need the two conditional probabilities themselves, only their
+	ratio. Bayes' formula in odds form gives
+	\[ \frac{P(W\mid N)}{P(W^c\mid N)}=\frac{P(W)}{P(W^c)}\cdot
+		\frac{P(N\mid W)}{P(N\mid W^c)}=\frac23\cdot 3=2. \]
+	The new odds are 2, ``2 to 1 in favor''. Back to a probability:
+	\[ P(W\mid N)=\frac{2}{1+2}=\frac23\approx 0.667. \]
+	The contract still pays 1 euro if she wins, so its fair price is now about
+	$0.667$ euros (up from $0.40$ euros).
+	\begin{answer}
+		(a) probability $0.40$, odds $\frac23$ (2 to 3 in favor) \quad
+		(b) $0.40$ and $0.625$; the sum $1.025$ includes a 2.5\% margin;
+		without it about $0.390$ and $0.610$ \quad
+		(c) $\frac23\approx 0.667$ euros
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} multiplying the \emph{probability} by the
+		likelihood ratio: $0.40\cdot 3=1.2$, which is not even a probability.
+		The likelihood ratio multiplies the odds; only at the end do we turn the
+		odds back into a probability.
+	\end{remark}
+	\begin{remark}
+		The ``odds'' of a bookmaker are not the odds of this course. Decimal odds
+		2.50 mean a net gain of 1.50 euros per euro staked, that is ``1.5 to 1
+		against'' (3 to 2 against). In our sense the odds of team A winning are
+		$0.40/0.60=2/3$, exactly as for the candidate in (a).
+	\end{remark}
+\end{solution}

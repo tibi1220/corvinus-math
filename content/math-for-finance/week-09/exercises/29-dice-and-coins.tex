@@ -1,0 +1,58 @@
+% ---
+% title: Dice and coins
+% tags: independence, total-probability
+% ---
+
+\begin{problem}
+	Alice and Bob play the following game. First they roll a fair die. Then
+	they flip a pair of fair coins as many times as the die shows. If two heads
+	(HH) appear at least once, Alice wins; otherwise Bob wins. Is the game fair?
+\end{problem}
+
+\begin{solution}
+	\idea Condition on the result of the die. Once the number of flips is
+	known, the flips are independent, so the probability that HH never
+	appears is a simple power. Then average over the six possible results of
+	the die (law of total probability).
+	\step{Notation} Let $D$ be the number shown by the die and let $B$ be the
+	event ``Bob wins'', that is, HH never appears. The game is fair if
+	$P(B)=\frac12$.
+	\step{One flip of the pair} One flip of the two coins has $4$ equally
+	likely outcomes: HH, HT, TH, TT. So
+	\[ P(\text{HH})=\frac14, \qquad P(\text{not HH})=\frac34. \]
+	\step{A fixed number of flips} Suppose the die shows $k$. Then the pair is
+	flipped $k$ times. Bob wins if none of the $k$ flips gives HH. The flips
+	are independent, so the probability that all $k$ of them avoid HH is the
+	product of the single probabilities:
+	\[ P(B\mid D=k)=\underbrace{\frac34\cdot\frac34\cdots\frac34}_{k\text{ times}}
+		=\left(\frac34\right)^k. \]
+	\step{Averaging over the die} The events $\{D=1\},\dots,\{D=6\}$ are
+	mutually exclusive, and one of them always happens. Each has probability
+	$\frac16$. By the law of total probability,
+	\[ P(B)=\sum_{k=1}^{6}P(B\mid D=k)\,P(D=k)
+		=\frac16\left[\frac34+\left(\frac34\right)^2+\dots+\left(\frac34\right)^6\right]. \]
+	\step{The sum} The bracket is a geometric sum with first term
+	$q=\frac34$ and ratio $q=\frac34$:
+	\[ q+q^2+\dots+q^6=\frac{q\,(1-q^6)}{1-q}
+		=\frac{\frac34\left(1-\frac{729}{4096}\right)}{\frac14}
+		=3\cdot\frac{3367}{4096}=\frac{10101}{4096}. \]
+	Therefore
+	\[ P(B)=\frac16\cdot\frac{10101}{4096}=\frac{3367}{8192}\approx0.411. \]
+	\step{Alice} Alice wins exactly when Bob does not, so by the complement
+	rule
+	\[ P(\text{Alice wins})=1-\frac{3367}{8192}=\frac{4825}{8192}\approx0.589. \]
+	Since $0.589>0.5$, the game is not fair.
+	\begin{answer}
+		$P(\text{Bob wins})=\dfrac{3367}{8192}\approx0.411$,
+		$P(\text{Alice wins})=\dfrac{4825}{8192}\approx0.589$: the game is not
+		fair, it favors Alice.
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing with the average number of flips,
+		$3.5$, and writing $\left(\frac34\right)^{3.5}\approx0.365$. This is
+		wrong: averaging $\left(\frac34\right)^k$ over the six values of $k$ is
+		not the same as putting the average $k$ into the power. Always condition
+		on each value of the die separately, and then average the
+		probabilities.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,67 @@
+% ---
+% title: A random portfolio
+% tags: finance, equally-likely, complement
+% ---
+
+\begin{problem}
+	\begin{context}
+		A stock \emph{index} is a list of stocks whose prices are tracked
+		together. In an \emph{equally weighted} portfolio the same amount of
+		money goes into each chosen stock, so only the \emph{set} of stocks
+		matters. Investors watch \emph{sector concentration}: a portfolio with
+		many stocks from one sector (for example technology) is exposed to the
+		risks of that sector.
+	\end{context}
+	An index has 30 stocks, 8 of them technology stocks. An investor picks 5
+	of the 30 stocks completely at random for an equally weighted portfolio.
+	Find the probability that the portfolio contains (a) at least one
+	technology stock; (b) exactly two technology stocks; (c) no technology
+	stock.
+\end{problem}
+
+\begin{solution}
+	\idea ``Completely at random'' means that every set of 5 stocks is equally
+	likely. So every probability is (number of favorable sets) divided by
+	(number of all sets). For ``at least one'' use the complement: ``none''.
+
+	\step{Sample space} An outcome is a set of 5 stocks out of 30. The order of
+	picking does not matter (the portfolio is equally weighted), so
+	\[ |\Om|=\binom{30}{5}=142\,506. \]
+	All these outcomes are equally likely.
+
+	\step{(c)} We start with (c), because (a) builds on it. ``No technology
+	stock'' means that all 5 stocks come from the $30-8=22$ other stocks. The
+	number of such sets is $\binom{22}{5}=26\,334$, so
+	\[ P(\text{no tech})=\frac{\binom{22}{5}}{\binom{30}{5}}
+		=\frac{26\,334}{142\,506}=\frac{209}{1131}\approx0.1848. \]
+
+	\step{(a)} Let $E$ = ``at least one technology stock''. Its complement
+	$E^c$ is ``no technology stock'', which we found in (c). Counting $E$
+	directly would need the cases 1, 2, 3, 4, 5 tech stocks; the complement is
+	one single case. Since $P(E)=1-P(E^c)$,
+	\[ P(E)=1-\frac{26\,334}{142\,506}=\frac{116\,172}{142\,506}=\frac{922}{1131}
+		\approx0.8152. \]
+
+	\step{(b)} ``Exactly two technology stocks'' means: 2 stocks from the 8
+	tech stocks \emph{and} 3 stocks from the 22 others. Any choice of the 2
+	tech stocks can be combined with any choice of the 3 other stocks, so by
+	the multiplication principle the
+	number of such sets is
+	\[ \binom{8}{2}\binom{22}{3}=28\cdot1540=43\,120. \]
+	Hence
+	\[ P(\text{exactly 2 tech})=\frac{\binom{8}{2}\binom{22}{3}}{\binom{30}{5}}
+		=\frac{43\,120}{142\,506}=\frac{3080}{10\,179}\approx0.3026. \]
+
+	\begin{answer}
+		(a) $\approx0.8152$ \quad (b) $\approx0.3026$ \quad (c) $\approx0.1848$
+	\end{answer}
+	\begin{remark}
+		The counts are ordinary combinations; the only new step is dividing by
+		$|\Om|$, which is allowed because all sets of 5 stocks are equally
+		likely.
+
+		\textbf{Common mistake:} in (b) writing only $\binom{8}{2}$ in the
+		numerator. The other 3 stocks must be \emph{non}-tech stocks; otherwise
+		the portfolio could contain more than two tech stocks.
+	\end{remark}
+\end{solution}

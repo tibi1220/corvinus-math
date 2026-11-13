@@ -1,0 +1,91 @@
+% ---
+% title: Two sales appointments
+% tags: random-variables, independence, expectation
+% ---
+
+\begin{problem}
+	A salesman has two appointments today. The first appointment leads to a
+	sale with probability $0.3$. The second one, independently of the first,
+	leads to a sale with probability $0.6$. Each sale is either of the deluxe
+	model, which costs 1000 euros, or of the standard model, which costs
+	500 euros. The two models are equally likely, independently of everything
+	else. Let $X$ be the total value of today's sales (in euros).
+	(a) Find the probability mass function of $X$.
+	(b) Find $\E[X]$.
+\end{problem}
+
+\begin{solution}
+	\idea First decide how many sales there are (0, 1 or 2) and at which
+	appointments. Then, for each case, look at the models sold. Independence
+	lets us multiply the probabilities along each case.
+	\step{(a)} \emph{The possible values.} With no sale $X=0$. With one sale
+	$X$ is $500$ or $1000$. With two sales the total is $500+500=1000$,
+	$500+1000=1500$ or $1000+1000=2000$. So $X$ takes the values
+	$0$, $500$, $1000$, $1500$, $2000$.
+
+	\emph{The number of sales.} Let $S_1$ and $S_2$ be the events that the
+	first and the second appointment lead to a sale. They are independent, and
+	so are their complements. Hence
+	\[ \begin{aligned}
+		P(\text{no sale})            & =P(S_1^cS_2^c)=0.7\cdot0.4=0.28,  \\
+		P(\text{only the 1st sells}) & =P(S_1S_2^c)=0.3\cdot0.4=0.12,    \\
+		P(\text{only the 2nd sells}) & =P(S_1^cS_2)=0.7\cdot0.6=0.42,    \\
+		P(\text{both sell})          & =P(S_1S_2)=0.3\cdot0.6=0.18.
+	\end{aligned} \]
+	These four cases are mutually exclusive and cover everything; indeed
+	$0.28+0.12+0.42+0.18=1$.
+
+	\emph{The models.} If there is exactly one sale, it is standard (500)
+	or deluxe (1000) with probability $0.5$ each. If there are two sales, the
+	two models are independent, so each of the four combinations
+	(standard--standard, standard--deluxe, deluxe--standard, deluxe--deluxe)
+	has probability $0.5\cdot0.5=0.25$.
+
+	\emph{Putting it together.} For each value of $X$ we add the
+	probabilities of the mutually exclusive ways it can happen.
+	\begin{itemize}
+		\item $X=0$: no sale, $p(0)=0.28$.
+		\item $X=500$: exactly one sale, and it is standard:
+		      \[ p(500)=(0.12+0.42)\cdot0.5=0.06+0.21=0.27. \]
+		\item $X=1000$: either exactly one sale and it is deluxe, or two
+		      sales and both are standard:
+		      \[ p(1000)=(0.12+0.42)\cdot0.5+0.18\cdot0.25=0.27+0.045=0.315. \]
+		\item $X=1500$: two sales, one standard and one deluxe (two orders):
+		      \[ p(1500)=0.18\cdot(0.25+0.25)=0.18\cdot0.5=0.09. \]
+		\item $X=2000$: two sales, both deluxe:
+		      \[ p(2000)=0.18\cdot0.25=0.045. \]
+	\end{itemize}
+	In a table:
+	\begin{center}
+		\begin{tabular}{c|ccccc}
+			$x$    & $0$    & $500$  & $1000$  & $1500$ & $2000$  \\ \hline
+			$p(x)$ & $0.28$ & $0.27$ & $0.315$ & $0.09$ & $0.045$
+		\end{tabular}
+	\end{center}
+	Check: $0.28+0.27+0.315+0.09+0.045=1$, as it must be for a probability
+	mass function.
+	\step{(b)} The expected value is the sum of the values, each weighted by
+	its probability:
+	\[
+		\begin{aligned}
+			\E[X] & =0\cdot0.28+500\cdot0.27+1000\cdot0.315+1500\cdot0.09+2000\cdot0.045 \\
+			      & =0+135+315+135+90=675.
+		\end{aligned}
+	\]
+	\begin{answer}
+		(a) $p(0)=0.28$, $p(500)=0.27$, $p(1000)=0.315$, $p(1500)=0.09$,
+		$p(2000)=0.045$ \quad (b) \mbox{$\E[X]=675$ euros}
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} forgetting that $X=1000$ can happen in two
+		different ways (one deluxe sale, or two standard sales). Then the
+		probabilities do not add up to $1$.
+
+		\textbf{A shortcut for (b).} The value of one sale is $500$ or $1000$
+		with probability $0.5$ each, so its expected value is
+		$0.5\cdot500+0.5\cdot1000=750$ euros. The expected number of sales
+		is $0.3+0.6=0.9$. Since the expected value of a sum is the sum of the
+		expected values, $\E[X]=0.3\cdot750+0.6\cdot750=0.9\cdot750=675$
+		euros, the same result.
+	\end{remark}
+\end{solution}

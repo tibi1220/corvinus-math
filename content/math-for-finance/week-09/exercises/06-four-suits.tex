@@ -1,0 +1,63 @@
+% ---
+% title: All four suits
+% tags: equally-likely
+% ---
+
+\begin{problem}
+	Five cards are dealt from a well-shuffled deck of 52 cards (without
+	replacement). The deck has four suits, with 13 cards in each suit.
+	(a) What is the probability that all four suits appear among the five
+	cards?
+	(b) A classmate argues as follows: ``Choose one card of each suit
+	($13^4$ ways), then any one of the remaining 48 cards. So the probability
+	is $13^4\cdot48/\binom{52}{5}$.'' Is this argument correct? If not, what
+	goes wrong?
+\end{problem}
+
+\begin{solution}
+	\idea All hands of five cards are equally likely, so the probability is
+	the number of good hands divided by the number of all hands. To count the good hands, first look at what such a hand must look like.
+	\step{(a)} The sample space $\Om$ is the set of all 5-card hands. The order
+	of the cards does not matter, so
+	\[ |\Om|=\binom{52}{5}=2\,598\,960. \]
+	Every hand is equally likely, because the deck is well shuffled.
+
+	Now the good hands. There are 5 cards but only 4 suits. If all four suits
+	appear, each suit has at least one card, and one card is left over. So
+	exactly one suit appears twice and the other three suits appear once each.
+	We build such a hand in three steps:
+	\begin{itemize}
+		\item choose the suit that appears twice: $4$ ways;
+		\item choose its 2 cards out of its 13 cards: $\binom{13}{2}=78$ ways;
+		\item choose one card from each of the other three suits: $13\cdot13\cdot13=13^3=2197$ ways.
+	\end{itemize}
+	Each good hand is built in exactly one way (the doubled suit is determined
+	by the hand). By the multiplication rule the number of good hands is
+	\[ 4\cdot\binom{13}{2}\cdot13^3=4\cdot78\cdot2197=685\,464. \]
+	Hence
+	\[ P(\text{all four suits})=\frac{4\cdot\binom{13}{2}\cdot13^3}{\binom{52}{5}}
+		=\frac{685\,464}{2\,598\,960}=\frac{2197}{8330}\approx0.2637. \]
+	\step{(b)} The argument is not correct: it counts every good hand twice.
+	Take, for example, the hand
+	\[ \heartsuit\mathrm{A},\ \heartsuit\mathrm{K},\ \spadesuit 5,\ \diamondsuit 9,\ \clubsuit 2. \]
+	The classmate's procedure produces it in two different ways: once with
+	$\heartsuit\mathrm{A}$ as ``the heart chosen first'' and $\heartsuit\mathrm{K}$ as ``the
+	extra card'', and once with the roles of these two cards swapped. The same
+	happens for every good hand: either card of the doubled suit can play the
+	role of ``the chosen one''. So
+	\[ 13^4\cdot48=1\,370\,928=2\cdot685\,464, \]
+	exactly twice the correct count, and the classmate's probability
+	$1\,370\,928/2\,598\,960\approx0.5275$ is twice the right value.
+	(Dividing by 2 would repair the argument.)
+	\begin{answer}
+		(a) $\dfrac{2197}{8330}\approx0.2637$ \quad (b) No: each good hand is
+		counted twice, so the result is twice the correct probability.
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} a ``choose a special element first, then the
+		rest'' count often produces the same set in several ways. A quick test:
+		take one concrete good outcome and ask in how many ways the procedure
+		can produce it. If the answer is not 1, the count is wrong (here it is
+		2 for every hand, so divide by 2).
+	\end{remark}
+\end{solution}

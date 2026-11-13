@@ -1,0 +1,60 @@
+% ---
+% title: Clubs and aces
+% tags: equally-likely, union-intersection, inclusion-exclusion, complement
+% ---
+
+\begin{problem}
+	Five cards are taken at random from a deck of 52 cards. Find the
+	probability that
+	(a) all 5 cards are clubs and there is at least one ace among them;
+	(b) all 5 cards are clubs or there is at least one ace among them.
+\end{problem}
+
+\begin{solution}
+	\idea Every set of 5 cards is equally likely, so each probability is
+	(number of favorable hands)$/$(number of all hands). Let $C$ be the event
+	``all 5 cards are clubs'' and $A$ the event ``at least one ace''. Part (a)
+	asks for $P(CA)$, part (b) for $P(C\cup A)$, which we get from the
+	inclusion--exclusion formula.
+	\step{Sample space.} The order of the cards does not matter, so a hand is
+	a 5-element subset of the 52 cards:
+	\[ |\Om|=\binom{52}{5}=2\,598\,960. \]
+	\step{(a)} A hand of 5 clubs contains an ace only if it contains the ace
+	of clubs, because that is the only ace among the clubs. So $CA$ means:
+	the ace of clubs is in the hand, and the other 4 cards are clubs too.
+	The ace of clubs is fixed; the other 4 cards are chosen from the remaining
+	12 clubs:
+	\[ |CA|=\binom{12}{4}=495,\qquad
+		P(CA)=\frac{495}{2\,598\,960}=\frac{33}{173\,264}\approx0.000190. \]
+	\step{(b)} The two events can happen together (part (a)), so we may not
+	simply add $P(C)$ and $P(A)$: the hands in $CA$ would be counted twice.
+	Inclusion--exclusion corrects this:
+	\[ P(C\cup A)=P(C)+P(A)-P(CA). \]
+	We need $P(C)$ and $P(A)$.
+	\begin{itemize}
+		\item $P(C)$: all 5 cards are chosen from the 13 clubs, so
+		$|C|=\binom{13}{5}=1287$.
+		\item $P(A)$: ``at least one ace'' has many cases (1, 2, 3 or 4 aces),
+		so it is easier to count the complement $A^c$, ``no ace at all''. Then
+		all 5 cards come from the 48 non-aces: $|A^c|=\binom{48}{5}=1\,712\,304$.
+		Hence $|A|=2\,598\,960-1\,712\,304=886\,656$, that is,
+		$P(A)=1-P(A^c)=886\,656/2\,598\,960\approx0.3412$.
+	\end{itemize}
+	Putting everything together (all three fractions have the same
+	denominator):
+	\[ P(C\cup A)=\frac{1287+886\,656-495}{2\,598\,960}
+		=\frac{887\,448}{2\,598\,960}=\frac{36\,977}{108\,290}\approx0.3415. \]
+	\begin{answer}
+		(a) $\dfrac{495}{2\,598\,960}=\dfrac{33}{173\,264}\approx0.000190$
+		\quad
+		(b) $\dfrac{887\,448}{2\,598\,960}=\dfrac{36\,977}{108\,290}\approx0.3415$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (a), counting ``5 clubs with at least one
+		ace'' as if there were 4 aces to choose from. Among the clubs there is
+		only one ace, so ``at least one ace'' and ``the ace of clubs'' mean the
+		same thing here. In (b), forgetting to subtract $P(CA)$ counts the 495
+		hands of (a) twice. Here the effect is tiny, because $P(CA)$ is very
+		small, but the formula must still be applied correctly.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,52 @@
+% ---
+% title: The shoe thief
+% tags: equally-likely, complement
+% ---
+
+\begin{problem}
+	A basket contains 10 different pairs of shoes, that is, 20 shoes. A thief
+	grabs 4 shoes at random. What is the probability that he gets at least one
+	complete pair?
+\end{problem}
+
+\begin{solution}
+	\idea The outcomes (sets of 4 shoes) are equally likely, so
+	$P(E)=\dfrac{\text{favorable}}{\text{all}}$. ``At least one pair'' has
+	several cases, so count the complement ``no complete pair'' instead.
+	\step{Sample space} The thief takes 4 of the 20 shoes; the order in which
+	he grabs them does not matter. So an outcome is a 4-element subset of the
+	20 shoes, and
+	\[ |\Om|=\binom{20}{4}=\frac{20\cdot19\cdot18\cdot17}{4!}=4845. \]
+	``At random'' means that each of these subsets is equally likely.
+	\step{Complement} Let $E$ be the event ``at least one complete pair''. Its
+	complement $E^c$ is ``no complete pair'': the 4 shoes come from 4
+	different pairs. We count these sets in two steps.
+	\begin{itemize}
+		\item Choose the 4 pairs the shoes come from: $\binom{10}{4}=210$ ways.
+		\item From each chosen pair take one shoe, the left or the right one:
+		$2$ ways for each pair, $2^4=16$ ways in all.
+	\end{itemize}
+	By the multiplication rule, $|E^c|=210\cdot16=3360$, so
+	\[ P(E^c)=\frac{3360}{4845}. \]
+	\step{Answer} By the complement rule $P(E)=1-P(E^c)$:
+	\[ P(E)=1-\frac{3360}{4845}=\frac{1485}{4845}=\frac{99}{323}\approx0.3065. \]
+	\step{Check} Count $E$ directly. With 4 shoes the thief can have exactly
+	one pair or exactly two pairs; these cases are mutually exclusive.
+	\begin{itemize}
+		\item Exactly one pair: choose the pair ($10$ ways), then 2 more shoes
+		from 2 different other pairs: $\binom{9}{2}=36$ choices of the pairs
+		and $2\cdot2=4$ choices of the shoes. That is $10\cdot36\cdot4=1440$.
+		\item Two pairs: choose 2 of the 10 pairs, $\binom{10}{2}=45$ ways.
+	\end{itemize}
+	Together $1440+45=1485$, the same as above.
+	\begin{answer}
+		$P(\text{at least one pair})=1-\dfrac{\binom{10}{4}\cdot2^4}{\binom{20}{4}}
+		=\dfrac{99}{323}\approx0.3065$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} counting ``one pair, then any 2 of the remaining
+		18 shoes'' as $10\cdot\binom{18}{2}=1530$. This counts every set with two
+		pairs twice (once for each pair chosen first), so it gives $1530$
+		instead of $1485$. The complement avoids this double counting.
+	\end{remark}
+\end{solution}

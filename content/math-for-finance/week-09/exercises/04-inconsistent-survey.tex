@@ -1,0 +1,64 @@
+% ---
+% title: A survey that cannot be right
+% tags: inclusion-exclusion
+% ---
+
+\begin{problem}
+	A magazine surveyed its 1000 subscribers and reported the following counts:
+	312 are professionals, 470 are married, 525 are college graduates,
+	42 are professional college graduates, 147 are married college graduates,
+	86 are married professionals, and 25 are married professional college
+	graduates. Show that these numbers cannot all be correct.
+\end{problem}
+
+\begin{solution}
+	\idea Count the subscribers who have at least one of the three properties
+	with the inclusion-exclusion formula for three sets. If the result is
+	larger than the number of all subscribers, the data contradict each other.
+	\step{Events} Pick one of the 1000 subscribers at random, each with the same
+	probability. Let $A$ be the event that the subscriber is a professional,
+	$B$ that the subscriber is married, and $C$ that the subscriber is a college
+	graduate. Each probability is the count divided by 1000:
+	\[
+		P(A)=0.312,\quad P(B)=0.470,\quad P(C)=0.525,
+	\]
+	\[
+		P(AC)=0.042,\quad P(BC)=0.147,\quad P(AB)=0.086,\quad P(ABC)=0.025.
+	\]
+	\step{Inclusion-exclusion} The event $A\cup B\cup C$ means ``the subscriber
+	has at least one of the three properties''. In the sum
+	$P(A)+P(B)+P(C)$ a subscriber who belongs to two of the sets is counted
+	twice, so we subtract the pairwise intersections. Then a subscriber in all
+	three sets was added 3 times and subtracted 3 times, so we add $P(ABC)$
+	back once:
+	\[
+		\begin{aligned}
+			P(A\cup B\cup C)
+			&=P(A)+P(B)+P(C)-P(AB)-P(AC)-P(BC)+P(ABC)\\
+			&=0.312+0.470+0.525-0.086-0.042-0.147+0.025\\
+			&=1.307-0.275+0.025=1.057.
+		\end{aligned}
+	\]
+	\step{Contradiction} Every probability is at most $1$, because an event is
+	a subset of $\Om$ and $P(\Om)=1$. But we got $P(A\cup B\cup C)=1.057>1$.
+	In counts: at least one property would hold for
+	\[
+		312+470+525-86-42-147+25=1057
+	\]
+	subscribers, but the magazine has only 1000 subscribers. So at least one
+	of the reported numbers is wrong.
+	\begin{answer}
+		The reported numbers give $1057>1000$ subscribers with at least one of
+		the properties, that is, $P(A\cup B\cup C)=1.057>1$, which is
+		impossible.
+	\end{answer}
+	\begin{remark}
+		Each number on its own looks fine. We can even fill in a Venn diagram:
+		17 are professional graduates but not married ($42-25$), 122 are married
+		graduates but not professionals ($147-25$), 61 are married professionals
+		without a degree ($86-25$), and then 209 are only professionals, 262
+		only married and 361 only graduates. No region is negative. The error
+		shows up only when we add all seven regions: $1057$, more than the
+		1000 people in the survey.
+	\end{remark}
+\end{solution}

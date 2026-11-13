@@ -1,0 +1,449 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Week 9: probability, conditional probability, Bayes' formula, odds,
+% independence, discrete random variables, expectation and variance.
+% Sessions 1 and 2 are held on the SAME DAY, back to back (2 x 90 min,
+% short break in between).
+% Reference: Ross, A First Course in Probability, 8th ed., Ch. 2--4 (notation
+% and the problems paraphrased); the course lecture slides only for comparison.
+% The exercises are in exercises/ (one file each), placed by \exerciseframe.
+
+\documentclass[aspectratio=169,11pt,usepdftitle=false]{beamer}
+\usepackage{fontspec}
+\setsansfont{Latin Modern Sans}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{booktabs}
+\usepackage{cancel}
+
+\usetheme{Madrid}
+
+\definecolor{navy}{RGB}{24,48,75}
+\definecolor{teal}{RGB}{0,120,125}
+\definecolor{gold}{RGB}{190,130,20}
+
+\setbeamercolor{structure}{fg=navy}
+\setbeamercolor{alerted text}{fg=teal}
+\setbeamercolor{block title}{bg=navy,fg=white}
+\setbeamercolor{block body}{bg=navy!5}
+\setbeamercolor{block title example}{bg=teal,fg=white}
+\setbeamercolor{block body example}{bg=teal!6}
+\setbeamercolor{block title alerted}{bg=gold,fg=white}
+\setbeamercolor{block body alerted}{bg=gold!8}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \usebeamerfont{footline}\hspace{1em}\insertshortauthor\hfill%
+  \insertshorttitle\quad|\quad%
+  \insertframenumber/\inserttotalframenumber%
+  \hspace{1em}\vspace{2mm}%
+}
+\setbeamertemplate{itemize items}[circle]
+
+% Contact (beamer loads hyperref itself)
+\newcommand{\myemail}{tiborsandor2001@gmail.com}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Om}{\Omega}
+% Expectation, variance and standard deviation, as in Ross: E[X],
+% Var(X), SD(X)
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\sol}{\alert{Solution.}\ }
+
+% Small Venn diagram of two events E, F in Omega; #1 = shading commands
+\newcommand{\venn}[1]{%
+  \begin{tikzpicture}[scale=.42,baseline=(O.base)]
+    \node (O) at (.5,0) {\phantom{x}};
+    #1
+    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
+    \draw[thick,navy] (0,0) circle (.85);
+    \draw[thick,navy] (1,0) circle (.85);
+    \node at (-.35,0) {\scriptsize $E$};
+    \node at (1.35,0) {\scriptsize $F$};
+    \node at (2.15,.8) {\scriptsize $\Omega$};
+  \end{tikzpicture}}
+\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+
+% The exercises (one file each in exercises/) and \exerciseframe
+\input{exercises/macros}
+
+% PDF properties and the date on the title slide
+\input{document-info}
+\documentinfo{Slides}
+
+\title[Mathematics for Finance]{Mathematics for Finance}
+\author{Tibor SÁNDOR}
+\subtitle{Week 9: Probability, conditional probability, independence,
+  random variables}
+\institute{Corvinus University of Budapest\\[2pt]
+  \href{mailto:\myemail}{\texttt{\myemail}}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Plan for today}
+  \begin{enumerate}
+    \item \textbf{Session 1 (90 min):} probability of unions, intersections
+          and complements; equally likely outcomes; conditional probability;
+          Bayes' formula; odds.
+    \item \textbf{Session 2 (90 min):} the generalized Bayes formula;
+          independent events; discrete random variables, distribution
+          function, expected value, variance and standard deviation.
+  \end{enumerate}
+  \vspace{.3cm}
+  \textbf{Why does a finance student need this?} Default probabilities,
+  early-warning models, betting odds, option payoffs and the risk of a
+  strategy are all described with exactly these tools.
+\end{frame}
+
+%======================================================================
+\section{Session 1: Probability and Bayes' formula}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 1: Probability, conditional
+  probability, Bayes' formula
+\end{frame}
+
+\begin{frame}{From counting to probability}
+  \small
+  \begin{block}{Axioms}
+    (1) $0\le P(E)\le1$; \quad (2) $P(\Om)=1$; \quad (3) if $E_1,E_2,\dots$
+    are mutually exclusive, then $P\big(\bigcup_i E_i\big)=\sum_i P(E_i)$.
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{.55\textwidth}
+      \begin{block}{Rules that follow}
+        $P(E^c)=1-P(E)$\\[2pt]
+        $E\subseteq F\ \Rightarrow\ P(E)\le P(F)$\\[2pt]
+        $P(EF^c)=P(E)-P(EF)$\\[2pt]
+        $P(E\cup F)=P(E)+P(F)-P(EF)$
+      \end{block}
+    \end{column}
+    \begin{column}{.43\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.62]
+        \draw[thick] (-1.9,-1.45) rectangle (3.4,1.45);
+        \node at (3.1,-1.15) {\scriptsize $\Om$};
+        \draw[thick,navy] (0,0) circle (1.15);
+        \draw[thick,teal] (1.5,0) circle (1.15);
+        \node[navy] at (-1.55,1.05) {$E$};
+        \node[teal] at (3.05,1.05) {$F$};
+        \node at (-.45,0) {\scriptsize $EF^c$};
+        \node at (.75,0) {\scriptsize $EF$};
+        \node at (1.95,0) {\scriptsize $E^cF$};
+        \node at (-1.35,-1.15) {\scriptsize $E^cF^c$};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize the four regions are mutually exclusive;\\
+      their probabilities add up to 1
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \textbf{Three events} (inclusion--exclusion, as for counts last week):
+  \[ P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(EF)-P(EG)-P(FG)+P(EFG). \]
+\end{frame}
+
+\exerciseframe{two-exams}
+
+\begin{frame}{Equally likely outcomes}
+  \begin{block}{Classical probability}
+    If $\Om$ is finite and every outcome is equally likely, then
+    \[ P(E)=\frac{|E|}{|\Om|}=\frac{\text{number of favorable outcomes}}
+      {\text{number of all outcomes}}. \]
+  \end{block}
+  \begin{itemize}
+    \item ``Equally likely'' must come from the setup: a fair die, a
+          well-shuffled deck, a choice ``at random''.
+    \item The counting methods of last week give $|E|$ and $|\Om|$.
+    \item ``At least one'' $\to$ complement: $P(E)=1-P(E^c)$.
+  \end{itemize}
+\end{frame}
+
+\exerciseframe{five-cards}
+
+\begin{frame}{Conditional probability}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.58\textwidth}
+      \begin{block}{Definition}
+        If $P(F)>0$, the probability of $E$ \emph{given} $F$ is
+        \[ P(E\mid F)=\frac{P(EF)}{P(F)}. \]
+        $F$ becomes the new sample space; only the part $EF$ of $E$ counts.
+      \end{block}
+      \begin{block}{Multiplication rule}
+        $P(EF)=P(F)\,P(E\mid F)$\\[2pt]
+        $P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2)$
+      \end{block}
+    \end{column}
+    \begin{column}{.4\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.62]
+        \fill[teal!12] (1.5,0) circle (1.15);
+        \begin{scope}
+          \clip (0,0) circle (1.15);
+          \fill[teal!45] (1.5,0) circle (1.15);
+        \end{scope}
+        \draw[thick] (-1.9,-1.45) rectangle (3.4,1.45);
+        \node at (3.1,-1.15) {\scriptsize $\Om$};
+        \draw[thick,navy] (0,0) circle (1.15);
+        \draw[thick,teal] (1.5,0) circle (1.15);
+        \node[navy] at (-1.55,1.05) {$E$};
+        \node[teal] at (3.05,1.05) {$F$};
+        \node at (.75,0) {\scriptsize $EF$};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize $P(E\mid F)$: the share of $EF$ within $F$
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  $P(\,\cdot\mid F)$ is a probability itself, e.g.\
+  $P(E^c\mid F)=1-P(E\mid F)$.
+\end{frame}
+
+\exerciseframe{exams-conditional}
+
+\exerciseframe{actuarial-exams}
+
+\begin{frame}{Total probability and Bayes' formula}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.56\textwidth}
+      \begin{block}{Law of total probability}
+        \[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c) \]
+      \end{block}
+      \begin{block}{Bayes' formula}
+        \[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}
+          {P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c)} \]
+      \end{block}
+      We know $P(E\mid F)$, but we need $P(F\mid E)$: Bayes' formula turns
+      the condition around.
+    \end{column}
+    \begin{column}{.42\textwidth}
+      \centering
+      \begin{tikzpicture}[every node/.style={font=\small},
+          lab/.style={font=\scriptsize,inner sep=1pt,sloped},
+          grow=right,level distance=2.3cm,
+          level 1/.style={sibling distance=2.5cm},
+          level 2/.style={sibling distance=1.25cm}]
+        \node[circle,fill=navy,inner sep=2pt]{}
+          child{node[fill=navy!10]{$F^c$}
+            child{node{$E^c$} edge from parent node[lab,below]{$P(E^c|F^c)$}}
+            child{node[fill=gold!30]{$E$} edge from parent node[lab,above]{$P(E|F^c)$}}
+            edge from parent node[lab,below]{$P(F^c)$}}
+          child{node[fill=navy!10]{$F$}
+            child{node{$E^c$} edge from parent node[lab,below]{$P(E^c|F)$}}
+            child{node[fill=gold!30]{$E$} edge from parent node[lab,above]{$P(E|F)$}}
+            edge from parent node[lab,above]{$P(F)$}};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize multiply along a path;\\
+      add the paths that end in $E$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{early-warning}
+
+\begin{frame}{Odds}
+  \begin{block}{Odds of an event}
+    \[ \text{odds of } H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)},
+      \qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
+    $P(H)=2/3$: odds $2$, ``2 to 1 in favor''. \quad $P(H)=0.2$: odds
+    $1/4$, ``4 to 1 against''.
+  \end{block}
+  \begin{block}{Bayes' formula in odds form}
+    \[ \underbrace{\frac{P(H\mid E)}{P(H^c\mid E)}}_{\text{new odds}}
+      =\underbrace{\frac{P(H)}{P(H^c)}}_{\text{old odds}}\cdot
+      \underbrace{\frac{P(E\mid H)}{P(E\mid H^c)}}_{\text{likelihood ratio}} \]
+  \end{block}
+  Evidence that is more likely if $H$ is true raises the odds of $H$.
+\end{frame}
+
+\exerciseframe{early-warning-odds}
+
+\begin{frame}{Session 1: summary}
+  \small
+  \begin{itemize}
+    \item $P(E^c)=1-P(E)$; \ $P(E\cup F)=P(E)+P(F)-P(EF)$;
+          \ $P(EF^c)=P(E)-P(EF)$.
+    \item Equally likely outcomes: $P(E)=|E|/|\Om|$; ``at least one''
+          $\to$ complement.
+    \item $P(E\mid F)=P(EF)/P(F)$; multiplication rule: multiply along a
+          path of a tree.
+    \item Total probability: add the paths that end in $E$. Bayes' formula:
+          one path divided by all of them.
+    \item Odds: new odds $=$ old odds $\times$ likelihood ratio.
+    \item Rare events and imperfect signals: most alarms are false.
+  \end{itemize}
+\end{frame}
+
+%======================================================================
+\section{Session 2: Independence, random variables}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 2: Independence and discrete random
+  variables
+\end{frame}
+
+\begin{frame}{Recap of Session 1}
+  \begin{itemize}
+    \item $P(E\cup F)=P(E)+P(F)-P(EF)$, \ $P(E^c)=1-P(E)$.
+    \item $P(E\mid F)=\dfrac{P(EF)}{P(F)}$, \ $P(EF)=P(F)\,P(E\mid F)$.
+    \item Two hypotheses $F$, $F^c$: total probability and Bayes' formula,
+          best drawn as a tree.
+    \item Odds: new odds $=$ old odds $\times$ likelihood ratio.
+  \end{itemize}
+  \vspace{2mm}
+  \textbf{Now:} more than two hypotheses, independent events, and random
+  variables: their distribution, expected value and standard deviation.
+\end{frame}
+
+\begin{frame}{The generalized Bayes formula}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.6\textwidth}
+      $F_1,\dots,F_n$ is a \textbf{partition} of $\Om$: mutually exclusive
+      events, and exactly one of them occurs.
+      \begin{block}{Total probability}
+        \[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i) \]
+      \end{block}
+      \begin{block}{Generalized Bayes formula}
+        \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
+          {\sum_{i=1}^n P(E\mid F_i)\,P(F_i)} \]
+      \end{block}
+    \end{column}
+    \begin{column}{.38\textwidth}
+      \centering
+      \begin{tikzpicture}[every node/.style={font=\small},
+          lab/.style={font=\scriptsize,inner sep=1pt,sloped},
+          grow=right,level distance=1.8cm,
+          level 1/.style={sibling distance=1.45cm}]
+        \node[circle,fill=navy,inner sep=2pt]{}
+          child{node[fill=navy!10]{$F_3$}
+            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
+              edge from parent node[lab,above]{$P(E|F_3)$}}
+            edge from parent node[lab,below]{$P(F_3)$}}
+          child{node[fill=navy!10]{$F_2$}
+            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
+              edge from parent node[lab,above]{$P(E|F_2)$}}
+            edge from parent node[lab,above]{$P(F_2)$}}
+          child{node[fill=navy!10]{$F_1$}
+            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
+              edge from parent node[lab,above]{$P(E|F_1)$}}
+            edge from parent node[lab,above]{$P(F_1)$}};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize one path to $E$ for each $F_i$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{default-by-rating}
+
+\begin{frame}{Independent events}
+  \small
+  \begin{block}{Two events}
+    $E$ and $F$ are \textbf{independent} if $P(EF)=P(E)\,P(F)$. If
+    $P(F)>0$, this means $P(E\mid F)=P(E)$: knowing $F$ does not change the
+    chances of $E$. Then $E$ and $F^c$ are independent too.
+  \end{block}
+  \begin{block}{Three events}
+    $E$, $F$, $G$ are independent if all four product rules hold:
+    \[ P(EF)=P(E)P(F),\ \ P(EG)=P(E)P(G),\ \ P(FG)=P(F)P(G),\ \
+      P(EFG)=P(E)P(F)P(G). \]
+  \end{block}
+  \begin{itemize}
+    \item Mutually exclusive events with positive probabilities are
+          \emph{never} independent: if one occurs, the other cannot.
+    \item $n$ independent trials, each a success with probability $p$:
+          \ $P(\text{at least one success})=1-(1-p)^n$.
+  \end{itemize}
+\end{frame}
+
+\exerciseframe{pairwise-not-mutual}
+
+\exerciseframe{bond-defaults}
+
+\begin{frame}{Discrete random variables}
+  \small
+  A \textbf{random variable} $X$ assigns a number to every outcome. It is
+  \textbf{discrete} if it takes finitely or countably many values.
+  \begin{columns}[T]
+    \begin{column}{.52\textwidth}
+      \begin{block}{Probability mass function}
+        $p(x)=P(X=x)$; \ $p(x)\ge0$, \ $\sum_x p(x)=1$.
+      \end{block}
+      \begin{block}{Distribution function}
+        $F(x)=P(X\le x)=\sum_{y\le x}p(y)$.\\[2pt]
+        A step function: it jumps by $p(x)$ at every value $x$ and is
+        constant in between; it rises from 0 to 1.
+      \end{block}
+    \end{column}
+    \begin{column}{.46\textwidth}
+      \centering
+      \begin{tikzpicture}[xscale=.85,yscale=2.1]
+        \draw[->] (-.3,0)--(4.6,0) node[right,font=\tiny]{$x$};
+        \draw[->] (0,-.05)--(0,1.2) node[above,font=\tiny]{$F(x)$};
+        \foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1}
+          \draw (-.05,\y)--(.05,\y) node[left=2pt,font=\tiny,fill=white,inner sep=.5pt] {$\l$};
+        \foreach \x/\a/\b in {1/0/.25,2/.25/.75,3/.75/.875,4/.875/1}
+          \draw[gray,densely dotted] (\x,\a)--(\x,\b);
+        \draw[thick,teal] (-.3,0)--(1,0);
+        \draw[thick,teal] (1,.25)--(2,.25) (2,.75)--(3,.75)
+          (3,.875)--(4,.875) (4,1)--(4.5,1);
+        \foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
+          \fill[teal] (\x,\y) circle (1.6pt);
+        \foreach \x/\y in {1/0,2/.25,3/.75,4/.875}
+          \draw[teal,fill=white] (\x,\y) circle (1.6pt);
+        \foreach \x in {1,2,3,4} \node[below,font=\tiny] at (\x,0) {\x};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize $p(1)=\frac14$, $p(2)=\frac12$, $p(3)=p(4)=\frac18$
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  $P(a<X\le b)=F(b)-F(a)$, \quad $P(X>a)=1-F(a)$.
+\end{frame}
+
+\exerciseframe{urn-game}
+
+\begin{frame}{Expected value, variance, standard deviation}
+  \small
+  \begin{block}{Expected value}
+    $\E[X]=\sum_x x\,p(x)$: the average of the values, weighted by their
+    probabilities.\\[2pt]
+    $\E[g(X)]=\sum_x g(x)\,p(x)$, \qquad $\E[aX+b]=a\,\E[X]+b$.
+  \end{block}
+  \begin{block}{Variance and standard deviation}
+    With $\mu=\E[X]$:
+    \[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\big(\E[X]\big)^2,\qquad
+      \SD(X)=\sqrt{\Var(X)}. \]
+    $\Var(aX+b)=a^2\Var(X)$, \qquad $\SD(aX+b)=|a|\,\SD(X)$.
+  \end{block}
+  In finance: $\E[X]$ is the expected return or payoff, $\SD(X)$ measures
+  the \emph{risk}.
+\end{frame}
+
+\exerciseframe{call-option}
+
+\exerciseframe{trading-strategy}
+
+\begin{frame}{Session 2: summary}
+  \small
+  \begin{itemize}
+    \item Partition $F_1,\dots,F_n$: $P(E)=\sum_i P(E\mid F_i)P(F_i)$, and
+          the generalized Bayes formula gives $P(F_j\mid E)$.
+    \item Independence: $P(EF)=P(E)P(F)$; for three events all four
+          product rules; pairwise independence is not enough.
+    \item pmf $p(x)=P(X=x)$; distribution function $F(x)=P(X\le x)$, a step
+          function.
+    \item $\E[X]=\sum x\,p(x)$; \ $\E[g(X)]=\sum g(x)p(x)$, in general not
+          $g(\E[X])$.
+    \item $\Var(X)=\E[X^2]-(\E[X])^2$; \ $\Var(aX+b)=a^2\Var(X)$; \
+          $\SD(X)=\sqrt{\Var(X)}$.
+  \end{itemize}
+\end{frame}
+
+\end{document}

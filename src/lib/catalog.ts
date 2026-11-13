@@ -112,7 +112,10 @@ export const courses: CourseInfo[] = [
       },
       {
         number: 9,
-        documents: [],
+        title: 'Probability, conditional probability, random variables',
+        topics:
+          'Probability of unions and intersections, equally likely outcomes, conditional probability, Bayes’ formula, odds, independent events, discrete random variables, distribution function, expected value, standard deviation',
+        documents: weekDocuments(),
       },
       {
         number: 10,

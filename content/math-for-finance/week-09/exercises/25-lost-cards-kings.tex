@@ -1,0 +1,92 @@
+% ---
+% title: Lost cards: kings
+% tags: generalized-bayes, total-probability, complement
+% ---
+
+\begin{problem}
+	Two cards have been lost from a deck of 52 cards; we do not know which ones.
+	We draw 4 of the remaining 50 cards at random.
+	(a) Find the probability that at least one king is drawn.
+	(b) If at least one king is drawn, what is the probability that both lost
+	cards were kings?
+\end{problem}
+
+\begin{solution}
+	\idea We do not know how many kings were lost, so we split the situation into
+	three cases by the number of lost kings, as in
+	Exercise~\exref{lost-cards-aces}. In each case ``at least one king'' is
+	easiest through its complement, ``no king''. Then (a) is the law of total
+	probability over the three cases, and (b) turns the conditioning around with
+	the generalized Bayes formula.
+
+	\medskip
+	\textbf{The three cases.} Let $B_0$, $B_1$, $B_2$ be the events that $0$,
+	$1$ or $2$ of the lost cards are kings. Exactly one of them happens, so they
+	are mutually exclusive and their union is $\Om$. We know nothing about the
+	lost cards, so every pair of the 52 cards is equally likely to be the lost
+	pair. There are $\binom{52}{2}=1326$ pairs. A pair without a king is chosen
+	from the 48 non-kings, a pair with one king is one of the 4 kings and one of
+	the 48 non-kings, and a pair of kings is chosen from the 4 kings:
+	\[ P(B_0)=\frac{\binom{48}{2}}{1326}=\frac{1128}{1326}=\frac{188}{221},\quad
+		P(B_1)=\frac{4\cdot48}{1326}=\frac{192}{1326}=\frac{32}{221},\quad
+		P(B_2)=\frac{\binom{4}{2}}{1326}=\frac{6}{1326}=\frac{1}{221}. \]
+	Check: $188+32+1=221$, so the three probabilities add up to $1$.
+
+	\medskip
+	\textbf{The draw in each case.} Let $A$ be the event that at least one king
+	is drawn. Its complement $A^c$ is ``no king is drawn''. If $i$ kings were
+	lost, the remaining 50 cards contain $4-i$ kings and $46+i$ non-kings. The
+	draw of 4 cards is one of $\binom{50}{4}=230300$ equally likely sets, and
+	``no king'' means that all 4 cards come from the $46+i$ non-kings:
+	\[ P(A^c\mid B_i)=\frac{\binom{46+i}{4}}{\binom{50}{4}}. \]
+	So
+	\[ P(A^c\mid B_0)=\frac{163185}{230300}\approx0.7086,\quad
+		P(A^c\mid B_1)=\frac{178365}{230300}\approx0.7745,\quad
+		P(A^c\mid B_2)=\frac{194580}{230300}\approx0.8449. \]
+	Given $B_i$, the conditional probabilities of $A$ and $A^c$ add up to $1$,
+	so $P(A\mid B_i)=1-P(A^c\mid B_i)$. In exact form:
+	\[ P(A\mid B_0)=\frac{13423}{46060}\approx0.2914,\quad
+		P(A\mid B_1)=\frac{221}{980}\approx0.2255,\quad
+		P(A\mid B_2)=\frac{38}{245}\approx0.1551. \]
+	The more kings were lost, the fewer kings are left, and the smaller the
+	chance of drawing one.
+
+	\step{(a)} The event $A$ is the union of the three disjoint events $AB_0$,
+	$AB_1$, $AB_2$, so their probabilities add up. By the multiplication rule
+	$P(AB_i)=P(B_i)P(A\mid B_i)$:
+	\[ P(AB_0)=\frac{188}{221}\cdot\frac{13423}{46060}=\frac{13423}{54145}\approx0.2479, \]
+	\[ P(AB_1)=\frac{32}{221}\cdot\frac{221}{980}=\frac{8}{245}=\frac{1768}{54145}\approx0.0327, \]
+	\[ P(AB_2)=\frac{1}{221}\cdot\frac{38}{245}=\frac{38}{54145}\approx0.0007. \]
+	Adding them (the law of total probability):
+	\[ P(A)=\frac{13423+1768+38}{54145}=\frac{15229}{54145}\approx0.2813. \]
+
+	\step{(b)} We need $P(B_2\mid A)$: among the draws with at least one king,
+	the share of those where both lost cards were kings. By the definition of
+	conditional probability, the numerator is $P(AB_2)$ and the denominator is
+	$P(A)$, both found in (a):
+	\[ P(B_2\mid A)=\frac{P(B_2)P(A\mid B_2)}{P(A)}
+		=\frac{38/54145}{15229/54145}=\frac{38}{15229}\approx0.0025. \]
+
+	\begin{answer}
+		(a) $\dfrac{15229}{54145}\approx0.2813$ \quad
+		(b) $\dfrac{38}{15229}\approx0.0025$
+	\end{answer}
+	\begin{remark}
+		The answer to (a) is the same as with a full deck:
+		\[ 1-\frac{\binom{48}{4}}{\binom{52}{4}}=\frac{15229}{54145}. \]
+		This is no accident. We
+		never look at the lost cards, so they are just two more cards taken at
+		random, and the 4 drawn cards are still 4 random cards of the original
+		deck.
+
+		In (b) the posterior $0.0025$ is about half of the prior
+		$P(B_2)=1/221\approx0.0045$. Drawing a king is a sign that kings are
+		still in the deck, so it makes ``both lost cards were kings'' less
+		likely.
+
+		\textbf{Common mistake:} answering (b) with the prior
+		$P(B_2)=1/221\approx0.0045$, or with $P(A\mid B_2)\approx0.1551$,
+		instead of the posterior $P(B_2\mid A)$. The question fixes $A$ and asks
+		about $B_2$, so $A$ goes after the bar.
+	\end{remark}
+\end{solution}

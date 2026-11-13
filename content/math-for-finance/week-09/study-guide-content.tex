@@ -1,0 +1,509 @@
+% Body of the Week 9 study guide (study-guide.tex): every topic of the slides
+% explained from scratch in a key box, followed by the exercises of that topic
+% with their detailed solutions, in the order of the slides. The exercises
+% are in exercises/ (one file each); \studyexercise prints the heading, the
+% statement and the solution.
+
+\maketitle
+
+\tableofcontents
+\clearpage
+
+%======================================================================
+\section{Part 1: Probability and Bayes' formula}
+%======================================================================
+
+\subsection*{Probability rules}
+\addcontentsline{toc}{subsection}{Probability rules}
+
+\begin{key}{Probability and its rules}
+	\setlength{\parskip}{5pt}
+	\textbf{What a probability is.} An experiment has a sample space $\Om$
+	(all possible outcomes); an event $E$ is a set of outcomes. Its
+	probability $P(E)$ is a number that says how likely $E$ is. Think of it as
+	a long-run frequency: if we repeat the experiment many times, $E$ occurs in
+	about a fraction $P(E)$ of the repetitions. Every probability obeys three
+	rules, the \textbf{axioms}:
+	\begin{enumerate}[nosep,label=(\arabic*)]
+		\item $0\le P(E)\le1$ \quad (a fraction lies between 0 and 1);
+		\item $P(\Om)=1$ \quad (some outcome always occurs);
+		\item if $E_1,E_2,\dots$ are \emph{mutually exclusive} (no two can
+		      occur together), then $P(E_1\cup E_2\cup\cdots)=P(E_1)+P(E_2)+\cdots$
+		      \quad (frequencies of events that never overlap simply add up).
+	\end{enumerate}
+	Every other rule follows from these three by cutting events into
+	mutually exclusive pieces.
+
+	\begin{minipage}[t]{.52\linewidth}
+		\textbf{The four regions.} Two events $E$, $F$ cut $\Om$ into four
+		mutually exclusive pieces (right). Their probabilities add up to 1.
+		To fill in such a picture, start in the middle with $P(EF)$, then use
+		$P(EF^c)=P(E)-P(EF)$, $P(E^cF)=P(F)-P(EF)$, and finally the outside,
+		$P(E^cF^c)=1-P(E\cup F)$.
+	\end{minipage}\hfill
+	\begin{minipage}[t]{.44\linewidth}
+		\centering\vspace{-2mm}
+		\begin{tikzpicture}[scale=.8,baseline=(top)]
+			\coordinate (top) at (0,1.2);
+			\begin{scope}
+				\clip (0,0) circle (1.15);
+				\fill[teal!25] (1.5,0) circle (1.15);
+			\end{scope}
+			\draw[thick] (-1.9,-1.45) rectangle (3.4,1.45);
+			\node at (3.1,-1.15) {\small $\Om$};
+			\draw[thick,navy] (0,0) circle (1.15);
+			\draw[thick,teal] (1.5,0) circle (1.15);
+			\node[navy] at (-1.5,1.05) {$E$};
+			\node[teal] at (3.0,1.05) {$F$};
+			\node at (-.45,0) {\small $EF^c$};
+			\node at (.75,0) {\small $EF$};
+			\node at (1.95,0) {\small $E^cF$};
+			\node at (-1.25,-1.15) {\small $E^cF^c$};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\textbf{Rules and why they hold.}
+	\begin{itemize}[nosep]
+		\item $P(E^c)=1-P(E)$: $E$ and $E^c$ are mutually exclusive and together
+		      make up $\Om$, so $P(E)+P(E^c)=P(\Om)=1$.
+		\item If $E\subseteq F$ then $P(E)\le P(F)$: $F$ is $E$ plus the piece
+		      $FE^c$, and that piece has probability $\ge0$.
+		\item $P(EF^c)=P(E)-P(EF)$: $E$ is cut into $EF$ and $EF^c$.
+		\item $P(E\cup F)=P(E)+P(F)-P(EF)$: in $P(E)+P(F)$ the middle region
+		      $EF$ is counted twice, so we subtract it once.
+	\end{itemize}
+
+	\textbf{Tiny example.} Roll a fair die; $E$ = ``even'' $=\{2,4,6\}$,
+	$F$ = ``at least 4'' $=\{4,5,6\}$. Then $EF=\{4,6\}$ and
+	\[ P(E\cup F)=\frac36+\frac36-\frac26=\frac46, \]
+	which is indeed $P(\{2,4,5,6\})$. Also $P(EF^c)=\frac36-\frac26=\frac16$
+	(only the 2) and $P(E^cF^c)=1-\frac46=\frac26$ (the 1 and the 3).
+
+	\textbf{Three events.} The same inclusion--exclusion idea as for
+	counting in Week~8:
+	\[ P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(EF)-P(EG)-P(FG)+P(EFG). \]
+\end{key}
+
+\studyexercise{two-exams}
+
+\clearpage
+%----------------------------------------------------------------------
+\subsection*{Equally likely outcomes}
+\addcontentsline{toc}{subsection}{Equally likely outcomes}
+
+\begin{key}{Equally likely outcomes}
+	\setlength{\parskip}{5pt}
+	\textbf{The rule.} If $\Om$ has finitely many outcomes and all of them
+	are equally likely, then
+	\[ P(E)=\frac{|E|}{|\Om|}=\frac{\text{number of outcomes in }E}
+		{\text{number of all outcomes}}. \]
+	\textbf{Why.} If there are $N$ outcomes, each with the same probability
+	$p$, then by axioms (2) and (3) $Np=1$, so $p=1/N$. An event with $|E|$
+	outcomes then has probability $|E|\cdot\frac1N$.
+
+	\textbf{Tiny example.} Roll two fair dice (one red, one blue). The
+	$6\cdot6=36$ ordered pairs are equally likely. The sum is 7 for
+	$(1,6),(2,5),\dots,(6,1)$, so
+	\[ P(\text{sum}=7)=\frac{6}{36}=\frac16. \]
+	\textbf{Careful.} ``Equally likely'' must come from the setup (a fair
+	die, a well-shuffled deck, a choice ``at random''). The possible sums
+	$2,3,\dots,12$ are \emph{not} equally likely: a sum of 2 needs $(1,1)$,
+	a sum of 7 has six ways. So list the outcomes in a way that makes them
+	equally likely, and count $E$ in the same way as $\Om$ (both ordered or
+	both unordered). The counting methods of Week~8 give $|E|$ and $|\Om|$.
+
+	\textbf{``At least one'' $\to$ complement.} It is often easier to count
+	the opposite event. Two dice: ``at least one six'' has the complement
+	``no six'', which has $5\cdot5=25$ outcomes, so
+	\[ P(\text{at least one six})=1-\frac{25}{36}=\frac{11}{36}. \]
+\end{key}
+
+\studyexercise{five-cards}
+
+%----------------------------------------------------------------------
+\subsection*{Conditional probability and the multiplication rule}
+\addcontentsline{toc}{subsection}{Conditional probability and the
+	multiplication rule}
+
+\begin{key}{Conditional probability}
+	\setlength{\parskip}{5pt}
+	\textbf{Meaning.} $P(E\mid F)$, ``the probability of $E$ given $F$'', is
+	the probability of $E$ once we know that $F$ has occurred. Knowing $F$
+	shrinks the sample space: the outcomes outside $F$ are no longer
+	possible, so $F$ becomes the new sample space, and only the part $EF$ of
+	$E$ still counts.
+
+	\textbf{Definition.} If $P(F)>0$,
+	\[ P(E\mid F)=\frac{P(EF)}{P(F)}. \]
+	\textbf{Why.} With equally likely outcomes, the outcomes of $F$ stay
+	equally likely, so $P(E\mid F)=|EF|/|F|$. Dividing the numerator and the
+	denominator by $|\Om|$ gives $P(EF)/P(F)$; this is taken as the
+	definition in general.
+
+	\textbf{Tiny example.} Roll a fair die and learn that the result is even
+	($F=\{2,4,6\}$). The probability of a six is now
+	$P(\{6\}\mid F)=\frac{1/6}{3/6}=\frac13$: one of the three remaining
+	outcomes. Note that $P(\text{even}\mid\text{six})=1$, so in general
+	$P(E\mid F)\ne P(F\mid E)$.
+
+	\textbf{$P(\,\cdot\mid F)$ is a probability.} For a fixed $F$ it
+	satisfies the three axioms, so all the rules above hold with ``$\mid F$''
+	added everywhere, e.g.
+	\[ P(E^c\mid F)=1-P(E\mid F),\qquad
+		P(E\cup G\mid F)=P(E\mid F)+P(G\mid F)-P(EG\mid F). \]
+
+	\textbf{Multiplication rule.} Multiplying the definition by $P(F)$:
+	\[ P(EF)=P(F)\,P(E\mid F),\qquad
+		P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2). \]
+	It is used for experiments that happen in steps: the probability that
+	all steps go a given way is the product of the step probabilities, each
+	computed knowing what happened before. Example: two cards are drawn
+	without replacement; both are aces with probability
+	\[ \frac4{52}\cdot\frac3{51}=\frac{1}{221}, \]
+	because after the first ace only 3 aces are left among 51 cards.
+\end{key}
+
+\studyexercise{exams-conditional}
+\studyexercise{actuarial-exams}
+
+%----------------------------------------------------------------------
+\subsection*{Total probability and Bayes' formula}
+\addcontentsline{toc}{subsection}{Total probability and Bayes' formula}
+
+\begin{key}{Total probability and Bayes' formula}
+	\setlength{\parskip}{5pt}
+	\textbf{Setting.} $F$ is a hypothesis (a hidden cause: ``the borrower
+	will default'') and $E$ is an observation (``the model flags her''). We
+	know how likely $F$ is, $P(F)$, and how likely the observation is under
+	each hypothesis, $P(E\mid F)$ and $P(E\mid F^c)$.
+
+	\begin{center}
+		\begin{tikzpicture}[x=1cm,y=1cm,
+				lab/.style={font=\small,inner sep=2pt,sloped}]
+			\node[circle,fill=navy,inner sep=2pt] (r) at (0,0) {};
+			\node[fill=navy!10] (f) at (2.6,1.3) {$F$};
+			\node[fill=navy!10] (g) at (2.6,-1.3) {$F^c$};
+			\draw (r) -- node[lab,above] {$P(F)$} (f);
+			\draw (r) -- node[lab,below] {$P(F^c)$} (g);
+			\node[fill=gold!30] (fe) at (5.6,1.95) {$E$};
+			\node (fn) at (5.6,.65) {$E^c$};
+			\node[fill=gold!30] (ge) at (5.6,-.65) {$E$};
+			\node (gn) at (5.6,-1.95) {$E^c$};
+			\draw (f) -- node[lab,above] {$P(E\mid F)$} (fe);
+			\draw (f) -- node[lab,below] {$P(E^c\mid F)$} (fn);
+			\draw (g) -- node[lab,above] {$P(E\mid F^c)$} (ge);
+			\draw (g) -- node[lab,below] {$P(E^c\mid F^c)$} (gn);
+			\node[font=\small,right] at (5.9,1.95) {$P(FE)=P(F)\,P(E\mid F)$};
+			\node[font=\small,right] at (5.9,.65) {$P(FE^c)$};
+			\node[font=\small,right] at (5.9,-.65) {$P(F^cE)=P(F^c)\,P(E\mid F^c)$};
+			\node[font=\small,right] at (5.9,-1.95) {$P(F^cE^c)$};
+		\end{tikzpicture}
+	\end{center}
+	\textbf{Law of total probability.} $E$ happens either together with $F$
+	or together with $F^c$; these two pieces are mutually exclusive, and each
+	is given by the multiplication rule (multiply along the path):
+	\[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
+	In the tree: \emph{add the paths that end in $E$.}
+
+	\textbf{Bayes' formula.} Now turn the condition around: having seen $E$,
+	how likely is $F$? By the definition, $P(F\mid E)=P(FE)/P(E)$:
+	\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}
+		{P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c)}, \]
+	\emph{one path divided by all the paths that end in $E$.}
+
+	\textbf{Tiny example.} A fair coin chooses one of two urns. Urn~1 holds
+	3 red and 1 white ball, urn~2 holds 1 red and 3 white. One ball is drawn.
+	With $F$ = ``urn~1'' and $E$ = ``red'':
+	\[ P(E)=\frac34\cdot\frac12+\frac14\cdot\frac12=\frac12,\qquad
+		P(F\mid E)=\frac{3/8}{1/2}=\frac34. \]
+	Seeing red raises the probability of urn~1 from $\frac12$ to $\frac34$.
+	\textbf{Careful:} $P(E\mid F)$ and $P(F\mid E)$ are different numbers.
+	When $F$ is rare, even a good signal leaves $P(F\mid E)$ small, because
+	most of the paths to $E$ come through $F^c$.
+\end{key}
+
+\studyexercise{early-warning}
+
+%----------------------------------------------------------------------
+\subsection*{Odds}
+\addcontentsline{toc}{subsection}{Odds}
+
+\begin{key}{Odds and Bayes' formula in odds form}
+	\setlength{\parskip}{5pt}
+	\textbf{Odds.} The odds of an event $H$ compare its probability with the
+	probability of the opposite:
+	\[ \text{odds of }H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)},
+		\qquad\text{and back:}\qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
+	(To go back, solve $o=p/(1-p)$ for $p$: $o-op=p$, so $p=o/(1+o)$.)
+
+	\textbf{Worked mini example.}
+	\begin{itemize}[nosep]
+		\item $P(H)=\frac23$: odds $=\frac{2/3}{1/3}=2$, ``2 to 1 in favor''.
+		\item $P(H)=0.2$: odds $=\frac{0.2}{0.8}=0.25=\frac14$, ``1 to 4'',
+		      usually said ``4 to 1 against''.
+		\item Odds $3$ (``3 to 1''): $P(H)=\frac{3}{1+3}=0.75$. Odds $\frac19$:
+		      $P(H)=\frac{1/9}{10/9}=0.1$.
+	\end{itemize}
+	For a small probability the odds are almost the same number
+	($P(H)=0.02$ gives odds $0.02/0.98\approx0.0204$). As $P(H)$ approaches
+	1, the odds grow without bound.
+
+	\textbf{Bayes' formula in odds form.} Write Bayes' formula for $H$ and
+	for $H^c$ and divide; the common denominator $P(E)$ cancels:
+	\[ \underbrace{\frac{P(H\mid E)}{P(H^c\mid E)}}_{\text{new odds}}
+		=\underbrace{\frac{P(H)}{P(H^c)}}_{\text{old odds}}\cdot
+		\underbrace{\frac{P(E\mid H)}{P(E\mid H^c)}}_{\text{likelihood ratio}}. \]
+	The likelihood ratio says how many times more likely the evidence $E$ is
+	if $H$ is true than if it is false. If it is above 1, the evidence raises
+	the odds of $H$; below 1, it lowers them.
+
+	\textbf{Tiny example (the two urns again).} Old odds of urn~1:
+	$\frac{1/2}{1/2}=1$. Likelihood ratio of a red ball:
+	$\frac{3/4}{1/4}=3$. New odds $1\cdot3=3$, so
+	$P(\text{urn 1}\mid\text{red})=\frac{3}{4}$, as before. If the ball is
+	put back and a second draw is red again, multiply once more: once we
+	know which urn it is, the second draw does not depend on the first, so
+	its likelihood ratio is again 3. Odds $3\cdot3=9$, probability
+	$\frac{9}{10}$. Direct check:
+	\[ P(\text{urn 1}\mid\text{red, red})
+		=\frac{\frac12\cdot\frac{9}{16}}{\frac12\cdot\frac{9}{16}
+			+\frac12\cdot\frac{1}{16}}
+		=\frac{9/32}{9/32+1/32}=\frac{9}{10}. \]
+	In general, pieces of evidence that are independent given $H$ and given
+	$H^c$ (\emph{conditionally independent}) multiply the odds by their
+	likelihood ratios one after the other.
+\end{key}
+
+\studyexercise{early-warning-odds}
+
+\clearpage
+%======================================================================
+\section{Part 2: Independence and random variables}
+%======================================================================
+
+\subsection*{The generalized Bayes formula}
+\addcontentsline{toc}{subsection}{The generalized Bayes formula}
+
+\begin{key}{More than two hypotheses: the generalized Bayes formula}
+	\setlength{\parskip}{5pt}
+	\textbf{Partition.} Events $F_1,\dots,F_n$ form a partition of $\Om$ if
+	they are mutually exclusive and exactly one of them occurs (together
+	they cover $\Om$). $F$ and $F^c$ is the simplest partition; the rating
+	classes of a loan or the three possible machines that made an item are
+	others.
+
+	\textbf{Total probability.} $E$ is cut into the mutually exclusive pieces
+	$EF_1,\dots,EF_n$, and $P(EF_i)=P(E\mid F_i)P(F_i)$, so
+	\[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
+	\textbf{Generalized Bayes formula.} For each $j$,
+	$P(F_j\mid E)=P(EF_j)/P(E)$:
+	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
+		{\sum_{i=1}^n P(E\mid F_i)\,P(F_i)}. \]
+	In the tree, the root now has $n$ branches $F_1,\dots,F_n$, each followed
+	by a branch to $E$: add the $n$ paths to get $P(E)$, and divide one path
+	by this sum to get $P(F_j\mid E)$.
+
+	\textbf{Tiny example.} A box holds coins of three kinds; we pick one at
+	random and toss it. With probability $\frac12$ it is a fair coin ($F_1$,
+	heads with probability $\frac12$), with probability $\frac14$ a biased
+	coin ($F_2$, heads with probability $\frac34$), and with probability
+	$\frac14$ a two-headed coin ($F_3$, always heads). Then
+	\[ P(\text{heads})=\frac12\cdot\frac12+\frac34\cdot\frac14
+		+1\cdot\frac14=\frac{4}{16}+\frac{3}{16}+\frac{4}{16}
+		=\frac{11}{16}, \]
+	and given heads,
+	\[ P(F_1\mid\text{heads})=\frac{4/16}{11/16}=\frac{4}{11},\qquad
+		P(F_2\mid\text{heads})=\frac{3}{11},\qquad
+		P(F_3\mid\text{heads})=\frac{4}{11}. \]
+	\textbf{Check:} the new probabilities of a partition again add up to 1
+	($4+3+4=11$). The two-headed coin was only half as likely as the fair one
+	before the toss, but after heads they are equally likely.
+\end{key}
+
+\studyexercise{default-by-rating}
+
+%----------------------------------------------------------------------
+\subsection*{Independent events}
+\addcontentsline{toc}{subsection}{Independent events}
+
+\begin{key}{Independent events}
+	\setlength{\parskip}{5pt}
+	\textbf{Meaning.} $E$ and $F$ are independent if knowing that $F$ occurred
+	does not change the chances of $E$: $P(E\mid F)=P(E)$. Multiplying by
+	$P(F)$ gives the definition, which is symmetric and also works when
+	$P(F)=0$:
+	\[ E,F\ \text{independent}\iff P(EF)=P(E)\,P(F). \]
+	\textbf{Tiny example.} Roll a fair die; $E$ = ``even'' $=\{2,4,6\}$.
+	\begin{itemize}[nosep]
+		\item $F=\{1,2,3,4\}$: $P(EF)=P(\{2,4\})=\frac13=\frac12\cdot\frac23$,
+		      independent (half of $F$ is even, as half of $\Om$ is).
+		\item $G=\{4,5,6\}$: $P(EG)=P(\{4,6\})=\frac13\ne\frac12\cdot\frac12$,
+		      not independent (two thirds of $G$ is even).
+	\end{itemize}
+	\textbf{Complements.} If $E$ and $F$ are independent, so are $E$ and
+	$F^c$:
+	\[ P(EF^c)=P(E)-P(EF)=P(E)-P(E)P(F)=P(E)\,P(F^c). \]
+	The same holds for $E^c$ and $F$, and for $E^c$ and $F^c$.
+
+	\textbf{Three events.} $E$, $F$, $G$ are (mutually) independent if all
+	four product rules hold:
+	\[ P(EF)=P(E)P(F),\ \ P(EG)=P(E)P(G),\ \ P(FG)=P(F)P(G),\ \
+		P(EFG)=P(E)P(F)P(G). \]
+	The first three (\emph{pairwise} independence) do not imply the fourth
+	(Exercise~\exref{pairwise-not-mutual}).
+
+	\textbf{Mutually exclusive is not independent.} If $EF=\emptyset$ and
+	$P(E),P(F)>0$, then $P(EF)=0\ne P(E)P(F)$: if one occurs, the other
+	certainly does not, so knowing one tells a lot about the other.
+
+	\textbf{Repeated independent trials.} $n$ independent trials, each a
+	success with probability $p$. By independence all $n$ fail with
+	probability $(1-p)^n$, so
+	\[ P(\text{at least one success})=1-(1-p)^n. \]
+	Example: at least one six in 3 rolls of a die:
+	$1-\big(\frac56\big)^3=1-\frac{125}{216}=\frac{91}{216}\approx0.42$.
+\end{key}
+
+\studyexercise{pairwise-not-mutual}
+\studyexercise{bond-defaults}
+
+%----------------------------------------------------------------------
+\subsection*{Discrete random variables}
+\addcontentsline{toc}{subsection}{Discrete random variables}
+
+\begin{key}{Discrete random variables and the distribution function}
+	\setlength{\parskip}{5pt}
+	\textbf{Random variable.} A random variable $X$ assigns a number to every
+	outcome: a gain, a payoff, a number of defaults. It is \emph{discrete} if
+	it takes finitely (or countably) many values. Example: toss two fair
+	coins and let $X$ be the number of heads. The outcomes HH, HT, TH, TT
+	give $X=2,1,1,0$.
+
+	\textbf{Probability mass function (pmf).} $p(x)=P(X=x)$. In the example
+	$p(0)=1/4$, $p(1)=2/4=1/2$, $p(2)=1/4$. Always $p(x)\ge0$
+	and $\sum_x p(x)=1$, because the events $\{X=x\}$ form a partition of
+	$\Om$.
+
+	\begin{minipage}[t]{.5\linewidth}
+		\textbf{Distribution function.} $F(x)=P(X\le x)=\sum_{y\le x}p(y)$,
+		defined for \emph{every} real $x$. In the example
+		\[ F(x)=\begin{cases}
+				0           & x<0,       \\
+				1/4         & 0\le x<1,  \\
+				3/4         & 1\le x<2,  \\
+				1           & x\ge2.
+			\end{cases} \]
+	\end{minipage}\hfill
+	\begin{minipage}[t]{.46\linewidth}
+		\centering\vspace{-1mm}
+		\begin{tikzpicture}[x=1.3cm,y=2.4cm,baseline=(top)]
+			\coordinate (top) at (0,1.25);
+			\draw[->] (-.8,0)--(2.9,0) node[right,font=\small]{$x$};
+			\draw[->] (0,-.05)--(0,1.25) node[above,font=\small]{$F(x)$};
+			\foreach \y/\l in {.25/{1/4},.75/{3/4},1/1}
+			\draw (-.05,\y)--(.05,\y) node[left=3pt,font=\footnotesize,
+					fill=white,inner sep=.5pt] {$\l$};
+			\foreach \x/\a/\b in {1/.25/.75,2/.75/1}
+			\draw[gray,densely dotted] (\x,\a)--(\x,\b);
+			\draw[gray,densely dotted] (0,0)--(0,.25);
+			\draw[very thick,teal] (-.8,0)--(0,0);
+			\draw[very thick,teal] (0,.25)--(1,.25) (1,.75)--(2,.75)
+			(2,1)--(2.8,1);
+			\foreach \x/\y in {0/.25,1/.75,2/1}
+			\fill[teal] (\x,\y) circle (2pt);
+			\foreach \x/\y in {0/0,1/.25,2/.75}
+			\draw[teal,fill=white] (\x,\y) circle (2pt);
+			\foreach \x in {1,2} \node[below,font=\footnotesize] at (\x,0) {\x};
+			\node[below left,font=\footnotesize] at (0,0) {0};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\textbf{Properties.} $F$ is a step function: it is constant between the
+	values of $X$ and jumps by $p(x)$ at each value $x$ (so the pmf can be
+	read off from the jump heights). It never decreases, starts at 0 on the
+	far left and ends at 1 on the far right. At a jump the value is the
+	\emph{upper} one (the filled dot), because $X\le x$ includes $X=x$; in
+	other words, $F$ is \emph{right-continuous}.
+
+	\textbf{Reading probabilities from $F$.} $\{X\le b\}$ is cut into
+	$\{X\le a\}$ and $\{a<X\le b\}$ (for $a<b$), so
+	\[ P(a<X\le b)=F(b)-F(a),\qquad P(X>a)=1-F(a). \]
+	\textbf{$<$ or $\le$?} $P(X<a)=F(a)-p(a)$ differs from $P(X\le a)=F(a)$
+	exactly when $a$ is a value of $X$. In the example $P(X<1)=1/4$ but
+	$P(X\le1)=3/4$.
+\end{key}
+
+\studyexercise{urn-game}
+
+%----------------------------------------------------------------------
+\subsection*{Expected value, variance, standard deviation}
+\addcontentsline{toc}{subsection}{Expected value, variance, standard
+	deviation}
+
+\begin{key}{Expected value, variance and standard deviation}
+	\setlength{\parskip}{5pt}
+	\textbf{Expected value.} $\E[X]=\sum_x x\,p(x)$: the average of the
+	values, each weighted by its probability. It is the long-run average of
+	$X$ over many independent repetitions. Fair die:
+	\[ \E[X]=\frac16(1+2+3+4+5+6)=3.5, \]
+	not a possible value of $X$, but the average roll in the long run.
+
+	\textbf{A function of $X$.} $g(X)$ takes the value $g(x)$ whenever $X=x$,
+	so
+	\[ \E[g(X)]=\sum_x g(x)\,p(x). \]
+	In general $\E[g(X)]\ne g(\E[X])$. Die:
+	$\E[X^2]=\frac16(1+4+9+16+25+36)=\frac{91}{6}\approx15.17$, while
+	$(\E[X])^2=12.25$.
+
+	\textbf{Linearity.} $\E[aX+b]=\sum_x(ax+b)p(x)=a\sum_x x\,p(x)+b\sum_x
+		p(x)=a\,\E[X]+b$.
+
+	\textbf{Variance and standard deviation.} The variance measures how far
+	$X$ typically is from its mean $\mu=\E[X]$: it is the expected squared
+	distance,
+	\[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\mu^2,\qquad
+		\SD(X)=\sqrt{\Var(X)}. \]
+	The shortcut comes from expanding the square and using linearity:
+	$\E[X^2-2\mu X+\mu^2]=\E[X^2]-2\mu\cdot\mu+\mu^2$. The standard deviation
+	is in the same units as $X$ (euros, not euros squared). Die:
+	\[ \Var(X)=\frac{91}{6}-3.5^2=\frac{35}{12}\approx2.92,\qquad
+		\SD(X)\approx1.71. \]
+
+	\textbf{Rescaling.} $\Var(aX+b)=a^2\Var(X)$ and $\SD(aX+b)=|a|\,\SD(X)$.
+	Adding $b$ shifts every value and the mean by the same amount, so the
+	distances to the mean do not change; multiplying by $a$ multiplies every
+	distance by $|a|$ and every squared distance by $a^2$.
+
+	\textbf{In finance.} If $X$ is a payoff or a profit, $\E[X]$ is what we
+	earn on average, and $\SD(X)$ measures the \emph{risk}: how much the
+	result typically deviates from that average. Doubling a position doubles
+	both the expected profit and the risk; a fixed fee lowers the expected
+	profit but leaves the risk unchanged.
+\end{key}
+
+\studyexercise{call-option}
+\studyexercise{trading-strategy}
+
+%----------------------------------------------------------------------
+\subsection*{More practice}
+\addcontentsline{toc}{subsection}{More practice}
+
+The exercises of this week are numbered by topic, so the numbers missing
+above are further exercises on the same topics. They are for self-study:
+you find them on the Exercises page of this week on the course website, each
+with a detailed solution.
+\begin{center}
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabular}{ll}
+		\toprule
+		Topic                               & Exercises for self-study                                \\\midrule
+		Probability rules                   & \exref{card-acceptance}--\exref{inconsistent-survey}    \\
+		Equally likely outcomes             & \exref{four-suits}--\exref{at-least-one-six}            \\
+		Conditional probability             & \exref{special-cases}, \exref{different-dice}           \\
+		Total probability, Bayes' formula   & \exref{medical-test}, \exref{rating-migration}          \\
+		Odds                                & \exref{prediction-market}, \exref{coin-updating}        \\
+		Generalized Bayes formula           & \exref{three-cooks}--\exref{lost-cards-kings}           \\
+		Independent events                  & \exref{shooting-contest}--\exref{reliability}           \\
+		Random variables, expected value    & \exref{cdf-to-pmf}--\exref{scratch-card}                \\\bottomrule
+	\end{tabular}
+\end{center}

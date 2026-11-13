@@ -1,0 +1,74 @@
+% ---
+% title: A shooting contest
+% tags: independence
+% ---
+
+\begin{problem}
+	Alice and Bob shoot at a target in turns, and the first one to hit the
+	target wins. Alice hits with probability $1/2$, Bob hits with probability
+	$1/3$, and every shot is independent of all the other shots. Since Bob is
+	the weaker shooter, Alice lets him shoot first. So the order of the shots
+	is Bob, Alice, Bob, Alice, and so on.
+	(a) What is the probability that Bob wins?
+	(b) Is the contest fair, that is, do both players win with the same
+	probability?
+\end{problem}
+
+\begin{solution}
+	\idea Split the event ``Bob wins'' by the shot on which he wins. These
+	events are mutually exclusive, so their probabilities add up. Each of them
+	is an intersection of independent shots, so its probability is a product.
+	The sum is a geometric series.
+	\step{(a)} Call one \emph{round} a shot of Bob followed by a shot of
+	Alice. Both players miss in a round with probability
+	\[ P(\text{Bob misses})\cdot P(\text{Alice misses})
+		=\frac23\cdot\frac12=\frac13, \]
+	because the two shots are independent.
+
+	Bob wins with his first shot if he hits it: probability $1/3$.
+
+	Bob wins with his second shot if he misses, Alice misses, and then Bob
+	hits. The three shots are independent, so we multiply:
+	\[ \frac23\cdot\frac12\cdot\frac13=\frac13\cdot\frac13. \]
+
+	In general, Bob wins with his $(k+1)$-th shot ($k=0,1,2,\dots$) if the
+	first $k$ rounds are complete misses and then Bob hits. By independence
+	this has probability
+	\[ \Bigl(\frac23\cdot\frac12\Bigr)^{k}\cdot\frac13
+		=\Bigl(\frac13\Bigr)^{k}\cdot\frac13. \]
+
+	``Bob wins with his first shot'', ``Bob wins with his second shot'', and so
+	on cannot happen together (the contest stops at the first hit), so these
+	events are mutually exclusive. The probability of their union is the sum
+	of their probabilities. This is a geometric series with first term $1/3$
+	and ratio $q=1/3$. Since $|q|<1$, its sum is (first term)$/(1-q)$:
+	\[ P(\text{Bob wins})
+		=\sum_{k=0}^{\infty}\Bigl(\frac13\Bigr)^{k}\cdot\frac13
+		=\frac{1/3}{1-1/3}=\frac{1/3}{2/3}=\frac12. \]
+	\step{(b)} Someone wins with probability $1$: the probability that
+	nobody hits in the first $n$ rounds is $(1/3)^n$, which goes to $0$.
+	So Alice wins exactly when Bob does not win:
+	\[ P(\text{Alice wins})=1-P(\text{Bob wins})=1-\frac12=\frac12. \]
+	Both win with probability $1/2$: the contest is fair.
+
+	\emph{A shortcut.} Look at one round only. Inside a round,
+	\[ P(\text{Bob hits first})=\frac13,\qquad
+		P(\text{Bob misses, then Alice hits})=\frac23\cdot\frac12=\frac13. \]
+	These two probabilities are equal. If nobody hits, the next round starts
+	in exactly the same situation, because the shots are independent. So in
+	whichever round the contest is decided, Bob and Alice are equally likely
+	to be the winner. Hence each wins with probability $1/2$.
+	\begin{answer}
+		(a) $P(\text{Bob wins})=1/2$ \quad (b) yes, it is fair:
+		$P(\text{Alice wins})=1/2$ as well
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} comparing only the hit probabilities
+		($1/3<1/2$) and concluding that Alice is the favorite. Who
+		shoots first matters too. If Alice shot first, the same method would
+		give
+		\[ P(\text{Alice wins})=\frac{1/2}{1-1/3}=\frac34, \]
+		so she would be a clear favorite. Letting Bob start balances the game
+		exactly.
+	\end{remark}
+\end{solution}

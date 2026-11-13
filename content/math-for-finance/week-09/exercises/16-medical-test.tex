@@ -1,0 +1,58 @@
+% ---
+% title: A medical test
+% tags: bayes, total-probability
+% ---
+
+\begin{problem}
+	In a country 6\% of the people are infected. A new device diagnoses an
+	infected person as sick with probability $0.96$, and it diagnoses a healthy
+	person as sick with probability $0.05$.
+	(a) Find the probability that the device diagnoses a randomly chosen person
+	as sick.
+	(b) The device diagnoses a person as sick. What is the probability that this
+	person is really infected?
+\end{problem}
+
+\begin{solution}
+	\idea Split the population into two groups: infected and healthy. Use the
+	law of total probability for (a). Then use Bayes' formula for (b). We know
+	the chance of a ``sick'' diagnosis in each group; Bayes' formula turns this
+	around and gives the chance of infection for a person with a ``sick''
+	diagnosis.
+
+	Let $I$ be the event that the chosen person is infected, and $D$ the event
+	that the device diagnoses the person as sick. The data are
+	\[ P(I)=0.06,\qquad P(I^c)=1-0.06=0.94,\qquad P(D\mid I)=0.96,\qquad
+		P(D\mid I^c)=0.05. \]
+	\step{(a)} Every person is either infected or healthy, and not both. So $I$
+	and $I^c$ split $\Om$ into two parts, and $D$ splits into the two mutually
+	exclusive pieces $DI$ and $DI^c$. Add their probabilities, and write each one
+	with the multiplication rule $P(DI)=P(D\mid I)P(I)$:
+	\[ P(D)=P(D\mid I)P(I)+P(D\mid I^c)P(I^c)
+		=0.96\cdot0.06+0.05\cdot0.94=0.0576+0.047=0.1046. \]
+	So about 10.5\% of all people get a ``sick'' diagnosis.
+	\step{(b)} We need $P(I\mid D)$. By the definition of conditional
+	probability, $P(I\mid D)=P(ID)/P(D)$. The numerator is the first term of the
+	sum in (a), $P(ID)=P(D\mid I)P(I)=0.0576$. The denominator is the whole
+	sum from (a). This is Bayes' formula:
+	\[ P(I\mid D)=\frac{P(D\mid I)P(I)}{P(D\mid I)P(I)+P(D\mid I^c)P(I^c)}
+		=\frac{0.0576}{0.1046}\approx0.5507. \]
+	\begin{answer}
+		(a) $P(D)=0.1046$ \quad (b) $P(I\mid D)\approx0.5507$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} to answer $0.96$ in (b). The number $0.96$ is
+		$P(D\mid I)$, the chance of a ``sick'' diagnosis for an infected person.
+		The question asks the other way around, $P(I\mid D)$. These are very
+		different here: only about 55\% of the people with a ``sick'' diagnosis
+		are really infected. The reason is that healthy people are the large
+		majority (94\%). Even a small error rate of 5\% among them gives
+		$0.047$, almost as much as the $0.0576$ that comes from the infected
+		people.
+
+		The structure is the same as in Exercise~\exref{early-warning}: a prior
+		probability, and the chance of a signal in each of the two groups.
+		Infection plays the role of the event of interest, and the diagnosis
+		plays the role of the warning signal.
+	\end{remark}
+\end{solution}

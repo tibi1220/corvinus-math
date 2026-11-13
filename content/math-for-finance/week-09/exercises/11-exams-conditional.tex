@@ -1,0 +1,183 @@
+% ---
+% title: Two exams, conditionally
+% tags: conditional-probability
+% ---
+
+\begin{problem}
+	We continue Exercise~\exref{two-exams}. A randomly selected student of an
+	Economics class passed the Math exam ($A$) with probability $0.72$, the
+	Microeconomics exam ($B$) with probability $0.64$, and both exams with
+	probability $0.54$.
+	(a) The student passed Microeconomics. What is the probability that they
+	also passed Math?
+	(b) The student passed Math. What is the probability that they did not
+	pass Microeconomics?
+	(c) The student passed at least one exam. What is the probability that they
+	passed Math?
+	(d) The student passed at least one exam. What is the probability that they
+	did not pass Microeconomics?
+\end{problem}
+
+\begin{slideproblem}
+	As in Exercise~\exref{two-exams}: $P(A)=0.72$ (Math), $P(B)=0.64$
+	(Micro), $P(AB)=0.54$. Probability that the student (a) passed Math, if
+	they passed Micro; (b) failed Micro, if they passed Math; (c) passed Math,
+	if they passed at least one exam; (d) failed Micro, if they passed at least
+	one exam?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			\uncover<2->{\sol
+				$P(E\mid F)=\dfrac{P(EF)}{P(F)}$: $F$ happened, so $F$ is the
+				new sample space.}\\[1mm]
+			\uncover<3->{(a) Given: passed Micro. New sample space $B$
+				(shaded).}\\[.5mm]
+			\uncover<4->{$P(A\mid B)=\dfrac{P(AB)}{P(B)}=\dfrac{0.54}{0.64}
+					=\dfrac{27}{32}\approx 0.844$.}\\[1mm]
+			\uncover<5->{(b) Given: passed Math. New sample space $A$.}\\[.5mm]
+			\uncover<6->{$P(B^c\mid A)=\dfrac{P(AB^c)}{P(A)}=\dfrac{0.18}{0.72}
+					=0.25$.}
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\uncover<2->{%
+				\begin{tikzpicture}[scale=.55]
+					\only<3-4>{\fill[teal!25] (1.6,0) circle (1.5);}
+					\only<5->{\fill[navy!20] (0,0) circle (1.5);}
+					\draw[thick] (-2,-2) rectangle (3.6,2.1);
+					\draw[navy,thick] (0,0) circle (1.5);
+					\draw[teal,thick] (1.6,0) circle (1.5);
+					\node at (-.65,0) {\scriptsize 0.18};
+					\node at (.8,0) {\scriptsize 0.54};
+					\node at (2.25,0) {\scriptsize 0.10};
+					\node at (2.95,-1.6) {\scriptsize 0.18};
+					\node[navy] at (-1.4,1.55) {$A$};
+					\node[teal] at (3.0,1.55) {$B$};
+					\node at (.8,1.75) {\scriptsize $\Omega$};
+				\end{tikzpicture}}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			(c) Given: passed at least one exam. New sample space
+			$A\cup B$ (shaded):
+			$P(A\cup B)=0.18+0.54+0.10=0.82$.\\[1.5mm]
+			\uncover<2->{$A$ lies inside $A\cup B$, so $A(A\cup B)=A$:}
+			\uncover<3->{\[ P(A\mid A\cup B)=\frac{P(A)}{P(A\cup B)}
+					=\frac{0.72}{0.82}=\frac{36}{41}\approx 0.878. \]}%
+			\uncover<4->{(d) Failed Micro \emph{and} passed at least one exam:
+				only Math, $B^c(A\cup B)=AB^c$:}
+			\uncover<5->{\[ P(B^c\mid A\cup B)=\frac{P(AB^c)}{P(A\cup B)}
+					=\frac{0.18}{0.82}=\frac{9}{41}\approx 0.220. \]}
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.55]
+				\fill[gold!30] (0,0) circle (1.5);
+				\fill[gold!30] (1.6,0) circle (1.5);
+				\draw[thick] (-2,-2) rectangle (3.6,2.1);
+				\draw[navy,thick] (0,0) circle (1.5);
+				\draw[teal,thick] (1.6,0) circle (1.5);
+				\node at (-.65,0) {\scriptsize 0.18};
+				\node at (.8,0) {\scriptsize 0.54};
+				\node at (2.25,0) {\scriptsize 0.10};
+				\node at (2.95,-1.6) {\scriptsize 0.18};
+				\node[navy] at (-1.4,1.55) {$A$};
+				\node[teal] at (3.0,1.55) {$B$};
+				\node at (.8,1.75) {\scriptsize $\Omega$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	\uncover<6->{\smallskip
+		\alert{Knowing more changes the probability:} $P(A)=0.72$, but
+		$P(A\mid B)\approx0.844$ and $P(A\mid A\cup B)\approx0.878$.}
+\end{slides}
+
+\begin{solution}
+	\idea Conditional probability:
+	\[ P(E\mid F)=\frac{P(EF)}{P(F)}. \]
+	We are told that $F$ happened, so only the outcomes in $F$ are still
+	possible: $F$ becomes the new, smaller sample space. Inside it we measure
+	how large the part where $E$ also happens is.
+
+	\begin{minipage}{.56\linewidth}
+		\step{The Venn diagram.} From Exercise~\exref{two-exams}
+		($A$ = passed Math, $B$ = passed Microeconomics):
+		\begin{itemize}[nosep]
+			\item both exams: $P(AB)=0.54$;
+			\item only Math: $P(AB^c)=0.72-0.54=0.18$;
+			\item only Micro: $P(A^cB)=0.64-0.54=0.10$;
+			\item at least one: $P(A\cup B)=0.72+0.64-0.54=0.82$;
+			\item neither: $1-0.82=0.18$.
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.4\linewidth}
+		\centering
+		\begin{tikzpicture}[scale=.7]
+			\draw[thick] (-2,-2) rectangle (3.6,2.1);
+			\draw[navy,thick] (0,0) circle (1.5);
+			\draw[teal,thick] (1.6,0) circle (1.5);
+			\node at (-.65,0) {\small 0.18};
+			\node at (.8,0) {\small 0.54};
+			\node at (2.25,0) {\small 0.10};
+			\node at (2.95,-1.6) {\small 0.18};
+			\node[navy] at (-1.4,1.55) {$A$};
+			\node[teal] at (3.0,1.55) {$B$};
+			\node at (.8,1.75) {\small $\Omega$};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\step{(a)} We know that the student passed Microeconomics, so the new
+	sample space is $B$, the circle $B$ in the diagram, with probability
+	$0.64$. Inside $B$, the student also passed Math in the region $AB$, with
+	probability $0.54$. So
+	\[ P(A\mid B)=\frac{P(AB)}{P(B)}=\frac{0.54}{0.64}=\frac{27}{32}=0.84375. \]
+
+	\step{(b)} Now the condition is ``passed Math'': the new sample space is
+	the circle $A$, with probability $0.72$. Inside $A$, the student did not
+	pass Microeconomics in the region ``only Math'', $AB^c$, with probability
+	$P(A)-P(AB)=0.72-0.54=0.18$. So
+	\[ P(B^c\mid A)=\frac{P(AB^c)}{P(A)}=\frac{0.18}{0.72}=0.25. \]
+	Equivalently, $P(B\mid A)=0.54/0.72=0.75$ and $P(B^c\mid A)=1-0.75=0.25$:
+	for a fixed condition, the complement rule works as usual.
+
+	\step{(c)} The condition is ``passed at least one exam'', the event
+	$A\cup B$, with probability $0.82$: the two circles together. We need the
+	part of $A\cup B$ where the student passed Math, that is
+	$A\cap(A\cup B)$. Every student who passed Math passed at least one exam,
+	so $A$ lies entirely inside $A\cup B$, and the intersection is just $A$:
+	\[ P(A\mid A\cup B)=\frac{P(A\cap(A\cup B))}{P(A\cup B)}
+		=\frac{P(A)}{P(A\cup B)}=\frac{0.72}{0.82}=\frac{36}{41}\approx 0.878. \]
+
+	\step{(d)} Again the new sample space is $A\cup B$. Inside it, the student
+	did not pass Microeconomics only in the region ``only Math'': passing at
+	least one exam but not Micro means passing Math but not Micro. So
+	$B^c\cap(A\cup B)=AB^c$, with probability $0.18$:
+	\[ P(B^c\mid A\cup B)=\frac{P(AB^c)}{P(A\cup B)}=\frac{0.18}{0.82}
+		=\frac{9}{41}\approx 0.220. \]
+	\begin{answer}
+		(a) $\frac{27}{32}=0.84375$ \quad (b) $0.25$ \quad
+		(c) $\frac{36}{41}\approx 0.878$ \quad (d) $\frac{9}{41}\approx 0.220$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} dividing by the wrong probability. The
+		denominator is always the probability of the condition (what we
+		\emph{know}), never of the event we ask about. In (a), $0.54/0.72=0.75$
+		would be $P(B\mid A)$, the answer to a different question.
+	\end{remark}
+	\begin{remark}
+		The information changes the probabilities: unconditionally the student
+		passed Math with probability $0.72$, but knowing that they passed
+		Microeconomics raises this to $0.844$. In (d), failing Microeconomics has
+		probability $0.36$ unconditionally, but only $0.220$ among students who
+		passed at least one exam.
+	\end{remark}
+\end{solution}

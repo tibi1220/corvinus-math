@@ -1,0 +1,136 @@
+% ---
+% title: The payoff of a call option
+% tags: finance, expectation, variance
+% ---
+
+\begin{problem}
+	\begin{context}
+		A \emph{call option} gives its holder the right, but not the obligation,
+		to buy a stock at a fixed price, the \emph{strike price} $K$, on a given
+		date. If the stock price $S$ on that date is above $K$, the holder buys at
+		$K$ and gains $S-K$; otherwise the option is simply not used and pays nothing. So the
+		payoff is $\max(S-K,0)$.
+	\end{context}
+	The price of a stock in one year is a random variable $S$ with
+	\begin{center}
+		\begin{tabular}{c|cccc}
+			$s$      & 80  & 100 & 120 & 140 \\\hline
+			$P(S=s)$ & 0.2 & 0.4 & 0.3 & 0.1
+		\end{tabular}
+	\end{center}
+	(a) Find $\E[S]$, $\Var(S)$ and $\SD(S)$.
+	(b) A call option with strike price $110$ pays $C=\max(S-110,0)$ in one
+	year. Find the pmf of $C$, $\E[C]$ and $\SD(C)$.
+	(c) Compare $\E[C]$ with $\max(\E[S]-110,0)$.
+\end{problem}
+
+\begin{slideproblem}
+	The price of a stock in one year is $S\in\{80,100,120,140\}$ with
+	probabilities $0.2,\ 0.4,\ 0.3,\ 0.1$.
+	(a) Find $\E[S]$, $\Var(S)$ and $\SD(S)$.
+	(b) A call option with strike price $110$ pays $C=\max(S-110,0)$ in one
+	year. Find the pmf of $C$, $\E[C]$ and $\SD(C)$.
+	(c) Compare $\E[C]$ with $\max(\E[S]-110,0)$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Expected value: multiply each price by its probability and add.
+	\[ \E[S]=80\cdot0.2+100\cdot0.4+120\cdot0.3+140\cdot0.1
+		=16+40+36+14=106. \]
+	\pause
+	For the variance, first the mean of $S^2$:
+	\[ \E[S^2]=6400\cdot0.2+10000\cdot0.4+14400\cdot0.3+19600\cdot0.1
+		=11560. \]
+	\pause
+	Then $\Var(S)=\E[S^2]-(\E[S])^2=11560-106^2=11560-11236=324$.\\[1mm]
+	\pause
+	$\SD(S)=\sqrt{324}=18$: the price is typically about 18 away from 106.
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) $C=\max(S-110,0)$: compute the payoff for each price.\par\smallskip
+	{\centering
+		\begin{tabular}{c|cccc}
+			$s$             & 80  & 100 & 120 & 140 \\\hline
+			$P(S=s)$        & 0.2 & 0.4 & 0.3 & 0.1 \\
+			$c=\max(s-110,0)$ & \uncover<2->{0} & \uncover<2->{0} &
+			\uncover<2->{10} & \uncover<2->{30}
+		\end{tabular}\par}
+	\smallskip
+	\uncover<3->{Two prices give $C=0$, so their probabilities add up:
+		$p_C(0)=0.6$, $p_C(10)=0.3$, $p_C(30)=0.1$.}\\[1mm]
+	\uncover<4->{$\E[C]=0\cdot0.6+10\cdot0.3+30\cdot0.1=3+3=6$.}\\[1mm]
+	\uncover<5->{$\E[C^2]=0+100\cdot0.3+900\cdot0.1=120$, \
+		$\Var(C)=120-6^2=84$, \ $\SD(C)=\sqrt{84}\approx9.17$.}\\[2mm]
+	\uncover<6->{(c) $\max(\E[S]-110,0)=\max(106-110,0)=0$, but $\E[C]=6$.}\\[1mm]
+	\uncover<7->{\alert{In general $\E[g(X)]\neq g(\E[X])$.} Compute
+		$\E[g(X)]=\sum_x g(x)\,p(x)$: apply $g$ first, then average.}
+\end{slides}
+
+\begin{solution}
+	\idea For a discrete random variable, $\E[X]=\sum_x x\,p(x)$ and
+	$\Var(X)=\E[X^2]-(\E[X])^2$. The payoff $C$ is a function of $S$, so we
+	find its value for each possible price and then work with the pmf of $C$.
+
+	\step{(a)} The expected value is the probability-weighted average of the
+	possible prices:
+	\[ \E[S]=80\cdot0.2+100\cdot0.4+120\cdot0.3+140\cdot0.1
+		=16+40+36+14=106. \]
+	For the variance we use the shortcut formula. First the expected value of
+	$S^2$: square each price, then weight by the probabilities,
+	\[ \E[S^2]=6400\cdot0.2+10000\cdot0.4+14400\cdot0.3+19600\cdot0.1
+		=1280+4000+4320+1960=11560. \]
+	Then
+	\[ \Var(S)=\E[S^2]-(\E[S])^2=11560-106^2=11560-11236=324, \]
+	and the standard deviation is its square root, $\SD(S)=\sqrt{324}=18$.
+	The standard deviation is in the same unit as the price: a typical
+	deviation of the price from its mean $106$ is about $18$.
+
+	\step{(b)} The option pays $S-110$ if the price ends above $110$, and
+	nothing otherwise. Go through the four prices:
+	\begin{center}
+		\begin{tabular}{c|cccc}
+			$s$                & 80  & 100 & 120 & 140 \\\hline
+			$P(S=s)$           & 0.2 & 0.4 & 0.3 & 0.1 \\
+			$c=\max(s-110,0)$  & 0   & 0   & 10  & 30
+		\end{tabular}
+	\end{center}
+	The prices 80 and 100 both give $C=0$. These two outcomes are mutually
+	exclusive, so their probabilities add: $P(C=0)=0.2+0.4=0.6$. The pmf of $C$
+	is
+	\[ p_C(0)=0.6,\qquad p_C(10)=0.3,\qquad p_C(30)=0.1 \]
+	(check: $0.6+0.3+0.1=1$). Now
+	\[ \E[C]=0\cdot0.6+10\cdot0.3+30\cdot0.1=0+3+3=6, \]
+	\[ \E[C^2]=0^2\cdot0.6+10^2\cdot0.3+30^2\cdot0.1=0+30+90=120, \]
+	\[ \Var(C)=\E[C^2]-(\E[C])^2=120-36=84,\qquad
+		\SD(C)=\sqrt{84}\approx9.17. \]
+
+	\step{(c)} If we plug the expected price into the payoff formula, we get
+	\[ \max(\E[S]-110,0)=\max(106-110,0)=\max(-4,0)=0. \]
+	This is not $\E[C]=6$. The reason: the expected price $106$ is below the
+	strike, but the price is random, and with probability $0.4$ it ends above
+	$110$. In those cases the option pays, and in the other cases it pays $0$,
+	never a negative amount. So the average payoff is positive. In general,
+	for a function $g$,
+	\[ \E[g(X)]=\sum_x g(x)\,p(x), \]
+	which is usually different from $g(\E[X])$: first apply $g$ to every
+	possible value, then average.
+	\begin{answer}
+		(a) $\E[S]=106$, $\Var(S)=324$, $\SD(S)=18$ \quad
+		(b) $p_C(0)=0.6$, $p_C(10)=0.3$, $p_C(30)=0.1$; $\E[C]=6$,
+		$\SD(C)=\sqrt{84}\approx9.17$ \quad
+		(c) $\max(\E[S]-110,0)=0\neq6=\E[C]$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing $\E[C]$ as $\max(\E[S]-110,0)=0$ and
+		concluding that the option is worthless. An option is valuable exactly
+		because of the uncertainty: it keeps the upside and cuts off the
+		downside. The same mistake in variance: $\Var(C)$ is not obtained from
+		$\Var(S)$ by a simple formula, because $\max(S-110,0)$ is not a linear
+		function of $S$.
+	\end{remark}
+\end{solution}

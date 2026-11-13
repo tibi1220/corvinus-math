@@ -1,0 +1,78 @@
+% ---
+% title: A system of independent components
+% tags: independence
+% ---
+
+\begin{problem}
+	A system has three components. Components 1 and 2 are connected in series,
+	and this pair is connected in parallel with component 3: the system works
+	if components 1 and 2 both work, or if component 3 works. The components
+	work independently of each other, with probabilities $0.9$, $0.8$ and
+	$0.7$. (a) What is the probability that the system works? (b) Given that
+	the system works, what is the probability that component 3 works?
+\end{problem}
+
+\begin{solution}
+	\idea Treat the series pair as one ``branch'': it works only if both of its
+	components work (multiply). The parallel system fails only if both branches
+	fail (multiply the failure probabilities, then take the complement).
+
+	\begin{center}
+		\begin{tikzpicture}[box/.style={draw,thick,minimum width=8mm,minimum height=6mm}]
+			\node[box,navy] (c1) at (1.5,.8) {1};
+			\node[box,navy] (c2) at (3,.8) {2};
+			\node[box,teal] (c3) at (2.25,-.8) {3};
+			\draw[thick] (-.5,0) -- (0,0);
+			\draw[thick] (0,.8) -- (0,-.8);
+			\draw[thick] (0,.8) -- (c1) -- (c2) -- (4.5,.8);
+			\draw[thick] (0,-.8) -- (c3) -- (4.5,-.8);
+			\draw[thick] (4.5,.8) -- (4.5,-.8);
+			\draw[thick] (4.5,0) -- (5,0);
+			\node[left] at (-.5,0) {\small in};
+			\node[right] at (5,0) {\small out};
+		\end{tikzpicture}
+	\end{center}
+	Let $E_i$ be the event that component $i$ works, so $P(E_1)=0.9$,
+	$P(E_2)=0.8$, $P(E_3)=0.7$, and let $S$ be the event that the system works.
+
+	\step{(a)} \emph{The upper branch.} The series pair works only if
+	component 1 works \emph{and} component 2 works. The components are
+	independent, so the probability of the intersection is the product:
+	\[ P(E_1E_2)=P(E_1)\,P(E_2)=0.9\cdot0.8=0.72. \]
+	\emph{The whole system.} The system works if the upper branch works or
+	component 3 works: $S=E_1E_2\cup E_3$. It is easier to look at the
+	complement. The system fails only if \emph{both} branches fail. The upper
+	branch fails with probability $1-0.72=0.28$, component 3 fails with
+	probability $1-0.7=0.3$. The upper branch depends only on components 1 and
+	2, so it is independent of component 3, and the two failures can be
+	multiplied:
+	\[ P(S^c)=0.28\cdot0.3=0.084,\qquad P(S)=1-0.084=0.916. \]
+	Check with the union rule $P(E\cup F)=P(E)+P(F)-P(EF)$:
+	\[ P(S)=0.72+0.7-0.72\cdot0.7=1.42-0.504=0.916. \]
+
+	\step{(b)} We need
+	\[ P(E_3\mid S)=\frac{P(E_3S)}{P(S)}. \]
+	If component 3 works, the system works through the lower branch, whatever
+	happens above. So $E_3\subseteq S$, and the intersection is simply
+	$E_3S=E_3$. Hence
+	\[ P(E_3\mid S)=\frac{P(E_3)}{P(S)}=\frac{0.7}{0.916}\approx0.764. \]
+	Knowing that the system works raises the probability that component 3
+	works from $0.7$ to about $0.764$: a working system is evidence that at
+	least one branch is working.
+	\begin{answer}
+		(a) $0.916$ \quad (b) $\dfrac{0.7}{0.916}\approx0.764$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} adding the branches, $0.72+0.7=1.42$, which is
+		not even a probability. The branches can work at the same time, so their
+		intersection must be subtracted (or use the complement, as above).
+
+		A finance reading: let ``works'' mean ``pays''. Income sources 1 and 2
+		form one deal that pays only if both of them pay (each one
+		independently of the other); source 3 is an independent backup. Each source alone is fairly risky, but two
+		independent sources rarely fail together: the failure probability drops
+		to $0.084$. This is the idea behind diversification. It relies on
+		independence; if the sources tend to fail together, the protection is
+		much weaker.
+	\end{remark}
+\end{solution}

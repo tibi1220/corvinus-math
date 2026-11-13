@@ -1,0 +1,61 @@
+% ---
+% title: Three cooks
+% tags: generalized-bayes, total-probability
+% ---
+
+\begin{problem}
+	Three cooks, A, B and C, bake $50\%$, $30\%$ and $20\%$ of a restaurant's
+	cakes. A cake baked by A fails to rise with probability $0.02$, a cake baked
+	by B with probability $0.03$, and a cake baked by C with probability $0.05$.
+	(a) What proportion of the cakes fail to rise?
+	(b) What proportion of the failed cakes is baked by A, by B and by C?
+\end{problem}
+
+\begin{solution}
+	\idea The cook of a cake splits all cakes into three disjoint groups. In (a)
+	we use the law of total probability over these groups; in (b) we turn the
+	conditioning around with the generalized Bayes formula.
+
+	Pick a cake at random. Let $A$, $B$, $C$ be the events that A, B or C baked
+	it, and let $F$ be the event that it fails to rise. Every cake is baked by
+	exactly one cook, so $A$, $B$, $C$ are mutually exclusive and their union is
+	$\Om$. The data are
+	\[ P(A)=0.5,\quad P(B)=0.3,\quad P(C)=0.2, \]
+	\[ P(F\mid A)=0.02,\quad P(F\mid B)=0.03,\quad P(F\mid C)=0.05. \]
+
+	\step{(a)} A failed cake was baked by exactly one of the cooks, so $F$ is
+	the union of the three disjoint events $FA$, $FB$, $FC$. Their
+	probabilities add up. By the multiplication rule, $P(FA)=P(A)P(F\mid A)$,
+	and similarly for B and C:
+	\[ P(FA)=0.5\cdot0.02=0.010,\quad P(FB)=0.3\cdot0.03=0.009,\quad
+		P(FC)=0.2\cdot0.05=0.010. \]
+	Adding them gives the law of total probability:
+	\[ P(F)=P(FA)+P(FB)+P(FC)=0.010+0.009+0.010=0.029. \]
+	So $2.9\%$ of all cakes fail to rise.
+
+	\step{(b)} ``The proportion of the failures baked by A'' is the conditional
+	probability $P(A\mid F)$: we look only at the failed cakes and ask which
+	part of them comes from A. By the definition of conditional probability,
+	the numerator is the share of A in the failures and the denominator is all
+	failures, both found in (a):
+	\[ P(A\mid F)=\frac{P(FA)}{P(F)}=\frac{0.010}{0.029}=\frac{10}{29}\approx0.345. \]
+	In the same way,
+	\[ P(B\mid F)=\frac{0.009}{0.029}=\frac{9}{29}\approx0.310,\qquad
+		P(C\mid F)=\frac{0.010}{0.029}=\frac{10}{29}\approx0.345. \]
+	Check: $\frac{10}{29}+\frac{9}{29}+\frac{10}{29}=1$, as it must be, since
+	every failed cake was baked by one of the three cooks.
+
+	\begin{answer}
+		(a) $P(F)=0.029$ \quad (b) A: $\frac{10}{29}\approx0.345$, B:
+		$\frac{9}{29}\approx0.310$, C: $\frac{10}{29}\approx0.345$
+	\end{answer}
+	\begin{remark}
+		A is the most careful cook (only $2\%$ of her cakes fail), yet she causes
+		as many failures as C, the least careful one. The reason is that A bakes
+		the most cakes. A posterior probability $P(A\mid F)$ depends on both the
+		failure rate $P(F\mid A)$ and the share $P(A)$.
+		\textbf{Common mistake:} answering (b) with the failure rates $0.02$,
+		$0.03$, $0.05$; these are $P(F\mid\text{cook})$, not
+		$P(\text{cook}\mid F)$, and they do not even add up to $1$.
+	\end{remark}
+\end{solution}

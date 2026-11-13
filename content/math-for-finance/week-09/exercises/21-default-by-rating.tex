@@ -1,0 +1,211 @@
+% ---
+% title: Defaults by rating class
+% tags: finance, generalized-bayes, total-probability
+% ---
+
+\begin{problem}
+	\begin{context}
+		Banks give every loan an \emph{internal rating}: a grade that summarizes
+		how risky the borrower is. For each grade the bank estimates a
+		\emph{probability of default} (PD), the chance that the borrower stops
+		paying within one year. Better grades have smaller PDs. These numbers
+		are used to price loans and to decide how much capital the bank must
+		hold.
+	\end{context}
+	A bank's loan portfolio is split into three rating classes: 50\% of the
+	loans are rated A, 30\% are rated B and 20\% are rated C. Within one year a
+	loan defaults with probability $0.01$ if it is rated A, $0.03$ if it is
+	rated B and $0.08$ if it is rated C. A loan is chosen at random.
+	(a) What is the probability that the loan defaults within the year?
+	(b) The loan has defaulted. What is the probability that it was rated A,
+	B and C, respectively?
+	(c) The loan has not defaulted. What is the probability that it was rated
+	C?
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.47\textwidth}
+			\sol Events: $A$, $B$, $C$ = the loan is rated A, B, C;
+			$D$ = the loan defaults.
+			\pause\\[1mm]
+			$A$, $B$, $C$ split $\Om$: every loan is in exactly one class.
+			\pause\\[1mm]
+			Given: $P(A)=0.5$, $P(B)=0.3$, $P(C)=0.2$;\\
+			$P(D\mid A)=0.01$, $P(D\mid B)=0.03$,\\
+			$P(D\mid C)=0.08$.
+			\uncover<6->{\\\textcolor{teal}{Path: multiply along it},
+				e.g.\ $0.5\cdot0.01=0.005$.}
+		\end{column}
+		\begin{column}{.51\textwidth}
+			\pause
+			\centering
+			\begin{tikzpicture}[
+					grow=right, level distance=18mm,
+					level 1/.style={sibling distance=12mm},
+					level 2/.style={sibling distance=6.2mm},
+					every node/.style={font=\scriptsize,inner sep=1pt},
+					edge from parent/.style={draw,navy!55},
+					lab/.style={fill=white,text=black,inner sep=.8pt,pos=.5}]
+				\node {}
+				child {node {$C$}
+						child {node (c2) {$D^c$} edge from parent node[lab] {$0.92$}}
+						child {node[navy] (c1) {$D$} edge from parent node[lab] {$0.08$}}
+						edge from parent node[lab] {$0.2$}}
+				child {node {$B$}
+						child {node (b2) {$D^c$} edge from parent node[lab] {$0.97$}}
+						child {node[navy] (b1) {$D$} edge from parent node[lab] {$0.03$}}
+						edge from parent node[lab] {$0.3$}}
+				child {node {$A$}
+						child {node (a2) {$D^c$} edge from parent node[lab] {$0.99$}}
+						child {node[navy] (a1) {$D$} edge from parent node[lab] {$0.01$}}
+						edge from parent node[lab] {$0.5$}};
+				\uncover<6->{\foreach \l/\p in {a1/{0.005},a2/{0.495},b1/{0.009},b2/{0.291},c1/{0.016},c2/{0.184}}
+				\node[right=2mm] at (\l) {$\p$};}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	(a) A path: multiply, e.g.\ $P(DA)=P(D\mid A)P(A)=0.005$. The paths ending
+	in $D$ are mutually exclusive: add them.
+	\pause
+	\[ P(D)=P(D\mid A)P(A)+P(D\mid B)P(B)+P(D\mid C)P(C) \]
+	\pause
+	\vspace{-3mm}
+	\[ P(D)=0.5\cdot0.01+0.3\cdot0.03+0.2\cdot0.08
+		=0.005+0.009+0.016=\alert{0.03}. \]
+	\pause
+	(b) Bayes: one path ending in $D$, divided by all of $P(D)$:
+	\[ P(A\mid D)=\frac{P(D\mid A)P(A)}{P(D)}. \]
+	\pause
+	\vspace{-2mm}
+	\[ P(A\mid D)=\frac{0.005}{0.03}=\frac16\approx\alert{0.167},\quad
+		\uncover<6->{P(B\mid D)=\frac{0.009}{0.03}=\alert{0.3},}\quad
+		\uncover<7->{P(C\mid D)=\frac{0.016}{0.03}=\frac{8}{15}\approx\alert{0.533}.} \]
+	\uncover<8->{Check: $0.167+0.3+0.533=1$. A defaulted loan is in one of
+		the classes.}
+\end{slides}
+
+\begin{slides}
+	\small
+	(c) Same idea, with the paths ending in $D^c$.
+	\pause\\[1mm]
+	First: $P(D^c)=1-P(D)=1-0.03=0.97$.
+	\pause\\[1mm]
+	The path $C\to D^c$: $P(D^c\mid C)P(C)=0.92\cdot0.2=0.184$.
+	\pause
+	\[ P(C\mid D^c)=\frac{P(D^c\mid C)P(C)}{P(D^c)}=\frac{0.184}{0.97}
+		\approx\alert{0.190}. \]
+	\pause
+	Close to the prior $P(C)=0.2$: almost every loan survives the year, so
+	``no default'' tells us little.
+	\pause\\[2mm]
+	\alert{Lesson:} C is only 20\% of the loans, but it gives more than half
+	(53\%) of the defaults. A is half of the loans, but gives only one sixth
+	of the defaults.
+\end{slides}
+
+\begin{solution}
+	\idea The three rating classes split the portfolio into three parts. The
+	law of total probability gives the overall default probability in (a). The
+	generalized Bayes formula turns ``default given the class'' around into
+	``class given default'' in (b) and (c).
+
+	\step{Events and data.} Let $A$, $B$, $C$ be the events that the chosen
+	loan is rated A, B, C, and let $D$ be the event that it defaults within the
+	year. Every loan is in exactly one class, so $A$, $B$, $C$ are mutually
+	exclusive and together they make up $\Om$: they form a partition. The data
+	are
+	\[ P(A)=0.5,\qquad P(B)=0.3,\qquad P(C)=0.2, \]
+	\[ P(D\mid A)=0.01,\qquad P(D\mid B)=0.03,\qquad P(D\mid C)=0.08. \]
+	The default probabilities are conditional: $0.08$ is the chance of default
+	\emph{for a loan rated C}, not for any loan.
+
+	\step{The tree.} The first level is the rating class, the second level is
+	default or not. The probability at the end of a path is the product of the
+	probabilities along it. This is the multiplication rule; for example, the
+	path through $A$ to $D$ gives
+	\[ P(DA)=P(D\mid A)P(A)=0.01\cdot0.5=0.005. \]
+	The non-default probabilities are the complements:
+	\[ P(D^c\mid A)=0.99,\qquad P(D^c\mid B)=0.97,\qquad P(D^c\mid C)=0.92. \]
+	\begin{center}
+		\begin{tikzpicture}[
+				grow=right, level distance=24mm,
+				level 1/.style={sibling distance=17mm},
+				level 2/.style={sibling distance=8mm},
+				every node/.style={font=\small},
+				edge from parent/.style={draw,gray}]
+			\node {$\Om$}
+			child {node {$C$}
+					child {node (c2) {$D^c$} edge from parent node[below,font=\scriptsize] {$0.92$}}
+					child {node[navy] (c1) {$D$} edge from parent node[above,font=\scriptsize] {$0.08$}}
+					edge from parent node[below left,font=\scriptsize] {$0.2$}}
+			child {node {$B$}
+					child {node (b2) {$D^c$} edge from parent node[below,font=\scriptsize] {$0.97$}}
+					child {node[navy] (b1) {$D$} edge from parent node[above,font=\scriptsize] {$0.03$}}
+					edge from parent node[above,font=\scriptsize,pos=.6] {$0.3$}}
+			child {node {$A$}
+					child {node (a2) {$D^c$} edge from parent node[below,font=\scriptsize] {$0.99$}}
+					child {node[navy] (a1) {$D$} edge from parent node[above,font=\scriptsize] {$0.01$}}
+					edge from parent node[above left,font=\scriptsize] {$0.5$}};
+			\foreach \l/\p in {a1/{0.5\cdot0.01=0.005},a2/{0.5\cdot0.99=0.495},
+					b1/{0.3\cdot0.03=0.009},b2/{0.3\cdot0.97=0.291},
+					c1/{0.2\cdot0.08=0.016},c2/{0.2\cdot0.92=0.184}}
+			\node[right=2mm,font=\scriptsize] at (\l) {$\p$};
+		\end{tikzpicture}
+	\end{center}
+	As a check, the six path probabilities add up to $1$.
+
+	\step{(a)} A defaulted loan belongs to exactly one class, so $D$ splits
+	into the three mutually exclusive pieces $DA$, $DB$, $DC$: the three paths
+	that end in $D$. Their probabilities add up (law of total probability):
+	\[ \begin{aligned}
+			P(D) & =P(D\mid A)P(A)+P(D\mid B)P(B)+P(D\mid C)P(C) \\
+			     & =0.01\cdot0.5+0.03\cdot0.3+0.08\cdot0.2
+			=0.005+0.009+0.016=0.03.
+		\end{aligned} \]
+	So 3\% of the loans default. This is a weighted average of the three
+	default probabilities, with the class shares as weights.
+
+	\step{(b)} We need $P(A\mid D)$, $P(B\mid D)$ and $P(C\mid D)$. By the
+	definition of conditional probability,
+	\[ P(A\mid D)=\frac{P(AD)}{P(D)}. \]
+	The numerator is one path of the tree, the denominator is the sum of all three
+	default paths from (a). This is the generalized Bayes formula: for a
+	partition $F_1,\dots,F_n$,
+	\[ P(F_j\mid D)=\frac{P(D\mid F_j)P(F_j)}{\sum_{i=1}^{n}P(D\mid F_i)P(F_i)}. \]
+	Here the partition is $A$, $B$, $C$:
+	\[ P(A\mid D)=\frac{0.005}{0.03}=\frac16\approx0.167,\qquad
+		P(B\mid D)=\frac{0.009}{0.03}=0.3,\qquad
+		P(C\mid D)=\frac{0.016}{0.03}=\frac{8}{15}\approx0.533. \]
+	The three numbers add up to $1$ (exactly: $\frac{5}{30}+\frac{9}{30}+
+		\frac{16}{30}=1$), as they should: a defaulted loan was rated A, B or C.
+
+	\step{(c)} Now the condition is $D^c$, the loan did not default. Its
+	probability is the complement of (a): $P(D^c)=1-0.03=0.97$ (or add the
+	three paths ending in $D^c$: $0.495+0.291+0.184=0.97$). The path through
+	$C$ to $D^c$ has probability $P(D^c\mid C)P(C)=0.92\cdot0.2=0.184$. So
+	\[ P(C\mid D^c)=\frac{P(D^c\mid C)P(C)}{P(D^c)}=\frac{0.184}{0.97}
+		\approx0.190. \]
+	\begin{answer}
+		(a) $P(D)=0.03$ \quad (b) $P(A\mid D)=\frac16\approx0.167$,
+		$P(B\mid D)=0.3$, $P(C\mid D)=\frac{8}{15}\approx0.533$ \quad
+		(c) $P(C\mid D^c)=\frac{0.184}{0.97}\approx0.190$
+	\end{answer}
+	\begin{remark}
+		Class C makes up only 20\% of the loans, but more than half (53\%) of the
+		defaults come from it. Class A is half of the portfolio, yet it causes
+		only one sixth of the defaults. Learning that a loan has \emph{not}
+		defaulted changes very little: $P(C\mid D^c)\approx0.190$ is close to
+		the prior $0.2$, because almost every loan survives the year.
+		\textbf{Common mistake:} answering $0.08$ for $P(C\mid D)$. That number
+		is $P(D\mid C)$, the default probability of a C loan; (b) asks the other
+		way around.
+	\end{remark}
+\end{solution}

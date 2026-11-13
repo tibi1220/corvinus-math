@@ -1,0 +1,25 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Week 9 study guide: the key formulas and the exercises of the slides with a detailed
+% solution. The body is in study-guide-content.tex.
+
+\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+\usepackage{amsmath}
+\usepackage[stixtwo]{fontsetup}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{cancel}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\input{preamble}
+\documentinfo{Study guide}
+
+\subtitle{Week 9 -- Study guide\\[2pt]
+  \normalsize Probability, conditional probability, independence, random variables}
+
+\begin{document}
+\input{study-guide-content}
+\end{document}

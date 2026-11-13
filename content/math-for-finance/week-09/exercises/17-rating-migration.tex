@@ -1,0 +1,126 @@
+% ---
+% title: Rating migration
+% tags: finance, multiplication-rule, total-probability, bayes
+% ---
+
+\begin{problem}
+	\begin{context}
+		A \emph{credit rating} (for example from S\&P, Moody's or Fitch) measures
+		how likely a bond issuer is to fail to pay. Bonds rated BBB$-$ or better
+		are \emph{investment grade} (IG); lower-rated bonds are \emph{high yield}
+		(HY), as they must pay higher interest (a higher yield) to attract
+		investors. Ratings
+		change over time; the yearly probabilities of moving from one rating to
+		another are collected in a \emph{rating migration (transition) matrix}.
+	\end{context}
+	The one-year rating transitions of a bond are the following. An
+	investment-grade (IG) bond stays IG with probability $0.93$, becomes high
+	yield (HY) with probability $0.06$ and defaults (D) with probability $0.01$.
+	An HY bond becomes IG with probability $0.05$, stays HY with probability
+	$0.85$ and defaults with probability $0.10$. Default is final: a defaulted
+	bond stays in default. A bond is IG today, and in each year the transition
+	follows these probabilities, depending only on the rating at the start of
+	that year.
+	\begin{enumerate}
+		\item[(a)] What is the probability that the bond defaults within 2 years?
+		\item[(b)] Given that it defaulted within 2 years, what is the probability
+		      that it was first downgraded to HY?
+	\end{enumerate}
+\end{problem}
+
+\begin{solution}
+	\idea Draw the two-year tree. The probability of a path is the product of
+	the probabilities along it (multiplication rule). In (a) we add the paths
+	that end in D (total probability). In (b) we divide the ``via HY'' path by
+	the total of (a) (Bayes' formula).
+
+	\step{The tree.} The numbers given are conditional probabilities: for
+	example, $0.10$ is the probability of default in a year \emph{given} that
+	the bond is HY at the start of that year. Write $X_1$ for the rating after
+	one year and $X_2$ for the rating after two years. The tree starts from
+	IG today. Each path gets the product of its branch probabilities:
+	\begin{center}
+		\begin{tikzpicture}[
+				grow=right, level distance=30mm,
+				level 1/.style={sibling distance=30mm},
+				level 2/.style={sibling distance=11mm},
+				every node/.style={font=\small},
+				edge from parent/.style={draw,gray,->},
+				lab/.style={font=\scriptsize,fill=white,inner sep=1pt,text=black,midway},
+				st/.style={circle,draw=navy,fill=navy!8,inner sep=1pt,minimum size=17pt},
+				dd/.style={circle,draw=gold!80!black,fill=gold!25,inner sep=1pt,minimum size=17pt}]
+			\node[st] {IG}
+			child {node[dd] {D}
+					child {node[dd] (l7) {D}
+							edge from parent node[lab] {$1$}}
+					edge from parent node[lab] {$0.01$}}
+			child {node[st] {HY}
+					child {node[dd] (l6) {D}
+							edge from parent node[lab] {$0.10$}}
+					child {node[st] (l5) {HY}
+							edge from parent node[lab] {$0.85$}}
+					child {node[st] (l4) {IG}
+							edge from parent node[lab] {$0.05$}}
+					edge from parent node[lab] {$0.06$}}
+			child {node[st] {IG}
+					child {node[dd] (l3) {D}
+							edge from parent node[lab] {$0.01$}}
+					child {node[st] (l2) {HY}
+							edge from parent node[lab] {$0.06$}}
+					child {node[st] (l1) {IG}
+							edge from parent node[lab] {$0.93$}}
+					edge from parent node[lab] {$0.93$}};
+			\foreach \nn/\pp in {l1/{0.93\cdot0.93=0.8649},
+					l2/{0.93\cdot0.06=0.0558},
+					l3/{0.93\cdot0.01=0.0093},
+					l4/{0.06\cdot0.05=0.0030},
+					l5/{0.06\cdot0.85=0.0510},
+					l6/{0.06\cdot0.10=0.0060},
+					l7/{0.01\cdot1=0.0100}}
+			\node[anchor=west,xshift=2mm,font=\scriptsize] at (\nn.east) {$\pp$};
+			\node[font=\scriptsize,gray] at (0,4.8) {today};
+			\node[font=\scriptsize,gray] at (3,4.8) {after 1 year};
+			\node[font=\scriptsize,gray] at (6,4.8) {after 2 years};
+		\end{tikzpicture}
+	\end{center}
+	As a check, the seven path probabilities add up to $1$.
+
+	\step{(a)} The bond defaults within 2 years exactly when its path ends in
+	D. There are three such paths (gold nodes), and they are mutually
+	exclusive (a bond follows only one path), so we add their probabilities:
+	\begin{itemize}
+		\item default in the first year: $0.01$ (after that it stays in D with
+		      probability $1$);
+		\item IG after one year, then default:
+		      $P(X_1=\text{IG})\,P(X_2=\text{D}\mid X_1=\text{IG})=0.93\cdot0.01=0.0093$;
+		\item HY after one year, then default:
+		      $P(X_1=\text{HY})\,P(X_2=\text{D}\mid X_1=\text{HY})=0.06\cdot0.10=0.006$.
+	\end{itemize}
+	Each product is the multiplication rule $P(EF)=P(E)\,P(F\mid E)$. So
+	\[ P(X_2=\text{D}) = 0.01+0.0093+0.006 = 0.0253. \]
+	This is the law of total probability, with the rating after one year
+	(IG, HY or D) as the partition.
+
+	\step{(b)} Let $E=\{X_2=\text{D}\}$ (default within 2 years) and
+	$H=\{X_1=\text{HY}\}$ (first downgraded to HY). We need $P(H\mid E)$. The
+	event $HE$ is the single path IG$\to$HY$\to$D, with probability $0.006$.
+	By the definition of conditional probability (this is Bayes' formula):
+	\[ P(H\mid E)=\frac{P(HE)}{P(E)}=\frac{0.06\cdot0.10}{0.0253}
+		=\frac{0.006}{0.0253}\approx 0.237. \]
+	In words: among the bonds that default within two years, about $23.7\%$
+	went through HY first.
+
+	\begin{answer}
+		(a) $0.0253$ \qquad (b) $\dfrac{0.006}{0.0253}\approx 0.237$
+	\end{answer}
+	\begin{remark}
+		The other two default paths split the rest:
+		$0.01/0.0253\approx0.395$ of the defaults happen in the first year, and
+		$0.0093/0.0253\approx0.368$ happen in the second year after the bond
+		stayed IG. The three shares add up to $1$.
+		Notice that the HY path is the least likely of the three, although HY
+		bonds default ten times as often as IG bonds: only $6\%$ of the bonds
+		reach HY at all. \textbf{Common mistake:} answering $0.10$ in (b), which
+		is $P(E\mid H)$, not $P(H\mid E)$.
+	\end{remark}
+\end{solution}

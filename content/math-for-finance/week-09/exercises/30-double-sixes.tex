@@ -1,0 +1,65 @@
+% ---
+% title: Waiting for a double six
+% tags: independence, complement
+% ---
+
+\begin{problem}
+	A pair of fair dice is thrown $n$ times; the throws are independent.
+	(a) What is the probability that a double six (both dice showing $6$)
+	appears at least once?
+	(b) How large must $n$ be for this probability to be at least $\frac12$?
+\end{problem}
+
+\begin{solution}
+	\idea ``At least once'' is hard to count directly, but its complement
+	``never'' is easy: by independence the probability of ``no double six in
+	$n$ throws'' is a product of $n$ equal factors. Then solve an inequality
+	with logarithms. (The same idea as in Exercise~\exref{at-least-one-six}.)
+	\step{(a)} In one throw of the pair there are $6\cdot6=36$ equally likely
+	outcomes, and exactly one of them, $(6,6)$, is a double six. So in one
+	throw
+	\[ P(\text{double six})=\frac1{36},\qquad
+		P(\text{no double six})=1-\frac1{36}=\frac{35}{36}. \]
+	Let $E_i$ be the event that throw $i$ is \emph{not} a double six. The event
+	``no double six in $n$ throws'' is the intersection $E_1E_2\cdots E_n$.
+	The throws are independent, so the probability of this intersection is the
+	product of the probabilities:
+	\[ P(E_1E_2\cdots E_n)=P(E_1)P(E_2)\cdots P(E_n)
+		=\left(\frac{35}{36}\right)^{n}. \]
+	``At least one double six'' is the complement of ``no double six'', so
+	\[ P(\text{at least one double six})=1-\left(\frac{35}{36}\right)^{n}. \]
+	\step{(b)} We need
+	\[ 1-\left(\frac{35}{36}\right)^{n}\ge\frac12
+		\quad\Longleftrightarrow\quad
+		\left(\frac{35}{36}\right)^{n}\le\frac12. \]
+	Take the natural logarithm of both sides. The logarithm is increasing, so
+	the inequality keeps its direction:
+	\[ n\ln\frac{35}{36}\le\ln\frac12=-\ln2. \]
+	Now divide by $\ln\frac{35}{36}$. This number is \emph{negative} (since
+	$\frac{35}{36}<1$), so dividing by it flips the inequality:
+	\[ n\ge\frac{-\ln2}{\ln\frac{35}{36}}=\frac{\ln2}{\ln\frac{36}{35}}
+		\approx\frac{0.6931}{0.02817}\approx24.6. \]
+	The number of throws is a whole number, so the smallest possible value is
+	$n=25$. Check the two neighbors:
+	\[ 1-\left(\frac{35}{36}\right)^{24}\approx0.4914<\frac12,
+		\qquad
+		1-\left(\frac{35}{36}\right)^{25}\approx0.5055\ge\frac12. \]
+	So $24$ throws are not enough, $25$ throws are.
+	\begin{answer}
+		(a) $1-\left(\frac{35}{36}\right)^{n}$ \quad (b) $n\ge25$
+		(with $n=24$: $\approx0.4914$; with $n=25$: $\approx0.5055$)
+	\end{answer}
+	\begin{remark}
+		This is a famous 17th-century gambling question. The Chevalier de Méré
+		believed that betting on a double six within $24$ throws was
+		favorable. The calculation shows that $24$ throws give a probability
+		just below $\frac12$, so the bet loses slightly in the long run.
+	\end{remark}
+	\begin{remark}
+		\textbf{Common mistake:} adding the probabilities,
+		$n\cdot\frac1{36}$. This would give $\frac{24}{36}=\frac23$ for
+		$n=24$ and more than $1$ for $n\ge37$, which is impossible. The events
+		``double six in throw $i$'' are not mutually exclusive, so their
+		probabilities may not simply be added.
+	\end{remark}
+\end{solution}

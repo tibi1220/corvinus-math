@@ -1,0 +1,817 @@
+Mathematics for Finance. Week 9. Probability, conditional probability, independence, random variables. Teaching script for two ninety-minute practical classes held on the same day, back to back. Print version, without the background boxes. By Tibor Sandor, tibor sandor 2001 at gmail dot com.
+[[slnc 1500]]
+
+How to use this script.
+[[slnc 600]]
+Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Exercise numbers match the slides. This week the pace is deliberately slow: every new idea is introduced from scratch with a tiny example, and before each exercise the students try it themselves; the script says for how long. Then you walk through the solution in the order in which the slide reveals it. Timings are approximate; items marked optional can be dropped if you run late. Only the exercises of the slides are in this script.
+[[slnc 500]]
+Both sessions are on the same day: Session 1, 90 minutes, then a short break, then Session 2, another 90 minutes. The timings leave about 6 minutes of reserve in both sessions.
+[[slnc 500]]
+Timing overview for Session 1. Welcome, recap of week 8, and the plan for today, slides 1 to 3: 4 minutes. From counting to probability: 7 minutes. Exercise 9.1, two exams: 9 minutes. Equally likely outcomes: 3 minutes. Exercise 9.5, five cards: 8 minutes. Conditional probability: 6 minutes. Exercise 9.11, two exams, conditionally: 8 minutes. Exercise 9.14, three exams in a row: 8 minutes. Total probability and Bayes' formula: 5 minutes. Exercise 9.15, the early-warning model: 11 minutes. Odds: 4 minutes. Exercise 9.18, two warning signals: 8 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+[[slnc 400]]
+Timing overview for Session 2. The Session 2 title and the recap of Session 1, slides 22 and 23: 4 minutes. The generalized Bayes formula: 5 minutes. Exercise 9.21, defaults by rating class: 10 minutes. Independent events: 6 minutes. Exercise 9.26, pairwise but not mutually independent: 7 minutes. Exercise 9.27, bond defaults: 9 minutes. Discrete random variables and the distribution function: 6 minutes. Exercise 9.32, a game with an urn: 12 minutes. Expected value, variance and standard deviation: 6 minutes. Exercise 9.36, the call option: 9 minutes. Exercise 9.37, the trading strategy: 7 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+[[slnc 2000]]
+
+Session 1. Probability, conditional probability, Bayes' formula.
+[[slnc 1200]]
+
+Welcome, recap and plan for today. Slides 1 to 3.
+[[slnc 600]]
+Note for you: slide 1, the title, is on the screen while they settle down. No introduction of yourself is needed: they know you from last week.
+[[slnc 600]]
+Good morning, everyone, and welcome back. I hope you all survived the counting of last week.
+[[slnc 500]]
+Let me remind you where we are. Last week we learned to count: the basic principle of counting, permutations, combinations, the multinomial coefficient and stars and bars. At the end we met the language of probability: the sample space omega, the set of all possible outcomes, and events, which are subsets of omega. We combined events with or, and, and not, we used De Morgan's laws, and we filled Venn diagrams from the inside out.
+[[slnc 500]]
+Today we put numbers on events: we say how likely they are. That is what probability is about.
+[[slnc 600]]
+Note for you: slide 2, plan for today.
+[[slnc 500]]
+Today is again a long day: two sessions of 90 minutes, back to back, with a short break in between.
+[[slnc 500]]
+In Session 1 we learn the basic rules of probability: how to compute the probability of or, and, and not. Then we see what happens when all outcomes are equally likely: there, last week's counting gives the probabilities. After that comes the most important idea of the day: conditional probability, the probability of an event when we already know something. It leads us to Bayes' formula and to odds.
+[[slnc 500]]
+In Session 2 we meet independent events, and then random variables: numbers that depend on chance, like the payoff of an investment, with their expected value and variance.
+[[slnc 500]]
+Why does a finance student need this? Banks estimate how likely it is that a borrower does not repay; models raise alarms; bookmakers quote odds; an option pays a random amount. All of these are described with exactly the tools of today.
+[[slnc 600]]
+Note for you: today we go slowly. Tell them: before every exercise you will get a few minutes to try it yourself, in pairs. Do not wait for me: write something down, even if you are not sure. Then slide 3, the Session 1 title: just click through.
+[[slnc 1200]]
+
+From counting to probability. Slide 4.
+[[slnc 600]]
+What do we mean when we say that the probability of an event is 0.3? The most intuitive answer: if we repeat the experiment many, many times, the event happens in about 30 percent of the repetitions. A probability is a long-run proportion.
+[[slnc 500]]
+Proportions behave in a very simple way, and the rules of probability copy that behavior. We write P of E for the probability of an event E. There are only three basic rules, called the axioms.
+[[slnc 400]]
+On the board, the axioms. First: P of E is between 0 and 1; 0 is less than or equal to P of E, which is less than or equal to 1. Second: P of omega equals 1. Third: if E 1, E 2, and so on, are mutually exclusive, so no two of them can happen together, then P of the union of the E i equals the sum, over i, of P of E i.
+[[slnc 500]]
+In words: a probability is between 0 and 1; something always happens, so the whole sample space has probability 1; and for events that cannot happen together, the probabilities simply add up.
+[[slnc 500]]
+Everything else follows from these three. Let me show you the most important consequences, with a tiny example: roll a fair die, so omega is 1, 2, 3, 4, 5, 6, and each number has probability one sixth. Let E be the set 2, 4, 6, even, and F the set 4, 5, 6, at least 4.
+[[slnc 500]]
+The complement rule. E and E complement cannot happen together, and together they make up omega. So P of E plus P of E complement equals P of omega, which is 1. Hence P of E complement equals 1 minus P of E. Example: P of odd equals 1 minus P of even, which is 1 minus one half, which is one half.
+[[slnc 500]]
+Monotonicity. If E is a subset of F, then F is E plus something else, so P of E is less than or equal to P of F. A bigger event cannot be less likely.
+[[slnc 500]]
+The difference rule. E splits into two mutually exclusive parts: the part inside F, which is E F, and the part outside F, which is E F complement. So P of E equals P of E F plus P of E F complement, that is, P of E F complement equals P of E minus P of E F. Example: E F is 4 and 6, so P of E F complement is one half minus one third, which is one sixth. Indeed, E F complement contains only the 2.
+[[slnc 500]]
+The union rule. If we add P of E and P of F, the overlap E F is counted twice, so we subtract it once: P of E union F equals P of E, plus P of F, minus P of E F. Example: P of E union F is one half plus one half minus one third, which is two thirds, and indeed E union F is 2, 4, 5, 6, which has 4 of the 6 outcomes.
+[[slnc 400]]
+On the board: draw the two circles of the slide and label the four regions: E F complement, E F, E complement F, and E complement F complement.
+[[slnc 500]]
+The Venn diagram is the best way to remember all of this. The four regions are mutually exclusive, and together they make up omega, so their probabilities add up to 1. Every question about two events is a question about these four regions.
+[[slnc 500]]
+Ask the class: which region is neither E nor F?
+[[slnc 800]]
+E complement F complement, the part outside both circles.
+[[slnc 400]]
+Ask the class: in the die example, which outcomes are there?
+[[slnc 800]]
+Only 1 and 3: odd and less than 4. Probability two sixths.
+[[slnc 500]]
+For three events, the formula is the same inclusion-exclusion that we used for counts last week: add the singles, subtract the pairs, add back the triple. It is at the bottom of the slide.
+[[slnc 500]]
+Note for you: these are the same rules as for counting last week, with probabilities in place of counts. If students ask where the rules come from, point out that all of them are just the third axiom applied to a split of an event into mutually exclusive pieces.
+[[slnc 1200]]
+
+Exercise 9.1. Two exams. Slides 5 and 6.
+[[slnc 600]]
+A random student passed Math with probability 0.72, Microeconomics with probability 0.64, and both with probability 0.54. Find the probability that the student passed: a, at least one exam; b, Math but not Micro; c, neither; d, exactly one.
+[[slnc 800]]
+Note for you: only the statement is visible. Give them 3 minutes to try in pairs. Hint if they are stuck: draw the two circles and start with the overlap.
+[[slnc 500]]
+Try it in pairs: three minutes. Draw a Venn diagram first.
+[[slnc 500]]
+Note for you: after 3 minutes, click once. The events and the empty diagram appear.
+[[slnc 500]]
+First we give names to the events. Let A be passed Math, and B passed Micro. The data are P of A equals 0.72, P of B equals 0.64, and both is the intersection: P of A B equals 0.54.
+[[slnc 500]]
+Now we fill the diagram from the inside out, exactly as we did with counts last week.
+[[slnc 500]]
+The picture shows a rectangle for omega with two overlapping circles, A on the left and B on the right. The lens in the middle has 0.54, the rest of A has 0.18, the rest of B has 0.10, and the region outside both circles has 0.18.
+[[slnc 500]]
+Click: the center, both exams: 0.54.
+[[slnc 400]]
+Click: Math only. The circle A has probability 0.72, and 0.54 of it is the overlap, so P of A B complement equals P of A minus P of A B, which is 0.72 minus 0.54, which is 0.18.
+[[slnc 400]]
+Click: Micro only, the same way: P of A complement B equals P of B minus P of A B, which is 0.64 minus 0.54, which is 0.10.
+[[slnc 400]]
+Click: the outside. The four regions add up to 1, so neither exam has probability 1 minus the sum of 0.18, 0.54 and 0.10, which is 0.18.
+[[slnc 400]]
+On the board: the diagram with the four numbers. Keep it on the board: we need it again in Exercise 9.11.
+[[slnc 500]]
+Note for you: slide 6. The answers appear one by one; for each, ask first, then click.
+[[slnc 500]]
+Now every question is a sum of regions. Let us read the answers off the diagram and check each one with a rule.
+[[slnc 500]]
+Part a.
+[[slnc 400]]
+Ask the class: which regions make up at least one exam?
+[[slnc 800]]
+The three regions inside the circles.
+[[slnc 400]]
+So 0.18 plus 0.54 plus 0.10, which is 0.82. With the union rule: P of A union B equals P of A, plus P of B, minus P of A B, which is 0.72 plus 0.64 minus 0.54, which is 0.82.
+[[slnc 500]]
+Part b. Math but not Micro is exactly the region Math only: P of A B complement equals 0.18.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: how do we write neither with events?
+[[slnc 800]]
+A complement B complement, which is the complement of A union B, by De Morgan.
+[[slnc 400]]
+So P of A complement B complement equals 1 minus P of A union B, which is 1 minus 0.82, which is 0.18: the outside region again.
+[[slnc 500]]
+Part d. Exactly one: Math only or Micro only. These cannot happen together, so we add: 0.18 plus 0.10, which is 0.28. Or: at least one, minus both: 0.82 minus 0.54, which is 0.28.
+[[slnc 500]]
+Note for you, a common mistake: part a computed as 0.72 plus 0.64, which is 1.36. Ask: can a probability be larger than 1? The students who passed both were counted twice.
+[[slnc 1200]]
+
+Equally likely outcomes. Slide 7.
+[[slnc 600]]
+In the last exercise the probabilities were given. Where do probabilities come from? In one important case we can compute them by counting.
+[[slnc 500]]
+Suppose omega is finite and every outcome is equally likely. If omega has a certain number of outcomes, each has probability 1 over that number, and an event E has probability equal to the size of E over the size of omega: the number of favorable outcomes, divided by the number of all outcomes.
+[[slnc 500]]
+Tiny example: a fair die, and E is even: 3 favorable outcomes of 6, so P of E equals 3 over 6, which is one half.
+[[slnc 500]]
+But careful: equally likely must come from the setup: a fair die, a well-shuffled deck, a person chosen at random. It is not automatic.
+[[slnc 500]]
+Ask the class: we roll two dice and look at the sum. The possible sums are 2, 3, and so on, up to 12: eleven outcomes. Is the probability of a sum of 7 equal to 1 over 11?
+[[slnc 800]]
+No. The sums are not equally likely. The 36 ordered pairs are: a sum of 7 comes from 6 of them, so its probability is 6 over 36, which is one sixth, while a sum of 2 comes only from 1 and 1, probability 1 over 36.
+[[slnc 500]]
+So: choose the sample space so that the outcomes really are equally likely, then count with the methods of last week. And for at least one, remember the complement: P of E equals 1 minus P of E complement.
+[[slnc 1200]]
+
+Exercise 9.5. Five cards. Slides 8 and 9.
+[[slnc 600]]
+Five cards are dealt from a well-shuffled deck of 52 cards. Find the probability that the hand contains: a, exactly 2 spades and 3 diamonds; b, at least one ace.
+[[slnc 800]]
+Note for you: give them 3 minutes for part a. Hint: what is one outcome? How many hands are there? Some students do not know the deck: 52 cards, 4 suits, spades, hearts, diamonds and clubs, of 13 cards each, one ace in each suit.
+[[slnc 500]]
+Before you start: a deck has 52 cards in 4 suits, 13 cards in each suit, and there are 4 aces, one in each suit. Try part a, three minutes.
+[[slnc 500]]
+Note for you: after 3 minutes, click step by step.
+[[slnc 500]]
+Ask the class: what is one outcome here? Does the order matter?
+[[slnc 800]]
+A hand of 5 cards; the order in which the cards arrive does not matter.
+[[slnc 500]]
+Click. So the sample space is the set of all 5-card hands, and the size of omega is 52 choose 5, which is 2,598,960.
+[[slnc 500]]
+Click. The deck is well shuffled, so every hand is equally likely, and P of E is the size of E over the size of omega. We only have to count the favorable hands.
+[[slnc 500]]
+Part a. Click. Build the hand in two steps. Choose the 2 spades from the 13 spades: 13 choose 2, which is 78 ways. Click. Choose the 3 diamonds from the 13 diamonds: 13 choose 3, which is 286 ways. Click. Every choice of spades combines with every choice of diamonds, so by the basic principle of counting, P of 2 spades and 3 diamonds equals 78 times 286, over 2,598,960, which is 22,308 over 2,598,960, approximately 0.00858. Less than 1 percent.
+[[slnc 500]]
+Note for you: still on slide 8, because the first line of part b on slide 9 gives the answer away. Give them 2 minutes for part b, with the hint: how many cases are there in at least one ace? Then slide 9.
+[[slnc 500]]
+Part b.
+[[slnc 400]]
+Ask the class: how many aces can a hand with at least one ace contain?
+[[slnc 800]]
+1, 2, 3 or 4: four cases.
+[[slnc 500]]
+Note for you: slide 9.
+[[slnc 500]]
+Four cases to count is a lot of work. Click. The complement is a single case: no ace. Click. A hand with no ace has all 5 cards from the 48 cards that are not aces: the number of hands with no ace is 48 choose 5, which is 1,712,304. Click. So P of at least one ace equals 1 minus 1,712,304 over 2,598,960, which is approximately 1 minus 0.6588, which is 0.3412.
+[[slnc 500]]
+Whenever you see at least one, think of the complement first.
+[[slnc 500]]
+Ask the class: a classmate says: choose one ace in 4 ways, then any 4 of the other 51 cards. What is wrong?
+[[slnc 800]]
+A hand with two aces is counted twice, once for each ace as the ace. The result, about 0.385, is too large.
+[[slnc 400]]
+Click.
+[[slnc 1200]]
+
+Conditional probability. Slide 10.
+[[slnc 600]]
+Now the most important idea of today. Very often we do not know the outcome, but we know something about it. How does that change the probabilities?
+[[slnc 400]]
+Tiny example.
+[[slnc 400]]
+Ask the class: I roll a fair die and do not show you the result. What is the probability that it is a 6?
+[[slnc 800]]
+One sixth.
+[[slnc 400]]
+Ask the class: now I tell you: the number is even. What is the probability that it is a 6 now?
+[[slnc 800]]
+One third: only 2, 4 and 6 are still possible, and they are equally likely.
+[[slnc 500]]
+Knowing that F happened, the outcomes outside F are no longer possible. F becomes the new sample space. Inside F we measure how big the part of E is that is still possible; that part is E F.
+[[slnc 400]]
+On the board, the definition: if P of F is greater than 0, then P of E given F equals P of E F over P of F. We read it as: the probability of E given F.
+[[slnc 500]]
+In the example: E is the 6 alone, F is 2, 4, 6, and E F is the 6 alone, so P of E given F equals one sixth over one half, which is one third.
+[[slnc 500]]
+Look at the picture on the slide: P of E given F is the share of the dark lens E F within the circle F.
+[[slnc 500]]
+If we multiply the definition by P of F, we get the multiplication rule: P of E F equals P of F times P of E given F.
+[[slnc 400]]
+It is useful when the conditional probability is what we know. Tiny example: draw two cards without replacement. The probability that both are aces is P of first ace, times P of second ace given first ace, which is 4 over 52 times 3 over 51, which is 1 over 221. After one ace is gone, there are 3 aces left among 51 cards. With three events we keep going: each new factor is conditioned on everything before it. P of E 1 E 2 E 3 equals P of E 1, times P of E 2 given E 1, times P of E 3 given E 1 E 2.
+[[slnc 500]]
+Last point on the slide: for a fixed condition F, P of anything given F is a probability itself, so all our rules work for it. For example, P of E complement given F equals 1 minus P of E given F.
+[[slnc 500]]
+Note for you: stress the order. In P of E given F, the condition, what we know, is on the right, and its probability is in the denominator. Students mix up P of E given F and P of F given E all the time; this comes back in Bayes' formula.
+[[slnc 1200]]
+
+Exercise 9.11. Two exams, conditionally. Slides 11 and 12.
+[[slnc 600]]
+As in Exercise 9.1: P of A equals 0.72, for Math, P of B equals 0.64, for Micro, and P of A B equals 0.54. What is the probability that the student: a, passed Math, if they passed Micro; b, failed Micro, if they passed Math; c, passed Math, if they passed at least one exam; d, failed Micro, if they passed at least one exam?
+[[slnc 800]]
+Note for you: the Venn diagram of Exercise 9.1 should still be on the board. Give them 3 minutes for parts a and b in pairs.
+[[slnc 500]]
+These are the same students as in Exercise 9.1, so we can use our Venn diagram: 0.18 Math only, 0.54 both, 0.10 Micro only, 0.18 neither. Try parts a and b: three minutes. For each part, ask yourself first: what do I know? That is the condition.
+[[slnc 500]]
+Note for you: after 3 minutes, click once. The formula and the diagram appear.
+[[slnc 500]]
+The rule: P of E given F equals P of E F over P of F. F happened, so F is the new sample space.
+[[slnc 500]]
+Part a. Click. We know: passed Micro. So the new sample space is the circle B, shaded on the slide, with probability 0.64. Click. Inside B, the student passed Math in the lens A B, 0.54. So P of A given B equals P of A B over P of B, which is 0.54 over 0.64, which is 27 over 32, approximately 0.844.
+[[slnc 500]]
+Part b. Click. Now we know: passed Math. The new sample space is the circle A, 0.72. Click. Inside A, failed Micro is the region Math only, 0.18. So P of B complement given A equals P of A B complement over P of A, which is 0.18 over 0.72, which is 0.25.
+[[slnc 500]]
+Ask the class: can you get part b in another way?
+[[slnc 800]]
+Yes: P of B given A is 0.54 over 0.72, which is 0.75, and for a fixed condition the complement rule works: 1 minus 0.75 is 0.25.
+[[slnc 500]]
+Note for you, a common mistake in part a: 0.54 over 0.72, which is 0.75. That is P of B given A, the answer to a different question. The denominator is always the probability of what we know.
+[[slnc 500]]
+Note for you: slide 12. Give them 1 to 2 minutes for part c first.
+[[slnc 500]]
+Part c. Now we know: passed at least one exam. The new sample space is A union B, the two circles together, shaded: P of A union B is 0.18 plus 0.54 plus 0.10, which is 0.82.
+[[slnc 500]]
+Ask the class: what is the part of A union B where the student passed Math?
+[[slnc 800]]
+All of A: whoever passed Math passed at least one exam, so A intersected with A union B is just A.
+[[slnc 400]]
+Click.
+[[slnc 400]]
+Click. So P of A given A union B equals P of A over P of A union B, which is 0.72 over 0.82, which is 36 over 41, approximately 0.878.
+[[slnc 500]]
+Part d. Click. Failed Micro and passed at least one exam: then the exam she passed must be Math, so this is the region Math only, A B complement, 0.18. Click. So P of B complement given A union B equals P of A B complement over P of A union B, which is 0.18 over 0.82, which is 9 over 41, approximately 0.220.
+[[slnc 500]]
+Click. Knowing more changes the probability. Without any information, the student passed Math with probability 0.72. If we know she passed Micro, it is 0.844; if we know she passed at least one exam, it is 0.878.
+[[slnc 1200]]
+
+Exercise 9.14. Three exams in a row. Slides 13 and 14.
+[[slnc 600]]
+Three exams in a row; after a failure she stops. P of passing the first is 0.9; if she passed the first, P of passing the second is 0.8; if she passed the first two, P of passing the third is 0.7. What is the probability that she: a, passes all three; b, fails exactly at the third; c, failed the second, given that she did not pass all three?
+[[slnc 800]]
+A word on the story: actuaries are the mathematicians of insurance companies and pension funds, and to become one you pass a series of professional exams, one after the other.
+[[slnc 500]]
+Note for you: give them 3 minutes for parts a and b. Hint: draw a tree, one branching per exam.
+[[slnc 500]]
+Try parts a and b, three minutes. Before you compute: are the numbers in the statement ordinary or conditional probabilities?
+[[slnc 500]]
+Note for you: after 3 minutes, click step by step.
+[[slnc 500]]
+Let E i be the event that she passes exam i.
+[[slnc 400]]
+Ask the class: is 0.8 the probability that she passes the second exam?
+[[slnc 800]]
+No: it is the probability that she passes the second exam if she passed the first, P of E 2 given E 1.
+[[slnc 400]]
+Click. So the data are: P of E 1 equals 0.9, P of E 2 given E 1 equals 0.8, and P of E 3 given E 1 E 2 equals 0.7.
+[[slnc 500]]
+Click. We draw a tree. From the start, two branches: pass the first exam, 0.9, or fail it, 0.1, and she stops. After passing, again two branches: pass the second, 0.8, or fail, 0.2, and stop. Then the third: 0.7 or 0.3. The failure probabilities come from the complement rule for a fixed condition.
+[[slnc 400]]
+On the board: the tree of the slide, with all six branch probabilities.
+[[slnc 500]]
+Click. The probability of a path is the product of the probabilities along it: that is the multiplication rule.
+[[slnc 500]]
+Part a. Click. All three is the top path: P of E 1 E 2 E 3 equals 0.9 times 0.8 times 0.7, which is 0.504. In words: 90 percent pass the first; 80 percent of those pass the second, which is 72 percent; 70 percent of those pass the third, about half.
+[[slnc 500]]
+Note for you: slide 14.
+[[slnc 500]]
+Part b. Fails exactly at the third: passes the first, passes the second, fails the third. Multiply along that path: P of E 1 E 2 E 3 complement equals 0.9 times 0.8 times 0.3, which is 0.216.
+[[slnc 500]]
+Note for you: give them 2 minutes for part c. Hint: what is the condition, and what is its probability?
+[[slnc 500]]
+Part c. Click. The condition is not all three, the complement of the top path: P of the complement of E 1 E 2 E 3 equals 1 minus 0.504, which is 0.496.
+[[slnc 500]]
+Click. Failed the second exam is the path: passed the first, failed the second, with probability 0.9 times 0.2, which is 0.18. Check with the tree: the three failure paths are 0.1, 0.18 and 0.216, and they add up to 0.496.
+[[slnc 500]]
+Click. If she failed the second exam, she certainly did not pass all three, so the intersection of the two events is E 1 E 2 complement itself.
+[[slnc 500]]
+Click. So P of E 1 E 2 complement, given the complement of E 1 E 2 E 3, equals 0.18 over 0.496, which is 45 over 124, approximately 0.363.
+[[slnc 500]]
+Ask the class: why not just P of E 2 complement?
+[[slnc 800]]
+If she fails the first exam, she stops, so she does not pass the second one either; P of E 2 complement, which is 0.1 plus 0.18, that is 0.28, would include her. Failed the second exam means she took it and failed.
+[[slnc 1200]]
+
+Total probability and Bayes' formula. Slide 15.
+[[slnc 600]]
+The tree of the last exercise is the key to the next two formulas.
+[[slnc 500]]
+Tiny example. On 30 percent of the days it rains. On a rainy day my bus is late with probability 0.5; on a dry day only with probability 0.1. Let F be the event that it rains, and E the event that the bus is late. So P of F equals 0.3, P of E given F equals 0.5, and P of E given F complement equals 0.1.
+[[slnc 400]]
+On the board: the tree of the slide. First F or F complement, then E or E complement, with the numbers of the example.
+[[slnc 500]]
+First question: what is the probability that the bus is late? The bus can be late on a rainy day or on a dry day: two paths of the tree that end in E, and they cannot happen together. Multiply along each path, then add: P of E equals P of E given F times P of F, plus P of E given F complement times P of F complement, which is 0.5 times 0.3, plus 0.1 times 0.7, that is 0.15 plus 0.07, which is 0.22. This is the law of total probability: split according to F or F complement, multiply along the paths, add the paths that end in E.
+[[slnc 500]]
+Second question: the bus was late. What is the probability that it rained? Now we know E and ask about F: we need P of F given E, but the data give P of E given F. By the definition, P of F given E equals P of E F over P of E. The numerator is the path rain, then late, 0.15; the denominator is all paths that end in late, 0.22. So P of F given E equals 0.15 over 0.22, which is 15 over 22, approximately 0.68.
+[[slnc 400]]
+On the board, Bayes' formula: P of F given E equals P of E given F times P of F, divided by the sum: P of E given F times P of F, plus P of E given F complement times P of F complement.
+[[slnc 500]]
+Bayes' formula turns the condition around. In the tree: one path, divided by all the paths that end in E. Note what happened: rain has probability 0.3, but once we see the late bus, it goes up to about 0.68. The evidence changed our belief.
+[[slnc 1200]]
+
+Exercise 9.15. An early-warning model, a finance example. Slides 16 and 17.
+[[slnc 600]]
+2 percent of a bank's borrowers default within a year. A model flags 90 percent of the future defaulters and 5 percent of the other borrowers. Part a: what fraction of borrowers is flagged? What is the probability of default for: b, a flagged borrower; c, a borrower who is not flagged?
+[[slnc 800]]
+Some words on the story. A borrower defaults when she does not repay her loan as agreed. Banks use early-warning models: statistical models that raise a flag on borrowers who look likely to default, so that the bank can act in time. No model is perfect: it misses some defaulters, and it also flags some good borrowers.
+[[slnc 500]]
+Ask the class: before any computation: a borrower is flagged. Make a quick guess: what is the probability that she defaults?
+[[slnc 800]]
+Collect a few guesses. Many will say about 90 percent. Write the guesses on the board; we come back to them.
+[[slnc 500]]
+Note for you: give them 4 minutes in pairs for parts a and b. Hint: name the events, write the three numbers as probabilities, draw the tree. After 4 minutes, click step by step.
+[[slnc 500]]
+Let D be the event that the borrower defaults, and A the event that she is flagged; A for alarm.
+[[slnc 400]]
+Ask the class: which number is P of A given D, and which is P of D given A?
+[[slnc 800]]
+Flags 90 percent of the defaulters means: among defaulters, 90 percent are flagged, so P of A given D equals 0.9. And P of A given D complement equals 0.05. P of D given A is what part b asks for.
+[[slnc 500]]
+Click. So P of D equals 0.02, P of A given D equals 0.9, and P of A given D complement equals 0.05. On the tree: first default or not, 0.02 and 0.98, then flag or no flag. Multiply along the paths: P of D A equals 0.02 times 0.9, which is 0.018. P of D A complement equals 0.02 times 0.1, which is 0.002. P of D complement A equals 0.98 times 0.05, which is 0.049. And P of D complement A complement equals 0.98 times 0.95, which is 0.931.
+[[slnc 500]]
+The picture shows the tree. From the root, two branches: D with 0.02 and D complement with 0.98. From D, the branches A with 0.9 and A complement with 0.1. From D complement, the branches A with 0.05 and A complement with 0.95. At the ends of the paths are the products 0.018, 0.002, 0.049 and 0.931; the two paths that end in A, 0.018 and 0.049, are highlighted.
+[[slnc 500]]
+Part a. Click. A flagged borrower is either a defaulter or a good borrower: two paths ending in A. Total probability, and click once more for the numbers: P of A equals P of A given D times P of D, plus P of A given D complement times P of D complement, which is 0.018 plus 0.049, which is 0.067. So 6.7 percent of all borrowers are flagged.
+[[slnc 500]]
+Part b. Click. Bayes: the path defaults and flagged, divided by all paths ending in a flag. P of D given A equals P of A given D times P of D, over P of A, which is 0.018 over 0.067, which is 18 over 67, approximately 0.269.
+[[slnc 500]]
+Only about 27 percent! Compare that with your guesses.
+[[slnc 500]]
+Note for you: slide 17. The counts make the surprise understandable; go through the tree of 10,000 borrowers slowly, number by number.
+[[slnc 500]]
+Let us check this with counts, which is much easier to believe. Imagine 10,000 borrowers. 2 percent of them, 200, will default; 9,800 will not. The model flags 90 percent of the 200 defaulters: 180, and misses 20. It flags 5 percent of the 9,800 good borrowers: 490, and does not flag 9,310.
+[[slnc 500]]
+Click. So 180 plus 490, which is 670 borrowers, are flagged, and only 180 of them default: P of D given A equals 180 over 670, approximately 0.269.
+[[slnc 500]]
+Part c. Click. Not flagged: 20 plus 9,310, which is 9,330 borrowers, of whom 20 default: P of D given A complement equals 20 over 9,330, which is 2 over 933, approximately 0.00214.
+[[slnc 500]]
+Click. This is the base-rate effect. The model is good: it catches 90 percent of the defaulters. Yet only about 27 percent of the flags are true. Why? Defaults are rare. The 5 percent false flags come from a huge group of good borrowers, so they outnumber the true flags: 490 against 180.
+[[slnc 500]]
+Click. But the model is still very useful: a flag raises the probability of default from 2 percent to 27 percent, more than thirteen times, and no flag lowers it to about 0.2 percent.
+[[slnc 500]]
+Note for you, a common mistake: answering part b with 0.9. That is P of A given D; the question is P of D given A. Turning the condition around is exactly what Bayes' formula does.
+[[slnc 1200]]
+
+Odds. Slide 18.
+[[slnc 600]]
+There is another way of describing how likely something is, which you know from betting: odds. The odds of an event H are the probability that it happens divided by the probability that it does not: the odds of H equal P of H over P of H complement, which is P of H over 1 minus P of H.
+[[slnc 500]]
+Tiny examples. If P of H is two thirds, the odds are two thirds over one third, which is 2: 2 to 1 in favor. Two cases where H happens for every one where it does not. If P of H is 0.2, the odds are 0.2 over 0.8, which is one quarter: 4 to 1 against.
+[[slnc 500]]
+And back: odds o mean o yes cases for every 1 no case, so out of o plus 1 cases, o are yes. So P of H equals o over 1 plus o. Check: odds 2 give two thirds.
+[[slnc 400]]
+On the board: the odds equal P of H over 1 minus P of H, and P of H equals the odds over 1 plus the odds.
+[[slnc 500]]
+Why are odds useful? Because Bayes' formula becomes very simple. Write Bayes' formula for H and for H complement, given evidence E, and divide the two: the long denominators are the same and cancel. What remains is: P of H given E, over P of H complement given E, equals P of H over P of H complement, times P of E given H, over P of E given H complement. New odds equal old odds times the likelihood ratio: how many times more likely the evidence is if H is true than if it is false.
+[[slnc 500]]
+Back to the bus. Old odds of rain: 0.3 over 0.7, which is 3 over 7. A late bus is 0.5 over 0.1, that is 5 times as likely on a rainy day. New odds: 3 over 7 times 5, which is 15 over 7, so P of rain given late equals 15 over 15 plus 7, which is 15 over 22. The same as before, with less work.
+[[slnc 500]]
+So: evidence that is more likely if H is true raises the odds of H; evidence that is less likely if H is true lowers them.
+[[slnc 1200]]
+
+Exercise 9.18. Two warning signals: odds, a finance example. Slides 19 and 20.
+[[slnc 600]]
+2 percent of borrowers default, D. A model flags 90 percent of the defaulters and 5 percent of the non-defaulters, as in Exercise 9.15; a flag is A 1. Part a: using odds, find P of D given A 1. Part b: a second model with the same rates, whose errors are independent of the first one's given D or D complement, also flags her; this is A 2. Find P of D given A 1 A 2. Part c: the first model flags her, the second does not. Find P of D given A 1 A 2 complement.
+[[slnc 800]]
+Note for you: give them 3 minutes for part a. Hint: prior odds, then likelihood ratio, then multiply, then convert back to a probability.
+[[slnc 500]]
+This is the same bank and the same model. Try part a with odds: three minutes.
+[[slnc 500]]
+Note for you: after 3 minutes, click step by step.
+[[slnc 500]]
+Click. The rule: new odds equal old odds times the likelihood ratio, and odds o correspond to the probability o over 1 plus o.
+[[slnc 500]]
+Click. Prior odds of default, before any signal: P of D over P of D complement, which is 0.02 over 0.98, which is 1 over 49. One defaulter for every 49 good borrowers.
+[[slnc 500]]
+Click. Likelihood ratio of a flag: P of A 1 given D, over P of A 1 given D complement, which is 0.90 over 0.05, which is 18. A flag is 18 times as likely for a defaulter as for a good borrower.
+[[slnc 500]]
+Click. Part a. Posterior odds: 1 over 49 times 18, which is 18 over 49, so P of D given A 1 equals 18 over 18 plus 49, which is 18 over 67, approximately 0.269.
+[[slnc 500]]
+Click. The same as in Exercise 9.15: among the flagged, there are 18 defaulters for every 49 good borrowers: 180 against 490 in our 10,000 borrowers.
+[[slnc 500]]
+Note for you: slide 20. Explain the second model slowly; conditional independence is only needed in this informal form. Independence comes properly in Session 2.
+[[slnc 500]]
+Now a second model, with the same rates. The statement says that its errors are independent of the first model's errors, given whether the borrower defaults. In plain words: among defaulters, whether model 2 flags someone has nothing to do with whether model 1 did; and the same among good borrowers. Then the likelihood ratios simply multiply.
+[[slnc 500]]
+Part b. Click. Both models flag: the likelihood ratio is 18 times 18, which is 324, so the odds are 1 over 49 times 18 times 18, which is 324 over 49, and P of D given A 1 A 2 equals 324 over 324 plus 49, which is 324 over 373, approximately 0.869.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: the second model does not flag her. What is the likelihood ratio of no flag?
+[[slnc 800]]
+Use the complements: P of A 2 complement given D is 0.10, and P of A 2 complement given D complement is 0.95.
+[[slnc 400]]
+Click. The likelihood ratio is P of A 2 complement given D, over P of A 2 complement given D complement, which is 0.10 over 0.95, which is 2 over 19. It is less than 1: a missing flag lowers the odds.
+[[slnc 500]]
+Click. The odds are 1 over 49 times 18 times 2 over 19, which is 36 over 931, and P of D given A 1 A 2 complement equals 36 over 36 plus 931, which is 36 over 967, approximately 0.0372.
+[[slnc 500]]
+Click. Two flags make default likely, about 87 percent. One flag that the other model does not confirm leaves only about 4 percent, not far above the 2 percent we started from.
+[[slnc 500]]
+Note for you, a common mistake: forgetting to convert the odds back. Odds of 324 over 49 are larger than 1; they are not a probability.
+[[slnc 1200]]
+
+Summary for Session 1. Slide 21.
+[[slnc 600]]
+P of E complement equals 1 minus P of E; P of E union F equals P of E, plus P of F, minus P of E F; and P of E F complement equals P of E minus P of E F. Fill the Venn diagram from the inside out. Equally likely outcomes: P of E is the size of E over the size of omega; at least one means use the complement. P of E given F equals P of E F over P of F: F is the new sample space. The multiplication rule: multiply along a path of a tree. Total probability: add the paths that end in E. Bayes' formula: one path divided by all of them. Odds: new odds equal old odds times the likelihood ratio. Rare events and imperfect signals: most alarms are false.
+[[slnc 500]]
+If you remember one picture from this session, let it be the tree: multiply along the paths, add the paths you need, and divide when you know something.
+[[slnc 500]]
+Every exercise of today is in the study guide on the course website, with a detailed, step-by-step solution. The Exercises page there has more problems for self-study.
+[[slnc 500]]
+Note for you: end of Session 1. Announce the exact restart time after the short break, for example, we continue at a given time, in ten minutes, and leave the tree of the early-warning model on the board: early in Session 2 comes the generalized Bayes formula, which is the same tree with more branches.
+[[slnc 2000]]
+
+Session 2. Independence and random variables.
+[[slnc 1200]]
+
+Recap of Session 1. Slides 22 and 23.
+[[slnc 600]]
+Note for you: slide 22, the Session 2 title. Just click through. Slide 23 is the recap. Let the students settle; ask the recap questions and really wait for the answers.
+[[slnc 500]]
+Welcome back. Before we go on, let's collect the tools of the first session, because we will use every one of them in the next ninety minutes.
+[[slnc 500]]
+Probabilities of combined events: the union and the complement. P of E union F equals P of E, plus P of F, minus P of E F, and P of E complement equals 1 minus P of E.
+[[slnc 500]]
+Ask the class: why do we subtract P of E F in the first formula?
+[[slnc 800]]
+The outcomes in both events are counted once in P of E and once more in P of F.
+[[slnc 500]]
+Conditional probability: if we know that F has happened, F becomes the new sample space, and only the part E F of E counts. P of E given F equals P of E F over P of F, so P of E F equals P of F times P of E given F. The second form is the multiplication rule: in a tree we multiply along a path.
+[[slnc 500]]
+With two hypotheses, F and F complement, we drew a tree. The law of total probability adds the paths that end in E; Bayes' formula takes one of these paths and divides it by all of them. And in odds form: new odds equal old odds times the likelihood ratio.
+[[slnc 500]]
+Ask the class: in the early-warning model of Exercise 9.15, what was the surprising lesson?
+[[slnc 800]]
+When the event is rare and the signal is imperfect, most alarms are false alarms.
+[[slnc 500]]
+Now three new things. First, more than two hypotheses: the same tree, just with more branches. Second, independent events: when does knowing one event not change the chances of another? And third, random variables: numbers that depend on chance, with their distribution, expected value and standard deviation. That last part is where finance really starts: payoffs, profits and losses are random variables.
+[[slnc 1200]]
+
+The generalized Bayes formula. Slide 24.
+[[slnc 600]]
+In Session 1 we had two hypotheses: F or F complement. Often there are more: a loan can be in one of three rating classes, an economy can be in boom, normal times or recession. What we need is a partition.
+[[slnc 500]]
+F 1 up to F n is a partition of omega if the events are mutually exclusive and exactly one of them occurs.
+[[slnc 500]]
+Tiny example: roll a die, and let F 1 be 1 and 2, F 2 be 3 and 4, and F 3 be 5 and 6. Whatever we roll, exactly one of these three events occurs. F and F complement form the simplest partition, with n equal to 2.
+[[slnc 500]]
+Ask the class: is 1, 2, 3; then 3, 4, 5; then 6 alone, a partition?
+[[slnc 800]]
+No: the first two overlap, a 3 is in both.
+[[slnc 500]]
+If E is any event, then E is cut into pieces by the partition: E F 1, E F 2, and so on, up to E F n. These pieces are mutually exclusive, so their probabilities add up, and each piece is a path of the tree: P of E F i equals P of E given F i, times P of F i.
+[[slnc 400]]
+On the board: P of E equals the sum, from i equals 1 to n, of P of E given F i, times P of F i. And P of F j given E equals P of E given F j times P of F j, divided by the sum, from i equals 1 to n, of P of E given F i times P of F i.
+[[slnc 500]]
+The first is the law of total probability, the second the generalized Bayes formula. In words, exactly as before: add the paths that end in E; and Bayes is one path divided by all of them. The only change is that the tree now has n branches instead of 2.
+[[slnc 500]]
+Tiny example, on the board. We have three boxes. Box 1 contains only red balls, box 2 is half red and half blue, box 3 contains only blue balls. We pick a box at random and draw a ball; let R be the event that the ball is red. P of R equals one third times 1, plus one third times one half, plus one third times 0, which is one half. The ball is red. Which box did it come from? P of box 1 given R equals one third over one half, which is two thirds. P of box 2 given R equals one sixth over one half, which is one third. And P of box 3 given R is 0.
+[[slnc 500]]
+Ask the class: why is box 1 now twice as likely as box 2?
+[[slnc 800]]
+Box 1 produces red balls twice as often; before the draw, all three boxes were equally likely.
+[[slnc 500]]
+Note for you: point at the tree on the slide: one path to E for each F i. The posterior probabilities P of F j given E always add up to 1; tell them to use this as a check.
+[[slnc 1200]]
+
+Exercise 9.21. Defaults by rating class, a finance example. Slides 25 to 27.
+[[slnc 600]]
+A bank's loan portfolio is split into three rating classes: 50 percent of the loans are rated A, 30 percent are rated B and 20 percent are rated C. Within one year a loan defaults with probability 0.01 if it is rated A, 0.03 if it is rated B and 0.08 if it is rated C. A loan is chosen at random. Part a: what is the probability that the loan defaults within the year? Part b: the loan has defaulted. What is the probability that it was rated A, B and C, respectively? Part c: the loan has not defaulted. What is the probability that it was rated C?
+[[slnc 800]]
+Note for you: show only the statement and give them three minutes to name the events, draw the tree and try part a. Walk around; most students write P of D equals 0.08 somewhere. That is the trap of part b.
+[[slnc 500]]
+Ask the class: what are the hypotheses here, and what is the evidence?
+[[slnc 800]]
+The hypotheses are the rating classes; the evidence is default or no default.
+[[slnc 500]]
+Name the events first. A, B, C: the loan is rated A, B, C. D: the loan defaults.
+[[slnc 500]]
+A, B and C form a partition: every loan is in exactly one class.
+[[slnc 400]]
+On the board, the data, sorted. P of A is 0.5, P of B is 0.3, P of C is 0.2. P of D given A is 0.01, P of D given B is 0.03, P of D given C is 0.08.
+[[slnc 500]]
+Notice that the default probabilities are conditional: 0.08 is the chance of default for a loan rated C, not for any loan.
+[[slnc 500]]
+Now the tree: the first level is the rating class, with 0.5, 0.3 and 0.2. The second level is default or not. The no-default branches are the complements: 0.99, 0.97, 0.92.
+[[slnc 400]]
+On the board: draw the tree; at the end of every path write the product of the probabilities along it: 0.005 and 0.495; 0.009 and 0.291; 0.016 and 0.184.
+[[slnc 500]]
+Ask the class: what should the six numbers at the end add up to?
+[[slnc 800]]
+To 1: they are all the possible outcomes.
+[[slnc 500]]
+Part a. Next slide. A path: multiply. For example, P of D A equals P of D given A times P of A, which is 0.5 times 0.01, which is 0.005. The three paths that end in D are mutually exclusive, so we add them: P of D equals 0.5 times 0.01, plus 0.3 times 0.03, plus 0.2 times 0.08, which is 0.005 plus 0.009 plus 0.016, which is 0.03. So 3 percent of the loans default. This is a weighted average of the three default rates, with the class shares as weights; that is why it lies between 0.01 and 0.08.
+[[slnc 500]]
+Part b. Bayes: one path ending in D, divided by all of P of D. P of A given D equals P of D given A times P of A, over P of D, which is 0.005 over 0.03, which is one sixth, approximately 0.167.
+[[slnc 400]]
+Ask the class: who can do the other two?
+[[slnc 800]]
+B: 0.009 over 0.03, which is 0.3. C: 0.016 over 0.03, which is 8 over 15, approximately 0.533.
+[[slnc 400]]
+So P of B given D equals 0.009 over 0.03, which is 0.3, and P of C given D equals 0.016 over 0.03, which is 8 over 15, approximately 0.533. Check: 0.167 plus 0.3 plus 0.533 is 1. A defaulted loan was rated A, B or C.
+[[slnc 500]]
+Note for you, a common mistake: answering 0.08 for P of C given D. Write the two numbers next to each other on the board: P of D given C, 0.08, is the default rate of a C loan; P of C given D, approximately 0.533, is the share of C loans among the defaulted ones.
+[[slnc 500]]
+Part c. Last slide of the exercise. Same idea, but now the paths that end in D complement. First the denominator, by the complement: P of D complement equals 1 minus 0.03, which is 0.97. The path through C to D complement: P of D complement given C, times P of C, which is 0.92 times 0.2, which is 0.184. So P of C given D complement equals P of D complement given C times P of C, over P of D complement, which is 0.184 over 0.97, approximately 0.190.
+[[slnc 500]]
+Ask the class: why is this so close to the prior P of C, 0.2?
+[[slnc 800]]
+Almost every loan survives the year, so no default tells us very little.
+[[slnc 500]]
+The lesson: class C is only 20 percent of the loans, but it gives more than half, 53 percent, of the defaults. Class A is half of the loans, but gives only one sixth of the defaults.
+[[slnc 1200]]
+
+Independent events. Slide 28.
+[[slnc 600]]
+Usually, knowing that F has happened changes the probability of E: that was the whole point of conditional probability. Sometimes, however, it does not change anything. Then we call the events independent.
+[[slnc 500]]
+E and F are independent if P of E F equals P of E times P of F.
+[[slnc 500]]
+Why this formula? If P of F is greater than 0, divide both sides by P of F: P of E given F, which is P of E F over P of F, equals P of E. So knowing F does not change the chances of E. We use the product form as the definition because it is symmetric in E and F, and it also works when P of F equals 0.
+[[slnc 500]]
+Tiny example. Roll a fair die. Let E be 2, 4, 6, even, and F be 1 and 2, at most 2. Then E F is just the 2, and P of E F is one sixth, while P of E times P of F is one half times one third, which is one sixth. Equal: E and F are independent. Indeed, among 1 and 2 half of the numbers are even, just as among all six numbers.
+[[slnc 500]]
+Ask the class: and with G equal to 1, 2, 3, at most 3?
+[[slnc 800]]
+E G is just the 2, and P of E G is one sixth, but P of E times P of G is one half times one half, which is one quarter: not independent. Among 1, 2, 3 only one number is even.
+[[slnc 500]]
+Independence is a property of the numbers, not of the story: you check the equation.
+[[slnc 500]]
+If E and F are independent, then E and F complement are independent too: if knowing that F happened tells us nothing about E, then knowing that F did not happen tells us nothing either.
+[[slnc 500]]
+Three events E, F, G are independent if all four product rules hold: P of E F equals P of E times P of F; P of E G equals P of E times P of G; P of F G equals P of F times P of G; and P of E F G equals P of E times P of F times P of G. Doesn't the last one follow from the first three? No: the next exercise gives an example where it fails.
+[[slnc 500]]
+Ask the class: two events are mutually exclusive, each with positive probability. Can they be independent?
+[[slnc 800]]
+No: if one occurs, the other cannot, so P of E F is 0, while P of E times P of F is greater than 0.
+[[slnc 500]]
+Note for you: students very often confuse mutually exclusive with independent. Say it explicitly: mutually exclusive events are strongly dependent; knowing one tells you the other did not happen.
+[[slnc 500]]
+The most useful consequence: n independent trials, each a success with probability p. At least one success is the complement of no success at all, and for independent trials we multiply: P of at least one success equals 1 minus the quantity 1 minus p, to the power n. For example, three tosses of a fair coin: P of at least one head equals 1 minus one half cubed, which is seven eighths.
+[[slnc 1200]]
+
+Exercise 9.26. Pairwise but not mutually independent. Slides 29 and 30.
+[[slnc 600]]
+Two fair coins are tossed. Let A be the event that the first coin shows heads, B the event that the second coin shows heads, and C the event that the two coins show the same side. Part a: are A and B independent? A and C? B and C? Part b: are A, B, C mutually independent? Part c: explain in words why knowing two of the events tells you everything about the third.
+[[slnc 800]]
+Note for you: give them two minutes for part a: list omega and the three events as sets, then check the three product rules. Most students guess that A and C are dependent; let them find out that they are not.
+[[slnc 500]]
+Four equally likely outcomes, each with probability one quarter: omega consists of heads heads, heads tails, tails heads, and tails tails. The first letter is the first coin.
+[[slnc 500]]
+Ask the class: write A, B and C as sets.
+[[slnc 800]]
+A is heads heads and heads tails. B is heads heads and tails heads. C is heads heads and tails tails.
+[[slnc 500]]
+Each contains two of the four outcomes, so P of A, P of B and P of C are all one half.
+[[slnc 400]]
+On the board: the table from the slide. The rows are the outcomes, and a dot means that the event of the column occurs. Heads heads has a dot under A, B and C. Heads tails has a dot only under A. Tails heads only under B. Tails tails only under C.
+[[slnc 500]]
+Part a. Look at the table: the only outcome that is in two columns at once is heads heads. So every pair has the same intersection: A B, A C and B C are all just heads heads, with probability one quarter. And every product of two probabilities is one half times one half, which is one quarter. So P of A B equals P of A times P of B, P of A C equals P of A times P of C, and P of B C equals P of B times P of C. Every pair is independent: the events are pairwise independent.
+[[slnc 500]]
+Ask the class: A and B are clearly independent: two separate coins. But why are A and C independent?
+[[slnc 800]]
+If the first coin is heads, same side means the second coin is heads too, which still has probability one half: P of C given A is one half, which is P of C.
+[[slnc 500]]
+Part b. Next slide. For three events we need all four equations. The first three hold by part a. The fourth: all three events occur only at heads heads, so A B C is just heads heads, and P of A B C is one quarter, but P of A times P of B times P of C is one half times one half times one half, which is one eighth. One quarter is not equal to one eighth, so A, B, C are not independent.
+[[slnc 500]]
+Part c. If A and B both occur, the outcome is heads heads, so C occurs for sure: P of C given A B equals 1, which is not equal to one half, the value of P of C. One coin alone says nothing about same side; two of the events together decide the third.
+[[slnc 500]]
+The moral: pairwise independence is not enough. For three events, check all four equations.
+[[slnc 1200]]
+
+Exercise 9.27. Bond defaults: independent or not? A finance example. Slides 31 to 33.
+[[slnc 600]]
+Two bonds; D i is the event that bond i defaults within a year, and P of D 1 equals P of D 2 equals 0.05. Find the probability that at least one defaults, which is when a first-to-default swap pays, and the probability that both default, which is when a second-to-default swap pays: a, if the defaults are independent; b, if P of D 1 D 2 equals 0.02, because the issuers depend on the same economy. Part c: in case b, what is P of D 2 given D 1? Compare it with P of D 2. Part d: 10 bonds default independently, each with probability 0.05. What is the probability of at least one default?
+[[slnc 800]]
+Note for you: give them three minutes for parts a and b. Before they start, make sure they translate the two swaps into events; this is the first reveal of the slide.
+[[slnc 500]]
+Ask the class: which event makes the first-to-default swap pay, and which the second-to-default swap?
+[[slnc 800]]
+At least one default: D 1 union D 2. Both default: D 1 D 2.
+[[slnc 500]]
+For the union we always have inclusion-exclusion: P of D 1 union D 2 equals P of D 1, plus P of D 2, minus P of D 1 D 2. So in every case the key number is P of D 1 D 2.
+[[slnc 500]]
+Part a. Independent: the probability of both is the product. P of D 1 D 2 equals P of D 1 times P of D 2, which is 0.05 times 0.05, which is 0.0025. And P of D 1 union D 2 equals 0.05 plus 0.05 minus 0.0025, which is 0.0975.
+[[slnc 500]]
+Check with the complement. No default is D 1 complement D 2 complement, by De Morgan, and the complements of independent events are independent, each with probability 0.95. So P of D 1 union D 2 equals 1 minus 0.95 squared, which is 1 minus 0.9025, which is 0.0975.
+[[slnc 500]]
+Part b. Next slide. Now the two issuers depend on the same economy, and P of D 1 D 2 equals 0.02 is given.
+[[slnc 500]]
+Ask the class: can we multiply 0.05 times 0.05 here?
+[[slnc 800]]
+No: the product rule holds only for independent events.
+[[slnc 500]]
+0.02 is 8 times as large as 0.0025. The union is again inclusion-exclusion: P of D 1 union D 2 equals 0.05 plus 0.05 minus 0.02, which is 0.08.
+[[slnc 500]]
+Part c. The definition of conditional probability: P of D 2 given D 1 equals P of D 1 D 2 over P of D 1, which is 0.02 over 0.05, which is 0.4. 0.4 is not equal to 0.05, the value of P of D 2: the defaults are not independent. Once bond 1 has defaulted, probably because the economy is in trouble, bond 2 defaults with probability 0.4 instead of 0.05. This is positive dependence.
+[[slnc 500]]
+Part d. Last slide. Back to independence, but now with 10 bonds.
+[[slnc 500]]
+Ask the class: how would you compute at least one default for 10 bonds?
+[[slnc 800]]
+Not with inclusion-exclusion: far too many terms. Complement: at least one default is the opposite of all 10 bonds survive.
+[[slnc 500]]
+Each bond survives with probability 0.95; the bonds are independent, so we multiply. P of no default equals 0.95 to the power 10, approximately 0.599, and P of at least one default equals 1 minus 0.95 to the power 10, approximately 0.401. This is the formula 1 minus the quantity 1 minus p, to the power n, from the theory slide.
+[[slnc 500]]
+Each bond is fairly safe, but with 10 of them a first-to-default swap pays with probability about 40 percent.
+[[slnc 400]]
+On the board, the comparison table for two bonds. Independent: at least one, 0.0975; both, 0.0025. Same economy: at least one, 0.08; both, 0.02.
+[[slnc 500]]
+Lesson: positive dependence makes at least one slightly less likely, but both much more likely. The defaults come together, so they overlap more.
+[[slnc 1200]]
+
+Discrete random variables. Slide 34.
+[[slnc 600]]
+Until now we asked whether an event happens. In finance we usually ask how much: how much do we win, how much does the portfolio lose. For that we need random variables.
+[[slnc 500]]
+A random variable X assigns a number to every outcome. It is discrete if it takes finitely or countably many values.
+[[slnc 500]]
+Tiny example. Toss two fair coins, so omega consists of heads heads, heads tails, tails heads, and tails tails, and let X be the number of heads. Then X of heads heads is 2, X of heads tails and X of tails heads are 1, and X of tails tails is 0. So X is not random in a mysterious way: it is just a function on omega, and the randomness comes from the outcome.
+[[slnc 500]]
+The probability mass function, pmf for short, gives the probability of each value: p of x equals P of X equals x. It is never negative, and the values add up to 1.
+[[slnc 400]]
+On the board, for the two coins: p of 0 is one quarter, p of 1 is one half, and p of 2 is one quarter.
+[[slnc 500]]
+Ask the class: why is p of 1 one half?
+[[slnc 800]]
+Two outcomes, heads tails and tails heads, give one head: two quarters.
+[[slnc 500]]
+The distribution function adds up the pmf from the left: F of x equals P of X less than or equal to x, which is the sum of p of y over all y less than or equal to x. For the two coins: F of x is 0 for x less than 0, then one quarter from 0, then one quarter plus one half, which is three quarters, from 1, and 1 from 2 on.
+[[slnc 500]]
+So F is a step function. It jumps by p of x at every value x, it is constant in between, and it rises from 0 to 1.
+[[slnc 500]]
+Note for you: point at the graph on the slide. There p of 1 is one quarter, p of 2 is one half, and p of 3 and p of 4 are one eighth each. Stress the dots: at a jump the filled dot is on the upper step, because F of x, which is P of X less than or equal to x, already includes p of x. This is the most common mistake in the sketch of the urn exercise.
+[[slnc 500]]
+Ask the class: on the slide's graph, what is F of 2, and what is F of 2.5?
+[[slnc 800]]
+Both are three quarters: F of 2 includes p of 2, and there is no value between 2 and 2.5.
+[[slnc 500]]
+From F we can read off interval probabilities: P of a less than X less than or equal to b equals F of b minus F of a, and P of X greater than a equals 1 minus F of a. For example, on the slide, P of 1 less than X less than or equal to 3 equals F of 3 minus F of 1, which is seven eighths minus one quarter, which is five eighths, and that is p of 2 plus p of 3, one half plus one eighth. Watch the inequalities: a itself is not included, b is.
+[[slnc 1200]]
+
+Exercise 9.32. A game with an urn. Slides 35 to 37.
+[[slnc 600]]
+Two balls are drawn without replacement from an urn with 8 white, 4 black and 2 orange balls. Each black ball wins 2 euros, each white ball loses 1 euro, and an orange ball gives nothing. X is the net winnings. Find: a, the pmf of X; b, the distribution function F of x, which is P of X less than or equal to x, with a sketch; c, P of X greater than 0, and F of 1; d, E of X, the variance of X, and the standard deviation of X.
+[[slnc 800]]
+Note for you: the longest exercise of the day. Let them work in pairs on part a for four minutes. Hint if they are stuck: list the possible color pairs first. Then go through the slides reveal by reveal.
+[[slnc 500]]
+Ask the class: how many balls are in the urn, and how many pairs can we draw?
+[[slnc 800]]
+8 plus 4 plus 2, which is 14 balls; the order does not matter, so 14 choose 2, which is 91 pairs.
+[[slnc 500]]
+Part a. All 91 pairs are equally likely. We list the possible pairs by their colors and count each kind.
+[[slnc 400]]
+Two white: 8 choose 2, which is 28. White and orange: 8 times 2, which is 16; one of the 8 white balls and one of the 2 orange ones. Two orange: 1. White and black: 8 times 4, which is 32. Black and orange: 4 times 2, which is 8. Two black: 4 choose 2, which is 6.
+[[slnc 400]]
+Check: 28 plus 16 plus 1 plus 32 plus 8 plus 6 is 91, so no pair is missing.
+[[slnc 500]]
+Ask the class: what is X for each color pair?
+[[slnc 800]]
+White white: minus 2. White orange: minus 1. Orange orange: 0. White black: minus 1 plus 2, which is 1. Black orange: 2. Black black: 4.
+[[slnc 500]]
+Different color pairs give different values, so each probability is the number of pairs divided by 91. The table of the pmf: X equals minus 2 with probability 28 over 91; minus 1 with 16 over 91; 0 with 1 over 91; 1 with 32 over 91; 2 with 8 over 91; and 4 with 6 over 91. Check: the probabilities add up to 91 over 91, which is 1.
+[[slnc 500]]
+Part b. Next slide. Add up the pmf from the left: 28; 28 plus 16, which is 44; 44 plus 1, which is 45; 45 plus 32, which is 77; 77 plus 8, which is 85; 85 plus 6, which is 91; all over 91.
+[[slnc 400]]
+On the board: F of x is 0 for x less than minus 2. It is 28 over 91 from minus 2 up to, but not including, minus 1. 44 over 91 from minus 1 up to 0. 45 over 91 from 0 up to 1. 77 over 91 from 1 up to 2. 85 over 91 from 2 up to 4. And 1 for x greater than or equal to 4. Then sketch the steps: a filled dot at the left end of every step, an open circle at the right end.
+[[slnc 500]]
+Ask the class: what is F of minus 2?
+[[slnc 800]]
+28 over 91: X less than or equal to minus 2 includes X equal to minus 2.
+[[slnc 500]]
+Part c. X greater than 0 is the complement of X less than or equal to 0: P of X greater than 0 equals 1 minus F of 0, which is 1 minus 45 over 91, which is 46 over 91, approximately 0.505. Directly: the positive values are 1, 2 and 4, so 32 plus 8 plus 6, over 91, which is 46 over 91. And F of 1, which is P of X less than or equal to 1, is 77 over 91, which is 11 over 13, approximately 0.846.
+[[slnc 500]]
+Note for you: if someone answers F of 1 equals 45 over 91: that is P of X less than 1. The value 1 itself belongs to F of 1.
+[[slnc 500]]
+Part d. Last slide. We have not defined the expected value yet; it comes properly on the next theory slide. But the idea is natural: each value times its probability, then add. E of X equals minus 2 times 28, plus minus 1 times 16, plus 0 times 1, plus 1 times 32, plus 2 times 8, plus 4 times 6, all over 91. That is minus 56, minus 16, plus 0, plus 32, plus 16, plus 24, over 91, which is 0. On average we neither win nor lose: a fair game.
+[[slnc 500]]
+The variance is the average squared distance of the values from the mean. The shortcut is: the variance of X equals E of X squared, minus the square of E of X. For E of X squared, square the values and keep the probabilities: E of X squared equals 4 times 28, plus 1 times 16, plus 0 times 1, plus 1 times 32, plus 4 times 8, plus 16 times 6, all over 91. That is 112 plus 16 plus 0 plus 32 plus 32 plus 96, over 91, which is 288 over 91.
+[[slnc 500]]
+The variance is in squared euros; its square root, the standard deviation of X, is back in euros. The variance of X equals 288 over 91 minus 0 squared, which is 288 over 91, approximately 3.165, and the standard deviation of X is the square root of 288 over 91, approximately 1.779 euros.
+[[slnc 500]]
+The game is fair, but risky: a typical deviation from 0 is about 1.78 euros.
+[[slnc 500]]
+Note for you: if you run late, do part d only for E of X, and leave the variance for the next slide, where the formula is introduced.
+[[slnc 1200]]
+
+Expected value, variance, standard deviation. Slide 38.
+[[slnc 600]]
+The expected value of X is the average of its values, weighted by their probabilities: E of X equals the sum, over all values x, of x times p of x. Think of it as the long-run average: if we play the game many times, the average winnings per game get close to E of X.
+[[slnc 500]]
+Tiny example, the two coins again: X is the number of heads, with probabilities one quarter, one half and one quarter for 0, 1 and 2. E of X equals 0 times one quarter, plus 1 times one half, plus 2 times one quarter, which is 1.
+[[slnc 500]]
+A function of X: apply the function to every value, keep the probabilities. E of g of X equals the sum, over all values x, of g of x times p of x. For example, E of X squared equals 0 times one quarter, plus 1 times one half, plus 4 times one quarter, which is 3 over 2. Note: 3 over 2 is not the square of E of X, which is 1. In general E of g of X is not g of E of X; we see a finance example of this in a minute.
+[[slnc 500]]
+There is one important exception: linear functions. E of a X plus b equals a times E of X, plus b. If every head pays 10 euros and the game costs 5 euros, the net gain is 10 X minus 5, and its expected value is 10 times 1 minus 5, which is 5 euros.
+[[slnc 500]]
+The expected value tells us the center; it says nothing about the spread. The variance is the expected squared distance from the mean, mu, which is E of X: the variance of X equals E of the quantity X minus mu, squared, which equals E of X squared minus the square of E of X.
+[[slnc 500]]
+For the coins, from the definition: 0 minus 1, squared, times one quarter, plus 1 minus 1, squared, times one half, plus 2 minus 1, squared, times one quarter, which is one half. With the shortcut: 3 over 2 minus 1 squared, which is one half. The same number; the shortcut is usually faster.
+[[slnc 500]]
+The variance is in squared units, squared euros, so we take the square root: the standard deviation of X is the square root of the variance of X. For the coins the standard deviation of X is the square root of one half, approximately 0.707.
+[[slnc 400]]
+On the board: the variance of a X plus b equals a squared times the variance of X, and the standard deviation of a X plus b equals the absolute value of a, times the standard deviation of X.
+[[slnc 500]]
+Ask the class: why does b disappear?
+[[slnc 800]]
+Adding a constant shifts every value and the mean by the same amount; the distances from the mean do not change.
+[[slnc 400]]
+Ask the class: why a squared?
+[[slnc 800]]
+Every distance from the mean is multiplied by a, and the variance squares the distances.
+[[slnc 500]]
+So for 10 X minus 5, the standard deviation is 10 times 0.707, approximately 7.07 euros.
+[[slnc 500]]
+In finance: E of X is the expected return or payoff, and the standard deviation of X measures the risk.
+[[slnc 1200]]
+
+Exercise 9.36. The payoff of a call option, a finance example. Slides 39 and 40.
+[[slnc 600]]
+The price of a stock in one year, S, is 80, 100, 120 or 140, with probabilities 0.2, 0.4, 0.3 and 0.1. Part a: find E of S, the variance of S, and the standard deviation of S. Part b: a call option with strike price 110 pays C, the maximum of S minus 110, and 0, in one year. Find the pmf of C, E of C, and the standard deviation of C. Part c: compare E of C with the maximum of E of S minus 110, and 0.
+[[slnc 800]]
+Note for you: explain the call option in two sentences before they start; that is the first paragraph below. Then give them three minutes for part a.
+[[slnc 500]]
+A quick word on the finance. A call option with strike price 110 gives you the right, but not the obligation, to buy the stock for 110 in one year. If the stock then costs more than 110, you buy at 110 and gain the difference; if it costs less, you simply do not use the option. So the payoff is C equals the maximum of S minus 110, and 0: never negative.
+[[slnc 500]]
+Part a. Each price times its probability, then add. E of S equals 80 times 0.2, plus 100 times 0.4, plus 120 times 0.3, plus 140 times 0.1, which is 16 plus 40 plus 36 plus 14, which is 106.
+[[slnc 400]]
+For the variance, first the mean of S squared: E of S squared equals 6,400 times 0.2, plus 10,000 times 0.4, plus 14,400 times 0.3, plus 19,600 times 0.1, which is 1,280 plus 4,000 plus 4,320 plus 1,960, which is 11,560. The variance of S equals E of S squared minus the square of E of S, which is 11,560 minus 106 squared, that is 11,560 minus 11,236, which is 324. And the standard deviation of S is the square root of 324, which is 18. The price is typically about 18 away from 106.
+[[slnc 500]]
+Part b. Next slide. C is a function of S: compute the payoff for each price.
+[[slnc 500]]
+Ask the class: what does the option pay if S is 80? 100? 120? 140?
+[[slnc 800]]
+0, 0, 10 and 30.
+[[slnc 500]]
+Two prices give C equals 0, so their probabilities add up: p C of 0 is 0.2 plus 0.4, which is 0.6; p C of 10 is 0.3; and p C of 30 is 0.1. E of C equals 0 times 0.6, plus 10 times 0.3, plus 30 times 0.1, which is 3 plus 3, which is 6. E of C squared equals 0, plus 100 times 0.3, plus 900 times 0.1, which is 120. The variance of C is 120 minus 6 squared, which is 84, and the standard deviation of C is the square root of 84, approximately 9.17.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: what do we get if we put the expected price into the payoff?
+[[slnc 800]]
+The maximum of 106 minus 110, and 0, which is 0.
+[[slnc 500]]
+But E of C is 6. The expected price is below the strike, so plugging in the average says the option is worthless. But the price is random: with probability 0.4 it ends above 110, and then the option pays; otherwise it pays 0, never a negative amount. So the average payoff is positive.
+[[slnc 500]]
+In general, E of g of X is not equal to g of E of X. Apply g first, then average: E of g of X equals the sum, over all values x, of g of x times p of x.
+[[slnc 1200]]
+
+Exercise 9.37. A simple trading strategy, a finance example. Slides 41 and 42.
+[[slnc 600]]
+A day-trading strategy gains 300 euros with probability 0.55 and loses 200 euros with probability 0.45 on a given day. Let X be the daily profit and loss, P and L, in euros. Part a: find E of X, the variance of X and the standard deviation of X. Part b: the trader doubles the position size, so the daily P and L becomes 2 X. Find its expectation and standard deviation. Part c: instead of part b, the broker charges a fixed fee of 20 euros per day, so the daily P and L becomes X minus 20. Find its expectation and standard deviation.
+[[slnc 800]]
+Note for you: two minutes for part a; then ask parts b and c before revealing them. They are one-line answers with the rules of slide 38.
+[[slnc 500]]
+Part a. The values of X: 300 with probability 0.55, and minus 200 with probability 0.45. A loss is a negative number. E of X equals 300 times 0.55, plus minus 200 times 0.45, which is 165 minus 90, which is 75. On average the strategy earns 75 euros a day.
+[[slnc 400]]
+For the variance, E of X squared first: E of X squared equals 300 squared times 0.55, plus minus 200, squared, times 0.45, which is 49,500 plus 18,000, which is 67,500. The variance of X equals E of X squared minus the square of E of X, which is 67,500 minus 75 squared, that is 67,500 minus 5,625, which is 61,875.
+[[slnc 500]]
+Next slide. 61,875 is in squared euros; back to euros: the standard deviation of X is the square root of 61,875, approximately 248.7 euros.
+[[slnc 500]]
+The typical deviation, about 249 euros, is much larger than the mean, 75 euros: on a single day the result is very uncertain.
+[[slnc 400]]
+On the board, the rules for a X plus b: E of a X plus b equals a times E of X, plus b, and the standard deviation of a X plus b equals the absolute value of a, times the standard deviation of X.
+[[slnc 500]]
+Part b.
+[[slnc 400]]
+Ask the class: the position is doubled: what are a and b?
+[[slnc 800]]
+a is 2 and b is 0.
+[[slnc 400]]
+E of 2 X equals 2 times 75, which is 150, and the standard deviation of 2 X equals 2 times the standard deviation of X, approximately 497.5.
+[[slnc 500]]
+Leverage doubles the expected profit, but it doubles the risk too.
+[[slnc 500]]
+Note for you, a common mistake: the variance of 2 X equals 2 times the variance of X. The variance is multiplied by 4, it is 247,500; only the standard deviation is doubled.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: a fixed fee of 20 euros: what are a and b?
+[[slnc 800]]
+a is 1 and b is minus 20.
+[[slnc 400]]
+E of X minus 20 equals 75 minus 20, which is 55, and the standard deviation of X minus 20 equals the standard deviation of X, approximately 248.7.
+[[slnc 500]]
+A constant shifts every outcome by the same amount: 280 and minus 220 instead of 300 and minus 200. The center moves, the spread does not change.
+[[slnc 1200]]
+
+Summary for Session 2. Slide 43.
+[[slnc 600]]
+A partition F 1 up to F n: P of E equals the sum, over i, of P of E given F i times P of F i, and the generalized Bayes formula gives P of F j given E: one path divided by all of them. Independence: P of E F equals P of E times P of F; for three events, all four product rules; pairwise independence is not enough. At least one in n independent trials: 1 minus the quantity 1 minus p, to the power n. The pmf, p of x, equals P of X equals x; the distribution function, F of x, equals P of X less than or equal to x, a step function. E of X is the sum of x times p of x; E of g of X is the sum of g of x times p of x, which is in general not g of E of X. The variance of X equals E of X squared minus the square of E of X; the variance of a X plus b equals a squared times the variance of X; and the standard deviation of X is the square root of the variance of X.
+[[slnc 500]]
+That was a long day: from probabilities of events, through conditional probability and Bayes, to independence and random variables. Next week we continue with random variables. Every exercise of today is in the study guide on the course website, with a detailed, step-by-step solution, and the Exercises page there has more problems on every topic of today for self-study. Thank you, and see you next week.
+[[slnc 500]]
+Note for you: if there is reserve time, let them start one of the self-study exercises on random variables in class, and walk around. Next week: start with a two-minute recap of the pmf, E of X and the variance of X, using the urn game of Exercise 9.32.
+[[slnc 1500]]
+End of the week 9 script.

@@ -1,0 +1,100 @@
+% ---
+% title: A fair or a two-headed coin
+% tags: bayes, odds
+% ---
+
+\begin{problem}
+	A gambler has two coins in his pocket: a fair coin and a two-headed coin
+	(heads on both sides). He picks one of them at random and flips it.
+	(a) The coin shows heads. What is the probability that it is the fair
+	coin? (b) He flips the same coin again, and it shows heads again. What is
+	the probability now that it is the fair coin? (c) He flips the same coin a
+	third time, and it shows tails. What is the probability now that it is the
+	fair coin? Solve (a) and (b) twice: with Bayes' formula and with odds.
+\end{problem}
+
+\begin{solution}
+	\idea Let $F$ be the event that he picked the fair coin; then $F^c$ is the
+	event that he picked the two-headed coin. Before any flip,
+	$P(F)=P(F^c)=\frac12$. Each flip is new information, and Bayes' formula
+	turns the old probability of $F$ into a new one.
+
+	\step{(a) Bayes' formula} Let $H_1$ be the event ``the first flip shows
+	heads''. We know the probability of heads for each coin: the fair coin
+	shows heads with probability $P(H_1\mid F)=\frac12$, the two-headed coin
+	always shows heads, so $P(H_1\mid F^c)=1$. The events $F$ and $F^c$ split
+	the sample space into two parts, so by Bayes' formula
+	\[
+		P(F\mid H_1)
+		=\frac{P(H_1\mid F)\,P(F)}{P(H_1\mid F)\,P(F)+P(H_1\mid F^c)\,P(F^c)}
+		=\frac{\frac12\cdot\frac12}{\frac12\cdot\frac12+1\cdot\frac12}
+		=\frac{\frac14}{\frac34}
+		=\frac13.
+	\]
+	Heads is more typical of the two-headed coin, so seeing heads makes the
+	fair coin less likely: its probability drops from $\frac12$ to $\frac13$.
+
+	\step{(a) Odds} The odds form of Bayes' formula says
+	\[
+		\underbrace{\frac{P(F\mid H_1)}{P(F^c\mid H_1)}}_{\text{new odds}}
+		=\underbrace{\frac{P(F)}{P(F^c)}}_{\text{prior odds}}\cdot
+		\underbrace{\frac{P(H_1\mid F)}{P(H_1\mid F^c)}}_{\text{likelihood ratio}}.
+	\]
+	The prior odds of the fair coin are $\frac{1/2}{1/2}=1$ (one to one). The
+	likelihood ratio of heads is $\frac{1/2}{1}=\frac12$. So the new odds are
+	$1\cdot\frac12=\frac12$, that is, $1:2$ for the fair coin. Odds of $1:2$
+	mean that the fair coin has $1$ chance out of $1+2=3$:
+	$P(F\mid H_1)=\frac{1/2}{1+1/2}=\frac13$, the same as before.
+
+	\step{(b) Bayes' formula} Let $H_2$ be the event ``the second flip shows
+	heads''. Given the coin, the two flips are independent. The fair coin shows
+	two heads with probability $P(H_1H_2\mid F)=\frac12\cdot\frac12=\frac14$;
+	the two-headed coin does so with probability $P(H_1H_2\mid F^c)=1$. Bayes'
+	formula with the original prior $\frac12$ gives
+	\[
+		P(F\mid H_1H_2)
+		=\frac{\frac14\cdot\frac12}{\frac14\cdot\frac12+1\cdot\frac12}
+		=\frac{\frac18}{\frac58}
+		=\frac15.
+	\]
+	The same result comes out step by step: after the first heads the
+	probability of the fair coin is $\frac13$ (from (a)). Use this as the new
+	prior for the second flip:
+	\[
+		\frac{\frac12\cdot\frac13}{\frac12\cdot\frac13+1\cdot\frac23}
+		=\frac{\frac16}{\frac56}
+		=\frac15.
+	\]
+
+	\step{(b) Odds} With odds the update is just one more multiplication. The
+	odds after the first heads were $\frac12$; the second heads has the same
+	likelihood ratio $\frac12$, so the new odds are
+	$\frac12\cdot\frac12=\frac14$, that is, $1:4$. Hence
+	$P(F\mid H_1H_2)=\frac{1/4}{1+1/4}=\frac15$.
+
+	\step{(c)} Let $T_3$ be the event ``the third flip shows tails''. The
+	two-headed coin can never show tails: $P(T_3\mid F^c\,H_1H_2)=0$. So after
+	a tail the two-headed coin is impossible, and the coin must be the fair
+	one. With Bayes' formula (prior $\frac15$ from (b), fair coin gives tails
+	with probability $\frac12$):
+	\[
+		P(F\mid H_1H_2T_3)
+		=\frac{\frac12\cdot\frac15}{\frac12\cdot\frac15+0\cdot\frac45}
+		=\frac{\frac1{10}}{\frac1{10}}
+		=1.
+	\]
+
+	\begin{answer}
+		(a) $\dfrac13$ \quad (b) $\dfrac15$ \quad (c) $1$
+	\end{answer}
+
+	\begin{remark}
+		Each observation updates the probability: every heads multiplies the
+		odds of the fair coin by $\frac12$, so after $n$ heads in a row the odds
+		are $\frac1{2^n}$, and the fair coin becomes less and less likely, but
+		never impossible. One decisive observation settles the question: a
+		single tail rules out the two-headed coin completely. With odds, the
+		likelihood ratio of tails is $\frac{1/2}{0}$, which is not a number;
+		this is the odds way of saying that the evidence is conclusive.
+	\end{remark}
+\end{solution}

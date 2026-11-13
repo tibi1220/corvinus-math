@@ -1,0 +1,174 @@
+% ---
+% title: Two warning signals: odds
+% tags: finance, odds, bayes
+% ---
+
+\begin{problem}
+	\begin{context}
+		Banks rarely rely on a single warning signal. A borrower may be flagged
+		by a model built on account data, by a model built on market data, or by
+		a loan officer. Each signal changes the bank's view of the borrower, and
+		the odds form of Bayes' formula is a convenient way to combine them: each
+		new signal multiplies the odds of default by its likelihood ratio.
+	\end{context}
+	This continues Exercise~\exref{early-warning}: 2\% of a bank's borrowers
+	default within a year, and an early-warning model flags 90\% of the
+	borrowers who will default and 5\% of those who will not.
+
+	(a) Compute the probability that a flagged borrower defaults using odds:
+	find the prior odds of default, the likelihood ratio of a flag, the
+	posterior odds and the posterior probability.
+
+	(b) A second model has the same rates (it flags 90\% of the defaulters and
+	5\% of the non-defaulters), and its errors are independent of the first
+	model's errors, given whether the borrower defaults. Both models flag a
+	borrower. What is the probability that she defaults?
+
+	(c) The first model flags a borrower, but the second does not. What is the
+	probability that she defaults?
+\end{problem}
+
+\begin{slideproblem}
+	2\% of borrowers default ($D$). A model flags ($A_1$) 90\% of the
+	defaulters and 5\% of the non-defaulters (Exercise~\exref{early-warning}).
+	(a) Using odds, find $P(D\mid A_1)$. (b) A second model with the same
+	rates, whose errors are independent of the first one's given $D$ or $D^c$,
+	also flags her ($A_2$). Find $P(D\mid A_1A_2)$. (c) The first model flags
+	her, the second does not. Find $P(D\mid A_1A_2^c)$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol \textbf{Rule:} new odds $=$ old odds $\times$ likelihood ratio;
+	\ odds $o$ $\leftrightarrow$ probability $o/(1+o)$.
+	\pause
+	\begin{itemize}
+		\item Prior odds of default:
+		      $\dfrac{P(D)}{P(D^c)}=\dfrac{0.02}{0.98}=\dfrac{1}{49}$
+		      \quad (1 defaulter for every 49 good borrowers).
+		      \pause
+		\item Likelihood ratio of a flag:
+		      $\dfrac{P(A_1\mid D)}{P(A_1\mid D^c)}=\dfrac{0.90}{0.05}=18$
+		      \quad (a flag is 18 times as likely for a defaulter).
+		      \pause
+		\item (a) Posterior odds: $\dfrac{1}{49}\cdot18=\dfrac{18}{49}$,
+		      \quad so
+		      $P(D\mid A_1)=\dfrac{18}{18+49}=\dfrac{18}{67}\approx0.269$.
+	\end{itemize}
+	\pause
+	Same as in Exercise~\exref{early-warning}: among the flagged, 18
+	defaulters for every 49 good borrowers ($180$ vs.\ $490$).
+\end{slides}
+
+\begin{slides}
+	\small
+	Second model: $A_2$, same rates; given $D$ (and given $D^c$) the two flags
+	are conditionally independent, so the likelihood ratios \alert{multiply}.
+	\pause
+	\begin{itemize}
+		\item (b) Both flag: likelihood ratio $18\cdot18=324$.
+		      \[ \text{odds}=\frac{1}{49}\cdot18\cdot18=\frac{324}{49},\qquad
+			      P(D\mid A_1A_2)=\frac{324}{324+49}=\frac{324}{373}\approx0.869. \]
+		      \pause
+		\item (c) Likelihood ratio of \emph{no} flag:
+		      $\dfrac{P(A_2^c\mid D)}{P(A_2^c\mid D^c)}=\dfrac{0.10}{0.95}
+			      =\dfrac{2}{19}$ \quad (it lowers the odds).
+		      \pause
+		      \[ \text{odds}=\frac{1}{49}\cdot18\cdot\frac{2}{19}=\frac{36}{931},
+			      \qquad P(D\mid A_1A_2^c)=\frac{36}{36+931}=\frac{36}{967}
+			      \approx0.0372. \]
+		      \pause
+	\end{itemize}
+	\alert{Interpretation:} two flags make default likely (87\%); one flag
+	that the other model does not confirm leaves only about 4\%.
+\end{slides}
+
+\begin{solution}
+	\idea Use Bayes' formula in odds form: the new odds of default are the old
+	odds times the likelihood ratio of the observed signal. With two signals
+	that are independent given $D$ and given $D^c$, multiply by both likelihood
+	ratios. At the end, turn odds $o$ back into the probability $o/(1+o)$.
+
+	Notation: $D$ = ``the borrower defaults'', $A_1$ = ``the first model flags
+	her'', $A_2$ = ``the second model flags her''. Given: $P(D)=0.02$,
+	$P(A_i\mid D)=0.90$, $P(A_i\mid D^c)=0.05$ for $i=1,2$.
+
+	\step{The rule.} For an event $H$ and evidence $E$, Bayes' formula in odds
+	form reads
+	\[ \frac{P(H\mid E)}{P(H^c\mid E)}=\frac{P(H)}{P(H^c)}\cdot
+		\frac{P(E\mid H)}{P(E\mid H^c)}. \]
+	The first fraction on the right is the \emph{prior odds} (before the
+	evidence), the second is the \emph{likelihood ratio} of the evidence: how
+	many times more likely the evidence is if $H$ is true than if it is false.
+	If the odds are $o$, the probability is $o/(1+o)$: odds of $o$ to $1$ mean
+	$o$ ``yes'' cases for every 1 ``no'' case, out of $o+1$ cases.
+
+	\step{(a) Prior odds.} Before any signal,
+	\[ \frac{P(D)}{P(D^c)}=\frac{0.02}{0.98}=\frac{1}{49}. \]
+	For every borrower who defaults, there are 49 who do not.
+
+	\step{(a) Likelihood ratio of a flag.}
+	\[ \frac{P(A_1\mid D)}{P(A_1\mid D^c)}=\frac{0.90}{0.05}=18. \]
+	A flag is 18 times as likely for a borrower who will default as for one who
+	will not. This is strong evidence for default.
+
+	\step{(a) Posterior odds and probability.} Multiply:
+	\[ \frac{P(D\mid A_1)}{P(D^c\mid A_1)}=\frac{1}{49}\cdot18=\frac{18}{49}. \]
+	So among the flagged borrowers there are 18 defaulters for every 49 good
+	borrowers, and
+	\[ P(D\mid A_1)=\frac{18/49}{1+18/49}=\frac{18}{18+49}=\frac{18}{67}
+		\approx0.269. \]
+	This agrees with Exercise~\exref{early-warning}: of 10\,000 borrowers,
+	$180$ defaulters and $490$ good borrowers are flagged, and
+	$180:490=18:49$. Even though the likelihood ratio is large, the prior odds
+	are so small that the posterior odds are still below 1.
+
+	\step{(b) Two flags.} The two models' errors are independent given whether
+	the borrower defaults. This means
+	\[ \begin{aligned}
+			P(A_1A_2\mid D)   & =P(A_1\mid D)\,P(A_2\mid D)=0.90\cdot0.90,       \\
+			P(A_1A_2\mid D^c) & =P(A_1\mid D^c)\,P(A_2\mid D^c)=0.05\cdot0.05.
+		\end{aligned} \]
+	So the likelihood ratio of ``both flag'' is the product of the two
+	likelihood ratios:
+	\[ \frac{P(A_1A_2\mid D)}{P(A_1A_2\mid D^c)}=\frac{0.90}{0.05}\cdot
+		\frac{0.90}{0.05}=18\cdot18=324. \]
+	The posterior odds are
+	\[ \frac{1}{49}\cdot324=\frac{324}{49}, \]
+	and the probability is
+	\[ P(D\mid A_1A_2)=\frac{324}{324+49}=\frac{324}{373}\approx0.869. \]
+	Equivalently: start from the odds $18/49$ after the first flag and multiply
+	by $18$ again for the second flag.
+
+	\step{(c) A flag and no flag.} The second model does \emph{not} flag the
+	borrower. This evidence has its own likelihood ratio, computed from the
+	complements:
+	\[ \frac{P(A_2^c\mid D)}{P(A_2^c\mid D^c)}=\frac{1-0.90}{1-0.05}
+		=\frac{0.10}{0.95}=\frac{2}{19}. \]
+	It is less than 1: a missing flag is more likely for a good borrower, so it
+	lowers the odds of default. By the same independence (now applied to $A_1$
+	and $A_2^c$, which is also allowed, because complements of conditionally
+	independent events are conditionally independent too), the likelihood
+	ratios multiply:
+	\[ \frac{1}{49}\cdot18\cdot\frac{2}{19}=\frac{36}{931}, \]
+	and
+	\[ P(D\mid A_1A_2^c)=\frac{36}{36+931}=\frac{36}{967}\approx0.0372. \]
+	\begin{answer}
+		(a) prior odds $1/49$, likelihood ratio $18$, posterior odds $18/49$,
+		$P(D\mid A_1)=18/67\approx0.269$ \quad (b) $324/373\approx0.869$ \quad
+		(c) $36/967\approx0.0372$
+	\end{answer}
+	\begin{remark}
+		The odds form makes combining signals easy: each independent signal
+		multiplies the odds by its likelihood ratio, in any order. The ratios
+		$18$ and $2/19$ in (c) largely cancel ($18\cdot2/19\approx1.9$), so the
+		borrower ends up only a little above the prior: 3.7\% instead of 2\%.
+
+		\textbf{Common mistake:} multiplying \emph{probabilities} instead of
+		odds, or forgetting to convert the final odds back. Odds of $324/49$
+		are not a probability (they are larger than 1); the probability is
+		$324/373$.
+	\end{remark}
+\end{solution}

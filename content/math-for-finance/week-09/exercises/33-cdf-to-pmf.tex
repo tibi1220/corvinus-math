@@ -1,0 +1,121 @@
+% ---
+% title: From the distribution function to the probabilities
+% tags: distribution-function, random-variables, expectation
+% ---
+
+\begin{problem}
+	The distribution function of a random variable $X$ is
+	\[
+		F(x)=\begin{cases}
+			0           & x<0,          \\[2pt]
+			\dfrac12    & 0\le x<1,     \\[6pt]
+			\dfrac35    & 1\le x<2,     \\[6pt]
+			\dfrac45    & 2\le x<3,     \\[6pt]
+			\dfrac{9}{10} & 3\le x<3.5, \\[6pt]
+			1           & x\ge 3.5.
+		\end{cases}
+	\]
+	(a) Find the probability mass function of $X$.
+	(b) Find $P(X\le 2)$, $P(X>1)$, $P(1<X\le 3)$ and $P(X<2)$.
+	(c) Find $\E[X]$.
+\end{problem}
+
+\begin{solution}
+	\idea $F(x)=P(X\le x)$ adds up the probabilities of all values up to $x$.
+	So $F$ is a step function: it jumps exactly at the possible values of $X$,
+	and the size of each jump is the probability of that value. Interval
+	probabilities are differences of values of $F$.
+
+	\step{The graph.} Draw $F$ first. A filled dot marks the value of $F$ at a
+	jump point (the upper level: $F$ is continuous from the right), an open
+	dot the level that is \emph{not} taken there.
+	\begin{center}
+		\begin{tikzpicture}[x=1.6cm,y=5.5cm,>=stealth]
+			\draw[->] (-0.8,0)--(4.4,0) node[right] {$x$};
+			\draw[->] (0,-0.05)--(0,1.15) node[above] {$F(x)$};
+			\foreach \x in {1,2,3} \draw (\x,0.02)--(\x,-0.02) node[below] {$\x$};
+			\draw (3.5,0.02)--(3.5,-0.02) node[below] {$3.5$};
+			\node[below left] at (0,0) {$0$};
+			\foreach \y in {0.5,0.6,0.8,0.9,1}
+			\draw[gray!60,dashed] (0,\y)--(4.3,\y);
+			\foreach \y/\l/\s in {0.5/\tfrac12/0,0.6/\tfrac35/0.45,0.8/\tfrac45/0,0.9/\tfrac9{10}/0.45,1/1/0}
+			\node[left,xshift=-\s cm] at (0,\y) {\footnotesize$\l$};
+			\draw[navy,very thick] (-0.8,0)--(0,0);
+			\draw[navy,very thick] (0,0.5)--(1,0.5);
+			\draw[navy,very thick] (1,0.6)--(2,0.6);
+			\draw[navy,very thick] (2,0.8)--(3,0.8);
+			\draw[navy,very thick] (3,0.9)--(3.5,0.9);
+			\draw[navy,very thick] (3.5,1)--(4.3,1);
+			\foreach \x/\lo/\hi in {0/0/0.5,1/0.5/0.6,2/0.6/0.8,3/0.8/0.9,3.5/0.9/1}
+			{
+				\draw[teal,thick,densely dotted] (\x,\lo)--(\x,\hi);
+				\fill[white] (\x,\lo) circle (2.2pt);
+				\draw[navy,thick] (\x,\lo) circle (2.2pt);
+				\fill[navy] (\x,\hi) circle (2.2pt);
+			}
+		\end{tikzpicture}
+	\end{center}
+	The dotted teal segments are the jumps.
+
+	\step{(a)} $F$ jumps at $0$, $1$, $2$, $3$ and $3.5$, so these are the
+	possible values of $X$. Between two jump points $F$ is flat: there is no
+	probability there. The probability of each value is the height of the jump,
+	\[ p(a)=F(a)-(\text{value of $F$ just left of $a$}). \]
+	\[
+		\begin{aligned}
+			p(0)   & =\tfrac12-0=\tfrac12,                     &
+			p(1)   & =\tfrac35-\tfrac12=\tfrac{1}{10},         &
+			p(2)   & =\tfrac45-\tfrac35=\tfrac15,                \\[4pt]
+			p(3)   & =\tfrac{9}{10}-\tfrac45=\tfrac{1}{10},    &
+			p(3.5) & =1-\tfrac{9}{10}=\tfrac{1}{10}.
+		\end{aligned}
+	\]
+	Check: $\frac12+\frac1{10}+\frac15+\frac1{10}+\frac1{10}
+		=\frac{5+1+2+1+1}{10}=1$, as it must be.
+
+	\step{(b)} Read each probability off $F$, paying attention to whether the
+	endpoint is included.
+	\begin{itemize}
+		\item $P(X\le 2)$ is, by definition, $F(2)=\frac45$. (The value $2$ is
+		      included, so we take the upper level at the jump.)
+		\item ``$X>1$'' is the complement of ``$X\le1$'':
+		      $P(X>1)=1-F(1)=1-\frac35=\frac25$.
+		\item ``$X\le3$'' splits into the two disjoint events ``$X\le1$'' and
+		      ``$1<X\le3$''. So
+		      \[ F(3)=F(1)+P(1<X\le3), \]
+		      and
+		      \[ P(1<X\le3)=F(3)-F(1)=\frac{9}{10}-\frac35=\frac{3}{10}. \]
+		      Check with the pmf: the values in $(1,3]$ are $2$ and $3$, and
+		      $p(2)+p(3)=\frac15+\frac1{10}=\frac3{10}$.
+		\item $P(X<2)$: the inequality is strict, so the value $2$ is
+		      \emph{not} included. $X<2$ means $X=0$ or $X=1$, i.e.\ $X\le1$:
+		      \[ P(X<2)=F(1)=\frac35. \]
+		      In the graph this is the level just to the left of $2$ (the open
+		      dot), not $F(2)$.
+	\end{itemize}
+
+	\step{(c)} The expectation is the sum of value $\times$ probability over
+	all possible values:
+	\[
+		\E[X]=0\cdot\tfrac12+1\cdot\tfrac1{10}+2\cdot\tfrac15+3\cdot\tfrac1{10}
+		+3.5\cdot\tfrac1{10}=0+0.1+0.4+0.3+0.35=1.15.
+	\]
+
+	\begin{answer}
+		(a) $p(0)=\frac12$, $p(1)=\frac1{10}$, $p(2)=\frac15$,
+		$p(3)=\frac1{10}$, $p(3.5)=\frac1{10}$ \quad
+		(b) $P(X\le2)=\frac45$, $P(X>1)=\frac25$, $P(1<X\le3)=\frac3{10}$,
+		$P(X<2)=\frac35$ \quad
+		(c) $\E[X]=1.15$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} treating $P(X<2)$ and $P(X\le2)$ as equal.
+		For a discrete random variable they differ by the probability of the
+		endpoint: $P(X\le a)=P(X<a)+p(a)$. Here
+		\[ P(X\le2)-P(X<2)=\frac45-\frac35=\frac15=p(2). \]
+		The two are equal only
+		when $a$ is not a possible value of $X$ (where $F$ does not jump).
+		The same care is needed for intervals: $P(a<X\le b)=F(b)-F(a)$, but
+		$P(a\le X\le b)=F(b)-F(a)+p(a)$.
+	\end{remark}
+\end{solution}

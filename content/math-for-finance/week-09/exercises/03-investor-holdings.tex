@@ -1,0 +1,105 @@
+% ---
+% title: What investors hold
+% tags: finance, inclusion-exclusion, venn-diagrams
+% ---
+
+\begin{problem}
+	\begin{context}
+		A \emph{stock} (share) is a small piece of ownership in a company. A
+		\emph{bond} is a loan to a company or a government that pays interest. An
+		\emph{investment fund unit} is a share in a fund that pools the money of
+		many investors and invests it in many stocks or bonds at once.
+	\end{context}
+	Among the retail clients of a brokerage, a randomly chosen client holds
+	stocks ($S$) with probability $0.45$, bonds ($B$) with probability $0.35$
+	and investment fund units ($F$) with probability $0.30$. The client holds
+	both stocks and bonds with probability $0.15$, stocks and fund units with
+	probability $0.12$, bonds and fund units with probability $0.10$, and all
+	three with probability $0.05$. Find the probability that the client holds
+	(a) at least one of the three; (b) none of them; (c) exactly one of them;
+	(d) stocks but no bonds.
+\end{problem}
+
+\begin{solution}
+	\idea ``At least one'' is the union $S\cup B\cup F$, so we use
+	inclusion--exclusion for three events. For ``exactly one'' we fill the
+	Venn diagram with probabilities, from the inside out.
+
+	\step{(a)} ``At least one of the three'' means the event $S\cup B\cup F$.
+	For three events, inclusion--exclusion says
+	\[ P(S\cup B\cup F)=P(S)+P(B)+P(F)-P(SB)-P(SF)-P(BF)+P(SBF). \]
+	Why this form? Adding the three probabilities counts a client with two
+	products twice, so we subtract the pairs. But then a client with all three
+	products was added three times and subtracted three times, so we add
+	$P(SBF)$ back once. With the numbers:
+	\[ P(S\cup B\cup F)=0.45+0.35+0.30-0.15-0.12-0.10+0.05=0.78. \]
+
+	\step{(b)} ``None'' is the complement of ``at least one'':
+	\[ P\big((S\cup B\cup F)^c\big)=1-P(S\cup B\cup F)=1-0.78=0.22. \]
+
+	\step{(c)} Here inclusion--exclusion alone is not enough: we need the
+	probability of each region of the Venn diagram. We fill it from the inside
+	out, because the inner regions are needed to compute the outer ones.
+
+	\begin{minipage}{.54\linewidth}
+		\begin{itemize}[nosep]
+			\item center (all three): $P(SBF)=0.05$;
+			\item $S$ and $B$ only (no $F$): $0.15-0.05=0.10$;
+			\item $S$ and $F$ only: $0.12-0.05=0.07$;
+			\item $B$ and $F$ only: $0.10-0.05=0.05$;
+			\item only $S$: $0.45-0.10-0.07-0.05=0.23$;
+			\item only $B$: $0.35-0.10-0.05-0.05=0.15$;
+			\item only $F$: $0.30-0.07-0.05-0.05=0.13$;
+			\item outside all circles: $0.22$ (part (b)).
+		\end{itemize}
+	\end{minipage}\hfill
+	\begin{minipage}{.42\linewidth}
+		\centering
+		\begin{tikzpicture}[scale=.8]
+			\draw[thick] (-2.2,-3.6) rectangle (4,2.1);
+			\draw[navy,thick] (0,0) circle (1.5);
+			\draw[teal,thick] (1.8,0) circle (1.5);
+			\draw[gold,thick] (.9,-1.5) circle (1.5);
+			\node at (-.7,.3) {\small 0.23};
+			\node at (2.5,.3) {\small 0.15};
+			\node at (.9,-2.3) {\small 0.13};
+			\node at (.9,.6) {\scriptsize 0.10};
+			\node at (-.02,-1.0) {\scriptsize 0.07};
+			\node at (1.82,-1.0) {\scriptsize 0.05};
+			\node at (.9,-.4) {\scriptsize 0.05};
+			\node at (3.3,-3.1) {\small 0.22};
+			\node[navy] at (-1.4,1.4) {$S$};
+			\node[teal] at (3.2,1.4) {$B$};
+			\node[gold] at (-.9,-2.7) {$F$};
+			\node at (.9,1.8) {\small $\Om$};
+		\end{tikzpicture}
+	\end{minipage}
+
+	\medskip
+	Each pairwise probability, e.g.\ $P(SB)=0.15$, contains the center
+	$0.05$ as well, so we subtract it to get the part with exactly those two
+	products. Each circle, e.g.\ $S$, consists of four regions: only $S$, the
+	two ``exactly two'' regions inside $S$, and the center. So only $S$ is what
+	remains of $0.45$. The same in one formula:
+	\[ P(\text{only }S)=P(S)-P(SB)-P(SF)+P(SBF)=0.45-0.15-0.12+0.05=0.23. \]
+	``Exactly one'' consists of the three outer regions, which are mutually
+	exclusive, so their probabilities add up:
+	\[ P(\text{exactly one})=0.23+0.15+0.13=0.51. \]
+	Check: all eight regions together give
+	$0.23+0.15+0.13+0.10+0.07+0.05+0.05+0.22=1$.
+
+	\step{(d)} ``Stocks but no bonds'' is the event $SB^c$. The event $S$ splits
+	into two mutually exclusive parts: $SB$ (stocks and bonds) and $SB^c$
+	(stocks, no bonds). Hence $P(S)=P(SB)+P(SB^c)$, and
+	\[ P(SB^c)=P(S)-P(SB)=0.45-0.15=0.30. \]
+	In the diagram: the two regions of $S$ outside $B$, $0.23+0.07=0.30$.
+	\begin{answer}
+		(a) $0.78$ \quad (b) $0.22$ \quad (c) $0.51$ \quad (d) $0.30$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing ``only $S$'' as
+		$0.45-0.15-0.12=0.18$. This subtracts the clients with all three
+		products twice (they are in $SB$ and in $SF$), so $P(SBF)=0.05$ must be
+		added back once. Filling the diagram from the center avoids this mistake.
+	\end{remark}
+\end{solution}
