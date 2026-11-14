@@ -10,7 +10,7 @@
 \clearpage
 
 %======================================================================
-\section{Part 1: Probability and Bayes' formula}
+\section{Part 1: Probability, Bayes' formula, independence}
 %======================================================================
 
 \subsection*{Probability rules}
@@ -173,9 +173,9 @@
 \begin{key}{Total probability and Bayes' formula}
 	\setlength{\parskip}{5pt}
 	\textbf{Setting.} $F$ is a hypothesis (a hidden cause: ``the borrower
-	will default'') and $E$ is an observation (``the model flags her''). We
-	know how likely $F$ is, $P(F)$, and how likely the observation is under
-	each hypothesis, $P(E\mid F)$ and $P(E\mid F^c)$.
+	will default'') and $E$ is an observation (``the model flags the
+	borrower''). We know how likely $F$ is, $P(F)$, and how likely the
+	observation is under each hypothesis, $P(E\mid F)$ and $P(E\mid F^c)$.
 
 	\begin{center}
 		\begin{tikzpicture}[x=1cm,y=1cm,
@@ -199,17 +199,65 @@
 			\node[font=\small,right] at (5.9,-1.95) {$P(F^cE^c)$};
 		\end{tikzpicture}
 	\end{center}
-	\textbf{Law of total probability.} $E$ happens either together with $F$
-	or together with $F^c$; these two pieces are mutually exclusive, and each
-	is given by the multiplication rule (multiply along the path):
-	\[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
-	In the tree: \emph{add the paths that end in $E$.}
+	\textbf{Bayes' formula.} Having seen $E$, how likely is $F$? This turns
+	the condition around. By the definition of conditional probability,
+	$P(F\mid E)=P(FE)/P(E)$, and by the multiplication rule
+	$P(FE)=P(E\mid F)\,P(F)$. So
+	\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}. \]
 
-	\textbf{Bayes' formula.} Now turn the condition around: having seen $E$,
-	how likely is $F$? By the definition, $P(F\mid E)=P(FE)/P(E)$:
+	\textbf{The denominator: law of total probability.} $E$ happens either
+	together with $F$ or together with $F^c$; these two pieces are mutually
+	exclusive, and each is given by the multiplication rule (multiply along
+	the path):
+	\[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
+	In the tree: \emph{add the paths that end in $E$.} Substituting this into
+	Bayes' formula gives the fully written-out version
 	\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}
 		{P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c)}, \]
 	\emph{one path divided by all the paths that end in $E$.}
+
+	\noindent\begin{minipage}{\linewidth}
+	\textbf{Why it works: a picture.} Draw the sample space $\Om$ as a gray
+	box, the hypothesis $F$ as a blue diamond and the observation $E$ as a
+	light blue circle. Where they overlap, both happen: the red piece is
+	$FE$.
+	\begin{center}
+		\bayesvenn
+	\end{center}
+	\end{minipage}
+	\begin{enumerate}[nosep,label=\arabic*.]
+		\item \emph{The probability of an event is its share of $\Om$.} $P(F)$
+		      is the part of the gray box covered by the diamond, $P(E)$ the
+		      part covered by the circle.
+		\item \emph{A conditional probability is a share inside the shape we
+			      know has happened.} If we know that $E$ happened, the outcome
+		      is somewhere in the circle, and the rest of the box no longer
+		      counts. $F$ also happens exactly in the red piece, so $P(F\mid E)$
+		      is the red piece's share of the circle. In the same way,
+		      $P(E\mid F)$ is the red piece's share of the diamond. Each
+		      probability is a fraction of two shapes:
+		      \begin{center}
+			      \bayesshares
+		      \end{center}
+		\item \emph{Plug these fractions into the right-hand side of Bayes'
+			      formula.} In the numerator, ${P(E\mid F)\,P(F)}$ is ``red over
+		      diamond'' times ``diamond over box'': the diamond cancels, and
+		      what is left is ``red over box'', which is $P(FE)$ (the
+		      multiplication rule). The denominator $P(E)$ is ``circle over
+		      box''. Dividing, the box cancels too:
+		      \begin{center}
+			      \bayesproof
+		      \end{center}
+		\item \emph{Read what is left.} ``Red over circle'' is the share of the
+		      overlap within the circle, and that is $P(F\mid E)$ by the
+		      definition. So the right-hand side equals $P(F\mid E)$: this is
+		      Bayes' formula.
+	\end{enumerate}
+	Another way to say the same: the red piece can be measured from two
+	sides, ``first $F$, then $E$ within $F$'' or ``first $E$, then $F$ within
+	$E$'':
+	\[ P(FE)=P(F)\,P(E\mid F)=P(E)\,P(F\mid E). \]
+	Dividing by $P(E)$ gives Bayes' formula.
 
 	\textbf{Tiny example.} A fair coin chooses one of two urns. Urn~1 holds
 	3 red and 1 white ball, urn~2 holds 1 red and 3 white. One ball is drawn.
@@ -276,11 +324,7 @@
 
 \studyexercise{early-warning-odds}
 
-\clearpage
-%======================================================================
-\section{Part 2: Independence and random variables}
-%======================================================================
-
+%----------------------------------------------------------------------
 \subsection*{The generalized Bayes formula}
 \addcontentsline{toc}{subsection}{The generalized Bayes formula}
 
@@ -292,12 +336,14 @@
 	classes of a loan or the three possible machines that made an item are
 	others.
 
-	\textbf{Total probability.} $E$ is cut into the mutually exclusive pieces
-	$EF_1,\dots,EF_n$, and $P(EF_i)=P(E\mid F_i)P(F_i)$, so
-	\[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
-	\textbf{Generalized Bayes formula.} For each $j$,
-	$P(F_j\mid E)=P(EF_j)/P(E)$:
-	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
+	\textbf{Generalized Bayes formula.} For each $j$, by the definition and
+	the multiplication rule, $P(F_j\mid E)=P(F_jE)/P(E)$ with
+	$P(F_jE)=P(E\mid F_j)\,P(F_j)$:
+	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}. \]
+	\textbf{The denominator: total probability.} $E$ is cut into the mutually
+	exclusive pieces $F_1E,\dots,F_nE$, and $P(F_iE)=P(E\mid F_i)P(F_i)$, so
+	\[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i),\qquad\text{and so}\qquad
+		P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
 		{\sum_{i=1}^n P(E\mid F_i)\,P(F_i)}. \]
 	In the tree, the root now has $n$ branches $F_1,\dots,F_n$, each followed
 	by a branch to $E$: add the $n$ paths to get $P(E)$, and divide one path
@@ -367,7 +413,11 @@
 \studyexercise{pairwise-not-mutual}
 \studyexercise{bond-defaults}
 
-%----------------------------------------------------------------------
+\clearpage
+%======================================================================
+\section{Part 2: Random variables and named distributions}
+%======================================================================
+
 \subsection*{Discrete random variables}
 \addcontentsline{toc}{subsection}{Discrete random variables}
 
@@ -485,6 +535,134 @@
 \studyexercise{trading-strategy}
 
 %----------------------------------------------------------------------
+\subsection*{Bernoulli distribution}
+\addcontentsline{toc}{subsection}{Bernoulli distribution}
+
+\begin{key}{The Bernoulli distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Definition.} An experiment with two outcomes, success
+	(probability $p$) and failure (probability $1-p$): a loan defaults or not,
+	a call ends in a sale or not, a coin shows heads or not. Let $X=1$ on
+	success and $X=0$ on failure. Then $X$ has the Bernoulli distribution with
+	parameter $p$:
+	\[ P(X=1)=p,\qquad P(X=0)=1-p. \]
+
+	\textbf{Mean and variance.} $\E[X]=1\cdot p+0\cdot(1-p)=p$. Since $X$
+	only takes the values 0 and 1, $X^2=X$, so $\E[X^2]=p$ and
+	\[ \Var(X)=\E[X^2]-(\E[X])^2=p-p^2=p(1-p). \]
+
+	\textbf{Indicator.} $X$ ``indicates'' whether the event happened, so
+	$\E[X]=P(\text{event})$. The variance $p(1-p)$ is largest at $p=\frac12$
+	(most uncertain) and is 0 when $p=0$ or $p=1$ (no uncertainty).
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{Binomial distribution}
+\addcontentsline{toc}{subsection}{Binomial distribution}
+
+\begin{key}{The binomial distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Definition.} Repeat a Bernoulli trial $n$ times,
+	\emph{independently}, with the \emph{same} success probability $p$ each
+	time. The number of successes $X$ has the binomial distribution with
+	parameters $(n,p)$:
+	\[ P(X=i)=\binom{n}{i}p^i(1-p)^{n-i},\qquad i=0,1,\dots,n. \]
+	Why: one particular order with $i$ successes and $n-i$ failures has
+	probability $p^i(1-p)^{n-i}$ (multiply, by independence), and there are
+	$\binom{n}{i}$ ways to choose which $i$ of the $n$ trials are the
+	successes. These orders are mutually exclusive, so their probabilities
+	add up.
+
+	\textbf{Mean and variance.} $X$ is the sum of $n$ independent Bernoulli
+	variables, one for each trial, so $\E[X]=np$ and $\Var(X)=np(1-p)$: $n$
+	times the mean and the variance of one trial. With $n=1$ the binomial is
+	the Bernoulli distribution.
+
+	\textbf{When to use it.} Check three things: a fixed number $n$ of
+	trials, independent trials, the same $p$ in each. ``At least one'' or
+	``at least two'' is usually faster with the complement:
+	$P(X\ge1)=1-(1-p)^n$.
+\end{key}
+
+\studyexercise{loan-defaults}
+
+%----------------------------------------------------------------------
+\subsection*{Poisson distribution}
+\addcontentsline{toc}{subsection}{Poisson distribution}
+
+\begin{key}{The Poisson distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Definition.} $X$ has the Poisson distribution with parameter
+	$\lambda>0$ if
+	\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots \]
+	These add up to 1, because $\sum_{i\ge0}\lambda^i/i!=e^{\lambda}$. Its
+	mean and its variance are both $\lambda$.
+
+	\textbf{When to use it.} For the number of rare events in a fixed period
+	or area: insurance claims on a day, defaults in a year, typing errors on
+	a page. $\lambda$ is the average number of events.
+
+	\textbf{Poisson approximation of the binomial.} If $n$ is large and $p$
+	is small (so that $\lambda=np$ is moderate), then the binomial $(n,p)$
+	probabilities are close to the Poisson probabilities with $\lambda=np$.
+	This is why counts of rare events are Poisson: many independent chances,
+	each with a small probability.
+\end{key}
+
+\studyexercise{claims-per-day}
+
+%----------------------------------------------------------------------
+\subsection*{Geometric distribution}
+\addcontentsline{toc}{subsection}{Geometric distribution}
+
+\begin{key}{The geometric distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Definition.} Repeat independent trials, each a success with
+	probability $p$, until the first success. The number of the trial on
+	which it happens, $X$, has the geometric distribution with parameter $p$:
+	\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]
+	The first $n-1$ trials fail, then the $n$th succeeds; multiply by
+	independence.
+
+	\textbf{Tail.} $X>n$ means that the first $n$ trials all fail, so
+	$P(X>n)=(1-p)^n$.
+
+	\textbf{Mean and variance.} $\E[X]=1/p$ and $\Var(X)=(1-p)/p^2$. With
+	$p=1/6$ (waiting for a six) we need 6 rolls on average.
+
+	\textbf{Memoryless property.} $P(X>n+k\mid X>n)=(1-p)^{n+k}/(1-p)^n
+	=(1-p)^k=P(X>k)$: after $n$ failures, the wait starts again from
+	scratch. A long run of failures does not make a success ``due''.
+\end{key}
+
+\studyexercise{first-sale}
+
+%----------------------------------------------------------------------
+\subsection*{Hypergeometric distribution}
+\addcontentsline{toc}{subsection}{Hypergeometric distribution}
+
+\begin{key}{The hypergeometric distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Definition.} A group has $N$ items, $m$ of which are special
+	(defective, erroneous, high-yield). We pick $n$ of them at random,
+	\emph{without replacement}. The number of special items picked, $X$, has
+	the hypergeometric distribution:
+	\[ P(X=i)=\frac{\binom{m}{i}\binom{N-m}{n-i}}{\binom{N}{n}}. \]
+	Why: all $\binom{N}{n}$ samples are equally likely; a favorable one
+	takes $i$ of the $m$ special items and $n-i$ of the $N-m$ others.
+
+	\textbf{Mean.} $\E[X]=nm/N$: the sample size times the share of special
+	items.
+
+	\textbf{Not binomial.} Without replacement, each pick changes what is
+	left, so the picks are not independent. If $N$ is much larger than $n$,
+	this hardly matters, and $X$ is close to binomial with parameters
+	$(n,\,m/N)$.
+\end{key}
+
+\studyexercise{audit-sample}
+
+%----------------------------------------------------------------------
 \subsection*{More practice}
 \addcontentsline{toc}{subsection}{More practice}
 
@@ -504,6 +682,10 @@ with a detailed solution.
 		Odds                                & \exref{prediction-market}, \exref{coin-updating}        \\
 		Generalized Bayes formula           & \exref{three-cooks}--\exref{lost-cards-kings}           \\
 		Independent events                  & \exref{shooting-contest}--\exref{reliability}           \\
-		Random variables, expected value    & \exref{cdf-to-pmf}--\exref{scratch-card}                \\\bottomrule
+		Random variables, expected value    & \exref{cdf-to-pmf}--\exref{scratch-card}                \\
+		Binomial distribution               & \exref{guessing-on-a-test}                              \\
+		Poisson distribution                & \exref{payment-errors}                                  \\
+		Geometric distribution              & \exref{waiting-for-a-six}                               \\
+		Hypergeometric distribution         & \exref{bonds-with-and-without-replacement}              \\\bottomrule
 	\end{tabular}
 \end{center}

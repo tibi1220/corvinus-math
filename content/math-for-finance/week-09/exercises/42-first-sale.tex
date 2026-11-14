@@ -1,0 +1,126 @@
+% ---
+% title: Calling clients until the first sale
+% tags: finance, geometric, expectation, variance
+% ---
+
+\begin{problem}
+	\begin{context}
+		A financial advisor calls potential clients one after another to sell
+		shares of an investment fund. Each call either ends in a sale (the client
+		buys) or not. We assume that every call ends in a sale with the same
+		probability, independently of the other calls.
+	\end{context}
+	Each call is a sale with probability $0.2$, independently of the other
+	calls. The advisor keeps calling until the first sale. Let $X$ be the number
+	of the call on which the first sale happens.
+	(a) What is the distribution of $X$, and what is its parameter?
+	(b) Find $P(X=3)$.
+	(c) Find $P(X>5)$, the probability that there is no sale in the first 5
+	calls.
+	(d) Find $\E[X]$ and $\SD(X)$.
+	(e) The first 5 calls gave no sale. What is the probability that the next
+	3 calls give no sale either? Compare with $P(X>3)$.
+\end{problem}
+
+\begin{slideproblem}
+	Each call of an advisor is a sale with probability $0.2$, independently.
+	$X$ = the number of the call with the first sale.
+	(a) Distribution of $X$ and its parameter? \ (b) $P(X=3)$ \
+	(c) $P(X>5)$ (no sale in the first 5 calls) \ (d) $\E[X]$, $\SD(X)$ \
+	(e) The first 5 calls gave no sale. Probability that the next 3 give no
+	sale either? Compare with $P(X>3)$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Independent trials, same success probability, we wait for the
+	\alert{first} success: $X$ is \alert{geometric} with $p=0.2$,
+	\[ P(X=n)=0.8^{\,n-1}\cdot0.2,\qquad n=1,2,\dots \]
+	\pause
+	(b) $P(X=3)=0.8^2\cdot0.2=0.128$ \ (two failures, then a sale).\\[1mm]
+	\pause
+	(c) $P(X>5)=0.8^5\approx0.3277$ \ (the first 5 calls all fail).
+\end{slides}
+
+\begin{slides}
+	\small
+	(d) Geometric with $p=0.2$:
+	\[ \E[X]=\frac1p=\frac1{0.2}=5,\qquad
+		\Var(X)=\frac{1-p}{p^2}=\frac{0.8}{0.04}=20,\qquad
+		\SD(X)=\sqrt{20}\approx4.472. \]
+	On average the first sale comes on the 5th call.
+	\pause
+	\medskip
+
+	(e) No sale in calls 6, 7, 8 given no sale in calls 1--5:
+	\[ P(X>8\mid X>5)=\frac{P(X>8)}{P(X>5)}
+		=\frac{0.8^8}{0.8^5}=0.8^3=0.512. \]
+	\pause
+	And $P(X>3)=0.8^3=0.512$: the same!\\[1mm]
+	\alert{Memoryless property:} after 5 failed calls the waiting starts
+	afresh; past failures do not make a sale ``due''.
+\end{slides}
+
+\begin{solution}
+	\idea The calls are independent trials with the same success probability
+	$p=0.2$, and $X$ counts the trials up to and including the first success.
+	This is exactly the setting of the geometric distribution, so every part is
+	one of its formulas.
+
+	\step{(a)} A ``success'' is a sale. The calls are independent and each one
+	is a success with the same probability $0.2$. The number of the trial on
+	which the first success happens is a geometric random variable, so $X$ is
+	geometric with parameter $p=0.2$. Its pmf is
+	\[ P(X=n)=(1-p)^{n-1}p=0.8^{\,n-1}\cdot0.2,\qquad n=1,2,3,\dots \]
+	The reason: $X=n$ means that the first $n-1$ calls all fail (each with
+	probability $0.8$) and call $n$ is a sale (probability $0.2$). The calls
+	are independent, so these probabilities multiply.
+
+	\step{(b)} $X=3$ means: no sale on call 1, no sale on call 2, sale on
+	call 3. So
+	\[ P(X=3)=0.8\cdot0.8\cdot0.2=0.8^2\cdot0.2=0.64\cdot0.2=0.128. \]
+
+	\step{(c)} $X>5$ means that the first sale comes after call 5, that is,
+	the first 5 calls are all failures. By independence,
+	\[ P(X>5)=0.8^5=0.32768\approx0.3277. \]
+	This is the formula $P(X>n)=(1-p)^n$. It is much shorter than adding up
+	$1-\bigl(P(X=1)+\dots+P(X=5)\bigr)$, and gives the same result.
+
+	\step{(d)} For a geometric random variable $\E[X]=1/p$ and
+	$\Var(X)=(1-p)/p^2$. With $p=0.2$:
+	\[ \E[X]=\frac{1}{0.2}=5,\qquad
+		\Var(X)=\frac{0.8}{0.2^2}=\frac{0.8}{0.04}=20,\qquad
+		\SD(X)=\sqrt{20}\approx4.472. \]
+	On average the first sale comes on the 5th call. This makes sense: one call
+	in five is a sale. The standard deviation is almost as large as the mean,
+	so the waiting time varies a lot.
+
+	\step{(e)} We know that the first 5 calls failed, that is, $X>5$. The next
+	3 calls (calls 6, 7, 8) also fail exactly when $X>8$. We need the
+	conditional probability $P(X>8\mid X>5)$. The event $X>8$ is contained in
+	$X>5$, so the intersection of the two events is just $X>8$, and
+	\[ P(X>8\mid X>5)=\frac{P(X>8)}{P(X>5)}=\frac{0.8^8}{0.8^5}=0.8^3=0.512. \]
+	On the other hand, $P(X>3)=0.8^3=0.512$ as well: the probability that the
+	first 3 calls give no sale. The two probabilities are equal.
+	This is the \emph{memoryless property} of the geometric distribution: the
+	past failures do not change the chances of the future calls, because the
+	calls are independent. After 5 failed calls the advisor is in the same
+	position as before the first call.
+	\begin{answer}
+		(a) geometric with $p=0.2$ \quad
+		(b) $P(X=3)=0.8^2\cdot0.2=0.128$ \quad
+		(c) $P(X>5)=0.8^5\approx0.3277$ \quad
+		(d) $\E[X]=5$, $\Var(X)=20$, $\SD(X)=\sqrt{20}\approx4.472$ \quad
+		(e) $P(X>8\mid X>5)=0.8^3=0.512=P(X>3)$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} believing that after many failed calls a sale
+		is ``due'', so that the next calls are more likely to succeed. With
+		independent calls this is false: the memoryless property in (e) shows
+		that the past failures change nothing. Another mistake is to use
+		$P(X=n)=(1-p)^n p$: if the first sale is on call $n$, only the $n-1$
+		calls before it fail.
+	\end{remark}
+\end{solution}

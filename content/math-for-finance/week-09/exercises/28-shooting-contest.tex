@@ -7,7 +7,7 @@
 	Alice and Bob shoot at a target in turns, and the first one to hit the
 	target wins. Alice hits with probability $1/2$, Bob hits with probability
 	$1/3$, and every shot is independent of all the other shots. Since Bob is
-	the weaker shooter, Alice lets him shoot first. So the order of the shots
+	the weaker shooter, Alice lets Bob shoot first. So the order of the shots
 	is Bob, Alice, Bob, Alice, and so on.
 	(a) What is the probability that Bob wins?
 	(b) Is the contest fair, that is, do both players win with the same
@@ -15,7 +15,7 @@
 \end{problem}
 
 \begin{solution}
-	\idea Split the event ``Bob wins'' by the shot on which he wins. These
+	\idea Split the event ``Bob wins'' by the shot on which Bob wins. These
 	events are mutually exclusive, so their probabilities add up. Each of them
 	is an intersection of independent shots, so its probability is a product.
 	The sum is a geometric series.
@@ -25,19 +25,19 @@
 		=\frac23\cdot\frac12=\frac13, \]
 	because the two shots are independent.
 
-	Bob wins with his first shot if he hits it: probability $1/3$.
+	Bob wins with the first shot if it hits: probability $1/3$.
 
-	Bob wins with his second shot if he misses, Alice misses, and then Bob
+	Bob wins with the second shot if Bob misses, Alice misses, and then Bob
 	hits. The three shots are independent, so we multiply:
 	\[ \frac23\cdot\frac12\cdot\frac13=\frac13\cdot\frac13. \]
 
-	In general, Bob wins with his $(k+1)$-th shot ($k=0,1,2,\dots$) if the
+	In general, Bob wins with the $(k+1)$-th shot ($k=0,1,2,\dots$) if the
 	first $k$ rounds are complete misses and then Bob hits. By independence
 	this has probability
 	\[ \Bigl(\frac23\cdot\frac12\Bigr)^{k}\cdot\frac13
 		=\Bigl(\frac13\Bigr)^{k}\cdot\frac13. \]
 
-	``Bob wins with his first shot'', ``Bob wins with his second shot'', and so
+	``Bob wins with the first shot'', ``Bob wins with the second shot'', and so
 	on cannot happen together (the contest stops at the first hit), so these
 	events are mutually exclusive. The probability of their union is the sum
 	of their probabilities. This is a geometric series with first term $1/3$
@@ -68,7 +68,7 @@
 		shoots first matters too. If Alice shot first, the same method would
 		give
 		\[ P(\text{Alice wins})=\frac{1/2}{1-1/3}=\frac34, \]
-		so she would be a clear favorite. Letting Bob start balances the game
+		so Alice would be a clear favorite. Letting Bob start balances the game
 		exactly.
 	\end{remark}
 \end{solution}

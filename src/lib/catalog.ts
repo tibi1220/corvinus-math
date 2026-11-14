@@ -148,9 +148,9 @@ export const courses: CourseInfo[] = [
       },
       {
         number: 9,
-        title: 'Probability, conditional probability, random variables',
+        title: 'Probability, random variables, named discrete distributions',
         topics:
-          'Probability of unions and intersections, equally likely outcomes, conditional probability, Bayes’ formula, odds, independent events, discrete random variables, distribution function, expected value, standard deviation',
+          'Probability of unions and intersections, equally likely outcomes, conditional probability, Bayes’ formula, odds, independent events, discrete random variables, distribution function, expected value, standard deviation, Bernoulli, binomial, Poisson, geometric and hypergeometric distributions',
         documents: weekDocuments(),
       },
       {

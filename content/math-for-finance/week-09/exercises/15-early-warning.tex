@@ -5,7 +5,7 @@
 
 \begin{problem}
 	\begin{context}
-		A borrower \emph{defaults} when she fails to repay her loan as agreed.
+		A borrower \emph{defaults} when they fail to repay their loan as agreed.
 		Banks run \emph{early-warning systems}: statistical models that flag
 		borrowers who look likely to default, so that the bank can act in time
 		(call the client, restructure the loan, stop new lending). No model is
@@ -16,8 +16,10 @@
 	flags $90\%$ of the borrowers who will default, but also $5\%$ of those who
 	will not default.
 	(a) What fraction of all borrowers is flagged?
-	(b) A borrower is flagged. What is the probability that she defaults?
-	(c) A borrower is not flagged. What is the probability that she defaults?
+	(b) A borrower is flagged. What is the probability that the borrower
+	defaults?
+	(c) A borrower is not flagged. What is the probability that the borrower
+	defaults?
 \end{problem}
 
 \begin{slideproblem}
@@ -119,8 +121,9 @@
 	probability; the probability of default \emph{given} the flag comes from
 	Bayes' formula, which turns the condition around.
 
-	\step{Events and data.} Pick a borrower at random. Let $D$ = ``she
-	defaults within a year'' and $A$ = ``the model flags her'' (A for alarm).
+	\step{Events and data.} Pick a borrower at random. Let $D$ = ``the
+	borrower defaults within a year'' and $A$ = ``the model flags the
+	borrower'' (A for alarm).
 	The percentages in the statement are:
 	\begin{itemize}[nosep]
 		\item $P(D)=0.02$, so $P(D^c)=0.98$;
@@ -174,9 +177,10 @@
 	\step{(b)} We know that the borrower is flagged, so the condition is $A$.
 	By the definition of conditional probability,
 	$P(D\mid A)=P(DA)/P(A)$. The numerator is the path ``defaults and is
-	flagged'' of the tree, the denominator is the result of (a). This is
+	flagged'' of the tree, $P(DA)=P(A\mid D)P(D)=0.018$; the denominator
+	$P(A)=0.067$ is the result of (a), found by total probability. This is
 	Bayes' formula:
-	\[ P(D\mid A)=\frac{P(A\mid D)P(D)}{P(A\mid D)P(D)+P(A\mid D^c)P(D^c)}
+	\[ P(D\mid A)=\frac{P(A\mid D)P(D)}{P(A)}
 		=\frac{0.018}{0.067}=\frac{18}{67}\approx0.269. \]
 
 	\step{(c)} Now the condition is $A^c$, ``not flagged''. By the complement

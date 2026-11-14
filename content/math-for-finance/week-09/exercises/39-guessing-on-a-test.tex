@@ -1,0 +1,85 @@
+% ---
+% title: Guessing on a multiple-choice test
+% tags: binomial, expectation, variance
+% ---
+
+\begin{problem}
+	A test has 8 questions. Each question has 4 options, and exactly one of
+	them is correct. A student guesses every answer at random, independently
+	of the other questions. Let $X$ be the number of correct answers.
+	(a) What is the distribution of $X$? Give its parameters.
+	(b) Find $P(X=2)$.
+	(c) To pass the test, at least 5 correct answers are needed. Find the
+	probability that the student passes.
+	(d) Find $\E[X]$ and $\SD(X)$.
+\end{problem}
+
+\begin{solution}
+	\idea Each question is a trial with two outcomes (correct or not), the
+	trials are independent, and the success probability is the same for every
+	question. So $X$, the number of successes, is binomial. Then every part
+	is one formula.
+
+	\step{(a)} There are $n=8$ independent trials (the questions). On each
+	question the student picks one of 4 options at random, and exactly one is
+	correct, so the probability of a correct answer is $p=\frac14$, the same
+	for every question. The number of successes in $n$ independent trials with
+	the same success probability $p$ is binomial with parameters $(n,p)$.
+	Hence $X$ is binomial with parameters $(8,\frac14)$, and
+	\[
+		P(X=i)=\binom{8}{i}\left(\frac14\right)^i\left(\frac34\right)^{8-i},
+		\qquad i=0,1,\dots,8.
+	\]
+
+	\step{(b)} Put $i=2$ into the formula. The binomial coefficient
+	$\binom82=\frac{8\cdot7}{2}=28$ counts the ways to choose which 2 of the
+	8 questions are the correct ones; each such choice has probability
+	$\left(\frac14\right)^2\left(\frac34\right)^6$:
+	\[
+		P(X=2)=\binom{8}{2}\left(\frac14\right)^2\left(\frac34\right)^6
+		=28\cdot\frac{1}{16}\cdot\frac{729}{4096}
+		=\frac{28\cdot729}{65536}=\frac{20412}{65536}\approx0.3115.
+	\]
+
+	\step{(c)} ``At least 5 correct'' means $X=5$, $6$, $7$ or $8$. These
+	events are mutually exclusive, so their probabilities add up. Here the
+	direct sum has only 4 terms, while the complement $1-P(X\le4)$ would need
+	5 terms, so the direct sum is shorter. Using $4^8=65536$:
+	\[
+		\begin{aligned}
+			P(X\ge5) & =\binom85\frac{3^3}{4^8}+\binom86\frac{3^2}{4^8}
+			+\binom87\frac{3}{4^8}+\binom88\frac{1}{4^8}                     \\
+			         & =\frac{56\cdot27+28\cdot9+8\cdot3+1}{65536}
+			=\frac{1512+252+24+1}{65536}=\frac{1789}{65536}                   \\
+			         & \approx0.02307+0.003845+0.000366+0.0000153\approx0.0273.
+		\end{aligned}
+	\]
+	So by pure guessing the student passes with a probability of less than
+	3\%.
+
+	\step{(d)} For a binomial random variable with parameters $(n,p)$,
+	$\E[X]=np$ and $\Var(X)=np(1-p)$. Here
+	\[
+		\E[X]=8\cdot\frac14=2,\qquad
+		\Var(X)=8\cdot\frac14\cdot\frac34=\frac32=1.5,
+	\]
+	and the standard deviation is the square root of the variance:
+	\[ \SD(X)=\sqrt{1.5}\approx1.225. \]
+	On average the student gets 2 answers right, which matches the intuition:
+	a quarter of 8 questions.
+
+	\begin{answer}
+		(a) binomial with parameters $(8,\frac14)$ \quad
+		(b) $P(X=2)=\frac{20412}{65536}\approx0.3115$ \quad
+		\mbox{(c) $P(X\ge5)=\frac{1789}{65536}\approx0.0273$} \quad
+		\mbox{(d) $\E[X]=2$, $\SD(X)=\sqrt{1.5}\approx1.225$}
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing only $P(X=5)$ in (c). ``At least 5''
+		includes 6, 7 and 8 correct answers as well. Another mistake is to
+		forget the factor $\binom{n}{i}$: $\left(\frac14\right)^2
+		\left(\frac34\right)^6$ is the probability of one particular pattern
+		(say, the first two answers correct and the rest wrong), and there are
+		$\binom82=28$ such patterns.
+	\end{remark}
+\end{solution}

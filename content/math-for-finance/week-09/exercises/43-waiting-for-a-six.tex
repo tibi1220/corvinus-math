@@ -1,0 +1,79 @@
+% ---
+% title: Rolling until a six
+% tags: geometric, expectation
+% ---
+
+\begin{problem}
+	We roll a fair die until the first six appears. Let $X$ be the number of
+	rolls needed (the six included).
+	(a) What is the distribution of $X$? Give its parameter.
+	(b) Find $P(X\le 3)$.
+	(c) Find $\E[X]$.
+	(d) Find the probability that $X$ is even.
+\end{problem}
+
+\begin{solution}
+	\idea The rolls are independent trials, each a ``success'' (a six) with the
+	same probability $\frac16$, and $X$ is the trial of the first success. So
+	$X$ is geometric. Part (b) is shortest with the complement, and part (d)
+	is a geometric series.
+
+	\step{(a)} Each roll is a trial with success probability $p=\frac16$, the
+	rolls are independent, and we stop at the first success. This is exactly
+	the setting of the geometric distribution: $X$ is geometric with parameter
+	$p=\frac16$, so
+	\[
+		P(X=n)=\left(\frac56\right)^{n-1}\frac16,\qquad n=1,2,3,\dots
+	\]
+	In words: the first $n-1$ rolls are not sixes (probability $\frac56$
+	each), and roll $n$ is a six.
+
+	\step{(b)} ``$X\le3$'' means that a six appears among the first three
+	rolls. Its complement, ``$X>3$'', means that none of the first three rolls
+	is a six. The rolls are independent, so
+	\[
+		P(X>3)=\left(\frac56\right)^3=\frac{125}{216},
+	\]
+	which is the formula $P(X>n)=(1-p)^n$ with $n=3$. Hence
+	\[
+		P(X\le3)=1-\frac{125}{216}=\frac{91}{216}\approx0.4213.
+	\]
+	This is shorter than adding $P(X=1)+P(X=2)+P(X=3)
+		=\frac{36+30+25}{216}=\frac{91}{216}$, though both give the same result.
+
+	\step{(c)} For a geometric random variable $\E[X]=\frac1p$, so
+	\[ \E[X]=\frac{1}{1/6}=6. \]
+	On average we need $6$ rolls to get the first six.
+
+	\step{(d)} $X$ is even if $X=2$ or $X=4$ or $X=6$, and so on. These events
+	are mutually exclusive, so we add their probabilities:
+	\[
+		P(X\text{ even})=P(X=2)+P(X=4)+P(X=6)+\dots
+		=\frac56\cdot\frac16+\left(\frac56\right)^3\frac16
+		+\left(\frac56\right)^5\frac16+\dots
+	\]
+	Look at how the terms change. The first term is
+	$\frac56\cdot\frac16=\frac{5}{36}$. Going from one term to the next, the
+	exponent of $\frac56$ grows by $2$, so each term is the previous one
+	multiplied by $\left(\frac56\right)^2=\frac{25}{36}$. This is a geometric
+	series with first term $a=\frac5{36}$ and ratio $q=\frac{25}{36}$. Since
+	$0<q<1$, its sum is $\frac{a}{1-q}$:
+	\[
+		P(X\text{ even})=\frac{5/36}{1-25/36}=\frac{5/36}{11/36}
+		=\frac{5}{11}\approx0.4545.
+	\]
+
+	\begin{answer}
+		(a) geometric with $p=\frac16$ \quad
+		(b) $P(X\le3)=\frac{91}{216}\approx0.4213$ \quad
+		(c) $\E[X]=6$ \quad
+		(d) $P(X\text{ even})=\frac5{11}\approx0.4545$
+	\end{answer}
+	\begin{remark}
+		The result in (d) is a bit less than $\frac12$, and this makes sense:
+		an odd number of rolls is slightly more likely, because the most likely
+		single value is $X=1$. By the same method,
+		$P(X\text{ odd})=\frac{1/6}{1-25/36}=\frac{6}{11}$, and indeed
+		$\frac5{11}+\frac6{11}=1$.
+	\end{remark}
+\end{solution}

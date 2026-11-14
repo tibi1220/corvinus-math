@@ -1,0 +1,109 @@
+% ---
+% title: An auditor's sample
+% tags: finance, hypergeometric, expectation
+% ---
+
+\begin{problem}
+	\begin{context}
+		An auditor checks whether a company's accounts are correct. There are
+		too many invoices to check every one, so the auditor picks a random
+		sample and checks only those. An invoice is not picked twice: the
+		sampling is \emph{without replacement}.
+	\end{context}
+	Of 20 invoices of a company, 4 contain an error. An auditor picks 5 of the
+	20 invoices at random, without replacement. Let $X$ be the number of
+	erroneous invoices in the sample.
+	(a) What is the distribution of $X$, and what are its parameters?
+	(b) Find $P(X=0)$, the probability that the auditor finds no error.
+	(c) Find $P(X\ge1)$.
+	(d) Find $P(X=2)$.
+	(e) Find $\E[X]$.
+\end{problem}
+
+\begin{slideproblem}
+	Of 20 invoices, 4 contain an error. An auditor picks 5 of them at random,
+	without replacement; $X$ = number of erroneous invoices in the sample.
+	(a) Distribution of $X$ and its parameters? \ (b) $P(X=0)$ (no error
+	found) \ (c) $P(X\ge1)$ \ (d) $P(X=2)$ \ (e) $\E[X]$
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) $n=5$ of $N=20$ \alert{without replacement}, $m=4$ erroneous:
+	\alert{hypergeometric}, not binomial (draws not independent).
+	\[ P(X=i)=\frac{\binom{4}{i}\binom{16}{5-i}}{\binom{20}{5}},
+		\qquad \binom{20}{5}=15504. \]
+	\pause
+	(b) $\displaystyle P(X=0)=\frac{\binom40\binom{16}{5}}{\binom{20}{5}}
+		=\frac{4368}{15504}\approx0.2817.$
+	\pause
+	\quad (c) Complement: $P(X\ge1)=1-P(X=0)\approx0.7183$.\\
+	\pause
+	(d) $\displaystyle P(X=2)=\frac{\binom42\binom{16}{3}}{\binom{20}{5}}
+		=\frac{6\cdot560}{15504}=\frac{3360}{15504}\approx0.2167.$
+	\pause
+	\quad (e) $\displaystyle \E[X]=\frac{nm}{N}=\frac{5\cdot4}{20}=1.$
+\end{slides}
+
+\begin{solution}
+	\idea The auditor takes a sample from a finite group of invoices without
+	replacement, and counts the ``special'' (erroneous) ones in the sample. This
+	is exactly the situation of the hypergeometric distribution.
+
+	\step{(a)} We choose $n=5$ invoices from $N=20$, and $m=4$ of the 20 are
+	erroneous. Every set of 5 invoices is equally likely, and no invoice can be
+	chosen twice. So $X$, the number of erroneous invoices in the sample, is
+	hypergeometric with parameters $N=20$, $m=4$, $n=5$:
+	\[ P(X=i)=\frac{\dbinom{m}{i}\dbinom{N-m}{n-i}}{\dbinom{N}{n}}
+		=\frac{\dbinom{4}{i}\dbinom{16}{5-i}}{\dbinom{20}{5}},
+		\qquad i=0,1,2,3,4. \]
+	In words: the denominator counts all possible samples; the numerator counts
+	the samples with $i$ erroneous invoices (choose $i$ of the 4 erroneous ones)
+	and $5-i$ correct invoices (choose them from the 16 correct ones). The
+	number of all samples is
+	\[ \binom{20}{5}=\frac{20\cdot19\cdot18\cdot17\cdot16}{5\cdot4\cdot3\cdot2\cdot1}=15504. \]
+
+	\step{(b)} ``No error found'' means $X=0$: all 5 invoices come from the 16
+	correct ones. There is $\binom40=1$ way to choose no erroneous invoice, and
+	\[ \binom{16}{5}=\frac{16\cdot15\cdot14\cdot13\cdot12}{5\cdot4\cdot3\cdot2\cdot1}=4368 \]
+	ways to choose the 5 correct ones. Hence
+	\[ P(X=0)=\frac{1\cdot4368}{15504}=\frac{91}{323}\approx0.2817. \]
+	So in more than one case out of four, the auditor finds nothing, even though
+	a fifth of the invoices are wrong.
+
+	\step{(c)} ``At least one'' would mean adding $P(X=1)$, $P(X=2)$, $P(X=3)$
+	and $P(X=4)$: four terms. The complement of $X\ge1$ is $X=0$, which we
+	already have, so it is shorter to use the complement rule:
+	\[ P(X\ge1)=1-P(X=0)=1-\frac{91}{323}=\frac{232}{323}\approx0.7183. \]
+
+	\step{(d)} For $X=2$ we choose 2 of the 4 erroneous invoices and 3 of the
+	16 correct ones. These two choices are made independently of each other, so
+	by the basic counting principle the numbers of ways multiply:
+	\[ \binom42=6,\qquad \binom{16}{3}=\frac{16\cdot15\cdot14}{3\cdot2\cdot1}=560, \]
+	\[ P(X=2)=\frac{6\cdot560}{15504}=\frac{3360}{15504}=\frac{70}{323}\approx0.2167. \]
+
+	\step{(e)} For a hypergeometric random variable $\E[X]=nm/N$:
+	\[ \E[X]=\frac{5\cdot4}{20}=1. \]
+	This is natural: a fifth of the invoices are erroneous ($m/N=4/20$), and
+	the sample contains 5 invoices, so on average a fifth of 5, that is one
+	erroneous invoice, is in the sample.
+	\begin{answer}
+		(a) hypergeometric, $N=20$, $m=4$, $n=5$ \quad
+		(b) $P(X=0)=\frac{4368}{15504}=\frac{91}{323}\approx0.2817$ \quad
+		(c) $P(X\ge1)\approx0.7183$ \quad
+		(d) $P(X=2)=\frac{3360}{15504}=\frac{70}{323}\approx0.2167$ \quad
+		(e) $\E[X]=1$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} using the binomial distribution with $n=5$ and
+		$p=4/20=0.2$. The binomial needs independent trials with the same success
+		probability. Here the draws are not independent: if the first invoice
+		is erroneous, only 3 of the remaining 19 are erroneous, so the second
+		draw is less likely to be erroneous ($3/19$ instead of $4/19$). This is
+		what ``without replacement'' changes. The binomial would give
+		$P(X=0)=0.8^5\approx0.3277$ instead of $0.2817$. The expected value is
+		the same in both models ($np=5\cdot0.2=1$), but the probabilities differ.
+	\end{remark}
+\end{solution}

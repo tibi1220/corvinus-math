@@ -3,7 +3,7 @@ Mathematics for Finance. Week 10. Continuous random variables, joint distributio
 
 How to use this script.
 [[slnc 600]]
-Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Every new idea gets one tiny example; before each exercise the students try it in pairs, then you reveal the solution step by step. Only the exercises of the slides are in this script.
+Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Every picture and table of the slides is described after the words On the slide, and the formulas of each theory slide are read out, so you can teach from the script alone. Every new idea gets one tiny example; before each exercise the students try it in pairs, then you reveal the solution step by step. Only the exercises of the slides are in this script.
 [[slnc 500]]
 Both sessions are on the same day: Session 1, 90 minutes, then a short break, then Session 2, another 90 minutes. The plan leaves a generous reserve: 20 minutes in Session 1 and 25 in Session 2, for questions and for students working alone.
 [[slnc 500]]
@@ -45,17 +45,27 @@ Note for you: as last week, before every exercise they get a few minutes to try 
 Think of the time until the next order arrives for a stock. It could be 0.5 minutes, 0.51, 0.5132, and so on. There are far too many values to give each one a positive probability: the sum would explode. So for a continuous quantity, P of X equals a is 0 for every single number a.
 [[slnc 500]]
 Instead, we ask for the probability of an interval, P of a less than or equal to X less than or equal to b, and we describe it with a curve, the density. The probability is the area under the curve between a and b.
+[[slnc 500]]
+On the slide: the picture shows a bell-shaped density curve, f of x. The shaded area under the curve between a and b is the probability that X lies between a and b.
+[[slnc 500]]
+Look at the picture: the curve itself is not a probability. The probability lives in the shaded area. Where the curve is high, intervals collect a lot of area, so values there are likely; where it is low, values are unlikely. Think of a histogram of many observed waiting times with narrower and narrower bars: in the limit, the tops of the bars become this smooth curve.
 [[slnc 1200]]
 
 Continuous random variables and their density. Slide 5.
 [[slnc 600]]
+On the slide: the definition, the two properties of a density, and two remarks: P of X equals a is the integral from a to a of f, which is 0, so P of a less than or equal to X less than or equal to b equals P of a less than X less than b; and f of x is not a probability, it can be bigger than 1.
+[[slnc 500]]
 X is continuous if there is a function f, its density, such that P of a less than or equal to X less than or equal to b equals the integral from a to b of f of x, d x.
 [[slnc 400]]
-A density has two properties: f of x is greater than or equal to 0 everywhere, and the total area is 1: the integral from minus infinity to infinity of f of x, d x, equals 1.
+A density has two properties: first, f of x is greater than or equal to 0 for every x; second, the integral from minus infinity to infinity of f of x, d x, equals 1: the total area is 1.
 [[slnc 500]]
-Tiny example: f of x equals 3 x squared on the interval from 0 to 1, zero elsewhere. Total area: the integral from 0 to 1 of 3 x squared, d x, equals x cubed, evaluated from 0 to 1, which is 1. And P of X less than or equal to one half equals the integral from 0 to one half of 3 x squared, d x, which is one eighth.
+Why exactly these two? Probabilities are never negative, so the area over any interval must be nonnegative, and that forces f to be greater than or equal to 0. And X takes some value with certainty, so the area over the whole line, the probability of everything, must be 1. These two conditions are all we ever check when someone hands us a function and says this is a density.
 [[slnc 500]]
-Two warnings. First, a single point has no area, so P of X equals a is 0, and for a continuous X it does not matter whether we write less than, or less than or equal to. Second, f of x itself is not a probability. In the example f of 1 equals 3, bigger than 1. Only areas are probabilities.
+Tiny example: f of x equals 3 x squared on the interval from 0 to 1, zero elsewhere. Total area: the integral from 0 to 1 of 3 x squared, d x, equals x cubed, evaluated from 0 to 1, which is 1. And P of X less than or equal to one half equals the integral from 0 to one half of 3 x squared, d x, which is one eighth. So the left half of the interval carries only one eighth of the probability, the right half seven eighths: the density grows, and large values are more likely.
+[[slnc 500]]
+Two warnings. First, a single point has no area, so P of X equals a is 0, and for a continuous X it does not matter whether we write less than or less than or equal to. Second, f of x itself is not a probability. In the example f of 1 equals 3, bigger than 1. Only areas are probabilities.
+[[slnc 500]]
+What does f of 1 equals 3 mean then? It is a rate: probability per unit length. For a short interval of length h near 1, the probability is about f of 1 times h. With h equal to 0.01: P of 0.99 less than or equal to X less than or equal to 1 equals 1 minus 0.99 cubed, approximately 0.0297, very close to 3 times 0.01, which is 0.03. A density of 3 over a short stretch gives a small probability.
 [[slnc 1200]]
 
 Exercise 10.1. Settling a payment. Slides 6 and 7.
@@ -64,7 +74,9 @@ The time X, in hours, that a bank needs to settle an incoming international paym
 [[slnc 800]]
 Try parts a and b in pairs, three minutes. Hint: what must the total area be?
 [[slnc 500]]
-Note for you: after 3 minutes, click: the two properties and probability equals area.
+Note for you: while they work, walk around. Typical problem: they integrate c times x times the quantity 2 minus x, but do not know what to set it equal to. Point them back to the second property of a density. After 3 minutes, click: the two properties and probability equals area.
+[[slnc 500]]
+Let us start with the rule we use in every part: a density is nonnegative, its total area is 1, and every probability is an area under it.
 [[slnc 500]]
 Part a. Click.
 [[slnc 400]]
@@ -72,9 +84,13 @@ Ask the class: what condition fixes c?
 [[slnc 800]]
 The total area is 1.
 [[slnc 400]]
-The integral from 0 to 2 of x times the quantity 2 minus x, d x, equals x squared minus x cubed over 3, evaluated from 0 to 2, which is 4 minus 8 thirds, which is 4 thirds. Click. So c times 4 thirds equals 1, and c equals three quarters.
+Outside the interval from 0 to 2 the density is zero, so the total area is the integral over that interval. We integrate first without c; multiplying out, x times the quantity 2 minus x is 2 x minus x squared. The integral from 0 to 2 of x times the quantity 2 minus x, d x, equals x squared minus x cubed over 3, evaluated from 0 to 2, which is 4 minus 8 thirds, which is 4 thirds. Click. So c times 4 thirds equals 1, and c equals three quarters.
+[[slnc 500]]
+Quick check of the first property: on the interval from 0 to 2, both x and 2 minus x are nonnegative, so f of x, three quarters times x times the quantity 2 minus x, is greater than or equal to 0. The density is a parabola arch with its top, f of 1 equals three quarters, at x equals 1: settling takes about one hour most often.
 [[slnc 500]]
 Note for you: slide 7.
+[[slnc 500]]
+On the slide: the picture shows the density, a parabola arch over the interval from 0 to 2 with height 0.75 at x equals 1, and a dashed gold line at x equals 1. From the second click, the area under the arch between 0.5 and 1.5 is shaded and labeled 0.6875.
 [[slnc 500]]
 Part b.
 [[slnc 400]]
@@ -84,7 +100,15 @@ No: the graph is symmetric around x equals 1, so the area splits in half.
 [[slnc 400]]
 P of X greater than 1 equals one half.
 [[slnc 500]]
-Part c. Click. Now we integrate three quarters times the quantity 2 x minus x squared, from 0.5 to 1.5: three quarters times x squared minus x cubed over 3, evaluated from 0.5 to 1.5, equals three quarters times the quantity 9 eighths minus 5 over 24, which is three quarters times 22 over 24, which is 11 over 16, that is 0.6875.
+The dashed line at x equals 1 cuts the arch into two mirror images: the area to the right equals the area to the left, and together they are 1. In formulas, f of 1 plus t equals three quarters times 1 plus t times 1 minus t, which is f of 1 minus t. Whenever you see a symmetric density, use it: it saves an integral.
+[[slnc 500]]
+Ask the class: before we compute part c: will P of 0.5 less than X less than 1.5 be more or less than one half?
+[[slnc 800]]
+More: the interval has half the length of the interval from 0 to 2, but it sits in the middle, where the density is highest.
+[[slnc 500]]
+Part c. Click. Now we integrate three quarters times the quantity 2 x minus x squared, from 0.5 to 1.5. This is the shaded area in the picture: three quarters times x squared minus x cubed over 3, evaluated from 0.5 to 1.5, equals three quarters times the quantity 9 eighths minus 5 over 24, which is three quarters times 22 over 24, which is 11 over 16, that is 0.6875.
+[[slnc 400]]
+The two values of the antiderivative: at 1.5 it is 2.25 minus 1.125, which is 9 eighths; at 0.5 it is 0.25 minus 0.125 over 3, which is 5 over 24. So with probability 0.6875 the payment is settled between half an hour and one and a half hours after it arrives; our guess, more than half, was right.
 [[slnc 500]]
 Part d. Click.
 [[slnc 400]]
@@ -94,12 +118,18 @@ Zero: a single point has no area.
 [[slnc 400]]
 So P of X less than 1 equals P of X less than or equal to 1.
 [[slnc 500]]
-Note for you, a common mistake: reading f of 1 equals 0.75 as a probability. The value of a density is not a probability; only areas are.
+Zero probability does not mean that settling in exactly one hour is impossible. It means that one exact value carries no area. And because of that, in part c it makes no difference whether we write 0.5 less than X less than 1.5, or 0.5 less than or equal to X less than or equal to 1.5.
+[[slnc 500]]
+Note for you, a common mistake: reading f of 1 equals 0.75 as a probability. The value of a density is not a probability; only areas are. Another one in part c: forgetting the factor three quarters and getting 11 twelfths.
 [[slnc 1200]]
 
 The distribution function. Slide 8.
 [[slnc 600]]
 Note for you: clock check. This slide is planned for minute 21. If you start it after about minute 26, skip part d of Exercise 10.5.
+[[slnc 500]]
+So far every probability needed an integral. The distribution function stores all these integrals in one function, so that afterward we only subtract.
+[[slnc 500]]
+On the slide: the definitions, F of x equals P of X less than or equal to x, F of x equals the integral from minus infinity to x of f of t, d t, and f of x equals F prime of x; and the rules P of a less than X less than or equal to b equals F of b minus F of a, and P of X greater than a equals 1 minus F of a. On the right, a picture: an S-shaped curve F of x that starts at 0 and rises to the dashed level 1. Two points a and b are marked on the x axis, with dotted lines up to the curve, and a teal arrow on the right shows the height difference, F of b minus F of a.
 [[slnc 500]]
 For any random variable, discrete or continuous, the distribution function is F of x equals P of X less than or equal to x.
 [[slnc 400]]
@@ -107,9 +137,15 @@ For a continuous X it is the area to the left of x: F of x equals the integral f
 [[slnc 400]]
 On the board: P of a less than X less than or equal to b equals F of b minus F of a, and P of X greater than a equals 1 minus F of a.
 [[slnc 500]]
-Tiny example: for f of x equals 3 x squared on the interval from 0 to 1, F of x equals x cubed on that interval, so P of X greater than one half equals 1 minus one eighth, which is seven eighths.
+Why the first rule? The event X less than or equal to b splits into two disjoint pieces, X less than or equal to a, and a less than X less than or equal to b. So F of b equals F of a plus P of a less than X less than or equal to b, and we subtract. In the picture: the probability of the interval is the height of the teal arrow, the rise of F between a and b. The second rule is the complement rule: greater than a is everything except at most a.
+[[slnc 500]]
+Tiny example: for f of x equals 3 x squared on the interval from 0 to 1, F of x equals x cubed on that interval, so P of X greater than one half equals 1 minus one eighth, which is seven eighths. And P of one quarter less than X less than or equal to one half equals one eighth minus 1 over 64, which is 7 over 64, with no integral at all.
 [[slnc 500]]
 F grows from 0 to 1. For a continuous X it has no jumps; last week, for a discrete X, it was a step function.
+[[slnc 500]]
+Ask the class: where is F steepest in the picture?
+[[slnc 800]]
+In the middle, where the density is largest: the slope of F is the density.
 [[slnc 1200]]
 
 Exercise 10.5. Loss given default, a finance example. Slides 9 and 10.
@@ -118,11 +154,25 @@ The loss given default L of a loan has distribution function F of x equals x squ
 [[slnc 800]]
 The loss given default is the fraction of the loan that the bank loses if the borrower defaults: 0 means nothing lost, 1 means everything. Try parts a to c, three minutes.
 [[slnc 500]]
-Part a. Click. The density is the derivative of F: f of x equals 2 x on the interval from 0 to 1, and 0 otherwise. Click. Check: the integral from 0 to 1 of 2 x, d x, equals 1. The density grows, so large losses are more likely than small ones.
+Note for you: if a pair is stuck, ask them: how are f and F related?
+[[slnc 500]]
+Part a. Click. The density is the derivative of F: f of x equals 2 x on the interval from 0 to 1, and 0 otherwise. Outside the interval from 0 to 1, F is constant, 0 on the left and 1 on the right, and the derivative of a constant is 0. Click. Check: the integral from 0 to 1 of 2 x, d x, equals x squared, evaluated from 0 to 1, which is 1. The density grows, so large losses are more likely than small ones.
+[[slnc 500]]
+On the slide: the picture shows the two functions together. The density, f of x equals 2 x, in navy, is a straight line from 0 up to 2 at x equals 1, and 0 after that. The distribution function, F of x equals x squared, in gold, is a curve from 0 up to 1, and flat at 1 after that.
+[[slnc 500]]
+In the picture the density, the straight navy line, is twice as high at 1 as at 0.5; the gold curve F is flat at the start and steep at the end. Steep F means high density: most of the probability sits near 1. In this model, when this borrower defaults, the bank typically loses a large part of the loan.
 [[slnc 500]]
 Note for you: slide 10, one part per click.
 [[slnc 500]]
+On the slide: the density f of x equals 2 x again. The area under it between 0.5 and 1 is shaded and labeled 0.75: the shaded area is P of L greater than 0.5.
+[[slnc 500]]
+Ask the class: before the click: a student says P of L greater than 0.5 is 0.5, because 0.5 is half of the interval. Right or wrong?
+[[slnc 800]]
+Wrong: that would be true for a uniform L; here the right half carries more area.
+[[slnc 500]]
 Part b. Complement: P of L greater than 0.5 equals 1 minus F of 0.5, which is 1 minus 0.5 squared, which is 0.75.
+[[slnc 400]]
+The shaded region in the picture is a trapezoid with parallel sides f of 0.5, which is 1, and f of 1, which is 2, and width 0.5: its area is 1 plus 2, over 2, times 0.5, which is 0.75. Geometry and F give the same number.
 [[slnc 500]]
 Part c. No integral needed: P of 0.2 less than L less than or equal to 0.6 equals F of 0.6 minus F of 0.2, which is 0.36 minus 0.04, which is 0.32.
 [[slnc 500]]
@@ -133,6 +183,8 @@ Ask the class: which equation gives the median?
 F of m equals one half.
 [[slnc 400]]
 So m squared equals one half, and m equals the square root of 0.5, approximately 0.707: half of the defaults lose more than 70.7 percent of the loan.
+[[slnc 400]]
+We take the positive root because m must lie between 0 and 1.
 [[slnc 500]]
 Note for you, common mistakes: part b as 1 minus 0.5, which is 0.5, as if L were uniform; part c as F of 0.6 minus 0.2, which is F of 0.4, which is 0.16. An interval is the difference of F at the endpoints.
 [[slnc 1200]]
@@ -141,11 +193,17 @@ Two examples: uniform and exponential. Slide 11.
 [[slnc 600]]
 Two distributions we will use again and again.
 [[slnc 500]]
+On the slide: two blocks with a picture under each. Uniform on the interval from alpha to beta: f of x equals 1 over beta minus alpha on the interval, 0 outside, and probability equals length over beta minus alpha. Exponential with rate lambda greater than 0: f of x equals lambda e to the minus lambda x for x greater than or equal to 0, F of x equals 1 minus e to the minus lambda x, and P of X greater than x equals e to the minus lambda x. The left picture shows the uniform density, a flat line between alpha and beta, with a shaded rectangle over a small interval inside. The right picture shows the exponential density, a decreasing curve; the area to the right of a point x is shaded and labeled e to the minus lambda x.
+[[slnc 500]]
 Uniform on the interval from alpha to beta: the density is the constant 1 over beta minus alpha on the interval, zero outside. Probability is length divided by beta minus alpha. Tiny example: uniform on the interval from 0 to 10, P of 2 less than or equal to X less than or equal to 5 equals 3 over 10.
+[[slnc 500]]
+The height, 1 over beta minus alpha, is not a choice: it is what makes the rectangle under the flat line have area 1, width times height. In the left picture the shaded rectangle has the same height everywhere, so every interval of the same length gets the same probability, wherever it sits. Uniform is the continuous version of all outcomes equally likely.
 [[slnc 500]]
 Exponential with rate lambda greater than 0: f of x equals lambda e to the minus lambda x, for x greater than or equal to 0. Then F of x equals 1 minus e to the minus lambda x, and the tail is P of X greater than x equals e to the minus lambda x.
 [[slnc 400]]
 It models waiting times: the next order, a default. Tiny example: lambda equals 1, P of X greater than 2 equals e to the minus 2, approximately 0.135.
+[[slnc 500]]
+Where does F come from? Integrate the density: the integral from 0 to x of lambda e to the minus lambda t, d t, equals minus e to the minus lambda t, evaluated from 0 to x, which is 1 minus e to the minus lambda x. The tail, the shaded area in the right picture, is 1 minus F of x, which is e to the minus lambda x: the probability of waiting longer than x. Remember this tail; it is the fastest route to most exponential questions. The rate lambda says how often the events come: the larger lambda, the faster the curve drops, and the shorter the typical wait.
 [[slnc 1200]]
 
 Exercise 10.8. Waiting for the next order, a finance example. Slides 12 and 13.
@@ -154,11 +212,23 @@ The waiting time X, in minutes, until the next order for a stock has density f o
 [[slnc 800]]
 This is an exponential with rate lambda equals 2. Try parts a to c, three minutes.
 [[slnc 500]]
-Part a. Click. f is greater than or equal to 0, and the integral from 0 to infinity of 2 e to the minus 2 x, d x, equals minus e to the minus 2 x, evaluated from 0 to infinity, which is 0 minus the quantity minus 1, which is 1. Click. For x greater than or equal to 0, F of x equals 1 minus e to the minus 2 x. Click. The tail is P of X greater than x equals e to the minus 2 x.
+Part a. Click. f is greater than or equal to 0, and the integral from 0 to infinity of 2 e to the minus 2 x, d x, equals minus e to the minus 2 x, evaluated from 0 to infinity, which is 0 minus the quantity minus 1, which is 1.
+[[slnc 400]]
+The antiderivative of 2 e to the minus 2 x is minus e to the minus 2 x: differentiate it, and the chain rule brings down the factor minus 2. At infinity, e to the minus 2 x goes to 0; at 0 it is 1. Hence 0 minus the quantity minus 1, which is 1.
+[[slnc 500]]
+Click. For x greater than or equal to 0, F of x equals the integral from 0 to x of 2 e to the minus 2 t, d t, which is minus e to the minus 2 t, evaluated from 0 to x, which is 1 minus e to the minus 2 x; and F of x equals 0 for x less than 0. Click. The tail is P of X greater than x equals e to the minus 2 x.
+[[slnc 500]]
+On the slide: the picture shows the density 2 e to the minus 2 x, starting at height 2 and falling fast. The area to the right of 1 is shaded, with an arrow labeled P of X greater than 1.
+[[slnc 500]]
+The density starts at 2, above 1: fine for a density. The shaded tail to the right of 1 is thin: long waits are rare.
 [[slnc 500]]
 Note for you: slide 13, one part per click.
 [[slnc 500]]
-Part b. P of X greater than 1 equals e to the minus 2, approximately 0.135.
+Ask the class: how big do you expect the shaded area to be: closer to 0.5 or to 0.1?
+[[slnc 800]]
+Closer to 0.1: the curve is already low at x equals 1.
+[[slnc 500]]
+Part b. P of X greater than 1 equals e to the minus 2, approximately 0.135. About a 13.5 percent chance that a whole minute passes without an order.
 [[slnc 500]]
 Part c. X is continuous, so P of X less than 0.5 equals F of 0.5, which is 1 minus e to the minus 1, approximately 0.632.
 [[slnc 500]]
@@ -169,10 +239,16 @@ Ask the class: which conditional probability is this?
 P of X greater than 1.5, given X greater than 0.5.
 [[slnc 400]]
 More than 1.5 already contains more than 0.5, so P of X greater than 1.5, given X greater than 0.5, equals P of X greater than 1.5 over P of X greater than 0.5, which is e to the minus 3 over e to the minus 1, which is e to the minus 2, approximately 0.135.
+[[slnc 400]]
+The definition of conditional probability from last week: the probability of both events over the probability of the condition. Both is simply X greater than 1.5, since it implies X greater than 0.5. Then the tail formula twice: P of X greater than 1.5 equals e to the minus 2 times 1.5, which is e to the minus 3, and P of X greater than 0.5 equals e to the minus 2 times 0.5, which is e to the minus 1.
 [[slnc 500]]
+Ask the class: before the last click: compare with part b. What do you notice?
+[[slnc 800]]
 Click. The same as part b! Having waited half a minute does not change the chance of waiting one more minute. The exponential distribution has no memory.
 [[slnc 500]]
-Note for you, a common mistake in part d: computing P of X greater than 1.5, which is e to the minus 3, and forgetting the condition.
+In general, P of X greater than s plus t, given X greater than s, equals e to the minus lambda times s plus t, over e to the minus lambda s, which is e to the minus lambda t, which is P of X greater than t: the exponents subtract, and the past waiting time s disappears. A quiet market in the last half minute tells us nothing about how much longer the quiet will last.
+[[slnc 500]]
+Note for you, a common mistake in part d: computing P of X greater than 1.5, which is e to the minus 3, and forgetting the condition. Another one: computing P of 0.5 less than X less than or equal to 1.5, the probability of the interval, instead of the conditional probability.
 [[slnc 1200]]
 
 The distribution of a function of a random variable. Slide 14.
@@ -180,10 +256,16 @@ The distribution of a function of a random variable. Slide 14.
 Note for you: clock check. This slide is planned for minute 51. If you start it after about minute 56, give only the two numbers in part c of Exercise 10.11.
 [[slnc 500]]
 We know the distribution of X. What is the distribution of Y equals g of X, for example X squared, or the value 1000 times the quantity 1 plus X of an investment with return X? The method: always go through the distribution function.
+[[slnc 500]]
+On the slide: the method in three steps, and the example Y equals 2 X plus 3, with F Y of y equals the quantity y minus 3, over 2, and f Y of y equals one half.
 [[slnc 400]]
 On the board, three steps. First: F Y of y equals P of Y less than or equal to y, which is P of g of X less than or equal to y. Second: rewrite g of X less than or equal to y as an event about X, and use the distribution of X. Third, if you need the density: f Y of y equals F Y prime of y.
 [[slnc 500]]
+Why through F, and not straight through the density? Because F Y of y is a probability, P of Y less than or equal to y, and probabilities do not care how we describe an event: Y less than or equal to y, and the equivalent statement about X, are the same event, so they have the same probability. A density is not a probability, and it does not survive such a rewriting.
+[[slnc 500]]
 Example from the slide: X uniform on the interval from 0 to 1, and Y equals 2 X plus 3. For y between 3 and 5: F Y of y equals P of 2 X plus 3 less than or equal to y, which is P of X less than or equal to the quantity y minus 3, over 2, which is the quantity y minus 3, over 2. So f Y of y equals one half: Y is uniform on the interval from 3 to 5. A linear function keeps the shape; other functions change it, as we see now.
+[[slnc 400]]
+Step by step: subtract 3 and divide by 2 on both sides of the inequality; for the uniform X, P of X less than or equal to t equals t. The uniform is stretched to twice the length, so its height halves: one half.
 [[slnc 1200]]
 
 Exercise 10.11. The square of a uniform random variable. Slides 15 and 16.
@@ -192,13 +274,27 @@ Let X be uniformly distributed on the interval from 0 to 1, that is, its density
 [[slnc 800]]
 Try parts a and b, three minutes. Start with P of X squared less than or equal to y.
 [[slnc 500]]
+Click. The method again: first the distribution function, then differentiate.
+[[slnc 500]]
 Part a. Click. Y is between 0 and 1. For y between 0 and 1, since X is greater than or equal to 0, F Y of y equals P of X squared less than or equal to y, which is P of X less than or equal to the square root of y, which is the square root of y. And F Y of y equals 0 for y less than 0, and F Y of y equals 1 for y greater than 1.
+[[slnc 400]]
+In general, X squared less than or equal to y means minus the square root of y, less than or equal to X, less than or equal to the square root of y; here X is never negative, so only X less than or equal to the square root of y is left. And for the uniform X, P of X less than or equal to t equals t, with t equal to the square root of y. Check the ends: F Y of 0 equals 0 and F Y of 1 equals 1, as it should be.
 [[slnc 500]]
 Part b. Click. Differentiate: f Y of y equals 1 over twice the square root of y, for y greater than 0 and at most 1, zero otherwise.
+[[slnc 400]]
+The square root of y is y to the one half, and its derivative is one half times y to the minus one half. This density goes to infinity near 0, but its area stays 1: the integral from 0 to 1 of 1 over twice the square root of y, d y, equals the square root of y, evaluated from 0 to 1, which is 1. A density may be unbounded; it only has to be nonnegative with total area 1.
 [[slnc 500]]
 Note for you: slide 16.
 [[slnc 500]]
+On the slide: the picture shows the density f Y of y, 1 over twice the square root of y: very high near 0, falling to 0.5 at y equals 1. The area over the interval from 0 to 0.25 is shaded teal and labeled 0.5; the area over the interval from 0.81 to 1 is shaded gold and labeled 0.1. A dashed gray line at height 1 is the uniform density, for comparison.
+[[slnc 500]]
+Ask the class: look at the two shaded areas. Which is bigger, and why, when the gold interval is not much shorter than the teal one?
+[[slnc 800]]
+The teal one: the density is much higher near 0.
+[[slnc 500]]
 Part c. P of Y less than or equal to 0.25 equals the square root of 0.25, which is 0.5, and P of Y greater than 0.81 equals 1 minus the square root of 0.81, which is 0.1. Check: Y less than or equal to 0.25 means X less than or equal to 0.5; Y greater than 0.81 means X greater than 0.9.
+[[slnc 400]]
+Half of the probability lands in the first quarter of the interval.
 [[slnc 500]]
 Part d.
 [[slnc 400]]
@@ -207,12 +303,16 @@ Ask the class: is Y uniform?
 No: the density, 1 over twice the square root of y, is not constant.
 [[slnc 400]]
 Click. Squaring pushes numbers between 0 and 1 toward 0, for example 0.5 squared is 0.25, so small values of Y are more likely.
+[[slnc 400]]
+In the picture, the curve is above the dashed uniform line for y less than 0.25 and below it for y greater than 0.25. Squaring does not create or destroy probability; it moves it toward 0.
 [[slnc 500]]
 Note for you, a common mistake: f Y of y equals f X of the square root of y, which is 1, plugging into the density of X; that would make Y uniform. Always go through F Y.
 [[slnc 1200]]
 
 Summary for Session 1. Slide 17.
 [[slnc 600]]
+On the slide: five bullet points with the formulas of this session; they are the five lines you say now.
+[[slnc 500]]
 Today's first session in five lines: probability is the area under the density; F of x equals P of X less than or equal to x, and f equals F prime; uniform means length over total length; the exponential has the tail e to the minus lambda x and no memory; and for Y equals g of X, first F Y, then differentiate. After the break: two random variables at the same time.
 [[slnc 500]]
 Note for you: use the reserve for questions, or let them start a self-study exercise on densities or on Y equals g of X, and walk around.
@@ -225,33 +325,51 @@ Session 2 title and recap of Session 1. Slides 18 and 19.
 [[slnc 600]]
 Note for you: slide 18, the title, then slide 19.
 [[slnc 500]]
+On the slide: four bullet points, the summary of Session 1 again.
+[[slnc 500]]
 Welcome back. Before the break: densities, F, uniform and exponential, and Y equals g of X. Now two random variables at the same time: how do two stocks, two loans, two insurance claims behave together?
+[[slnc 500]]
+Knowing each one alone is not enough. Two loans that each default with probability 2 percent can default together very rarely, or quite often, if a recession hits both borrowers. To describe this we need the joint distribution: the probability of every combination.
 [[slnc 1200]]
 
 Joint distribution: the discrete case. Slide 20.
 [[slnc 600]]
+On the slide: three blocks of formulas, the joint pmf, the marginal pmfs and the joint distribution function: p X of x equals the sum over y of p of x, y; p Y of y equals the sum over x of p of x, y; and F of a, b equals P of X less than or equal to a and Y less than or equal to b. Next to them, a small table with the sums in the margins. For X equals 0, the cells are 0.3 for Y equals 0 and 0.2 for Y equals 1, with row sum 0.5. For X equals 1, the cells are 0.1 and 0.4, with row sum 0.5. The column sums are 0.4 and 0.6, and the total is 1. Under the table: the sums are written in the margins, hence marginal; and here F of 0, 1 equals 0.3 plus 0.2, which is 0.5.
+[[slnc 500]]
 If X and Y are discrete, their joint pmf is p of x, y equals P of X equals x and Y equals y. It is a table: one cell for each pair of values, and all cells add up to 1.
 [[slnc 400]]
 On the board: copy the small table of the slide.
 [[slnc 500]]
 The distribution of X alone, the marginal pmf p X, is the row sum: p X of x equals the sum over y of p of x, y. The marginal of Y is the column sum. We write the sums in the margins of the table: hence the name.
 [[slnc 500]]
+Why the row sum? The event X equals 0 splits into disjoint pieces according to the value of Y: X equals 0 and Y equals 0, or X equals 0 and Y equals 1. Disjoint pieces: add their probabilities. That is the addition rule of last week, nothing new.
+[[slnc 500]]
 Ask the class: in the table, what is P of X equals 0?
 [[slnc 800]]
 0.3 plus 0.2, which is 0.5.
 [[slnc 500]]
+Ask the class: and P of Y equals 1?
+[[slnc 800]]
+0.2 plus 0.4, which is 0.6, the second column.
+[[slnc 500]]
 Finally, the joint distribution function, for any X and Y: F of a, b equals P of X less than or equal to a and Y less than or equal to b. Here F of 0, 1 equals 0.3 plus 0.2, which is 0.5: the cells with X less than or equal to 0 and Y less than or equal to 1.
+[[slnc 400]]
+To compute F of a, b from a table, add all cells that are up to a in X and up to b in Y.
 [[slnc 1200]]
 
 Exercise 10.15. Two stocks on the same day, a finance example. Slides 21 and 22.
 [[slnc 600]]
 X equals 1 or minus 1 if stock A rises or falls; Y equals 1, 0 or minus 1 if stock B rises, stays or falls. The joint pmf, p of x, y, which is P of X equals x and Y equals y, is in the table below. Part a: the marginal pmfs p X and p Y. Part b: P of X equals Y. Part c: F of 0, 0, which is P of X less than or equal to 0 and Y less than or equal to 0. Part d: P of B rises, given A rises.
 [[slnc 500]]
-The table. For x equals minus 1: 0.20 for y equals minus 1, 0.10 for y equals 0, and 0.10 for y equals 1. For x equals 1: 0.05 for y equals minus 1, 0.15 for y equals 0, and 0.40 for y equals 1.
-[[slnc 800]]
-Try parts a to c, three minutes.
+On the slide: the table under the statement; the margins stay empty until the clicks of part a. For x equals minus 1: 0.20 for y equals minus 1, 0.10 for y equals 0, and 0.10 for y equals 1. For x equals 1: 0.05 for y equals minus 1, 0.15 for y equals 0, and 0.40 for y equals 1.
 [[slnc 500]]
-Part a. Click. Click. Row sums: p X of minus 1 equals 0.4, and p X of 1 equals 0.6. Click. Column sums: p Y of minus 1 equals 0.25, p Y of 0 equals 0.25, and p Y of 1 equals 0.5.
+Before you start, read the table aloud with me: the cell 0.40 in the bottom right is A rises and B rises; the 0.20 in the top left is both fall. Try parts a to c, three minutes.
+[[slnc 500]]
+Part a. Click. Marginals: add up the rows and the columns, and write the sums in the margins. Click. Row sums: p X of minus 1 equals 0.2 plus 0.1 plus 0.1, which is 0.4, and p X of 1 equals 0.05 plus 0.15 plus 0.4, which is 0.6. Click. Column sums: p Y of minus 1 equals 0.25, p Y of 0 equals 0.25, and p Y of 1 equals 0.5.
+[[slnc 500]]
+On the slide: after the clicks of part a, the margins are filled in: the row sums 0.4 and 0.6 on the right, the column sums 0.25, 0.25 and 0.5 at the bottom, and the total 1 in the corner.
+[[slnc 400]]
+Both margins add up to 1, a quick check of the arithmetic.
 [[slnc 500]]
 Note for you: slide 22, one part per click.
 [[slnc 500]]
@@ -265,9 +383,15 @@ So P of X equals Y equals 0.20 plus 0.40, which is 0.60.
 [[slnc 500]]
 Part c. X less than or equal to 0 means X equals minus 1; Y less than or equal to 0 means Y equals minus 1 or 0. So F of 0, 0 equals 0.20 plus 0.10, which is 0.30.
 [[slnc 500]]
-Part d. Conditional probability: the cell divided by the marginal. P of Y equals 1, given X equals 1, equals p of 1, 1 over p X of 1, which is 0.40 over 0.60, which is two thirds, approximately 0.667.
+Ask the class: before part d: the probability that B rises is 0.5. If you know that A rose today, do you expect the chance for B to be higher, lower, or the same?
+[[slnc 800]]
+Higher: the big number 0.40 sits in the up-up cell.
 [[slnc 500]]
-Compare with P of Y equals 1, which is 0.5. Knowing that A rises makes it more likely that B rises too.
+Part d. Conditional probability: the cell divided by the marginal. P of Y equals 1, given X equals 1, equals p of 1, 1 over p X of 1, which is 0.40 over 0.60, which is two thirds, approximately 0.667.
+[[slnc 400]]
+The definition from last week, P of E given F equals P of E and F, over P of F: the condition A rises keeps only the bottom row, which has total probability 0.60, and within it, the cell 0.40.
+[[slnc 500]]
+Click. Compare with P of Y equals 1, which is 0.5. Knowing that A rises makes it more likely that B rises too.
 [[slnc 500]]
 Note for you, a common mistake in part d: answering p of 1, 1, which is 0.40, without dividing by p X of 1, which is 0.60. In part c, Y less than or equal to 0 includes Y equals 0.
 [[slnc 1200]]
@@ -276,13 +400,21 @@ Joint distribution: the continuous case. Slide 23.
 [[slnc 600]]
 Note for you: clock check. This slide is planned for minute 20. If you start it after about minute 25, skip part d of Exercise 10.22; after about minute 30, also do part d of Exercise 10.18 in one sentence.
 [[slnc 500]]
+Now the same ideas for continuous random variables: the table becomes a surface, sums become integrals.
+[[slnc 500]]
+On the slide: three blocks, the joint density, the marginal densities and F of a, b; their formulas follow below. The picture shows the unit square in the x y plane, lightly shaded, and in it a darker triangle A, the part below the diagonal. Under it: the probability of a region A is the volume above it; do the inner integral first.
+[[slnc 500]]
 For two continuous random variables, a joint density f of x, y, greater than or equal to 0, plays the role of the table. The probability of a region A in the plane is the double integral: P of the pair X, Y lying in A equals the double integral over A of f of x, y, d x d y. It is the volume above A under the surface, and the total is 1.
+[[slnc 500]]
+Picture the density as a tent or a roof over the square in the picture. The probability that the point X, Y lands in the dark triangle A is the volume of the part of the tent standing above the triangle.
 [[slnc 500]]
 Marginal densities: integrate the other variable out. f X of x equals the integral from minus infinity to infinity of f of x, y, d y, and f Y of y equals the integral from minus infinity to infinity of f of x, y, d x. It is the same as the row sum in the table, with an integral in place of the sum. And F of a, b equals the integral from minus infinity to a of the integral from minus infinity to b of f of x, y, d y d x.
 [[slnc 500]]
-Tiny example: f of x, y equals 1 on the unit square. Then P of X less than or equal to one half and Y less than or equal to one half is the area of the small square, one quarter.
+Tiny example: f of x, y equals 1 on the unit square. Then P of X less than or equal to one half and Y less than or equal to one half is the area of the small square, one quarter. With a constant density 1, volume is just height 1 times area, so probabilities are areas. The triangle A of the picture, where X is greater than Y, has area one half, so P of X greater than Y equals one half. And the marginal is f X of x equals the integral from 0 to 1 of 1, d y, which is 1: X alone is uniform on the interval from 0 to 1.
 [[slnc 500]]
 For a double integral, do the inner integral first, with the other variable held fixed.
+[[slnc 400]]
+On the board: the integral from 0 to 1 of the integral from 0 to 1 of f of x, y, d y d x: the inner one over y, with x fixed, then the outer one over x.
 [[slnc 1200]]
 
 Exercise 10.18. A joint density on the unit square. Slides 24 and 25.
@@ -291,11 +423,21 @@ X and Y have joint density f of x, y equals x plus y, for x between 0 and 1 and 
 [[slnc 800]]
 Try parts a and b, four minutes. Inner integral first, over y, with x fixed.
 [[slnc 500]]
-Part a. Click. Inner: the integral from 0 to 1 of x plus y, d y, equals x plus one half. Outer: the integral from 0 to 1 of x plus one half, d x, equals one half plus one half, which is 1.
+Part a. Click. Inner: the integral from 0 to 1 of x plus y, d y, equals x y plus y squared over 2, evaluated from 0 to 1, which is x plus one half. Outer: the integral from 0 to 1 of x plus one half, d x, equals x squared over 2 plus x over 2, evaluated from 0 to 1, which is one half plus one half, which is 1.
+[[slnc 400]]
+With x held fixed, x behaves like a number, so its integral in y is x y. Together with f greater than or equal to 0 on the square, the total of 1 tells us f is a joint density.
 [[slnc 500]]
-Part b. Click. The same over the small square, with x and y both from 0 to one half. Inner: x over 2 plus one eighth. Outer: the integral from 0 to one half of x over 2 plus one eighth, d x, equals 1 over 16 plus 1 over 16, which is one eighth.
+Ask the class: before part b: with the small square being a quarter of the big one, do you expect one quarter, more, or less?
+[[slnc 800]]
+Less: x plus y is smallest near the origin, so the small square sits under the low part of the roof.
+[[slnc 500]]
+Part b. Click. The same over the small square, with x and y both from 0 to one half. Inner: the integral from 0 to one half of x plus y, d y, is x over 2 plus one eighth. Outer: the integral from 0 to one half of x over 2 plus one eighth, d x, equals x squared over 4 plus x over 8, evaluated from 0 to one half, which is 1 over 16 plus 1 over 16, which is one eighth.
+[[slnc 400]]
+One eighth, half of one quarter: the guess was right. This number is the value of the joint distribution function, F of one half, one half.
 [[slnc 500]]
 Note for you: slide 25.
+[[slnc 500]]
+On the slide: the picture shows the unit square with the diagonal y equals x, dashed. The small square, with x and y from 0 to one half, is outlined in gold and labeled b; the triangle below the diagonal is shaded teal and labeled d.
 [[slnc 500]]
 Part c.
 [[slnc 400]]
@@ -304,6 +446,8 @@ Ask the class: haven't we done this already?
 Yes: the inner integral in part a.
 [[slnc 400]]
 f X of x equals x plus one half for x between 0 and 1, zero otherwise.
+[[slnc 400]]
+Integrating out y is exactly what the inner integral of part a did. A quick check: the integral from 0 to 1 of x plus one half, d x, is 1, the outer integral of part a. By the same computation, f Y of y equals y plus one half. Keep these two marginals in mind; we will need them in a few minutes for independence.
 [[slnc 500]]
 Part d. Click.
 [[slnc 400]]
@@ -312,19 +456,27 @@ Ask the class: do we need a double integral over the triangle?
 No.
 [[slnc 400]]
 Swapping x and y does not change f, so P of X greater than Y equals P of Y greater than X; and P of X equals Y is 0, because a line has no area. The two add up to 1, so P of X greater than Y equals one half.
+[[slnc 400]]
+In the picture: the teal triangle below the diagonal is X greater than Y, and its mirror image above the diagonal is Y greater than X. The roof x plus y looks the same from both sides of the diagonal, so the two volumes are equal. The diagonal itself is a line: no area, no volume.
 [[slnc 500]]
-Note for you, a common mistake in part b: taking the area of the small square, one quarter; that works only for a constant density. If someone integrates over the triangle in part d, with y from 0 to x, let them: it also gives one half.
+Note for you, a common mistake in part b: taking the area of the small square, one quarter; that works only for a constant density. If someone integrates over the triangle in part d, with y from 0 to x, let them: it also gives one half, since the double integral of x plus y, with y from 0 to x and then x from 0 to 1, equals the integral from 0 to 1 of three halves x squared, d x, which is one half.
 [[slnc 1200]]
 
 Independent random variables. Slide 26.
 [[slnc 600]]
 Note for you: clock check. This slide is planned for minute 38. If you start it after about minute 43, give part c of Exercise 10.21 as one number and one sentence, and skip part d of Exercise 10.22 if you have not decided so yet.
 [[slnc 500]]
+Last week, two events were independent if the probability of both is the product. Now we lift this to random variables.
+[[slnc 500]]
+On the slide: the definition, which follows below, and two blocks with the practical tests. Discrete: p of x, y equals p X of x times p Y of y, in every cell. Continuous: f of x, y equals f X of x times f Y of y.
+[[slnc 500]]
 X and Y are independent if every event about X is independent of every event about Y: P of X in A and Y in B equals P of X in A times P of Y in B. Equivalently, F of a, b equals F X of a times F Y of b, for all a and b.
 [[slnc 500]]
-In practice: discrete, p of x, y equals p X of x times p Y of y in every cell; one cell that fails, and they are not independent. Continuous, f of x, y equals f X of x times f Y of y; on a rectangle, f splits into a function of x times a function of y.
+In practice: discrete, the product rule must hold in every cell; one cell that fails, and they are not independent. Continuous, the joint density is the product of the marginals; on a rectangle, f splits into a function of x times a function of y.
 [[slnc 500]]
-Tiny example: f of x, y equals 4 x y on the unit square is 2 x times 2 y: independent. f of x, y equals x plus y of the last exercise does not split: not independent.
+Tiny example, discrete: the small table of slide 20. The top left cell is p of 0, 0, which is 0.3, but p X of 0 times p Y of 0 is 0.5 times 0.4, which is 0.2. One cell fails: not independent.
+[[slnc 500]]
+Tiny example, continuous: f of x, y equals 4 x y on the unit square is 2 x times 2 y: independent; its marginals are 2 x and 2 y. f of x, y equals x plus y of the last exercise does not split: not independent. Its marginals were x plus one half and y plus one half; at the point 0, 0 their product is one quarter, but f of 0, 0 is 0.
 [[slnc 500]]
 In words: knowing the value of X does not change the distribution of Y.
 [[slnc 1200]]
@@ -335,7 +487,13 @@ Stocks A and B of Exercise 10.15: X equals plus or minus 1 if A rises or falls, 
 [[slnc 800]]
 The same two stocks as before. Try part a, two minutes: compare one cell with the product of its margins.
 [[slnc 500]]
+Ask the class: which cell would you test first?
+[[slnc 800]]
+A cell with a big or a small number, for example 0.20 or 0.40: those are the most likely to fail.
+[[slnc 500]]
 Part a. Click. p of minus 1, minus 1 equals 0.20, but p X of minus 1 times p Y of minus 1 equals 0.4 times 0.25, which is 0.10. Not independent. Click. One bad cell is enough for no; for yes, all cells must match. The cell minus 1, 0 happens to match, 0.10 equals 0.4 times 0.25, and proves nothing.
+[[slnc 400]]
+The cell both fall has twice the probability that independent stocks would give it: the two stocks fall together more often than chance alone would explain.
 [[slnc 500]]
 Note for you: slide 28.
 [[slnc 500]]
@@ -347,7 +505,19 @@ Each cell is row sum times column sum.
 [[slnc 400]]
 Click. For example, 0.4 times 0.5 is 0.20, and 0.6 times 0.25 is 0.15.
 [[slnc 500]]
+On the slide: the table of independent stocks with the same margins; the cells appear at the click. For x equals minus 1: 0.10, 0.10 and 0.20. For x equals 1: 0.15, 0.15 and 0.30. The margins are as before: 0.4 and 0.6 for the rows, 0.25, 0.25 and 0.5 for the columns.
+[[slnc 500]]
+Check the new table: each row still adds up to its margin, 0.10 plus 0.10 plus 0.20 is 0.4, and 0.15 plus 0.15 plus 0.30 is 0.6, and each column too. So the two stocks behave exactly as before one at a time; only the way they move together has changed.
+[[slnc 500]]
+Ask the class: before part c: for these independent stocks, will P of X equals Y be bigger or smaller than the 0.60 of the real stocks?
+[[slnc 800]]
+Smaller.
+[[slnc 500]]
 Part c. Click. P of X equals Y equals 0.10 plus 0.30, which is 0.40, against 0.60 for the real stocks. Click. The real stocks move in the same direction more often than independent ones would: they tend to move together.
+[[slnc 500]]
+And this is the lesson of the whole exercise: the two tables have the same margins, yet 0.60 against 0.40. The marginals alone cannot tell how two random variables move together; for that we need the joint distribution.
+[[slnc 500]]
+Note for you, a common mistake in part a: testing only the cell minus 1, 0, finding a match, and concluding independent.
 [[slnc 1200]]
 
 Exercise 10.22. Two borrowers, independent defaults, a finance example. Slides 29 and 30.
@@ -357,10 +527,14 @@ The default times T A and T B, in years, of two companies are independent, expon
 Try parts a to c, three minutes. Remember the tail of the exponential.
 [[slnc 500]]
 Part a. Click. P of T greater than t equals e to the minus lambda t. Click. So P of T A greater than 10 equals e to the minus 0.2, approximately 0.819, and P of T B greater than 10 equals e to the minus 0.3, approximately 0.741.
+[[slnc 400]]
+The exponent is rate times time: 0.02 times 10 is 0.2, and 0.03 times 10 is 0.3. Company B, with the higher rate, is the riskier one.
 [[slnc 500]]
 Part b. Click. Independent, so the probabilities multiply: P of T A greater than 10 and T B greater than 10 equals e to the minus 0.2 times e to the minus 0.3, which is e to the minus 0.5, approximately 0.607.
 [[slnc 500]]
 Note for you: slide 30.
+[[slnc 500]]
+On the slide: the picture shows the t A, t B plane, split by dashed lines at t A equals 10 and t B equals 10. The upper right region, where both times are greater than 10, is shaded teal and labeled both survive. From the third click, the lower left square, where both times are at most 10, is shaded gold and labeled both default.
 [[slnc 500]]
 Part c.
 [[slnc 400]]
@@ -369,8 +543,16 @@ Ask the class: what is the complement of at least one defaults?
 Both survive.
 [[slnc 400]]
 So the answer is 1 minus e to the minus 0.5, approximately 0.393.
+[[slnc 400]]
+In the picture: at least one defaults is everything outside the teal region, the three other pieces of the plane together. Its probability is one minus the teal one.
 [[slnc 500]]
 Part d. Click. P of T A less than or equal to 10 is approximately 0.181, and P of T B less than or equal to 10 is approximately 0.259. Click. By independence the product, approximately 0.047.
+[[slnc 400]]
+This is the gold square in the picture. Each default probability is one minus the survival probability: 1 minus 0.819, and 1 minus 0.741. A check that ties parts c and d together: by inclusion-exclusion, P of at least one equals 0.181 plus 0.259 minus 0.047, approximately 0.393, the answer of part c.
+[[slnc 500]]
+Ask the class: is 0.047, under 5 percent, realistic for two borrowers in the same economy?
+[[slnc 800]]
+Probably too low: in a recession, both get into trouble at the same time.
 [[slnc 500]]
 Click. In a crisis, defaults come together, so independence underestimates part d.
 [[slnc 500]]
@@ -379,6 +561,8 @@ Note for you, a common mistake in part c: P of T A less than or equal to 10 plus
 
 Summary for Session 2. Slide 31.
 [[slnc 600]]
+On the slide: five bullet points with the formulas of this session; they are the lines you say now.
+[[slnc 500]]
 Session 2 in a few lines: a discrete joint distribution is a table, and the marginals are its row and column sums; a continuous one is a joint density, probabilities are double integrals, and the marginals come from integrating the other variable out; F of a, b equals P of X less than or equal to a and Y less than or equal to b; and independent means the joint pmf or density is the product of the marginals, so probabilities of and multiply. The marginals alone do not tell how X and Y move together.
 [[slnc 500]]
 Every exercise of today is in the study guide on the course website, with a step-by-step solution, and the Exercises page there has more problems on every topic for self-study. Thank you, and see you next week.

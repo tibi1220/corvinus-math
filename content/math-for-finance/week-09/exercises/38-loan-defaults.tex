@@ -1,0 +1,100 @@
+% ---
+% title: Defaults in a small loan portfolio
+% tags: finance, binomial, expectation, variance
+% ---
+
+\begin{problem}
+	\begin{context}
+		A bank holds a small portfolio of loans to similar firms. A loan
+		\emph{defaults} if the borrower does not pay it back. To keep the model
+		simple, we assume that the borrowers default independently of each
+		other: one firm's default does not change the chance that another firm
+		defaults.
+	\end{context}
+	A bank has given $10$ loans. Each loan defaults within a year with
+	probability $0.05$, independently of the others. Let $X$ be the number of
+	defaults within the year.
+	(a) Which distribution does $X$ have, with which parameters?
+	(b) Find the probability that no loan defaults.
+	(c) Find the probability that exactly one loan defaults.
+	(d) Find the probability that at least two loans default.
+	(e) Find $\E[X]$ and $\SD(X)$.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) $10$ independent trials (loans), each a ``success'' (default)
+	with the same probability $0.05$: $X$ is \alert{binomial with $(n,p)=(10,\,0.05)$},
+	\[ P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i},\qquad i=0,1,\dots,10. \]
+	\pause
+	\vspace{-3mm}
+	\[ \text{(b) } P(X=0)=0.95^{10}\approx\alert{0.5987},\qquad
+		\text{(c) } P(X=1)=10\cdot0.05\cdot0.95^{9}\approx\alert{0.3151}. \]
+	\pause
+	(d) Complement: $\{X\ge2\}^c=\{X=0\}\cup\{X=1\}$ (2 terms instead of 9):
+	\[ P(X\ge2)=1-P(X=0)-P(X=1)\approx\alert{0.0861}. \]
+	\pause
+	\vspace{-3mm}
+	\[ \text{(e) } \E[X]=np=\alert{0.5},\qquad \Var(X)=np(1-p)=0.475,\qquad
+		\SD(X)=\sqrt{0.475}\approx\alert{0.689}. \]
+\end{slides}
+
+\begin{solution}
+	\idea Each loan is one trial that either ends in default or not. The
+	trials are independent and have the same default probability, so the
+	number of defaults is binomial. The probabilities come from the binomial
+	formula, ``at least two'' from the complement, and $\E[X]$, $\Var(X)$ from
+	the formulas $np$ and $np(1-p)$.
+
+	\step{(a)} Think of each of the $10$ loans as a trial, and call a default
+	a ``success''. The trials are independent (the borrowers default
+	independently), and every trial has the same success probability
+	$p=0.05$. The number of successes in $n$ such trials is binomial with
+	parameters $(n,p)$. So $X$ is binomial with parameters $(10,\,0.05)$:
+	\[ P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i},\qquad i=0,1,\dots,10. \]
+
+	\step{(b)} No default means all $10$ loans are repaid. Put $i=0$ in the
+	formula; $\binom{10}{0}=1$ and $0.05^0=1$:
+	\[ P(X=0)=0.95^{10}\approx0.5987. \]
+	This also follows directly from independence: each loan is repaid with
+	probability $0.95$, and we multiply these ten probabilities.
+
+	\step{(c)} Put $i=1$. The factor $\binom{10}{1}=10$ counts which of the
+	$10$ loans is the one that defaults:
+	\[ P(X=1)=10\cdot0.05\cdot0.95^{9}\approx10\cdot0.05\cdot0.6302
+		\approx0.3151. \]
+
+	\step{(d)} ``At least two'' means $X=2,3,\dots,10$: nine terms. The
+	opposite event is ``at most one'', $X=0$ or $X=1$, only two terms, and we
+	already have both. The events $\{X=0\}$ and $\{X=1\}$ are mutually
+	exclusive, so their probabilities add. Hence
+	\[ P(X\ge2)=1-P(X\le1)=1-P(X=0)-P(X=1)\approx1-0.598737-0.315125
+		\approx0.0861. \]
+	(Subtracting the rounded values $0.5987$ and $0.3151$ would give $0.0862$;
+	keep more digits in intermediate results.)
+
+	\step{(e)} For a binomial random variable with parameters $(n,p)$,
+	$\E[X]=np$ and $\Var(X)=np(1-p)$. Here
+	\[ \E[X]=10\cdot0.05=0.5,\qquad \Var(X)=10\cdot0.05\cdot0.95=0.475,\qquad
+		\SD(X)=\sqrt{0.475}\approx0.689. \]
+	On average the bank expects half a default per year; the number of
+	defaults typically differs from this by about $0.7$.
+	\begin{answer}
+		(a) binomial with parameters $(10,\,0.05)$ \quad
+		(b) $0.95^{10}\approx0.5987$ \quad
+		(c) $10\cdot0.05\cdot0.95^9\approx0.3151$ \quad
+		(d) $\approx0.0861$ \quad
+		(e) $\E[X]=0.5$, $\Var(X)=0.475$, $\SD(X)\approx0.689$
+	\end{answer}
+	\begin{remark}
+		In (d) the complement saves work: two terms, $P(X=0)$ and $P(X=1)$,
+		instead of the nine terms $P(X=2),\dots,P(X=10)$. Use it whenever an
+		``at least'' question has a short opposite.
+		\textbf{Common mistake:} forgetting the factor $\binom{10}{1}=10$ in (c).
+		The probability $0.05\cdot0.95^9$ is the chance that one
+		\emph{particular} loan defaults and the other nine do not; any of the
+		ten loans can be the one.
+	\end{remark}
+\end{solution}

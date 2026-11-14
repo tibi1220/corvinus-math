@@ -4,6 +4,8 @@
 % (2 x 90 min with a short break in between).
 % Exercises are numbered by week (9.1, 9.2, ...); finance examples share the
 % numbering. Each one lives in exercises/NN-slug.tex.
+% The figures of the slides are repeated here (plain TikZ), so that the
+% printed script can be used without seeing the slides.
 
 \documentclass[11pt,a4paper,parskip=half]{scrartcl}
 \usepackage{amsmath}
@@ -11,6 +13,7 @@
 \usepackage[english]{babel}
 \usepackage{booktabs}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
 \usepackage[a4paper,margin=1in,marginparwidth=1.9cm,marginparsep=2mm]{geometry}
@@ -60,20 +63,110 @@
 \newcommand{\board}{\textbf{\color{gold}Board:}\ }
 \newcommand{\ask}{\textbf{\color{navy}Ask the class:}\ }
 \newcommand{\slide}[1]{\marginpar{\raggedright\footnotesize\color{gray}slide #1}}
+% What the slide shows (figures and formulas), for reading without the deck
+\newcommand{\onslide}{\par\textbf{\color{gray}On the slide:}\ }
 
-% Small Venn diagram of two events E, F in Omega (same as in the deck)
-\newcommand{\venn}[1]{%
-  \begin{tikzpicture}[scale=.5,baseline=(O.base)]
-    \node (O) at (.5,0) {\phantom{x}};
-    #1
-    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
-    \draw[thick,navy] (0,0) circle (.85);
-    \draw[thick,navy] (1,0) circle (.85);
-    \node at (-.35,0) {\scriptsize $E$};
-    \node at (1.35,0) {\scriptsize $F$};
-    \node at (2.15,.8) {\scriptsize $\Omega$};
+% The Venn diagram of Exercises two-exams and exams-conditional, with the
+% four probabilities; #1 = shading commands, #2 = caption
+\newcommand{\examvenn}[2]{%
+  \begin{tabular}{@{}c@{}}
+    \begin{tikzpicture}[scale=.62]
+      #1
+      \draw[thick] (-2.3,-2) rectangle (4.1,2.2);
+      \draw[navy,thick] (0,0) circle (1.5);
+      \draw[teal,thick] (1.8,0) circle (1.5);
+      \node[navy] at (-1.3,1.55) {$A$};
+      \node[teal] at (3.1,1.55) {$B$};
+      \node at (-1.95,-1.65) {\small $\Om$};
+      \node at (.9,0) {\small $0.54$};
+      \node at (-.6,0) {\small $0.18$};
+      \node at (2.4,0) {\small $0.10$};
+      \node at (3.4,-1.6) {\small $0.18$};
+    \end{tikzpicture}\\[1mm]
+    \footnotesize #2
+  \end{tabular}}
+
+% Visual proof of Bayes' formula: Omega = gray box, the hypothesis F = blue
+% diamond, the observation E = light blue circle, their overlap FE = red.
+% Mini shapes (pics): bvOm, bvF, bvE, bvFE; bvfrac={top}{bottom} is a
+% fraction of two mini shapes. Each row is one tikzpicture, so the HTML
+% conversion sees no math around TikZ. Optional argument: scale.
+\definecolor{bvblue}{RGB}{95,107,216}
+\definecolor{bvlight}{RGB}{214,228,250}
+\definecolor{bvrose}{RGB}{248,122,134}
+\definecolor{bvgray}{RGB}{231,234,237}
+\tikzset{
+  bvline/.style={draw=black!80,line width=.5pt},
+  bvclip/.style={draw=black!80,line width=1pt},
+  bvstrike/.style={draw=red!85!black,line width=1pt},
+  pics/bvOm/.style={code={\filldraw[bvline,fill=bvgray,rounded corners=2pt]
+    (-.3,-.16) rectangle (.3,.16);}},
+  pics/bvF/.style={code={\filldraw[bvline,fill=bvblue]
+    (0,.21)--(.21,0)--(0,-.21)--(-.21,0)--cycle;}},
+  pics/bvE/.style={code={\filldraw[bvline,fill=bvlight] (0,0) circle (.2);}},
+  pics/bvFE/.style={code={%
+    \begin{scope}[scale=.25,shift={(-.12,0)}]
+      \clip (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \filldraw[bvclip,fill=bvrose] (.8,0) circle (1.2);
+    \end{scope}
+    \begin{scope}[scale=.25,shift={(-.12,0)}]
+      \clip (.8,0) circle (1.2);
+      \draw[bvclip] (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \end{scope}}},
+  pics/bvfrac/.style 2 args={code={\pic at (0,.3) {#1};
+    \draw[line width=.5pt] (-.36,0)--(.36,0); \pic at (0,-.3) {#2};}},
+  pics/bvx/.style={code={\draw[bvstrike] (-.3,-.21)--(.3,.21);}},
+}
+% Row 1: Omega, F, E and the overlap FE
+\newcommand{\bayesvenn}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \filldraw[bvline,line width=.8pt,fill=bvgray,rounded corners=6pt]
+      (-2.4,-1.6) rectangle (2.4,1.6);
+    \filldraw[bvline,line width=.8pt,fill=bvlight] (.8,0) circle (1.2);
+    \filldraw[bvline,line width=.8pt,fill=bvblue]
+      (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \begin{scope}
+      \clip (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \fill[bvrose] (.8,0) circle (1.2);
+    \end{scope}
+    \draw[bvline,line width=.8pt] (.8,0) circle (1.2)
+      (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \node[white,font=\large] at (-.85,0) {$F$};
+    \node[font=\large] at (1.3,0) {$E$};
+    \node[font=\footnotesize] at (.13,0) {$FE$};
+    \node at (2.05,1.25) {$\Omega$};
   \end{tikzpicture}}
-\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+% Row 2: probability = share of a shape
+\newcommand{\bayesshares}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0) {$P(F)=$};
+    \pic at (.42,0) {bvfrac={bvF}{bvOm}};
+    \node[left] at (2.55,0) {$P(E)=$};
+    \pic at (2.97,0) {bvfrac={bvE}{bvOm}};
+    \node[left] at (5.55,0) {$P(F\mid E)=$};
+    \pic at (5.97,0) {bvfrac={bvFE}{bvE}};
+    \node[left] at (8.55,0) {$P(E\mid F)=$};
+    \pic at (8.97,0) {bvfrac={bvFE}{bvF}};
+  \end{tikzpicture}}
+% Row 3: plug the shares into Bayes' formula; F and Omega cancel
+\newcommand{\bayesproof}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}=$};
+    \pic at (.8,.72) {bvfrac={bvFE}{bvF}};
+    \node at (1.4,.72) {$\cdot$};
+    \pic at (2,.72) {bvfrac={bvF}{bvOm}};
+    \draw[line width=.6pt] (.3,0)--(2.5,0);
+    \pic at (1.4,-.72) {bvfrac={bvE}{bvOm}};
+    \pic at (.8,.42) {bvx};
+    \pic at (2,1.02) {bvx};
+    \pic at (2,.42) {bvx};
+    \pic at (1.4,-1.02) {bvx};
+    \node at (2.9,0) {$=$};
+    \pic at (3.55,0) {bvfrac={bvFE}{bvE}};
+    \node[right] at (3.95,0) {$=P(F\mid E)$};
+    \node[right,font=\footnotesize] at (3.95,-.45) {(the definition)};
+  \end{tikzpicture}}
 
 % The exercises (one file each in exercises/) and \scriptexercise
 \input{exercises/macros}
@@ -84,7 +177,7 @@
 
 \title{Mathematics for Finance}
 \subtitle{Week 9 --- Probability, conditional probability, independence,
-  random variables\\[2pt]
+  random variables, named discrete distributions\\[2pt]
   \normalsize Teaching script for two 90-minute practical classes held on the
   same day, back to back\ifdefined\scriptprint\\[2pt]
   (print version, without the background boxes)\fi}
@@ -98,48 +191,48 @@
 	How to use this script. Plain text is meant to be read out loud or
 	paraphrased. \textbf{Say} marks key sentences; \textbf{Ask} marks questions
 	to put to the class (wait for answers before revealing the solution);
-	\textbf{Board} marks what to write. Gold boxes like this one are short notes
-	for you only.\ifdefined\scriptprint\else\ \textbf{Purple ``Background for
-			you'' boxes} explain the finance behind the examples (what the terms mean,
-		why the example matters, what students may ask); they are \emph{not} meant
-		to be read out, but they let you answer follow-up questions with
-		confidence.\fi\ The script follows the
-	deck frame by frame; the slide numbers in the margin are the frame numbers
-	in the footline of the deck. Exercise numbers match the slides.
-	This week the pace is deliberately slow: every new idea is introduced from
-	scratch with a tiny example, and before each exercise the students try it
-	themselves (the script says for how long); then you walk through the
-	solution in the order in which the slide reveals it.
-	Timings are approximate; if you run late, skip in the order of
-	\emph{If you are short on time} below. Only the exercises of the slides
-	are in this script.
+	\textbf{Board} marks what to write; \textbf{On the slide} describes what
+	the students see, and the figures and formulas of the slides are repeated
+	in this script. Gold boxes like this one are short notes for you
+	only.\ifdefined\scriptprint\else\ \textbf{Purple ``Background for
+				you'' boxes} explain the finance behind the examples; they are
+		\emph{not} meant to be read out.\fi\ The script follows the deck frame by
+	frame; the slide numbers in the margin are the frame numbers in the
+	footline of the deck. The students have seen all of this before, so the
+	pace is fast: every theory frame is a short recap, then one exercise. The
+	students try it in pairs, then you reveal the solution step by step. The
+	script gives you more words than you need in class: say the key
+	sentences, and use the rest when a question comes up or the room looks
+	lost. Only the exercises of the slides are in this script; the others are
+	for self-study.
 \end{cue}
 
 \subsection*{Timing overview}
 
 Both sessions are on the same day: Session 1 (90 min), a short break,
-Session 2 (90 min). The timings leave about 6 minutes of reserve in both
-sessions.
+Session 2 (90 min). The plan leaves a reserve of 14 minutes in Session 1
+and 20 in Session 2, for questions and for students working alone.
 
 \begin{center}
 	\small
 	\begin{tabular}{@{}llrr@{}}
 		\toprule
 		Slides & Session 1 & min & cum. \\\midrule
-		1--3   & Welcome, recap of week 8, plan for today          & 4  & 4  \\
-		4      & From counting to probability                      & 7  & 11 \\
-		5--6   & Exercise~\exref{two-exams}                        & 9  & 20 \\
-		7      & Equally likely outcomes                           & 3  & 23 \\
-		8--9   & Exercise~\exref{five-cards}                       & 8  & 31 \\
-		10     & Conditional probability                           & 6  & 37 \\
-		11--12 & Exercise~\exref{exams-conditional}                & 8  & 45 \\
-		13--14 & Exercise~\exref{actuarial-exams} (skip 1st)      & 8  & 53 \\
-		15     & Total probability and Bayes' formula              & 5  & 58 \\
-		16--17 & Exercise~\exref{early-warning}                    & 11 & 69 \\
-		18     & Odds                                              & 4  & 73 \\
-		19--20 & Exercise~\exref{early-warning-odds} (skip 2nd)   & 8  & 81 \\
-		21     & Summary                                           & 3  & 84 \\
-		       & Reserve (questions, students working alone)       & 6  & 90 \\\midrule
+		1--4   & Welcome, plan, recap of the rules of probability  & 5  & 5  \\
+		5--6   & Exercise~\exref{two-exams}                        & 8  & 13 \\
+		7      & Equally likely outcomes                           & 2  & 15 \\
+		8      & Conditional probability                           & 4  & 19 \\
+		9--10  & Exercise~\exref{exams-conditional}                & 8  & 27 \\
+		11     & Total probability and Bayes' formula              & 4  & 31 \\
+		12     & Why Bayes' formula works: a picture               & 3  & 34 \\
+		13--14 & Exercise~\exref{early-warning}                    & 10 & 44 \\
+		15     & Odds                                              & 3  & 47 \\
+		16     & The generalized Bayes formula                     & 3  & 50 \\
+		17--19 & Exercise~\exref{default-by-rating}                & 10 & 60 \\
+		20     & Independent events                                & 4  & 64 \\
+		21--23 & Exercise~\exref{bond-defaults}                    & 9  & 73 \\
+		24     & Summary                                           & 3  & 76 \\
+		       & Reserve (questions, students working alone)       & 14 & 90 \\\midrule
 		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
 	\end{tabular}
 \end{center}
@@ -149,19 +242,21 @@ sessions.
 	\begin{tabular}{@{}llrr@{}}
 		\toprule
 		Slides & Session 2 & min & cum. \\\midrule
-		22--23 & Session 2 title, recap of Session 1               & 4  & 4  \\
-		24     & The generalized Bayes formula                     & 5  & 9  \\
-		25--27 & Exercise~\exref{default-by-rating} (skip (c) 3rd) & 10 & 19 \\
-		28     & Independent events                                & 6  & 25 \\
-		29--30 & Exercise~\exref{pairwise-not-mutual} (skip 2nd)  & 7  & 32 \\
-		31--33 & Exercise~\exref{bond-defaults}                    & 9  & 41 \\
-		34     & Discrete random variables, distribution function  & 6  & 47 \\
-		35--37 & Exercise~\exref{urn-game}                         & 12 & 59 \\
-		38     & Expected value, variance, standard deviation      & 6  & 65 \\
-		39--40 & Exercise~\exref{call-option}                      & 9  & 74 \\
-		41--42 & Exercise~\exref{trading-strategy} (skip 1st)     & 7  & 81 \\
-		43     & Summary                                           & 3  & 84 \\
-		       & Reserve (questions, students working alone)       & 6  & 90 \\\midrule
+		25--26 & Session 2 title, recap of Session 1               & 3  & 3  \\
+		27     & Discrete random variables, distribution function  & 4  & 7  \\
+		28     & Expected value, variance, standard deviation      & 4  & 11 \\
+		29--30 & Exercise~\exref{call-option}                      & 9  & 20 \\
+		31     & Bernoulli distribution                            & 2  & 22 \\
+		32     & Binomial distribution                             & 4  & 26 \\
+		33     & Exercise~\exref{loan-defaults}                    & 8  & 34 \\
+		34     & Poisson distribution                              & 4  & 38 \\
+		35     & Exercise~\exref{claims-per-day}                   & 7  & 45 \\
+		36     & Geometric distribution                            & 4  & 49 \\
+		37--38 & Exercise~\exref{first-sale}                       & 8  & 57 \\
+		39     & Hypergeometric distribution                       & 3  & 60 \\
+		40     & Exercise~\exref{audit-sample}                     & 7  & 67 \\
+		41     & Summary                                           & 3  & 70 \\
+		       & Reserve (questions, students working alone)       & 20 & 90 \\\midrule
 		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
 	\end{tabular}
 \end{center}
@@ -169,620 +264,434 @@ sessions.
 \subsection*{If you are short on time}
 
 \begin{cue}
-	Skip in this order. Each skipped exercise has a full solution in the
-	exercises PDF: tell the students so. Every topic keeps its theory frame
-	and at least one exercise. Gold \emph{Clock check} boxes in the script
-	say when to decide.
+	Skip \emph{parts} of exercises, never a whole topic, in this order. Every
+	skipped part has a full solution in the exercises PDF: tell the students
+	so. Gold \emph{Clock check} boxes in the script say when to decide.
 
-	\textbf{Session 1} (frees about 16 minutes):
+	\textbf{Session 1:}
 	\begin{enumerate}
-		\item Exercise~\exref{actuarial-exams}, three exams in a row (slides
-		      13--14, 8 min). The multiplication rule is already on slide 10.
-		      Decide at slide 10: skip it if you start that slide after about
-		      minute 35.
-		\item Exercise~\exref{early-warning-odds}, two warning signals
-		      (slides 19--20, 8 min). Keep the odds frame (slide 18), and apply
-		      the odds form once to the numbers of
-		      Exercise~\exref{early-warning} instead (1--2 min). Decide at
-		      slide 18: skip it if you start that slide after about minute 74.
+		\item Part (c) of Exercise~\exref{default-by-rating} (slide 19, about
+		      3 min): say only ``given no default, class C has probability
+		      about $0.19$, almost the prior $0.2$'', then the lesson. Decide
+		      at slide 11.
+		\item Part (d) of Exercise~\exref{bond-defaults} (slide 23, about
+		      2 min): give $1-0.95^{10}\approx0.401$ in one sentence, then the
+		      table and the lesson. Decide at slide 16.
+	\end{enumerate}
+	If you are behind already at slide 12, shorten the picture proof to its
+	last row: the diamonds cancel, the boxes cancel, ``red over circle''
+	is left.
+
+	\textbf{Session 2:}
+	\begin{enumerate}
+		\item Part (e) of Exercise~\exref{first-sale} (slide 38, about 3 min):
+		      state the memoryless property in one sentence. Decide at
+		      slide 31.
+		\item Part (d) of Exercise~\exref{audit-sample} (slide 40, about
+		      2 min): give $3360/15504\approx0.2167$ only. Decide at slide 36.
+		\item $\E[C^2]$, $\Var(C)$, $\SD(C)$ in part (b) of
+		      Exercise~\exref{call-option} (slide 30, about 2 min): give
+		      $\SD(C)\approx9.17$ only. This one comes first in time: decide
+		      at slide 28, and skip it only if you start that slide after
+		      about minute 12.
 	\end{enumerate}
 
-	\textbf{Session 2} (frees about 17 minutes):
-	\begin{enumerate}
-		\item Exercise~\exref{trading-strategy}, the trading strategy (slides
-		      41--42, 7 min). Exercise~\exref{call-option} already covers
-		      expected value, variance and standard deviation. Decide at
-		      slide 38: skip it if you start that slide after about minute 64.
-		\item Exercise~\exref{pairwise-not-mutual}, pairwise but not mutually
-		      independent (slides 29--30, 7 min). Exercise~\exref{bond-defaults}
-		      covers independence on its own. Decide at slide 28: skip it if
-		      you start that slide after about minute 24.
-		\item Part (c) of Exercise~\exref{default-by-rating} (slide 27,
-		      about 3 min): give the result $0.19$ and the one-sentence lesson.
-	\end{enumerate}
-
-	\textbf{Never skip} Exercise~\exref{early-warning} (Bayes' formula),
-	(a) and (b) of Exercise~\exref{default-by-rating} (the generalized
-	Bayes formula) or Exercise~\exref{urn-game} (the only exercise on the
-	pmf and the distribution function).
-
-	If you are behind everywhere, the cheapest fix is shorter try-first
-	pauses: one or two minutes instead of three, on every exercise.
+	If you are behind everywhere, shorten the try-first pauses: one or two
+	minutes instead of three.
 \end{cue}
 
 \tableofcontents
 
 %======================================================================
-\section{Session 1: Probability, conditional probability, Bayes' formula}
+\section{Session 1: Probability, Bayes' formula, independence}
 %======================================================================
 
-\subsection{Welcome, recap and plan for today (4 min)}\slide{1--3}
+\subsection{Welcome, plan, recap of the rules of probability (5 min)}\slide{1--4}
 
 \begin{cue}
-	Slide 1 (title) is on the screen while they settle down. No introduction
-	of yourself is needed: they know you from last week.
+	Slide 1 (title) while they settle down, then slide 2 (Plan for today).
 \end{cue}
 
-Good morning, everyone, and welcome back. I hope you all survived the
-counting of last week.
+Good morning, everyone, and welcome back.
 
-\say Let me remind you where we are. Last week we learned to count: the
-basic principle of counting, permutations, combinations, the multinomial
-coefficient and stars and bars. At the end we met the language of
-probability: the sample space $\Om$, the set of all possible outcomes, and
-events, which are subsets of $\Om$. We combined events with ``or'', ``and''
-and ``not'', we used De Morgan's laws, and we filled Venn diagrams from the
-inside out.
+\say Today, Session 1: the rules of probability, conditional probability,
+Bayes' formula and odds, and independent events. Session 2: random
+variables, expected value and standard deviation, and five named
+distributions: Bernoulli, binomial, Poisson, geometric and hypergeometric.
 
-Today we put numbers on events: we say \emph{how likely} they are. That is
-what probability is about.
+\say You have seen most of this before, so we go fast: a short recap of
+each topic, then one exercise, which you try in pairs first. More
+exercises, all with full solutions, are in the exercises PDF.
+
+Almost every number in finance is uncertain: a default, next year's
+price, tomorrow's claims. Probability is the language for it.
 
 \begin{cue}
-	Slide 2 (Plan for today).
+	Slide 3 (Session 1 title): click through to slide 4.
 \end{cue}
 
-\say Today is again a long day: two sessions of 90 minutes, back to back,
-with a short break in between.
+\needspace{0.22\textheight}
+\onslide the axioms, the rules, a Venn diagram, inclusion--exclusion.
+\begin{center}
+	\begin{tikzpicture}[scale=.8]
+		\draw[thick] (-1.9,-1.45) rectangle (3.4,1.45);
+		\node at (3.1,-1.15) {$\Om$};
+		\draw[thick,navy] (0,0) circle (1.15);
+		\draw[thick,teal] (1.5,0) circle (1.15);
+		\node[navy] at (-1.55,1.05) {$E$};
+		\node[teal] at (3.05,1.05) {$F$};
+		\node at (-.45,0) {\small $EF^c$};
+		\node at (.75,0) {\small $EF$};
+		\node at (1.95,0) {\small $E^cF$};
+		\node at (-1.25,-1.15) {\small $E^cF^c$};
+	\end{tikzpicture}\\[1mm]
+	\footnotesize the four regions are mutually exclusive; their
+	probabilities add up to 1
+\end{center}
 
-In Session 1 we learn the basic rules of probability: how to compute the
-probability of ``or'', ``and'' and ``not''. Then we see what happens when all
-outcomes are equally likely: there, last week's counting gives the
-probabilities. After that comes the most important idea of the day:
-\emph{conditional probability}, the probability of an event when we already
-know something. It leads us to Bayes' formula and to odds.
-
-In Session 2 we meet independent events, and then random variables: numbers
-that depend on chance, like the payoff of an investment, with their
-expected value and variance.
-
-\say Why does a finance student need this? Banks estimate how likely it is
-that a borrower does not repay; models raise alarms; bookmakers quote odds;
-an option pays a random amount. All of these are described with exactly the
-tools of today.
-
-\begin{cue}
-	Today we go slowly. Tell them: ``Before every exercise you will get a few
-	minutes to try it yourself, in pairs. Do not wait for me: write something
-	down, even if you are not sure.'' Then slide 3 (Session 1 title): just
-	click through.
-\end{cue}
-
-\subsection{From counting to probability (7 min)}\slide{4}
-
-\say What do we mean when we say that the probability of an event is $0.3$?
-The most intuitive answer: if we repeat the experiment many, many times,
-the event happens in about 30\% of the repetitions. A probability is a
-long-run proportion.
-
-Proportions behave in a very simple way, and the rules of probability
-copy that behavior. We write $P(E)$ for the probability of an event $E$.
-There are only three basic rules, called the \emph{axioms}.
-
-\board Axioms:
-\begin{enumerate}[label=(\arabic*),nosep]
-	\item $0\le P(E)\le 1$;
-	\item $P(\Om)=1$;
-	\item if $E_1,E_2,\dots$ are mutually exclusive (no two of them can
-	      happen together), then
-	      \[ P\Big(\bigcup_i E_i\Big)=\sum_i P(E_i). \]
-\end{enumerate}
-
-\say In words: a probability is between 0 and 1; something always happens,
-so the whole sample space has probability 1; and for events that cannot
-happen together, the probabilities simply add up.
-
-Everything else follows from these three. Let me show you the most
-important consequences, with a tiny example: roll a fair die, so
-$\Om=\{1,2,3,4,5,6\}$ and each number has probability $1/6$. Let
-$E=\{2,4,6\}$ (``even'') and $F=\{4,5,6\}$ (``at least 4'').
-
-\emph{The complement rule.} $E$ and $E^c$ cannot happen together, and
-together they make up $\Om$. So $P(E)+P(E^c)=P(\Om)=1$:
-\[ P(E^c)=1-P(E). \]
-Example: $P(\text{odd})=1-P(\text{even})=1-\tfrac12=\tfrac12$.
-
-\emph{Monotonicity.} If $E\subseteq F$, then $F$ is $E$ plus something
-else, so $P(E)\le P(F)$. A bigger event cannot be less likely.
-
-\emph{The difference rule.} $E$ splits into two mutually exclusive parts:
-the part inside $F$, which is $EF$, and the part outside $F$, which is
-$EF^c$. So $P(E)=P(EF)+P(EF^c)$, that is,
-\[ P(EF^c)=P(E)-P(EF). \]
-Example: $EF=\{4,6\}$, so $P(EF^c)=\tfrac12-\tfrac13=\tfrac16$: indeed,
-$EF^c=\{2\}$.
-
-\emph{The union rule.} If we add $P(E)$ and $P(F)$, the overlap $EF$ is
-counted twice, so we subtract it once:
+\say Three axioms: a probability is between 0 and 1, $P(\Om)=1$, and for
+mutually exclusive events the probabilities add:
+\[ \text{(1) } 0\le P(E)\le1,\qquad \text{(2) } P(\Om)=1,\qquad
+	\text{(3) } P\Big(\bigcup_i E_i\Big)=\sum_i P(E_i)
+	\text{ if the } E_i \text{ are mutually exclusive.} \]
+Everything else follows from these three:
+\[ P(E^c)=1-P(E),\qquad E\subseteq F\Rightarrow P(E)\le P(F),\qquad
+	P(EF^c)=P(E)-P(EF), \]
+and the union rule
 \[ P(E\cup F)=P(E)+P(F)-P(EF). \]
-Example:
-$P(E\cup F)=\tfrac12+\tfrac12-\tfrac13=\tfrac23$, and indeed
-$E\cup F=\{2,4,5,6\}$ has 4 of the 6 outcomes.
 
-\board Draw the two circles of the slide and label the four regions $EF^c$,
-$EF$, $E^cF$, $E^cF^c$.
+Why do these hold? Look at the picture. $E$ and $E^c$ do not overlap and
+together they fill $\Om$, so their probabilities add up to 1: that is the
+complement rule. $E$ is made of two pieces that do not overlap, $EF$ and
+$EF^c$, so $P(E)=P(EF)+P(EF^c)$: that is the third rule. And if we add
+$P(E)$ and $P(F)$, the middle region $EF$ is counted twice, so we subtract
+it once: that is the union rule. For three events it is
+inclusion--exclusion, as for counts last week:
+\[ P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(EF)-P(EG)-P(FG)+P(EFG). \]
 
-\say The Venn diagram is the best way to remember all of this. The four
-regions are mutually exclusive, and together they make up $\Om$, so their
-probabilities add up to 1. Every question about two events is a question
-about these four regions.
+\say The Venn diagram of two events has four regions that do not overlap;
+their probabilities add up to 1. That is the tool for the first exercise.
 
-\ask Which region is ``neither $E$ nor $F$''? \emph{($E^cF^c$, the part
-	outside both circles.)} In the die example, which outcomes are there?
-\emph{(Only $1$ and $3$: odd and less than 4. Probability $\tfrac26$.)}
-
-\say For three events, the formula is the same inclusion--exclusion that we
-used for counts last week: add the singles, subtract the pairs, add back the
-triple. It is at the bottom of the slide.
-
-\begin{cue}
-	These are the same rules as for counting last week, with probabilities in
-	place of counts. If students ask where the rules come from, point out
-	that all of them are just the third axiom applied to a split of an event
-	into mutually exclusive pieces.
-\end{cue}
-
-\subsection{Exercise~\exref{two-exams} --- Two exams (9 min)}\slide{5--6}
+\subsection{Exercise~\exref{two-exams} --- Two exams (8 min)}\slide{5--6}
 
 \scriptexercise{two-exams}
 
-\begin{cue}
-	Only the statement is visible. Give them 3 minutes to try in pairs. Hint
-	if they are stuck: ``draw the two circles and start with the overlap''.
-\end{cue}
+\say Try it in pairs, three minutes. Draw two circles and start with the
+overlap.
 
-\say Try it in pairs: three minutes. Draw a Venn diagram first.
+\ask Which number do we write into the diagram first, and why?
+\emph{(The overlap, $0.54$: it is the only region we know directly; the
+other numbers include it.)}
 
-\begin{cue}
-	After 3 minutes: click once (the events and the empty diagram appear).
-\end{cue}
+(Click.) $A$ is ``passed Math'', $B$ ``passed Micro'': $P(A)=0.72$,
+$P(B)=0.64$, $P(AB)=0.54$. We fill the diagram from the inside out. Click:
+both, $0.54$. Click: Math only, $0.72-0.54=0.18$. Click: Micro only,
+$0.64-0.54=0.10$. Click: neither, $1-(0.18+0.54+0.10)=0.18$.
 
-\say First we give names to the events. Let $A$ be ``passed Math'' and $B$
-``passed Micro''. The data are $P(A)=0.72$, $P(B)=0.64$, and ``both'' is
-the intersection: $P(AB)=0.54$.
-
-\say Now we fill the diagram \emph{from the inside out}, exactly as we did
-with counts last week.
-
+\needspace{0.22\textheight}
+\onslide the diagram, one region per click; at the end:
 \begin{center}
-	\begin{tikzpicture}[scale=.62]
-		\draw[thick] (-2.3,-2) rectangle (4.1,2.2);
-		\draw[navy,thick] (0,0) circle (1.5);
-		\draw[teal,thick] (1.8,0) circle (1.5);
-		\node[navy] at (-1.3,1.55) {$A$};
-		\node[teal] at (3.1,1.55) {$B$};
-		\node at (-1.95,-1.65) {\small $\Om$};
-		\node at (.9,0) {\small $0.54$};
-		\node at (-.6,0) {\small $0.18$};
-		\node at (2.4,0) {\small $0.10$};
-		\node at (3.4,-1.6) {\small $0.18$};
-	\end{tikzpicture}
+	\examvenn{}{$A$: passed Math, \ $B$: passed Micro}
 \end{center}
 
-\begin{itemize}
-	\item Click: the center, both exams: $0.54$.
-	\item Click: Math only. The circle $A$ has probability $0.72$, and $0.54$
-	      of it is the overlap, so
-	      \[ P(AB^c)=P(A)-P(AB)=0.72-0.54=0.18. \]
-	\item Click: Micro only, the same way:
-	      \[ P(A^cB)=P(B)-P(AB)=0.64-0.54=0.10. \]
-	\item Click: the outside. The four regions add up to 1, so neither exam
-	      has probability $1-(0.18+0.54+0.10)=0.18$.
-\end{itemize}
+Why from the inside out? The $0.72$ is the whole circle $A$, the overlap
+included; writing it into the left part would count the overlap twice.
 
-\board The diagram with the four numbers. Keep it on the board: we need it
-again in Exercise~\exref{exams-conditional}.
+\board The diagram with the four numbers; keep it for
+Exercise~\exref{exams-conditional}.
 
 \begin{cue}
-	Slide 6. The answers appear one by one; for each, ask first, then click.
+	Slide 6, one part per click; ask first, then click. The diagram stays on
+	the right of the slide.
 \end{cue}
 
-\say Now every question is a sum of regions. Let us read the answers off the
-diagram and check each one with a rule.
-
-(a) \ask Which regions make up ``at least one exam''? \emph{(The three
-	regions inside the circles.)} So $0.18+0.54+0.10=0.82$. With the union rule:
+(a) \ask Which regions make up ``at least one''? \emph{(The three inside
+the circles.)} Click. At least one: the three inner regions,
+$0.18+0.54+0.10=0.82$; with the union rule
 \[ P(A\cup B)=P(A)+P(B)-P(AB)=0.72+0.64-0.54=0.82. \]
 
-(b) Math but not Micro is exactly the region ``Math only'':
-$P(AB^c)=0.18$.
+(b) Click. Math but not Micro: the region Math only,
+$P(AB^c)=P(A)-P(AB)=0.18$. Note that the answer is not $0.72$: ``passed
+Math'' includes those who also passed Micro.
 
-(c) \ask How do we write ``neither'' with events? \emph{($A^cB^c$, which
-	is the complement of $A\cup B$, by De Morgan.)} So
-\[ P(A^cB^c)=1-P(A\cup B)=1-0.82=0.18, \]
-the outside region again.
+(c) Click. Neither: $A^cB^c$ is the complement of $A\cup B$, so
+$P(A^cB^c)=1-0.82=0.18$. It is the outside region of the diagram.
 
-(d) Exactly one: Math only or Micro only. These cannot happen together, so
-we add: $0.18+0.10=0.28$. Or: at least one, minus both,
+(d) Click. Exactly one: Math only or Micro only, two regions that do not
+overlap, $0.18+0.10=0.28$. Or: at least one, minus both,
 $0.82-0.54=0.28$.
 
 \begin{cue}
-	Common mistake: (a) $=0.72+0.64=1.36$. Ask: ``Can a probability be
-	larger than 1?'' The students who passed both were counted twice.
+	Common mistake in (a): $0.72+0.64=1.36$. A probability above 1 means the
+	overlap was counted twice.
 \end{cue}
 
-\subsection{Equally likely outcomes (3 min)}\slide{7}
+\subsection{Equally likely outcomes (2 min)}\slide{7}
 
-\say In the last exercise the probabilities were given. Where do
-probabilities come from? In one important case we can compute them by
-counting.
-
-Suppose $\Om$ is finite and every outcome is equally likely. If there are
-$|\Om|$ outcomes, each has probability $1/|\Om|$, and an event $E$ with
-$|E|$ outcomes has probability
+\onslide the classical definition:
 \[ P(E)=\frac{|E|}{|\Om|}=\frac{\text{number of favorable outcomes}}
 	{\text{number of all outcomes}}. \]
 
-Tiny example: a fair die, $E$ = ``even'': $3$ favorable outcomes of $6$,
-so $P(E)=3/6=1/2$.
+\say If $\Om$ is finite and all outcomes are equally likely, then
+$P(E)=|E|/|\Om|$: favorable over all. ``Equally likely'' must come from the
+setup: a fair die, a well-shuffled deck, a choice at random. The counting
+methods of last week give the two numbers. And for ``at least one'', use
+the complement: $P(E)=1-P(E^c)$.
 
-\say But careful: ``equally likely'' must come from the setup --- a fair die,
-a well-shuffled deck, a person chosen at random. It is not automatic.
+Tiny example: two fair dice, $36$ equally likely outcomes. The sum is 7 in
+six of them, so $P(\text{sum}=7)=6/36=1/6$. At least one six: the
+complement ``no six'' has $5\cdot5=25$ outcomes, so the answer is
+$1-25/36=11/36$.
 
-\ask We roll two dice and look at the sum. The possible sums are
-$2,3,\dots,12$: eleven outcomes. Is the probability of a sum of 7 equal to
-$1/11$? \emph{(No. The sums are not equally likely. The 36 ordered pairs
-	are: a sum of 7 comes from 6 of them, so its probability is $6/36=1/6$,
-	while a sum of 2 comes only from $(1,1)$, probability $1/36$.)}
+\subsection{Conditional probability (4 min)}\slide{8}
 
-\say So: choose the sample space so that the outcomes really are equally
-likely, then count with the methods of last week. And for ``at least one'',
-remember the complement: $P(E)=1-P(E^c)$.
+\needspace{0.22\textheight}
+\onslide the definition, the multiplication rule, and this diagram:
+\begin{center}
+	\begin{tikzpicture}[scale=.8]
+		\fill[teal!12] (1.5,0) circle (1.15);
+		\begin{scope}
+			\clip (0,0) circle (1.15);
+			\fill[teal!45] (1.5,0) circle (1.15);
+		\end{scope}
+		\draw[thick] (-1.9,-1.45) rectangle (3.4,1.45);
+		\node at (3.1,-1.15) {$\Om$};
+		\draw[thick,navy] (0,0) circle (1.15);
+		\draw[thick,teal] (1.5,0) circle (1.15);
+		\node[navy] at (-1.55,1.05) {$E$};
+		\node[teal] at (3.05,1.05) {$F$};
+		\node at (.75,0) {\small $EF$};
+	\end{tikzpicture}\\[1mm]
+	\footnotesize $P(E\mid F)$: the share of $EF$ within $F$
+\end{center}
 
-\subsection{Exercise~\exref{five-cards} --- Five cards (8 min)}\slide{8--9}
+\say If $P(F)>0$, the probability of $E$ given $F$ is
+\[ P(E\mid F)=\frac{P(EF)}{P(F)}. \]
+We know that $F$ happened, so $F$ becomes the new sample space, and only
+the part $EF$ of $E$ counts.
 
-\scriptexercise{five-cards}
+In the picture: once we know $F$, everything outside the circle $F$ is
+gone. The question is what share of the shaded circle is dark. That is
+why we divide by $P(F)$: we rescale so that the new sample space, $F$, has
+probability 1.
 
-\begin{cue}
-	Give them 3 minutes for (a). Hint: ``What is one outcome? How many hands
-	are there?'' Some students do not know the deck: 52 cards, 4 suits
-	(spades, hearts, diamonds, clubs) of 13 cards each, one ace in each suit.
-\end{cue}
+\say Multiply through and you get the multiplication rule:
+\[ P(EF)=P(F)\,P(E\mid F),\qquad
+	P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2). \]
+In words: the chance of both is the chance of the first, times the chance
+of the second once the first has happened. That is what we do when we
+multiply along the branches of a tree.
 
-\say Before you start: a deck has 52 cards in 4 suits, 13 cards in each
-suit, and there are 4 aces, one in each suit. Try part (a), three minutes.
+Finally, $P(\,\cdot\mid F)$ is a probability itself, so all the rules of
+the last slide hold for it; for example $P(E^c\mid F)=1-P(E\mid F)$.
 
-\begin{cue}
-	After 3 minutes: click step by step.
-\end{cue}
+Tiny example: a fair die shows an even number. The chance it is a 6 is
+\[ P(\{6\}\mid\text{even})=\frac{P(\{6\})}{P(\text{even})}
+	=\frac{1/6}{1/2}=\frac13. \]
+Counting gives the same: the new sample space is $\{2,4,6\}$, and one of
+the three outcomes is a 6.
 
-\ask What is one outcome here? Does the order matter? \emph{(A hand of 5
-	cards; the order in which the cards arrive does not matter.)}
-
-Click. So the sample space is the set of all 5-card hands:
-\[ |\Om|=\binom{52}{5}=2\,598\,960. \]
-
-Click. The deck is well shuffled, so every hand is equally likely, and
-$P(E)=|E|/|\Om|$. We only have to count the favorable hands.
-
-(a) Click. Build the hand in two steps. Choose the 2 spades from the 13
-spades: $\binom{13}{2}=78$ ways. Click. Choose the 3 diamonds from the 13
-diamonds: $\binom{13}{3}=286$ ways. Click. Every choice of spades combines
-with every choice of diamonds, so by the basic principle of counting
-\[ P(\text{2 spades, 3 diamonds})=\frac{78\cdot286}{2\,598\,960}
-	=\frac{22\,308}{2\,598\,960}\approx0.00858. \]
-Less than 1\%.
-
-\begin{cue}
-	Still on slide 8 (its first line of (b) on slide 9 gives the answer away).
-	Give them 2 minutes for (b), with the hint: ``How many cases are there in
-	`at least one ace'?'' Then slide 9.
-\end{cue}
-
-(b) \ask How many aces can a hand with ``at least one ace'' contain?
-\emph{(1, 2, 3 or 4: four cases.)}
-
-\begin{cue}
-	Slide 9.
-\end{cue}
-
-Four cases to count is a lot of work. Click. The complement is a single case: \emph{no ace}. Click. A hand with
-no ace has all 5 cards from the $48$ cards that are not aces:
-\[ |\{\text{no ace}\}|=\binom{48}{5}=1\,712\,304. \]
-Click. So
-\[ P(\text{at least one ace})=1-\frac{1\,712\,304}{2\,598\,960}
-	\approx1-0.6588=0.3412. \]
-
-\say Whenever you see ``at least one'', think of the complement first.
-
-\ask A classmate says: choose one ace in 4 ways, then any 4 of the other 51
-cards. What is wrong? \emph{(A hand with two aces is counted twice, once for
-	each ace as ``the'' ace. The result, about $0.385$, is too large.)}
-Click.
-
-\subsection{Conditional probability (6 min)}\slide{10}
-
-\begin{cue}
-	Clock check: this slide is planned for minute 31. If you start it after
-	about minute 35, skip Exercise~\exref{actuarial-exams} (slides 13--14).
-\end{cue}
-
-\say Now the most important idea of today. Very often we do not know the
-outcome, but we know \emph{something} about it. How does that change the
-probabilities?
-
-Tiny example.
-
-\ask I roll a fair die and do not show you the result. What is the
-probability that it is a 6? \emph{(1/6.)} Now I tell you: ``the number is
-even''. What is the probability that it is a 6 now? \emph{(1/3: only
-	$2,4,6$ are still possible, and they are equally likely.)}
-
-\say Knowing that $F$ happened, the outcomes outside $F$ are no longer
-possible. $F$ becomes the new sample space. Inside $F$ we measure how big
-the part of $E$ is that is still possible --- that part is $EF$.
-
-\board Definition: if $P(F)>0$,
-\[ P(E\mid F)=\frac{P(EF)}{P(F)}, \]
-read ``the probability of $E$ given $F$''.
-
-In the example: $E=\{6\}$, $F=\{2,4,6\}$, $EF=\{6\}$, so
-\[ P(E\mid F)=\frac{1/6}{1/2}=\frac13. \]
-
-\say Look at the picture on the slide: $P(E\mid F)$ is the share of the
-dark lens $EF$ within the circle $F$.
-
-\say If we multiply the definition by $P(F)$, we get the
-\emph{multiplication rule}:
-\[ P(EF)=P(F)\,P(E\mid F). \]
-It is useful when the conditional probability is what we know. Tiny example:
-draw two cards without replacement. The probability that both are aces is
-\[ P(\text{1st ace})\,P(\text{2nd ace}\mid\text{1st ace})
-	=\frac{4}{52}\cdot\frac{3}{51}=\frac{1}{221}. \]
-After one ace is gone, there are 3 aces left among 51 cards. With three
-events we keep going: each new factor is conditioned on everything before it,
-\[ P(E_1E_2E_3)=P(E_1)\,P(E_2\mid E_1)\,P(E_3\mid E_1E_2). \]
-
-\say Last point on the slide: for a fixed condition $F$, $P(\,\cdot\mid F)$
-is a probability itself, so all our rules work for it. For example,
-$P(E^c\mid F)=1-P(E\mid F)$.
-
-\begin{cue}
-	Stress the order: in $P(E\mid F)$ the condition (what we \emph{know}) is
-	on the right, and its probability is in the denominator. Students mix up
-	$P(E\mid F)$ and $P(F\mid E)$ all the time; this comes back in Bayes'
-	formula.
-\end{cue}
-
-\subsection{Exercise~\exref{exams-conditional} --- Two exams, conditionally (8 min)}\slide{11--12}
+\subsection{Exercise~\exref{exams-conditional} --- Two exams, conditionally (8 min)}\slide{9--10}
 
 \scriptexercise{exams-conditional}
 
-\begin{cue}
-	The Venn diagram of Exercise~\exref{two-exams} should still be on the
-	board. Give them 3 minutes for (a) and (b) in pairs.
-\end{cue}
+\say The same students; use the diagram on the board. Try (a) and (b),
+three minutes. For each part ask: what do I know? That is the
+denominator.
 
-\say These are the same students as in Exercise~\exref{two-exams}, so we can
-use our Venn diagram: $0.18$ Math only, $0.54$ both, $0.10$ Micro only,
-$0.18$ neither. Try (a) and (b): three minutes. For each part, ask yourself
-first: what do I know? That is the condition.
+\needspace{0.22\textheight}
+\onslide the diagram again, shaded by the condition:
+\begin{center}
+	\examvenn{\fill[teal!25] (1.8,0) circle (1.5);}{(a): given $B$}\hfill
+	\examvenn{\fill[navy!20] (0,0) circle (1.5);}{(b): given $A$}\hfill
+	\examvenn{\fill[gold!30] (0,0) circle (1.5);
+		\fill[gold!30] (1.8,0) circle (1.5);}{(c), (d): given $A\cup B$}
+\end{center}
 
-\begin{cue}
-	After 3 minutes: click once (the formula and the diagram appear).
-\end{cue}
+(Click.) The definition first, $P(E\mid F)=P(EF)/P(F)$: $F$ happened, so
+$F$ is the new sample space.
 
-\say The rule: $P(E\mid F)=P(EF)/P(F)$. $F$ happened, so $F$ is the new
-sample space.
+(a) \ask We know the student passed Micro. Which region is the new
+sample space? \emph{(The circle $B$, $0.54+0.10=0.64$.)} Click. The new
+sample space is $B$, $0.64$, shaded. Inside it, ``passed Math'' is the
+overlap, $0.54$. Click.
+\[ P(A\mid B)=\frac{P(AB)}{P(B)}=\frac{0.54}{0.64}=\frac{27}{32}\approx0.844. \]
 
-(a) Click. We know: passed Micro. So the new sample space is the circle
-$B$, shaded on the slide, with probability $0.64$. Click. Inside $B$, the
-student passed Math in the lens $AB$, $0.54$:
-\[ P(A\mid B)=\frac{P(AB)}{P(B)}=\frac{0.54}{0.64}=\frac{27}{32}
-	\approx0.844. \]
-
-(b) Click. Now we know: passed Math. The new sample space is the circle $A$,
-$0.72$. Click. Inside $A$, ``failed Micro'' is the region Math only,
-$0.18$:
+(b) Click. We know: passed Math, $0.72$; now the circle $A$ is shaded.
+Failed Micro inside it is Math only, $0.18$. Click.
 \[ P(B^c\mid A)=\frac{P(AB^c)}{P(A)}=\frac{0.18}{0.72}=0.25. \]
-
-\ask Can you get (b) in another way? \emph{(Yes:
-	$P(B\mid A)=0.54/0.72=0.75$, and for a fixed condition the complement rule
-	works: $1-0.75=0.25$.)}
+Or with the complement rule inside the new sample space:
+$1-P(B\mid A)=1-0.54/0.72=1-0.75=0.25$.
 
 \begin{cue}
-	Common mistake in (a): $0.54/0.72=0.75$. That is $P(B\mid A)$, the answer
-	to a different question. The denominator is always the probability of
-	what we know.
+	Common mistake in (a): $0.54/0.72=0.75$, which is $P(B\mid A)$. The
+	denominator is the probability of what we know. Slide 10.
 \end{cue}
 
-\begin{cue}
-	Slide 12. Give them 1--2 minutes for (c) first.
-\end{cue}
+(c) \ask Now we know: passed at least one exam. New sample space? \emph{(The
+union, the three inner regions, $0.82$.)} New sample space $A\cup B$,
+$0.82$. Click. Whoever passed Math passed at least one exam, so
+$A(A\cup B)=A$: the numerator is all of $A$. Click.
+\[ P(A\mid A\cup B)=\frac{P(A)}{P(A\cup B)}=\frac{0.72}{0.82}=\frac{36}{41}
+	\approx0.878. \]
 
-(c) Now we know: passed at least one exam. The new sample space is $A\cup B$,
-the two circles together (shaded):
-$P(A\cup B)=0.18+0.54+0.10=0.82$.
-
-\ask What is the part of $A\cup B$ where the student passed Math?
-\emph{(All of $A$: whoever passed Math passed at least one exam, so
-	$A(A\cup B)=A$.)} Click.
-
-Click. So
-\[ P(A\mid A\cup B)=\frac{P(A)}{P(A\cup B)}=\frac{0.72}{0.82}
-	=\frac{36}{41}\approx0.878. \]
-
-(d) Click. Failed Micro \emph{and} passed at least one exam: then the exam
-she passed must be Math, so this is the region Math only, $AB^c$, $0.18$.
-Click.
+(d) Click. Failed Micro \emph{and} passed at least one: that is only
+Math, $B^c(A\cup B)=AB^c$. Click.
 \[ P(B^c\mid A\cup B)=\frac{P(AB^c)}{P(A\cup B)}=\frac{0.18}{0.82}
 	=\frac{9}{41}\approx0.220. \]
 
-Click. \say Knowing more changes the probability. Without any information,
-the student passed Math with probability $0.72$. If we know she passed
-Micro, it is $0.844$; if we know she passed at least one exam, it is
-$0.878$.
+Click. \say Knowing more changes the probability: $0.72$ without
+information, $0.844$ given Micro, $0.878$ given at least one exam.
 
-\subsection{Exercise~\exref{actuarial-exams} --- Three exams in a row (8 min)}\slide{13--14}
-
-\scriptexercise{actuarial-exams}
+\subsection{Total probability and Bayes' formula (4 min)}\slide{11}
 
 \begin{cue}
-	Short on time? Skip this whole exercise first (8 min): go from slide 12
-	straight to slide 15. Say: ``Exercise~\exref{actuarial-exams} is the
-	multiplication rule along a tree; its full solution is in the exercises
-	PDF.''
+	Clock check: this slide is planned for minute 27. If you start it after
+	about minute 32, skip part (c) of Exercise~\exref{default-by-rating}.
 \end{cue}
 
-\say A word on the story: actuaries are the mathematicians of insurance
-companies and pension funds, and to become one you pass a series of
-professional exams, one after the other.
+Transition: so far we were given $P(AB)$ and we computed conditional
+probabilities from it. In practice it is often the other way round: we
+know conditional probabilities, and we want to turn them around. That is
+Bayes.
 
-\begin{cue}
-	Give them 3 minutes for (a) and (b). Hint: ``Draw a tree: one branching
-	per exam.''
-\end{cue}
+\needspace{0.32\textheight}
+\onslide Bayes' formula, total probability as ``the denominator''
+(both below), and this tree:
+\begin{center}
+	\begin{tikzpicture}[every node/.style={font=\small},
+			lab/.style={font=\footnotesize,inner sep=1pt,sloped},
+			grow=right,level distance=2.8cm,
+			level 1/.style={sibling distance=2.6cm},
+			level 2/.style={sibling distance=1.3cm}]
+		\node[circle,fill=navy,inner sep=2pt]{}
+		child{node[fill=navy!10]{$F^c$}
+				child{node{$E^c$} edge from parent node[lab,below]{$P(E^c|F^c)$}}
+				child{node[fill=gold!30]{$E$} edge from parent node[lab,above]{$P(E|F^c)$}}
+				edge from parent node[lab,below]{$P(F^c)$}}
+		child{node[fill=navy!10]{$F$}
+				child{node{$E^c$} edge from parent node[lab,below]{$P(E^c|F)$}}
+				child{node[fill=gold!30]{$E$} edge from parent node[lab,above]{$P(E|F)$}}
+				edge from parent node[lab,above]{$P(F)$}};
+	\end{tikzpicture}\\[1mm]
+	\footnotesize multiply along a path; add the paths that end in $E$
+\end{center}
 
-\say Try (a) and (b), three minutes. Before you compute: are the numbers in
-the statement ordinary or conditional probabilities?
+\say Bayes' formula:
+\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}. \]
+We usually know $P(E\mid F)$, but we need $P(F\mid E)$: Bayes' formula
+turns the condition around. Where does it come from? The numerator is
+$P(EF)$ by the multiplication rule, so this is just the definition
+$P(F\mid E)=P(EF)/P(E)$, with the numerator written in a form we can
+compute.
 
-\begin{cue}
-	After 3 minutes: click step by step.
-\end{cue}
+\say The denominator, $P(E)$, comes from the law of total probability.
+$E$ happens either together with $F$ or together with $F^c$, never both,
+so
+\[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
 
-Let $E_i$ be ``she passes exam $i$''. \ask Is $0.8$ the probability that she
-passes the second exam? \emph{(No: it is the probability that she passes the
-	second exam \emph{if} she passed the first, $P(E_2\mid E_1)$.)}
-Click. So the data are
-\[ P(E_1)=0.9,\qquad P(E_2\mid E_1)=0.8,\qquad P(E_3\mid E_1E_2)=0.7. \]
-
-Click. We draw a tree. From the start, two branches: pass the first exam
-($0.9$) or fail it ($0.1$, and she stops). After passing, again two
-branches: pass the second ($0.8$) or fail ($0.2$, stop). Then the third:
-$0.7$ or $0.3$. The failure probabilities come from the complement rule for
-a fixed condition.
-
-\board The tree of the slide, with all six branch probabilities.
-
-Click. \say The probability of a path is the product of the probabilities
-along it: that is the multiplication rule.
-
-(a) Click. All three is the top path:
-\[ P(E_1E_2E_3)=0.9\cdot0.8\cdot0.7=0.504. \]
-In words: 90\% pass the first; 80\% of those pass the second, which is
-72\%; 70\% of those pass the third, about half.
-
-\begin{cue}
-	Slide 14.
-\end{cue}
-
-(b) Fails exactly at the third: passes the first, passes the second, fails
-the third. Multiply along that path:
-\[ P(E_1E_2E_3^c)=0.9\cdot0.8\cdot0.3=0.216. \]
-
-\begin{cue}
-	Give them 2 minutes for (c). Hint: ``What is the condition, and what is
-	its probability?''
-\end{cue}
-
-(c) Click. The condition is ``not all three'', the complement of the top
-path:
-\[ P\big((E_1E_2E_3)^c\big)=1-0.504=0.496. \]
-
-Click. ``Failed the second exam'' is the path: passed the first, failed the
-second, with probability $0.9\cdot0.2=0.18$. Check with the tree: the three
-failure paths are $0.1$, $0.18$ and $0.216$, and they add up to $0.496$.
-
-Click. If she failed the second exam, she certainly did not pass all three,
-so the intersection of the two events is $E_1E_2^c$ itself.
-
-Click. So
-\[ P\big(E_1E_2^c\mid(E_1E_2E_3)^c\big)=\frac{0.18}{0.496}
-	=\frac{45}{124}\approx0.363. \]
-
-\ask Why not just $P(E_2^c)$? \emph{(If she fails the first exam, she stops,
-	so she does not pass the second one either; $P(E_2^c)=0.1+0.18=0.28$ would
-	include her. ``Failed the second exam'' means she took it and failed.)}
-
-\subsection{Total probability and Bayes' formula (5 min)}\slide{15}
-
-\say The tree of the last exercise is the key to the next two formulas.
-
-Tiny example. On 30\% of the days it rains. On a rainy day my bus is late
-with probability $0.5$; on a dry day only with probability $0.1$. Let $F$
-be ``it rains'' and $E$ be ``the bus is late''. So $P(F)=0.3$,
-$P(E\mid F)=0.5$, $P(E\mid F^c)=0.1$.
-
-\board The tree of the slide: first $F$ or $F^c$, then $E$ or $E^c$, with
-the numbers of the example.
-
-\emph{First question: what is the probability that the bus is late?} The bus
-can be late on a rainy day or on a dry day: two paths of the tree that end
-in $E$, and they cannot happen together. Multiply along each path, then add:
-\[ P(E)=P(E\mid F)P(F)+P(E\mid F^c)P(F^c)=0.5\cdot0.3+0.1\cdot0.7
-	=0.15+0.07=0.22. \]
-This is the \emph{law of total probability}: split according to $F$ or
-$F^c$, multiply along the paths, add the paths that end in $E$.
-
-\emph{Second question: the bus was late. What is the probability that it
-	rained?} Now we know $E$ and ask about $F$: we need $P(F\mid E)$, but the
-data give $P(E\mid F)$. By the definition, $P(F\mid E)=P(EF)/P(E)$. The
-numerator is the path ``rain, then late'', $0.15$; the denominator is all
-paths that end in ``late'', $0.22$:
-\[ P(F\mid E)=\frac{0.15}{0.22}=\frac{15}{22}\approx0.68. \]
-
-\board Bayes' formula:
+\say On the tree: multiply along a path; add the paths that end in $E$.
+That is the denominator. Bayes is then one path divided by all the paths
+ending in $E$. Written out in one line:
 \[ P(F\mid E)=\frac{P(E\mid F)P(F)}{P(E\mid F)P(F)+P(E\mid F^c)P(F^c)}. \]
 
-\say Bayes' formula turns the condition around. In the tree: one path,
-divided by all the paths that end in $E$. Note what happened: rain has
-probability $0.3$, but once we see the late bus, it goes up to about $0.68$.
-The evidence changed our belief.
+The names: $P(F)$ is the \emph{prior}, what we believe before we see $E$;
+$P(F\mid E)$ is the \emph{posterior}, what we believe after. Bayes is the
+rule for updating beliefs with evidence.
 
-\subsection{Exercise~\exref{early-warning} --- An early-warning model, finance (11 min)}\slide{16--17}
+\subsection{Why Bayes' formula works: a picture (3 min)}\slide{12}
+
+\begin{cue}
+	This frame is the visual proof. Take your time with it, it pays off in
+	the next three exercises. Point at the shapes at each step. The last row
+	comes with a click. If you are far behind, show only the last row and
+	the two cancellations.
+\end{cue}
+
+\needspace{0.4\textheight}
+\onslide a gray box $\Om$ with a blue diamond $F$ and a light blue circle
+$E$; their overlap $FE$ is red. Next to it two lines: probability of an
+event $=$ its share of $\Om$; conditional probability $=$ share inside the
+shape we know happened. Below, each probability as a fraction of two
+shapes, and (after a click) the proof.
+\begin{center}
+	\bayesvenn[.8]\\[2mm]
+	\bayesshares\\[3mm]
+	\bayesproof
+\end{center}
+
+\say Here is why Bayes' formula is true, in one picture. No numbers,
+only shapes.
+
+\emph{Step 1: the picture.} Point at the top. The gray box is the whole
+sample space $\Om$. The blue diamond is the hypothesis $F$, say ``the
+borrower defaults''. The light blue circle is the observation $E$, ``the
+model flags the borrower''. Where they overlap, both happen: the red piece
+is $FE$.
+
+\emph{Step 2: probability is a share.} Point at the second row. $P(F)$ is
+the share of the box that the diamond covers. Read the little fraction as
+``diamond over box''. In the same way, $P(E)$ is ``circle over box''.
+
+\emph{Step 3: conditional probability is a share inside what we know.}
+Suppose we know that $E$ happened. Then the outcome is somewhere in the
+circle, and the rest of the box no longer counts: the circle is our new
+box. Inside the circle, $F$ happens exactly in the red piece. So
+$P(F\mid E)$ is ``red over circle''. The other way around, if we know $F$
+happened, the diamond is the new box, and $P(E\mid F)$ is ``red over
+diamond''. Point at the last two fractions of the row. Same red piece,
+different denominators: that is why $P(E\mid F)$ and $P(F\mid E)$ are
+different numbers.
+
+\ask Look at the picture. Which is bigger here, $P(F\mid E)$ or
+$P(E\mid F)$? \emph{(The red piece is the same; the circle is bigger than
+the diamond, so ``red over circle'' is smaller: $P(F\mid E)<P(E\mid F)$
+in this picture. With a bigger diamond it would be the other way.)}
+
+\emph{Step 4: plug the shapes into the formula.} Click: the last row.
+Take the right-hand side of Bayes' formula and replace each probability by
+its fraction of shapes. The numerator $P(E\mid F)\,P(F)$ is ``red over
+diamond'' times ``diamond over box''. Point at the two diamonds: one is
+below, one is above, so they cancel. What is left is ``red over box'',
+that is $P(FE)$, the multiplication rule. The denominator $P(E)$ is
+``circle over box''.
+
+\emph{Step 5: the boxes cancel.} Point at the two crossed-out boxes: we
+divide ``red over box'' by ``circle over box'', and the box drops out.
+
+\emph{Step 6: read what is left.} ``Red over circle''. By Step 3 that is
+exactly $P(F\mid E)$, the share of the red piece in the circle. So the
+right-hand side equals $P(F\mid E)$, and that is Bayes' formula.
+
+\board If you want to write it: $\dfrac{FE/F\cdot F/\Om}{E/\Om}=
+\dfrac{FE}{E}$, the shapes standing for their sizes.
+
+\say In one sentence: the red piece can be measured from two sides.
+From the diamond's side, $P(FE)=P(F)\,P(E\mid F)$. From the circle's side,
+$P(FE)=P(E)\,P(F\mid E)$. Same piece, so the two are equal; divide by
+$P(E)$.
+
+\say Keep this picture in mind for the next exercise. When the diamond is
+tiny, even a large share of it inside the circle is a small piece of the
+circle: $P(E\mid F)$ can be large while $P(F\mid E)$ stays small.
+
+\subsection{Exercise~\exref{early-warning} --- An early-warning model, finance (10 min)}\slide{13--14}
 
 \scriptexercise{early-warning}
 
-\say Some words on the story. A borrower \emph{defaults} when she does not
-repay her loan as agreed. Banks use \emph{early-warning models}: statistical
-models that raise a flag on borrowers who look likely to default, so that
-the bank can act in time. No model is perfect: it misses some defaulters,
-and it also flags some good borrowers.
+\ask Quick guess first: a borrower is flagged. How likely are they to
+default? \emph{(Write a few guesses on the board; many say about 90\%.)}
 
-\ask Before any computation: a borrower is flagged. Make a quick guess ---
-what is the probability that she defaults? \emph{(Collect a few guesses.
-	Many will say about 90\%. Write the guesses on the board; we come back to
-	them.)}
+\say Try it in pairs, four minutes: name the events, draw the tree.
 
-\begin{cue}
-	Give them 4 minutes in pairs for (a) and (b). Hint: ``Name the events,
-	write the three numbers as probabilities, draw the tree.'' After 4
-	minutes: click step by step.
-\end{cue}
+(Click.) $D$: defaults; $A$: flagged, $A$ as in alarm. The data go on the
+tree: $P(D)=0.02$, $P(A\mid D)=0.9$, $P(A\mid D^c)=0.05$.
 
-Let $D$ be ``defaults'' and $A$ ``flagged'' ($A$ for alarm).
-\ask Which number is $P(A\mid D)$, and which is $P(D\mid A)$?
-\emph{(``Flags 90\% of the defaulters'': among defaulters, 90\% are flagged,
-	so $P(A\mid D)=0.9$. And $P(A\mid D^c)=0.05$. $P(D\mid A)$ is what (b) asks
-	for.)}
-
-Click. So $P(D)=0.02$, $P(A\mid D)=0.9$, $P(A\mid D^c)=0.05$. On the tree: first
-default or not ($0.02$ and $0.98$), then flag or no flag. Multiply along the
-paths:
-\[ P(DA)=0.02\cdot0.9=0.018,\qquad P(DA^c)=0.02\cdot0.1=0.002, \]
-\[ P(D^cA)=0.98\cdot0.05=0.049,\qquad P(D^cA^c)=0.98\cdot0.95=0.931. \]
-
+\needspace{0.32\textheight}
+\onslide the tree with the path products:
 \begin{center}
-	\begin{tikzpicture}[x=1.2cm,y=.62cm,lab/.style={font=\small,inner sep=1pt}]
+	\begin{tikzpicture}[x=1.4cm,y=.8cm,
+			lab/.style={font=\footnotesize,inner sep=1pt}]
 		\node (r) at (0,0) {$\bullet$};
 		\node (d) at (1.3,1.5) {$D$};
 		\node (g) at (1.3,-1.5) {$D^c$};
@@ -796,682 +705,369 @@ paths:
 		\draw (d) -- node[lab,below left] {$0.1$} (dn);
 		\draw (g) -- node[lab,above left] {$0.05$} (ga);
 		\draw (g) -- node[lab,below left] {$0.95$} (gn);
-		\node[lab,right,text=teal] at (2.8,2.25) {$\mathbf{0.018}$};
-		\node[lab,right] at (2.8,.75) {$0.002$};
-		\node[lab,right,text=teal] at (2.8,-.75) {$\mathbf{0.049}$};
-		\node[lab,right] at (2.8,-2.25) {$0.931$};
+		\node[lab,right,text=teal] at (2.85,2.25) {$\mathbf{0.018}$};
+		\node[lab,right] at (2.85,.75) {$0.002$};
+		\node[lab,right,text=teal] at (2.85,-.75) {$\mathbf{0.049}$};
+		\node[lab,right] at (2.85,-2.25) {$0.931$};
+	\end{tikzpicture}
+\end{center}
+The path products are $0.02\cdot0.9=0.018$, $0.02\cdot0.1=0.002$,
+$0.98\cdot0.05=0.049$, $0.98\cdot0.95=0.931$. They add up to 1: a good
+check.
+
+(a) \ask How can a borrower get flagged? \emph{(Two ways: defaulter and
+flagged, or good and flagged.)} Click. Defaulter or not is exclusive, so
+total probability:
+\[ P(A)=P(A\mid D)P(D)+P(A\mid D^c)P(D^c). \]
+Click. Two paths end in a flag: $P(A)=0.018+0.049=0.067$. So $6.7\%$ of
+the borrowers are flagged.
+
+(b) Click. Bayes: the default path over all flag paths,
+\[ P(D\mid A)=\frac{P(A\mid D)P(D)}{P(A)}=\frac{0.018}{0.067}=\frac{18}{67}
+	\approx0.269. \]
+\say Only 27\%. Compare with your guesses.
+
+In the picture of slide 12: the diamond $D$ is tiny, $2\%$ of the box,
+and $90\%$ of it lies inside the flag circle. But the circle also takes
+$5\%$ of the huge rest of the box, and that part, $0.049$, is bigger than
+the red overlap, $0.018$. So the overlap is only about a quarter of the
+circle.
+
+\begin{cue}
+	Slide 14: the same with counts. Go through the tree of 10\,000 borrowers
+	number by number. Natural frequencies convince those who do not trust
+	the formula.
+\end{cue}
+
+\needspace{0.32\textheight}
+\onslide the tree with counts:
+\begin{center}
+	\begin{tikzpicture}[x=1.3cm,y=.8cm,
+			lab/.style={font=\footnotesize,inner sep=1pt}]
+		\node (r) at (0,0) {\small $10\,000$};
+		\node (d) at (1.6,1.5) {\small $200$};
+		\node (g) at (1.6,-1.5) {\small $9800$};
+		\draw (r) -- node[lab,above left] {default} (d);
+		\draw (r) -- node[lab,below left] {good} (g);
+		\node[text=teal] (da) at (3.4,2.25) {\small $\mathbf{180}$ flag};
+		\node (dn) at (3.4,.75) {\small $20$ no flag};
+		\node[text=teal] (ga) at (3.4,-.75) {\small $\mathbf{490}$ flag};
+		\node (gn) at (3.4,-2.25) {\small $9310$ no flag};
+		\draw (d) -- (da.west);
+		\draw (d) -- (dn.west);
+		\draw (g) -- (ga.west);
+		\draw (g) -- (gn.west);
 	\end{tikzpicture}
 \end{center}
 
-(a) Click. A flagged borrower is either a defaulter or a good borrower: two
-paths ending in $A$. Total probability (click once more for the numbers):
-\[ P(A)=P(A\mid D)P(D)+P(A\mid D^c)P(D^c)=0.018+0.049=0.067. \]
-So $6.7\%$ of all borrowers are flagged.
-
-(b) Click. Bayes: the path ``defaults and flagged'' divided by all paths
-ending in a flag:
-\[ P(D\mid A)=\frac{P(A\mid D)P(D)}{P(A)}=\frac{0.018}{0.067}=\frac{18}{67}
-	\approx0.269. \]
-
-\say Only about 27\%! Compare that with your guesses.
-
-\begin{cue}
-	Slide 17. The counts make the surprise understandable; go through the
-	tree of 10\,000 borrowers slowly, number by number.
-\end{cue}
-
-\say Let us check this with counts, which is much easier to believe. Imagine
-$10\,000$ borrowers. 2\% of them, $200$, will default; $9800$ will not. The
-model flags 90\% of the 200 defaulters: $180$, and misses $20$. It flags 5\%
-of the 9800 good borrowers: $490$, and does not flag $9310$.
-
-Click. So $180+490=670$ borrowers are flagged, and only $180$ of them default:
+Of $10\,000$ borrowers, $200$ default and $9800$ do not. The model flags
+$90\%$ of the defaulters, $180$, and $5\%$ of the good ones, $490$. Click.
+So $180+490=670$ are flagged, and $180$ of them default:
 \[ P(D\mid A)=\frac{180}{670}\approx0.269. \]
 
-(c) Click. Not flagged: $20+9310=9330$ borrowers, of whom $20$ default:
+(c) \ask What is the new sample space now? \emph{(The borrowers who are
+not flagged.)} Click. Not flagged: $20+9310=9330$, of whom $20$ default:
 \[ P(D\mid A^c)=\frac{20}{9330}=\frac{2}{933}\approx0.00214. \]
 
-Click. \say This is the \emph{base-rate} effect. The model is good: it
-catches 90\% of the defaulters. Yet only about 27\% of the flags are true.
-Why? Defaults are rare. The 5\% false flags come from a huge group of good
-borrowers, so they outnumber the true flags: $490$ against $180$.
-
-Click. \say But the model is still very useful: a flag raises the
-probability of default from $2\%$ to $27\%$, more than thirteen times, and
-no flag lowers it to about $0.2\%$.
+Click. \say The base-rate effect: the model is good, it flags $90\%$ of
+the defaulters, yet only about $27\%$ of the flags are true. Defaults are
+rare, so the 5\% false flags among the many good borrowers, $490$,
+outnumber the true flags, $180$. Click. Still, the model is useful: a flag
+raises the default probability from 2\% to 27\%, and no flag lowers it to
+0.2\%.
 
 \begin{cue}
-	Common mistake: answering (b) with $0.9$. That is $P(A\mid D)$; the
-	question is $P(D\mid A)$. Turning the condition around is exactly what
-	Bayes' formula does.
+	Common mistake: answering (b) with $0.9$. That is $P(A\mid D)$, not
+	$P(D\mid A)$. Ask: ``90\% of what?'' --- of the defaulters, not of the
+	flags.
 \end{cue}
 
-\begin{bg}{default, early-warning systems and the base rate}
-	\emph{Default}: the borrower does not pay interest or principal as agreed
-	(in bank regulation, typically 90 days past due, or ``unlikely to pay'').
-	The \emph{probability of default (PD)} over one year is a key number of
-	credit risk; under the Basel rules banks estimate it for every borrower,
-	and it drives their capital requirements and loan pricing. A 2\% annual
-	PD is realistic for an average retail or small-business portfolio.
+\begin{bg}{early-warning models and the base rate}
+	A bank's \emph{early-warning system} is a scorecard or classifier that
+	flags borrowers before they default, so the bank can act (call the
+	client, restructure, stop new credit). In statistics language
+	$P(A\mid D)=0.9$ is the \emph{sensitivity} (hit rate), $P(A\mid D^c)=0.05$
+	the \emph{false positive rate}, and $P(D\mid A)\approx0.27$ the
+	\emph{precision}. With a low base rate (2\%), precision is low even for a
+	good model, as in medical screening.
 
-	\emph{Early-warning system (EWS)}: a model, often a scorecard or a
-	machine-learning classifier on account data (late payments, overdraft use,
-	falling salary inflow), that flags clients before they default. A flag
-	triggers action: a call from the relationship manager, a restructuring of
-	the loan, no new credit lines.
-
-	In statistics language: $P(A\mid D)=0.9$ is the \emph{sensitivity}
-	(hit rate, true positive rate), $P(A\mid D^c)=0.05$ is the
-	\emph{false positive rate} (false alarm rate), and $P(D\mid A)\approx0.27$
-	is the \emph{precision} (positive predictive value). The 2\% is the
-	\emph{base rate} (prevalence). With a low base rate, precision is low even
-	for a good model --- the same effect as in medical screening tests.
-
-	\terms default; probability of default (PD); early-warning system;
-	sensitivity / hit rate; false positive rate; precision; base rate.
-
-	\sq{Why not tune the model so that it flags fewer good borrowers?}
-	\ans One can raise the threshold, but then it also catches fewer
-	defaulters: there is always a trade-off between missed defaults and false
-	alarms (in statistics, the ROC curve). Which mix is best depends on the
-	costs: a missed default costs the loan, a false alarm only a phone call.
+	\terms probability of default (PD); sensitivity; false positive rate;
+	precision; base rate.
 
 	\sq{If 73\% of the flags are false, is the model useless?}
-	\ans No. The bank can afford to look at $6.7\%$ of its clients
-	closely, and that group contains $90\%$ of the future defaults. Without
-	the model it would have to check everyone.
+	\ans No: the bank checks $6.7\%$ of its clients closely, and that group
+	holds 90\% of the future defaults.
 \end{bg}
 
-\subsection{Odds (4 min)}\slide{18}
+\subsection{Odds (3 min)}\slide{15}
+
+\onslide
+\[ \text{odds of } H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)},
+	\qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
+\[ \underbrace{\frac{P(H\mid E)}{P(H^c\mid E)}}_{\text{new odds}}
+	=\underbrace{\frac{P(H)}{P(H^c)}}_{\text{old odds}}\cdot
+	\underbrace{\frac{P(E\mid H)}{P(E\mid H^c)}}_{\text{likelihood ratio}} \]
+Under it: ``Evidence that is more likely if $H$ is true raises the odds of
+$H$.''
+
+\say The odds of $H$ are $P(H)/P(H^c)$, and back,
+$P(H)=\text{odds}/(1+\text{odds})$. Probability $2/3$ means odds 2, ``2 to
+1 in favor''; $0.2$ means odds $1/4$, ``4 to 1 against''. Odds are how
+bookmakers and traders often quote chances.
+
+\say Bayes' formula in odds form: new odds $=$ old odds $\times$ likelihood
+ratio. Why is it true? Write Bayes' formula for $H$ and for $H^c$, with
+the same evidence $E$:
+\[ P(H\mid E)=\frac{P(E\mid H)P(H)}{P(E)},\qquad
+	P(H^c\mid E)=\frac{P(E\mid H^c)P(H^c)}{P(E)}. \]
+Divide the first by the second: the awkward denominator $P(E)$ cancels.
+That is the whole proof, and it is why the odds form is so quick: no
+total probability needed.
+
+\say Let us redo the early-warning model in one line. Old odds of default:
+$0.02/0.98=1/49$. A flag is $0.9/0.05=18$ times as likely for a defaulter.
+New odds: $18/49$, so $P(D\mid A)=18/(18+49)=18/67\approx0.269$. The same
+answer, with one multiplication.
+
+\subsection{The generalized Bayes formula (3 min)}\slide{16}
 
 \begin{cue}
-	Clock check: this slide is planned for minute 69. If you start it after
-	about minute 74, keep this slide but skip
-	Exercise~\exref{early-warning-odds} (slides 19--20); see the box there
-	for what to say instead.
+	Clock check: this slide is planned for minute 47. If you start it after
+	about minute 52, also skip part (d) of Exercise~\exref{bond-defaults}.
 \end{cue}
 
-\say There is another way of describing how likely something is, which you
-know from betting: \emph{odds}. The odds of an event $H$ are the probability
-that it happens divided by the probability that it does not:
-\[ \text{odds of }H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)}. \]
+\needspace{0.32\textheight}
+\onslide the formulas and the tree with one path to $E$ for each $F_i$:
+\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)},\qquad
+	P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
+\begin{center}
+	\begin{tikzpicture}[every node/.style={font=\small},
+			lab/.style={font=\scriptsize,inner sep=1pt,sloped},
+			grow=right,level distance=2.2cm,
+			level 1/.style={sibling distance=1.6cm}]
+		\node[circle,fill=navy,inner sep=2pt]{}
+		child{node[fill=navy!10]{$F_3$}
+				child[level distance=2.3cm]{node[fill=gold!30]{$E$}
+						edge from parent node[lab,above]{$P(E|F_3)$}}
+				edge from parent node[lab,below]{$P(F_3)$}}
+		child{node[fill=navy!10]{$F_2$}
+				child[level distance=2.3cm]{node[fill=gold!30]{$E$}
+						edge from parent node[lab,above]{$P(E|F_2)$}}
+				edge from parent node[lab,above]{$P(F_2)$}}
+		child{node[fill=navy!10]{$F_1$}
+				child[level distance=2.3cm]{node[fill=gold!30]{$E$}
+						edge from parent node[lab,above]{$P(E|F_1)$}}
+				edge from parent node[lab,above]{$P(F_1)$}};
+	\end{tikzpicture}\\[1mm]
+	\footnotesize one path to $E$ for each $F_i$
+\end{center}
 
-Tiny examples. If $P(H)=2/3$, the odds are $\frac{2/3}{1/3}=2$: ``2 to 1 in
-favor'' --- two cases where $H$ happens for every one where it does not. If
-$P(H)=0.2$, the odds are $0.2/0.8=1/4$: ``4 to 1 against''.
+\say Now more than two hypotheses. $F_1,\dots,F_n$ is a partition of
+$\Om$: mutually exclusive events, and exactly one of them occurs. Think of
+rating classes, or economic scenarios: boom, normal, recession.
 
-\say And back: odds $o$ mean $o$ ``yes'' cases for every 1 ``no'' case, so
-out of $o+1$ cases, $o$ are ``yes'':
-\[ P(H)=\frac{o}{1+o}. \]
-Check: odds $2$ give $2/3$.
+\say Bayes' formula is the same as before, and the denominator again
+comes from total probability, now with one term for each $F_i$.
 
-\board
-\[ \text{odds}=\frac{P(H)}{1-P(H)},\qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
+\say Point at the tree. The root now has $n$ branches, one for each
+$F_i$, and each is followed by a branch to $E$. Multiply along a path to
+get $P(F_i)\,P(E\mid F_i)$. Add all the paths to get $P(E)$. Bayes is one
+path divided by all of them.
 
-\say Why are odds useful? Because Bayes' formula becomes very simple. Write
-Bayes' formula for $H$ and for $H^c$, given evidence $E$, and divide the two:
-the long denominators are the same and cancel. What remains is
-\[ \frac{P(H\mid E)}{P(H^c\mid E)}=\frac{P(H)}{P(H^c)}\cdot
-	\frac{P(E\mid H)}{P(E\mid H^c)}. \]
-New odds equal old odds times the \emph{likelihood ratio}: how many times
-more likely the evidence is if $H$ is true than if it is false.
+The posteriors $P(F_j\mid E)$ add up to 1: a free check.
 
-\say Back to the bus. Old odds of rain: $0.3/0.7=3/7$. A late bus is
-$0.5/0.1=5$ times as likely on a rainy day. New odds: $\frac37\cdot5=\frac{15}{7}$,
-so $P(\text{rain}\mid\text{late})=\frac{15}{15+7}=\frac{15}{22}$ --- the same
-as before, with less work.
-
-\say So: evidence that is more likely if $H$ is true raises the odds of $H$;
-evidence that is less likely if $H$ is true lowers them.
-
-\subsection{Exercise~\exref{early-warning-odds} --- Two warning signals: odds, finance (8 min)}\slide{19--20}
-
-\scriptexercise{early-warning-odds}
-
-\begin{cue}
-	Short on time? Skip slides 19--20 (8 min) and use the odds form once on
-	Exercise~\exref{early-warning} instead (1--2 min). \say Prior odds of
-	default: $\frac{0.02}{0.98}=\frac1{49}$. A flag is
-	$\frac{0.9}{0.05}=18$ times as likely for a defaulter. New odds:
-	$\frac{18}{49}$, so $P(\text{default}\mid\text{flagged})=\frac{18}{18+49}
-		=\frac{18}{67}\approx0.269$, the same as in
-	Exercise~\exref{early-warning}, with one multiplication.
-\end{cue}
-
-\begin{cue}
-	Give them 3 minutes for (a). Hint: ``prior odds, then likelihood ratio,
-	then multiply, then convert back to a probability.''
-\end{cue}
-
-\say This is the same bank and the same model. Try part (a) with odds: three
-minutes.
-
-\begin{cue}
-	After 3 minutes: click step by step.
-\end{cue}
-
-Click. The rule: new odds = old odds $\times$ likelihood ratio, and odds $o$
-correspond to the probability $o/(1+o)$.
-
-Click. Prior odds of default, before any signal:
-\[ \frac{P(D)}{P(D^c)}=\frac{0.02}{0.98}=\frac{1}{49}. \]
-One defaulter for every 49 good borrowers.
-
-Click. Likelihood ratio of a flag:
-\[ \frac{P(A_1\mid D)}{P(A_1\mid D^c)}=\frac{0.90}{0.05}=18. \]
-A flag is 18 times as likely for a defaulter as for a good borrower.
-
-Click. (a) Posterior odds: $\frac{1}{49}\cdot18=\frac{18}{49}$, so
-\[ P(D\mid A_1)=\frac{18}{18+49}=\frac{18}{67}\approx0.269. \]
-
-Click. \say The same as in Exercise~\exref{early-warning}: among the flagged,
-there are 18 defaulters for every 49 good borrowers --- $180$ against $490$
-in our 10\,000 borrowers.
-
-\begin{cue}
-	Slide 20. Explain the second model slowly; conditional independence is
-	only needed in this informal form (independence comes properly in
-	Session 2).
-\end{cue}
-
-\say Now a second model, with the same rates. The statement says that its
-errors are independent of the first model's errors, given whether the
-borrower defaults. In plain words: among defaulters, whether model 2 flags
-someone has nothing to do with whether model 1 did; and the same among good
-borrowers. Then the likelihood ratios simply \emph{multiply}.
-
-(b) Click. Both models flag: the likelihood ratio is $18\cdot18=324$, so
-\[ \text{odds}=\frac{1}{49}\cdot18\cdot18=\frac{324}{49},\qquad
-	P(D\mid A_1A_2)=\frac{324}{324+49}=\frac{324}{373}\approx0.869. \]
-
-(c) \ask The second model does \emph{not} flag her. What is the likelihood
-ratio of ``no flag''? \emph{(Use the complements: $P(A_2^c\mid D)=0.10$ and
-	$P(A_2^c\mid D^c)=0.95$.)} Click.
-\[ \frac{P(A_2^c\mid D)}{P(A_2^c\mid D^c)}=\frac{0.10}{0.95}=\frac{2}{19}. \]
-It is less than 1: a missing flag lowers the odds.
-
-Click.
-\[ \text{odds}=\frac{1}{49}\cdot18\cdot\frac{2}{19}=\frac{36}{931},\qquad
-	P(D\mid A_1A_2^c)=\frac{36}{36+931}=\frac{36}{967}\approx0.0372. \]
-
-Click. \say Two flags make default likely, about 87\%. One flag that the
-other model does not confirm leaves only about 4\%, not far above the 2\%
-we started from.
-
-\begin{cue}
-	Common mistake: forgetting to convert the odds back. Odds of $324/49$
-	are larger than 1; they are not a probability.
-\end{cue}
-
-\begin{bg}{odds, likelihood ratios and credit scorecards}
-	\emph{Betting odds.} Bookmakers quote ``fractional'' odds (UK, e.g.\ 4/1
-	means a win of 4 per 1 staked, i.e.\ implied probability $1/5$) or
-	``decimal'' odds (continental Europe, e.g.\ 5.0 means the total payout
-	per unit staked, again implied probability $1/5$). The implied
-	probabilities of all outcomes add up to slightly more than 1; the excess
-	is the bookmaker's margin.
-
-	\emph{Log-odds and scorecards.} Taking logarithms turns the odds form of
-	Bayes' formula into a sum: log-odds after the evidence $=$ log-odds before
-	$+$ log of the likelihood ratio. This is why credit \emph{scorecards}
-	add up points: each characteristic of the client contributes points, and
-	the total score is (a linear function of) the log-odds of being a good
-	payer. A typical convention: every 20 points double the odds. Logistic
-	regression, the workhorse of credit scoring, models exactly the log-odds.
-
-	\emph{Conditional independence.} Multiplying the likelihood ratios is
-	correct only if the signals are independent given $D$ and given $D^c$ (the
-	``naive Bayes'' assumption). Two models built on the same account data
-	tend to make the same mistakes; then a second flag adds much less
-	information than the factor 18 suggests, and the 87\% is too optimistic.
-
-	\terms odds (fractional, decimal); implied probability; likelihood ratio;
-	log-odds; scorecard; logistic regression; conditional independence;
-	naive Bayes.
-
-	\sq{Why do banks use odds instead of probabilities?}
-	\ans Because evidence acts multiplicatively on odds (additively on
-	log-odds), so independent pieces of information can be combined one by
-	one, in any order. With probabilities you would have to redo the whole
-	Bayes formula every time.
-
-	\sq{Is it realistic that the two models' errors are independent?}
-	\ans Only roughly, and only if the models use different information (for
-	example, one uses account data and the other market data or the loan
-	officer's judgment). That is why banks like signals from different
-	sources.
-\end{bg}
-
-\subsection{Summary (3 min)}\slide{21}
-
-\begin{itemize}
-	\item $P(E^c)=1-P(E)$; $P(E\cup F)=P(E)+P(F)-P(EF)$;
-	      $P(EF^c)=P(E)-P(EF)$. Fill the Venn diagram from the inside out.
-	\item Equally likely outcomes: $P(E)=|E|/|\Om|$; ``at least one''
-	      $\to$ complement.
-	\item $P(E\mid F)=P(EF)/P(F)$: $F$ is the new sample space. Multiplication
-	      rule: multiply along a path of a tree.
-	\item Total probability: add the paths that end in $E$. Bayes' formula:
-	      one path divided by all of them.
-	\item Odds: new odds $=$ old odds $\times$ likelihood ratio.
-	\item Rare events and imperfect signals: most alarms are false.
-\end{itemize}
-
-\say If you remember one picture from this session, let it be the tree:
-multiply along the paths, add the paths you need, and divide when you know
-something.
-
-\say Every exercise of today is in the study guide on the course website,
-with a detailed, step-by-step solution. The Exercises page there has more
-problems for self-study.
-
-\begin{cue}
-	End of Session 1. Announce the exact restart time after the short break
-	(e.g.\ ``we continue at \ldots, in ten minutes''), and leave the tree of
-	the early-warning model on the board: early in Session 2 comes the
-	generalized Bayes formula, which is the same tree with more branches.
-\end{cue}
-
-%======================================================================
-\section{Session 2: Independence and random variables}
-%======================================================================
-
-\subsection{Recap of Session 1 (4 min)}\slide{22--23}
-
-\begin{cue}
-	Slide 22 (Session 2 title) --- just click through. Slide 23 is the recap.
-	Let the students settle; ask the recap questions and really wait for the
-	answers.
-\end{cue}
-
-Welcome back. Before we go on, let's collect the tools of the first
-session, because we will use every one of them in the next ninety minutes.
-
-\say Probabilities of combined events: the union and the complement.
-\[ P(E\cup F)=P(E)+P(F)-P(EF),\qquad P(E^c)=1-P(E). \]
-
-\ask Why do we subtract $P(EF)$ in the first formula? \emph{(The outcomes in
-	both events are counted once in $P(E)$ and once more in $P(F)$.)}
-
-\say Conditional probability: if we know that $F$ has happened, $F$ becomes
-the new sample space, and only the part $EF$ of $E$ counts:
-\[ P(E\mid F)=\frac{P(EF)}{P(F)},\qquad\text{so}\qquad P(EF)=P(F)\,P(E\mid F). \]
-The second form is the multiplication rule: in a tree we multiply along a
-path.
-
-\say With two hypotheses, $F$ and $F^c$, we drew a tree. The law of total
-probability adds the paths that end in $E$; Bayes' formula takes one of these
-paths and divides it by all of them. And in odds form: new odds equal old
-odds times the likelihood ratio.
-
-\ask In the early-warning model of Exercise~\exref{early-warning}, what was
-the surprising lesson? \emph{(When the event is rare and the signal is
-	imperfect, most alarms are false alarms.)}
-
-\say Now three new things. First, more than two hypotheses --- the same tree,
-just with more branches. Second, independent events: when does knowing one
-event not change the chances of another? And third, random variables:
-numbers that depend on chance, with their distribution, expected value and
-standard deviation. That last part is where finance really starts: payoffs,
-profits and losses are random variables.
-
-\subsection{The generalized Bayes formula (5 min)}\slide{24}
-
-\say In Session 1 we had two hypotheses: $F$ or $F^c$. Often there are more:
-a loan can be in one of three rating classes, an economy can be in boom,
-normal times or recession. What we need is a \emph{partition}.
-
-\say $F_1,\dots,F_n$ is a \emph{partition} of $\Om$ if the events are
-mutually exclusive and exactly one of them occurs.
-
-Tiny example: roll a die, and let $F_1=\{1,2\}$, $F_2=\{3,4\}$,
-$F_3=\{5,6\}$. Whatever we roll, exactly one of these three events occurs.
-$F$ and $F^c$ form the simplest partition, with $n=2$.
-
-\ask Is $\{1,2,3\}$, $\{3,4,5\}$, $\{6\}$ a partition? \emph{(No: the first
-	two overlap, a 3 is in both.)}
-
-\say If $E$ is any event, then $E$ is cut into pieces by the partition:
-$EF_1$, $EF_2$, \dots, $EF_n$. These pieces are mutually exclusive, so their
-probabilities add up, and each piece is a path of the tree:
-$P(EF_i)=P(E\mid F_i)\,P(F_i)$.
-
-\board
-\[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i),\qquad
-	P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{\sum_{i=1}^n P(E\mid F_i)\,P(F_i)}. \]
-
-\say The first is the law of total probability, the second the generalized
-Bayes formula. In words, exactly as before: add the paths that end in $E$;
-and Bayes is one path divided by all of them. The only change is that the
-tree now has $n$ branches instead of 2.
-
-Tiny example, on the board. We have three boxes. Box 1 contains only red
-balls, box 2 is half red and half blue, box 3 contains only blue balls. We
-pick a box at random and draw a ball; let $R$ be ``the ball is red''.
-\[ P(R)=\tfrac13\cdot1+\tfrac13\cdot\tfrac12+\tfrac13\cdot0=\tfrac12. \]
-The ball is red. Which box did it come from?
-\[ P(\text{box }1\mid R)=\frac{1/3}{1/2}=\frac23,\qquad
-	P(\text{box }2\mid R)=\frac{1/6}{1/2}=\frac13,\qquad
-	P(\text{box }3\mid R)=0. \]
-
-\ask Why is box 1 now twice as likely as box 2? \emph{(Box 1 produces red
-	balls twice as often; before the draw, all three boxes were equally
-	likely.)}
-
-\begin{cue}
-	Point at the tree on the slide: one path to $E$ for each $F_i$. The
-	posterior probabilities $P(F_j\mid E)$ always add up to 1; tell them to
-	use this as a check.
-\end{cue}
-
-\subsection{Exercise~\exref{default-by-rating} --- Defaults by rating class, finance (10 min)}\slide{25--27}
+\subsection{Exercise~\exref{default-by-rating} --- Defaults by rating class, finance (10 min)}\slide{17--19}
 
 \scriptexercise{default-by-rating}
 
+\say Try (a) and (b), four minutes. Name the events, draw the tree.
+
+\ask Before you compute: of all the defaults, which class do you think
+gives the most? \emph{(Most say A, because it is half of the portfolio,
+or C, because it is the riskiest. Leave it open.)}
+
+(Click through slide 17.) $A$, $B$, $C$: the loan is rated A, B or C.
+$D$: the loan defaults. Click. $A$, $B$, $C$ split $\Om$: every loan is in
+exactly one class, a partition. Click. Given: $P(A)=0.5$, $P(B)=0.3$,
+$P(C)=0.2$; $P(D\mid A)=0.01$, $P(D\mid B)=0.03$, $P(D\mid C)=0.08$. The
+default probabilities are conditional: ``if it is rated C, then $8\%$''.
+Click: the tree. Click: the path products at the leaves.
+
+\needspace{0.32\textheight}
+\onslide the tree with the path products:
+\begin{center}
+	\begin{tikzpicture}[
+			grow=right, level distance=24mm,
+			level 1/.style={sibling distance=17mm},
+			level 2/.style={sibling distance=8.5mm},
+			every node/.style={font=\small,inner sep=1pt},
+			edge from parent/.style={draw,navy!55},
+			lab/.style={fill=white,text=black,inner sep=.8pt,pos=.5,
+					font=\footnotesize}]
+		\node {}
+		child {node {$C$}
+				child {node (c2) {$D^c$} edge from parent node[lab] {$0.92$}}
+				child {node[navy] (c1) {$D$} edge from parent node[lab] {$0.08$}}
+				edge from parent node[lab] {$0.2$}}
+		child {node {$B$}
+				child {node (b2) {$D^c$} edge from parent node[lab] {$0.97$}}
+				child {node[navy] (b1) {$D$} edge from parent node[lab] {$0.03$}}
+				edge from parent node[lab] {$0.3$}}
+		child {node {$A$}
+				child {node (a2) {$D^c$} edge from parent node[lab] {$0.99$}}
+				child {node[navy] (a1) {$D$} edge from parent node[lab] {$0.01$}}
+				edge from parent node[lab] {$0.5$}};
+		\foreach \l/\p in {a1/{0.005},a2/{0.495},b1/{0.009},b2/{0.291},c1/{0.016},c2/{0.184}}
+		\node[right=2mm] at (\l) {$\p$};
+	\end{tikzpicture}
+\end{center}
+Path: multiply along it, for example $0.5\cdot0.01=0.005$. The paths that
+end in $D$ give $0.005$, $0.009$, $0.016$.
+
 \begin{cue}
-	Show only the statement and give them three minutes to name the events,
-	draw the tree and try (a). Walk around; most students write $P(D)=0.08$
-	somewhere --- that is the trap of part (b).
+	Slide 18, one step per click.
 \end{cue}
 
-\ask What are the hypotheses here, and what is the evidence? \emph{(The
-	hypotheses are the rating classes; the evidence is default or no
-	default.)}
-
-\say Name the events first. $A$, $B$, $C$: the loan is rated A, B, C. $D$:
-the loan defaults.
-
-\say $A$, $B$, $C$ form a partition: every loan is in exactly one class.
-
-\board The data, sorted:
-\[ \begin{aligned}
-		 & P(A)=0.5,       &  & P(B)=0.3,       &  & P(C)=0.2;        \\
-		 & P(D\mid A)=0.01, &  & P(D\mid B)=0.03, &  & P(D\mid C)=0.08.
-	\end{aligned} \]
-
-\say Notice that the default probabilities are \emph{conditional}: $0.08$ is
-the chance of default for a loan rated C, not for any loan.
-
-Now the tree: the first level is the rating class, with $0.5$, $0.3$,
-$0.2$. The second level is default or not. The ``no default'' branches are
-the complements: $0.99$, $0.97$, $0.92$.
-
-\board Draw the tree; at the end of every path write the product of the
-probabilities along it: $0.005$, $0.495$; $0.009$, $0.291$; $0.016$,
-$0.184$.
-
-\ask What should the six numbers at the end add up to? \emph{(To 1: they
-	are all the possible outcomes.)}
-
-(a) \say Next slide. A path: multiply. For example
-$P(DA)=P(D\mid A)P(A)=0.5\cdot0.01=0.005$. The three paths that end in $D$
-are mutually exclusive, so we add them:
+(a) A path is a product, for example $P(DA)=P(D\mid A)P(A)=0.005$. The
+paths ending in $D$ are mutually exclusive, so we add them. Click: the
+formula; click: the numbers.
 \[ P(D)=0.5\cdot0.01+0.3\cdot0.03+0.2\cdot0.08=0.005+0.009+0.016=0.03. \]
-So 3\% of the loans default. This is a weighted average of the three default
-rates, with the class shares as weights --- that is why it lies between
-$0.01$ and $0.08$.
+A weighted average of the three default rates, $1\%$, $3\%$, $8\%$, with
+the class shares as weights. It is closer to $1\%$ than to $8\%$ because
+half of the loans are A.
 
-(b) \say Bayes: one path ending in $D$, divided by all of $P(D)$.
-\[ P(A\mid D)=\frac{P(D\mid A)P(A)}{P(D)}=\frac{0.005}{0.03}=\frac16\approx0.167. \]
-\ask Who can do the other two? \emph{(B: $0.009/0.03=0.3$; C:
-	$0.016/0.03=8/15\approx0.533$.)}
-\[ P(B\mid D)=\frac{0.009}{0.03}=0.3,\qquad
+(b) \ask Which number goes in the denominator? \emph{($P(D)=0.03$: we know
+the loan defaulted.)} Click. Bayes: one path ending in $D$, divided by all
+of $P(D)$:
+\[ P(A\mid D)=\frac{P(D\mid A)P(A)}{P(D)}. \]
+Click, click, click:
+\[ P(A\mid D)=\frac{0.005}{0.03}=\frac16\approx0.167,\quad
+	P(B\mid D)=\frac{0.009}{0.03}=0.3,\quad
 	P(C\mid D)=\frac{0.016}{0.03}=\frac{8}{15}\approx0.533. \]
-Check: $0.167+0.3+0.533=1$. A defaulted loan was rated A, B or C.
+Click. Check: $0.167+0.3+0.533=1$. A defaulted loan is in exactly one of
+the classes. In the tree, class C is the smallest branch, $0.2$, but its
+default rate is the highest, $0.08$, and so its path to default is the
+largest, $0.016$.
 
 \begin{cue}
-	Common mistake: answering $0.08$ for $P(C\mid D)$. Write the two numbers
-	next to each other on the board: $P(D\mid C)=0.08$ is the default rate of
-	a C loan, $P(C\mid D)\approx0.533$ is the share of C loans among the
-	defaulted ones.
+	Common mistake: $P(C\mid D)=0.08$. Write both on the board:
+	$P(D\mid C)=0.08$ is the default rate of a C loan; $P(C\mid D)\approx
+		0.533$ is the share of C loans among the defaults. Slide 19.
 \end{cue}
 
-\begin{cue}
-	Short on time? Third thing to skip in Session 2: do not work out (c).
-	Show the slide and say: ``Given no default, the probability of class C
-	is about $0.19$, almost the prior $0.2$: nearly every loan survives the
-	year, so `no default' tells us little.'' Then go on to the lesson below.
-\end{cue}
-
-(c) \say Last slide of the exercise. Same idea, but now the paths that end in
-$D^c$. First the denominator, by the complement:
-$P(D^c)=1-0.03=0.97$. The path through $C$ to $D^c$:
-$P(D^c\mid C)P(C)=0.92\cdot0.2=0.184$. So
+(c) Same idea, with the paths ending in $D^c$. \ask What is the
+denominator now? \emph{($P(D^c)$.)} Click. $P(D^c)=1-0.03=0.97$. Click. The
+path $C\to D^c$: $P(D^c\mid C)P(C)=0.92\cdot0.2=0.184$. Click.
 \[ P(C\mid D^c)=\frac{P(D^c\mid C)P(C)}{P(D^c)}=\frac{0.184}{0.97}\approx0.190. \]
+Click. Close to the prior $0.2$: almost every loan survives the year, so
+``no default'' tells us little.
 
-\ask Why is this so close to the prior $P(C)=0.2$? \emph{(Almost every loan
-	survives the year, so ``no default'' tells us very little.)}
+Click. \say Lesson: C is only 20\% of the loans, but it gives more than
+half, 53\%, of the defaults; A is half of the loans but gives only one
+sixth of the defaults. Compare with your guesses.
 
-\say The lesson: class C is only 20\% of the loans, but it gives more than
-half, 53\%, of the defaults. Class A is half of the loans, but gives only one
-sixth of the defaults.
+\begin{bg}{internal ratings}
+	Banks give every borrower an internal rating grade and estimate a
+	one-year \emph{probability of default} (PD) per grade: here
+	$P(D\mid A)$, $P(D\mid B)$, $P(D\mid C)$. The PDs answer ``how risky is
+	this class?''; Bayes answers ``where do our defaults come from?''. A good
+	rating system puts most later defaults in the worst grades. PDs feed the
+	expected loss $\text{EL}=\text{PD}\cdot\text{LGD}\cdot\text{EAD}$, loan
+	pricing and the Basel capital requirements.
 
-\begin{bg}{internal ratings and probabilities of default}
-	\emph{Internal rating}: a bank's own grade for every borrower, based on
-	financial statements, payment history, industry, etc. For every grade the
-	bank estimates a \emph{probability of default} (PD), the chance that the
-	borrower stops paying within one year. These are exactly the numbers
-	$P(D\mid A)$, $P(D\mid B)$, $P(D\mid C)$ of the exercise. The portfolio
-	default rate $P(D)=0.03$ is the PD of a randomly chosen loan: a weighted
-	average of the class PDs.
+	\terms internal rating; PD; LGD; EAD; expected loss.
 
-	\emph{Why the Bayes direction matters.} The PDs answer ``how risky is
-	this class?''. Bayes answers the opposite question: ``where do our
-	defaults come from?'' --- important for the bank's credit committee (is
-	the loss concentrated in one class?) and for checking the rating system:
-	a good rating system puts most of the later defaults in the worst
-	classes. Here class C gives $8/15\approx53\%$ of the defaults, so the
-	ratings clearly separate good and bad borrowers.
-
-	\emph{What the PDs are used for.} The \emph{expected loss} of a loan is
-	$\text{EL}=\text{PD}\cdot\text{LGD}\cdot\text{EAD}$: probability of
-	default times \emph{loss given default} (the share that is not recovered)
-	times \emph{exposure at default} (the amount owed). The bank prices this
-	into the interest rate; under the Basel rules the PDs also determine how
-	much capital it must hold against unexpected losses.
-
-	\terms internal rating; probability of default (PD); loss given default
-	(LGD); exposure at default (EAD); expected loss; Basel capital rules.
-
-	\sq{Is a 3\% default rate realistic?}
-	\ans For a portfolio of loans to smaller, riskier companies, yes; for
-	large, highly rated companies the one-year default rates are far below
-	1\%. Default rates also rise sharply in recessions, so a bank's PDs are
-	estimated over a whole economic cycle.
-
-	\sq{If C loans are so bad, why does the bank lend to them at all?}
-	\ans Because it charges them a higher interest rate. If the extra
-	interest covers the expected loss and the cost of capital, the C loans
-	can even be the most profitable part of the portfolio.
+	\sq{Why lend to C borrowers at all?}
+	\ans They pay a higher interest rate; if it covers the expected loss and
+	the cost of capital, C loans can be profitable.
 \end{bg}
 
-\subsection{Independent events (6 min)}\slide{28}
+\subsection{Independent events (4 min)}\slide{20}
 
-\begin{cue}
-	Clock check: this slide is planned for minute 19. If you start it after
-	about minute 24, skip Exercise~\exref{pairwise-not-mutual} (slides
-	29--30).
-\end{cue}
+Transition: in every exercise so far, information changed the
+probability. Sometimes it does not. That is independence.
 
-\say Usually, knowing that $F$ has happened changes the probability of $E$:
-that was the whole point of conditional probability. Sometimes, however, it
-does not change anything. Then we call the events independent.
-
-\say $E$ and $F$ are \emph{independent} if $P(EF)=P(E)\,P(F)$.
-
-Why this formula? If $P(F)>0$, divide both sides by $P(F)$:
-\[ P(E\mid F)=\frac{P(EF)}{P(F)}=P(E). \]
-So knowing $F$ does not change the chances of $E$. We use the product form
-as the definition because it is symmetric in $E$ and $F$ and it also works
-when $P(F)=0$.
-
-Tiny example. Roll a fair die. Let $E=\{2,4,6\}$ (even) and $F=\{1,2\}$ (at
-most 2). Then $EF=\{2\}$, and
-\[ P(EF)=\tfrac16,\qquad P(E)P(F)=\tfrac12\cdot\tfrac13=\tfrac16. \]
-Equal: $E$ and $F$ are independent. Indeed, among $\{1,2\}$ half of the
-numbers are even, just as among all six numbers.
-
-\ask And with $G=\{1,2,3\}$ (at most 3)? \emph{($EG=\{2\}$, $P(EG)=1/6$,
-	but $P(E)P(G)=1/2\cdot1/2=1/4$: not independent. Among 1, 2, 3 only one
-	number is even.)}
-
-\say Independence is a property of the numbers, not of the story: you check
-the equation.
-
-If $E$ and $F$ are independent, then $E$ and $F^c$ are independent too ---
-if knowing that $F$ happened tells us nothing about $E$, then knowing that
-$F$ did not happen tells us nothing either.
-
-\say Three events $E$, $F$, $G$ are independent if \emph{all four} product
-rules hold:
+\onslide
+\[ P(EF)=P(E)\,P(F); \]
+for three events, all four product rules:
 \[ P(EF)=P(E)P(F),\ \ P(EG)=P(E)P(G),\ \ P(FG)=P(F)P(G),\ \
 	P(EFG)=P(E)P(F)P(G). \]
-Doesn't the last one follow from the first three? No --- the next exercise
-gives an example where it fails.
 
-\ask Two events are mutually exclusive, each with positive probability. Can
-they be independent? \emph{(No: if one occurs, the other cannot, so
-	$P(EF)=0$, while $P(E)P(F)>0$.)}
+\say $E$ and $F$ are independent if $P(EF)=P(E)P(F)$. If $P(F)>0$, this
+means $P(E\mid F)=P(E)$: knowing $F$ does not change the chances of $E$.
+To see it, divide the product rule by $P(F)$:
+$P(E\mid F)=P(EF)/P(F)=P(E)$. Then $E$ and $F^c$ are independent too: if
+knowing $F$ tells you nothing, knowing ``not $F$'' tells you nothing
+either.
 
-\begin{cue}
-	Students very often confuse ``mutually exclusive'' with ``independent''.
-	Say it explicitly: mutually exclusive events are strongly dependent ---
-	knowing one tells you the other did not happen.
-\end{cue}
+\say For three events all four product rules must hold: the three pairs,
+and also $P(EFG)=P(E)P(F)P(G)$.
 
-\say The most useful consequence: $n$ independent trials, each a success
-with probability $p$. ``At least one success'' is the complement of ``no
-success at all'', and for independent trials we multiply:
-\[ P(\text{at least one success})=1-(1-p)^n. \]
-For example, three tosses of a fair coin: $P(\text{at least one head})=
-1-(1/2)^3=7/8$.
+\say Two warnings. Mutually exclusive events with positive probabilities
+are never independent: if one occurs, the other cannot, so knowing one
+changes the other a lot. And for $n$ independent
+trials with success probability $p$,
+\[ P(\text{at least one success})=1-(1-p)^n, \]
+because the complement, ``all $n$ trials fail'', has probability
+$(1-p)^n$ by the product rule.
 
-\subsection{Exercise~\exref{pairwise-not-mutual} --- Pairwise but not mutually independent (7 min)}\slide{29--30}
+Tiny examples: two fair dice; ``first is a 6'' and ``second is a 6'' are
+independent, $P(\text{both})=\tfrac16\cdot\tfrac16=\tfrac1{36}$. And
+independence can hold without any physical separation: one die, $E$ =
+``even'', $F$ = ``1 or 2''. Then $EF=\{2\}$ and
+$P(EF)=\tfrac16=\tfrac12\cdot\tfrac13$: independent. Check the product,
+do not trust intuition.
 
-\scriptexercise{pairwise-not-mutual}
-
-\begin{cue}
-	Short on time? Skip this exercise (7 min): go from slide 28 straight to
-	slide 31. Say: ``For three events, pairwise independence is not enough:
-	you need the product rule for every group, including all three
-	together. Exercise~\exref{pairwise-not-mutual} in the exercises PDF
-	shows an example.''
-\end{cue}
-
-\begin{cue}
-	Give them two minutes for (a): list $\Om$ and the three events as sets,
-	then check the three product rules. Most students guess that $A$ and $C$
-	are dependent; let them find out that they are not.
-\end{cue}
-
-\say Four equally likely outcomes, each with probability $\frac14$:
-\[ \Om=\{HH,HT,TH,TT\}. \]
-The first letter is the first coin.
-
-\ask Write $A$, $B$, $C$ as sets. \emph{($A=\{HH,HT\}$, $B=\{HH,TH\}$,
-	$C=\{HH,TT\}$.)}
-
-Each contains two of the four outcomes, so $P(A)=P(B)=P(C)=\frac12$.
-
-\board The table from the slide: rows are the outcomes, a dot means the
-event of the column occurs.
-\begin{center}
-	\begin{tabular}{c|ccc}
-		     & $A$       & $B$       & $C$       \\ \hline
-		$HH$ & $\bullet$ & $\bullet$ & $\bullet$ \\
-		$HT$ & $\bullet$ &           &           \\
-		$TH$ &           & $\bullet$ &           \\
-		$TT$ &           &           & $\bullet$
-	\end{tabular}
-\end{center}
-
-(a) \say Look at the table: the only outcome that is in two columns at once
-is $HH$. So every pair has the same intersection, $AB=AC=BC=\{HH\}$, with
-probability $\frac14$. And every product of two probabilities is
-$\frac12\cdot\frac12=\frac14$. So
-\[ P(AB)=P(A)P(B),\qquad P(AC)=P(A)P(C),\qquad P(BC)=P(B)P(C). \]
-Every pair is independent: the events are \emph{pairwise independent}.
-
-\ask $A$ and $B$ are clearly independent: two separate coins. But why are
-$A$ and $C$ independent? \emph{(If the first coin is heads, ``same side''
-	means the second coin is heads too, which still has probability $\frac12$:
-	$P(C\mid A)=\frac12=P(C)$.)}
-
-(b) \say Next slide. For three events we need all four equations. The first
-three hold by (a). The fourth: all three events occur only at $HH$, so
-$ABC=\{HH\}$, and
-\[ P(ABC)=\tfrac14,\qquad\text{but}\qquad
-	P(A)P(B)P(C)=\tfrac12\cdot\tfrac12\cdot\tfrac12=\tfrac18. \]
-$\frac14\ne\frac18$, so $A$, $B$, $C$ are \emph{not} independent.
-
-(c) \say If $A$ and $B$ both occur, the outcome is $HH$, so $C$ occurs for
-sure:
-\[ P(C\mid AB)=1\ne\tfrac12=P(C). \]
-One coin alone says nothing about ``same side''; two of the events together
-decide the third.
-
-\say The moral: pairwise independence is not enough. For three events, check
-all four equations.
-
-\subsection{Exercise~\exref{bond-defaults} --- Bond defaults: independent or not?, finance (9 min)}\slide{31--33}
+\subsection{Exercise~\exref{bond-defaults} --- Bond defaults: independent or not?, finance (9 min)}\slide{21--23}
 
 \scriptexercise{bond-defaults}
 
+\say A first-to-default swap pays if at least one bond defaults, a
+second-to-default swap if both do. Try (a) and (b), three minutes.
+
+(Click.) At least one is $D_1\cup D_2$, both is $D_1D_2$. The key number is
+always $P(D_1D_2)$: once we have it, the union rule gives the rest.
+
+(a) \ask What does ``independent'' let us do? \emph{(Multiply.)} Click.
+Independent: the probability of both is the product,
+\[ P(D_1D_2)=P(D_1)P(D_2)=0.05\cdot0.05=0.0025. \]
+Click.
+\[ P(D_1\cup D_2)=P(D_1)+P(D_2)-P(D_1D_2)=0.05+0.05-0.0025=0.0975. \]
+Click. Check: ``no default'' is $D_1^cD_2^c$, and complements of
+independent events are independent too, so $1-0.95^2=1-0.9025=0.0975$.
+
 \begin{cue}
-	Give them three minutes for (a) and (b). Before they start, make sure
-	they translate the two swaps into events (the first reveal of the slide).
+	Slide 22.
 \end{cue}
 
-\ask Which event makes the first-to-default swap pay, and which the
-second-to-default swap? \emph{(At least one default: $D_1\cup D_2$. Both
-	default: $D_1D_2$.)}
-
-\say For the union we always have inclusion--exclusion,
-$P(D_1\cup D_2)=P(D_1)+P(D_2)-P(D_1D_2)$. So in every case the key number
-is $P(D_1D_2)$.
-
-(a) \say Independent: the probability of both is the product.
-\[ P(D_1D_2)=P(D_1)P(D_2)=0.05\cdot0.05=0.0025, \]
-\[ P(D_1\cup D_2)=0.05+0.05-0.0025=0.0975. \]
-
-\say Check with the complement. ``No default'' is $D_1^cD_2^c$ (De Morgan),
-and the complements of independent events are independent, each with
-probability $0.95$:
-\[ P(D_1\cup D_2)=1-0.95^2=1-0.9025=0.0975. \]
-
-(b) \say Next slide. Now the two issuers depend on the same economy, and
-$P(D_1D_2)=0.02$ is given.
-
-\ask Can we multiply $0.05\cdot0.05$ here? \emph{(No: the product rule holds
-	only for independent events.)}
-
-\say $0.02$ is $8$ times as large as $0.0025$. The union is again
-inclusion--exclusion:
+(b) Same economy: $P(D_1D_2)=0.02$ is given. Click. That is 8 times
+$0.0025$: no product rule here. Click.
 \[ P(D_1\cup D_2)=0.05+0.05-0.02=0.08. \]
 
-(c) \say The definition of conditional probability:
+(c) \ask How do we test independence with a conditional probability?
+\emph{(Compare $P(D_2\mid D_1)$ with $P(D_2)$.)} Click. Definition of
+conditional probability:
 \[ P(D_2\mid D_1)=\frac{P(D_1D_2)}{P(D_1)}=\frac{0.02}{0.05}=0.4. \]
-$0.4\ne0.05=P(D_2)$: the defaults are \emph{not independent}. Once bond 1
-has defaulted --- probably because the economy is in trouble --- bond 2
-defaults with probability $0.4$ instead of $0.05$. This is \emph{positive}
-dependence.
+Click. $0.4\ne0.05=P(D_2)$: the defaults are not independent. Click. Once
+bond 1 has defaulted, bond 2 defaults with probability $0.4$ instead of
+$0.05$: positive dependence. The default of one company is bad news about
+the economy they share.
 
-(d) \say Last slide. Back to independence, but now with 10 bonds.
+\begin{cue}
+	Slide 23.
+\end{cue}
 
-\ask How would you compute ``at least one default'' for 10 bonds?
-\emph{(Not with inclusion--exclusion --- far too many terms. Complement: at
-	least one default is the opposite of ``all 10 bonds survive''.)}
+(d) \ask How do we get ``at least one'' for 10 bonds? \emph{(Complement:
+all 10 survive.)} Click. Each bond survives with probability $0.95$;
+independent, so multiply:
+\[ P(\text{no default})=0.95^{10}\approx0.599. \]
+Click.
+\[ P(\text{at least one default})=1-0.95^{10}\approx0.401. \]
+Click. Each bond is fairly safe, but with ten of them a first-to-default
+swap pays with probability about 40\%. Small probabilities add up fast.
 
-Each bond survives with probability $0.95$; the bonds are independent, so we
-multiply:
-\[ P(\text{no default})=0.95^{10}\approx0.599,\qquad
-	P(\text{at least one default})=1-0.95^{10}\approx0.401. \]
-This is the formula $1-(1-p)^n$ from the theory slide.
-
-\say Each bond is fairly safe, but with 10 of them a first-to-default swap
-pays with probability about 40\%.
-
-\board The comparison table:
+\needspace{0.22\textheight}
+Click. \onslide the comparison table.
 \begin{center}
 	\begin{tabular}{lcc}
 		two bonds    & at least one & both     \\ \hline
@@ -1479,446 +1075,620 @@ pays with probability about 40\%.
 		same economy & $0.08$       & $0.02$
 	\end{tabular}
 \end{center}
+\say Lesson: positive dependence makes ``at least one'' slightly less
+likely, $0.08$ against $0.0975$, but ``both'' much more likely, $0.02$
+against $0.0025$. When defaults come together, they come in clusters.
 
-\say Lesson: positive dependence makes ``at least one'' slightly less likely,
-but ``both'' much more likely. The defaults come together, so they overlap
-more.
+\begin{cue}
+	Common mistake in (b): multiplying $0.05\cdot0.05$ again. The product
+	rule holds only for independent events.
+\end{cue}
 
 \begin{bg}{default correlation and basket swaps}
-	\emph{First-to-default (FtD) and second-to-default (StD) swaps}: insurance
-	contracts on a basket of bonds. The protection buyer pays a regular
-	premium (the \emph{spread}); the FtD pays at the first default in the
-	basket, the StD only at the second. In this exercise the FtD pays on
-	$D_1\cup D_2$, the StD on $D_1D_2$.
+	A \emph{first-to-default} (FtD) swap on a basket pays at the first
+	default, a \emph{second-to-default} (StD) swap only at the second; the
+	buyer pays a regular premium (the spread). Companies share the same
+	economy, so defaults are positively dependent (\emph{default
+		correlation}). More correlation makes the StD event much more likely
+	and the FtD event slightly less likely, which is exactly the table of
+	slide 23. In 2008, underestimated correlation of mortgage defaults made
+	senior CDO tranches lose far more than models predicted.
 
-	\emph{Default correlation.} Companies depend on the same economy: in a
-	recession many of them get into trouble at the same time. This common
-	(\emph{systematic}) factor makes defaults positively dependent. One
-	measures it by the correlation of the default indicators,
-	\[ \rho=\frac{P(D_1D_2)-P(D_1)P(D_2)}{\sqrt{P(D_1)(1-P(D_1))\,
-				P(D_2)(1-P(D_2))}}
-		=\frac{0.02-0.0025}{0.05\cdot0.95}\approx0.37 \]
-	in case (b); under independence $\rho=0$. (Students will meet correlation
-	later; you do not need it in class.)
-
-	\emph{Why it matters for prices.} The table of the last slide is the
-	whole story: with more correlation the StD event becomes much more likely
-	(its seller wants a higher spread), while the FtD event becomes slightly
-	less likely. Banks model this with factor models (e.g.\ the Gaussian
-	copula). In 2008 the correlation of mortgage defaults was badly
-	underestimated: products that only lose after many defaults (the senior
-	tranches of mortgage CDOs) lost much more than the models predicted.
-
-	\terms first-to-default / second-to-default swap; spread; default
-	correlation; systematic risk; factor model; Gaussian copula.
-
-	\sq{Where would a number like $P(D_1D_2)=0.02$ come from?}
-	\ans From history (how often did similar companies default in the same
-	year?) or from market prices of basket products, from which the
-	correlation the market assumes can be backed out. Either way it is an
-	estimate, and a very uncertain one.
-
-	\sq{Is a diversified bond portfolio then safe?}
-	\ans Diversification removes the company-specific part of the risk, but
-	not the common factor. In a deep recession many bonds default together,
-	whatever the number of bonds.
+	\terms first-to-default swap; spread; default correlation; systematic
+	risk.
 \end{bg}
 
-\subsection{Discrete random variables (6 min)}\slide{34}
+\subsection{Summary (3 min)}\slide{24}
 
-\say Until now we asked whether an event happens. In finance we usually ask
-\emph{how much}: how much do we win, how much does the portfolio lose. For
-that we need random variables.
-
-\say A \emph{random variable} $X$ assigns a number to every outcome. It is
-\emph{discrete} if it takes finitely or countably many values.
-
-Tiny example. Toss two fair coins, $\Om=\{HH,HT,TH,TT\}$, and let $X$ be the
-number of heads. Then $X(HH)=2$, $X(HT)=X(TH)=1$, $X(TT)=0$. So $X$ is not
-random in a mysterious way: it is just a function on $\Om$, and the
-randomness comes from the outcome.
-
-\say The \emph{probability mass function}, pmf for short, gives the
-probability of each value: $p(x)=P(X=x)$. It is never negative, and the
-values add up to 1.
-
-\board For the two coins:
-\begin{center}
-	\begin{tabular}{c|ccc}
-		$x$    & 0             & 1             & 2             \\\hline
-		$p(x)$ & $\frac14$     & $\frac12$     & $\frac14$
-	\end{tabular}
-\end{center}
-
-\ask Why is $p(1)=\frac12$? \emph{(Two outcomes, $HT$ and $TH$, give one
-	head: $\frac24$.)}
-
-\say The \emph{distribution function} adds up the pmf from the left:
-\[ F(x)=P(X\le x)=\sum_{y\le x}p(y). \]
-For the two coins: $F(x)=0$ for $x<0$, then $\frac14$ from $0$, then
-$\frac14+\frac12=\frac34$ from $1$, and $1$ from $2$ on.
-
-\say So $F$ is a step function. It jumps by $p(x)$ at every value $x$, it is
-constant in between, and it rises from 0 to 1.
-
-\begin{cue}
-	Point at the graph on the slide (there $p(1)=\frac14$, $p(2)=\frac12$,
-	$p(3)=p(4)=\frac18$). Stress the dots: at a jump the filled dot is on the
-	\emph{upper} step, because $F(x)=P(X\le x)$ already includes $p(x)$. This
-	is the most common mistake in the sketch of the urn exercise.
-\end{cue}
-
-\ask On the slide's graph, what is $F(2)$, and what is $F(2.5)$?
-\emph{(Both $\frac34$: $F(2)$ includes $p(2)$, and there is no value between
-	2 and 2.5.)}
-
-\say From $F$ we can read off interval probabilities:
-\[ P(a<X\le b)=F(b)-F(a),\qquad P(X>a)=1-F(a). \]
-For example, on the slide $P(1<X\le3)=F(3)-F(1)=\frac78-\frac14=\frac58$,
-which is $p(2)+p(3)=\frac12+\frac18$. Watch the inequalities: $a$ itself is
-not included, $b$ is.
-
-\subsection{Exercise~\exref{urn-game} --- A game with an urn (12 min)}\slide{35--37}
-
-\scriptexercise{urn-game}
-
-\begin{cue}
-	The longest exercise of the day: let them work in pairs on (a) for four
-	minutes. Hint if they are stuck: ``list the possible color pairs first''.
-	Then go through the slides reveal by reveal.
-\end{cue}
-
-\ask How many balls are in the urn, and how many pairs can we draw?
-\emph{($8+4+2=14$ balls; the order does not matter, so $\binom{14}{2}=91$
-	pairs.)}
-
-(a) \say All 91 pairs are equally likely. We list the possible pairs by their
-colors and count each kind.
-\begin{itemize}
-	\item two white: $\binom82=28$;
-	\item white and orange: $8\cdot2=16$ (one of the 8 white balls and one of
-	      the 2 orange ones);
-	\item two orange: $1$;
-	\item white and black: $8\cdot4=32$;
-	\item black and orange: $4\cdot2=8$;
-	\item two black: $\binom42=6$.
+\onslide
+\begin{itemize}[nosep]
+	\item $P(E^c)=1-P(E)$; $P(E\cup F)=P(E)+P(F)-P(EF)$; equally likely
+	      outcomes: $P(E)=|E|/|\Om|$.
+	\item $P(E\mid F)=P(EF)/P(F)$; multiplication rule: multiply along a
+	      path of a tree.
+	\item Total probability: add the paths that end in $E$ (the pieces of
+	      $E$). Bayes: $P(F\mid E)=P(E\mid F)P(F)/P(E)$, one path (one piece)
+	      divided by all of them, for two or more hypotheses.
+	\item Odds: new odds $=$ old odds $\times$ likelihood ratio.
+	\item Independence: $P(EF)=P(E)P(F)$; at least one success in $n$
+	      independent trials: $1-(1-p)^n$.
 \end{itemize}
-Check: $28+16+1+32+8+6=91$, so no pair is missing.
 
-\ask What is $X$ for each color pair? \emph{(WW: $-2$; WO: $-1$; OO: $0$; WB:
-	$-1+2=1$; BO: $2$; BB: $4$.)}
+\say Session 1 in five lines: read the bullets with them. The one to
+stress: total probability adds the paths, the pieces of $E$; Bayes divides
+one path, one piece, by all of them, for two or more hypotheses.
 
-\say Different color pairs give different values, so each probability is the
-number of pairs divided by 91:
+\say If you remember one picture from today, take the diamond and the
+circle: probability is a share of the box, and $P(F\mid E)$ is the share of
+the overlap in the circle $E$.
+
+\say For self-study: Exercises~\exref{five-cards}, \exref{actuarial-exams},
+\exref{early-warning-odds} and \exref{pairwise-not-mutual}. They are in the
+exercises PDF, with full solutions.
+
+\begin{cue}
+	Use the reserve for questions, or let them start a self-study exercise
+	and walk around.
+\end{cue}
+
+%======================================================================
+\section{Session 2: Discrete random variables and the named distributions}
+%======================================================================
+
+\subsection{Session 2 title and recap of Session 1 (3 min)}\slide{25--26}
+
+\begin{cue}
+	Slide 25 (title), then slide 26.
+\end{cue}
+
+\onslide the recap:
+$P(E\cup F)=P(E)+P(F)-P(EF)$, $P(E^c)=1-P(E)$;
+$P(E\mid F)=P(EF)/P(F)$, $P(EF)=P(F)\,P(E\mid F)$; total probability and
+Bayes' formula, best drawn as a tree; independent events,
+$P(EF)=P(E)\,P(F)$.
+
+\say Welcome back. Before the break: the union rule, conditional
+probability and the multiplication rule, total probability and Bayes on a
+tree, and independence. Now random variables, their expected value and
+standard deviation, and five distributions that come up again and again.
+
+In finance we care about the number attached to an outcome: the return,
+the loss, the number of defaults. That number is a random variable.
+
+\subsection{Discrete random variables (4 min)}\slide{27}
+
+\needspace{0.32\textheight}
+\onslide the definitions and the graph of $F$ for
+$p(1)=\tfrac14$, $p(2)=\tfrac12$, $p(3)=p(4)=\tfrac18$:
 \begin{center}
-	\renewcommand{\arraystretch}{1.3}
-	\begin{tabular}{c|cccccc}
-		$x$    & $-2$            & $-1$            & $0$            & $1$
-		       & $2$             & $4$                                                \\\hline
-		$p(x)$ & $\frac{28}{91}$ & $\frac{16}{91}$ & $\frac{1}{91}$ & $\frac{32}{91}$
-		       & $\frac{8}{91}$  & $\frac{6}{91}$
-	\end{tabular}
+	\begin{tikzpicture}[xscale=1.3,yscale=3]
+		\draw[->] (-.3,0)--(4.6,0) node[right,font=\small]{$x$};
+		\draw[->] (0,-.05)--(0,1.2) node[above,font=\small]{$F(x)$};
+		\foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1}
+		\draw (-.05,\y)--(.05,\y) node[left=2pt,font=\footnotesize,fill=white,inner sep=.5pt] {$\l$};
+		\foreach \x/\a/\b in {1/0/.25,2/.25/.75,3/.75/.875,4/.875/1}
+		\draw[gray,densely dotted] (\x,\a)--(\x,\b);
+		\draw[thick,teal] (-.3,0)--(1,0);
+		\draw[thick,teal] (1,.25)--(2,.25) (2,.75)--(3,.75)
+		(3,.875)--(4,.875) (4,1)--(4.5,1);
+		\foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
+		\fill[teal] (\x,\y) circle (1.6pt);
+		\foreach \x/\y in {1/0,2/.25,3/.75,4/.875}
+		\draw[teal,fill=white] (\x,\y) circle (1.6pt);
+		\foreach \x in {1,2,3,4} \node[below,font=\footnotesize] at (\x,0) {\x};
+	\end{tikzpicture}
 \end{center}
-Check: the probabilities add up to $\frac{91}{91}=1$.
 
-(b) \say Next slide. Add up the pmf from the left: $28$, $28+16=44$,
-$44+1=45$, $45+32=77$, $77+8=85$, $85+6=91$, all over 91.
+\say A random variable $X$ assigns a number to every outcome. It is
+discrete if it takes finitely or countably many values. Its probability
+mass function, the pmf, is
+\[ p(x)=P(X=x),\qquad p(x)\ge0,\qquad \sum_x p(x)=1. \]
+The pmf is the complete list: which values, with which probabilities.
 
-\board
-\[ F(x)=\begin{cases}
-		0,             & x<-2,       \\
-		28/91,         & -2\le x<-1, \\
-		44/91,         & -1\le x<0,  \\
-		45/91,         & 0\le x<1,   \\
-		77/91,         & 1\le x<2,   \\
-		85/91,         & 2\le x<4,   \\
-		1,             & x\ge 4.
-	\end{cases} \]
-and sketch the steps: filled dot at the left end of every step, open circle
-at the right end.
+\say The distribution function is
+\[ F(x)=P(X\le x)=\sum_{y\le x}p(y). \]
+For a discrete $X$ it is a step function: it jumps by $p(x)$ at every
+value $x$, is constant in between, and rises from 0 to 1.
 
-\ask What is $F(-2)$? \emph{($\frac{28}{91}$: ``$X\le-2$'' includes
-	$X=-2$.)}
+Read the graph from left to right. Below 1, $X$ cannot be that small, so
+$F=0$. At 1 it jumps by $p(1)=\tfrac14$; at 2 by $\tfrac12$, to
+$\tfrac34$; at 3 by $\tfrac18$, to $\tfrac78$; at 4 by $\tfrac18$, to 1, and
+stays there. The filled dots show that at a jump $F$ takes the upper
+value: $F(2)=P(X\le2)$ includes the value 2 itself.
 
-(c) \say $X>0$ is the complement of $X\le0$:
-\[ P(X>0)=1-F(0)=1-\frac{45}{91}=\frac{46}{91}\approx0.505. \]
-Directly: the positive values are 1, 2 and 4, so
-$\frac{32+8+6}{91}=\frac{46}{91}$. And
-\[ F(1)=P(X\le1)=\frac{77}{91}=\frac{11}{13}\approx0.846. \]
+\board $P(a<X\le b)=F(b)-F(a)$,\quad $P(X>a)=1-F(a)$.
+
+Example from the graph: $P(1<X\le3)=F(3)-F(1)=\tfrac78-\tfrac14=\tfrac58$,
+which is $p(2)+p(3)=\tfrac12+\tfrac18$. And $P(X>2)=1-F(2)=\tfrac14$.
 
 \begin{cue}
-	If someone answers $F(1)=\frac{45}{91}$: that is $P(X<1)$. The value 1
-	itself belongs to $F(1)$.
+	Common mistake: $P(X<2)=F(2)$. For a discrete $X$, ``$<$'' and ``$\le$''
+	differ: $P(X<2)=F(1)=\tfrac14$, $F(2)=\tfrac34$.
 \end{cue}
 
-(d) \say Last slide. We have not defined the expected value yet --- it comes
-properly on the next theory slide --- but the idea is natural: each value
-times its probability, then add.
-\[ \E[X]=\frac{(-2)\cdot28+(-1)\cdot16+0\cdot1+1\cdot32+2\cdot8+4\cdot6}{91}
-	=\frac{-56-16+0+32+16+24}{91}=0. \]
-On average we neither win nor lose: a \emph{fair game}.
-
-\say The variance is the average squared distance of the values from the
-mean. The shortcut is $\Var(X)=\E[X^2]-(\E[X])^2$. For $\E[X^2]$, square the
-values and keep the probabilities:
-\[ \E[X^2]=\frac{4\cdot28+1\cdot16+0\cdot1+1\cdot32+4\cdot8+16\cdot6}{91}
-	=\frac{112+16+0+32+32+96}{91}=\frac{288}{91}. \]
-\say The variance is in squared euros; its square root, the standard
-deviation $\SD(X)$, is back in euros.
-\[ \Var(X)=\frac{288}{91}-0^2=\frac{288}{91}\approx3.165,\qquad
-	\SD(X)=\sqrt{\frac{288}{91}}\approx1.779\text{ euros}. \]
-
-\say The game is fair, but risky: a typical deviation from 0 is about 1.78
-euros.
+\subsection{Expected value, variance, standard deviation (4 min)}\slide{28}
 
 \begin{cue}
-	If you run late, do (d) only for $\E[X]$ and leave the variance for the
-	next slide, where the formula is introduced.
+	If you start this slide after about minute 12, give only
+	$\SD(C)\approx9.17$ in part (b) of Exercise~\exref{call-option}.
 \end{cue}
 
-\subsection{Expected value, variance, standard deviation (6 min)}\slide{38}
-
-\begin{cue}
-	Clock check: this slide is planned for minute 59. If you start it after
-	about minute 64, skip Exercise~\exref{trading-strategy} (slides 41--42)
-	after the call option.
-\end{cue}
-
-\say The \emph{expected value} of $X$ is the average of its values, weighted
-by their probabilities:
-\[ \E[X]=\sum_x x\,p(x). \]
-Think of it as the long-run average: if we play the game many times, the
-average winnings per game get close to $\E[X]$.
-
-Tiny example, the two coins again: $X$ is the number of heads, with
-probabilities $\frac14,\frac12,\frac14$ for $0,1,2$:
-\[ \E[X]=0\cdot\tfrac14+1\cdot\tfrac12+2\cdot\tfrac14=1. \]
-
-\say A function of $X$: apply the function to every value, keep the
-probabilities.
-\[ \E[g(X)]=\sum_x g(x)\,p(x). \]
-For example $\E[X^2]=0\cdot\frac14+1\cdot\frac12+4\cdot\frac14=\frac32$.
-Note: $\frac32$ is not $(\E[X])^2=1$. In general $\E[g(X)]$ is not
-$g(\E[X])$; we see a finance example of this in a minute.
-
-\say There is one important exception: linear functions.
-$\E[aX+b]=a\,\E[X]+b$. If every head pays 10 euros and the game costs 5
-euros, the net gain is $10X-5$, and its expected value is
-$10\cdot1-5=5$ euros.
-
-\say The expected value tells us the center; it says nothing about the
-spread. The \emph{variance} is the expected squared distance from the mean
-$\mu=\E[X]$:
-\[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\big(\E[X]\big)^2. \]
-
-For the coins, from the definition: $(0-1)^2\cdot\frac14+(1-1)^2\cdot\frac12
-	+(2-1)^2\cdot\frac14=\frac12$. With the shortcut: $\frac32-1^2=\frac12$. The
-same number; the shortcut is usually faster.
-
-\say The variance is in squared units --- squared euros --- so we take the
-square root: the \emph{standard deviation}, $\SD(X)=\sqrt{\Var(X)}$. For the
-coins $\SD(X)=\sqrt{1/2}\approx0.707$.
-
-\board
+\onslide
+\[ \E[X]=\sum_x x\,p(x),\qquad \E[g(X)]=\sum_x g(x)\,p(x),\qquad
+	\E[aX+b]=a\,\E[X]+b, \]
+\[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\big(\E[X]\big)^2,\qquad
+	\SD(X)=\sqrt{\Var(X)}, \]
 \[ \Var(aX+b)=a^2\Var(X),\qquad \SD(aX+b)=|a|\,\SD(X). \]
 
-\ask Why does $b$ disappear? \emph{(Adding a constant shifts every value and
-	the mean by the same amount; the distances from the mean do not change.)}
-\ask Why $a^2$? \emph{(Every distance from the mean is multiplied by $a$, and
-	the variance squares the distances.)}
+\say $\E[X]=\sum_x x\,p(x)$: the average of the values, weighted by their
+probabilities. If you repeat the experiment many times, the average of the
+observed values settles near $\E[X]$. For a function,
+$\E[g(X)]=\sum_x g(x)\,p(x)$: apply $g$ to each value, keep the
+probabilities. And $\E[aX+b]=a\E[X]+b$: change of units passes straight
+through.
 
-So for $10X-5$: $\SD=10\cdot0.707\approx7.07$ euros.
+\say With $\mu=\E[X]$, the variance is $\Var(X)=\E[(X-\mu)^2]$: the
+average squared distance from the mean. To compute it, use the shortcut
+$\Var(X)=\E[X^2]-(\E[X])^2$, and take the square root for $\SD(X)$. The
+standard deviation is back in the units of $X$, so it is the number
+we interpret: a typical distance from the mean. And
+$\Var(aX+b)=a^2\Var(X)$: adding a constant does not change the spread,
+and multiplying by $a$ multiplies the standard deviation by $|a|$.
 
-\say In finance: $\E[X]$ is the expected return or payoff, and $\SD(X)$
-measures the \emph{risk}.
+Tiny example with the pmf of the last slide:
+$\E[X]=1\cdot\tfrac14+2\cdot\tfrac12+3\cdot\tfrac18+4\cdot\tfrac18=2.125$;
+$\E[X^2]=1\cdot\tfrac14+4\cdot\tfrac12+9\cdot\tfrac18+16\cdot\tfrac18=5.375$;
+so $\Var(X)=5.375-2.125^2\approx0.859$ and $\SD(X)\approx0.927$.
 
-\subsection{Exercise~\exref{call-option} --- The payoff of a call option, finance (9 min)}\slide{39--40}
+\say In finance: $\E[X]$ is the expected return or payoff, $\SD(X)$
+measures the risk.
+
+\subsection{Exercise~\exref{call-option} --- The payoff of a call option, finance (9 min)}\slide{29--30}
 
 \scriptexercise{call-option}
 
-\begin{cue}
-	Explain the call option in two sentences before they start (the first
-	paragraph below). Then give them three minutes for (a).
-\end{cue}
+\say A call with strike 110 is the right to buy the stock for 110 in one
+year. If the price is above 110, you buy at 110 and could sell at the
+market price, so you gain the difference; otherwise you do not use the
+right, and you get 0. So $C=\max(S-110,0)$. Try (a), three minutes.
 
-\say A quick word on the finance. A \emph{call option} with strike price 110
-gives you the right, but not the obligation, to buy the stock for 110 in one
-year. If the stock then costs more than 110, you buy at 110 and gain the
-difference; if it costs less, you simply do not use the option. So the payoff
-is $C=\max(S-110,0)$: never negative.
-
-(a) \say Each price times its probability, then add.
+(a) Click. Expected value: multiply
+each price by its probability and add.
 \[ \E[S]=80\cdot0.2+100\cdot0.4+120\cdot0.3+140\cdot0.1=16+40+36+14=106. \]
-For the variance, first the mean of $S^2$:
-\[ \E[S^2]=6400\cdot0.2+10000\cdot0.4+14400\cdot0.3+19600\cdot0.1
-	=1280+4000+4320+1960=11560. \]
-\[ \Var(S)=\E[S^2]-(\E[S])^2=11560-106^2=11560-11236=324,\qquad
-	\SD(S)=\sqrt{324}=18. \]
-The price is typically about 18 away from 106.
+Click. For the variance, first the mean of $S^2$:
+\[ \E[S^2]=6400\cdot0.2+10000\cdot0.4+14400\cdot0.3+19600\cdot0.1=11560. \]
+Click. Then
+\[ \Var(S)=\E[S^2]-(\E[S])^2=11560-106^2=11560-11236=324. \]
+Click. $\SD(S)=\sqrt{324}=18$: the price is typically about 18 away from
+106.
 
-(b) \say Next slide. $C$ is a function of $S$: compute the payoff for each
-price.
+\begin{cue}
+	Slide 30.
+\end{cue}
 
-\ask What does the option pay if $S=80$? $100$? $120$? $140$? \emph{(0, 0,
-	10, 30.)}
+(b) \ask What does the option pay at $80$, $100$, $120$, $140$? \emph{(0,
+0, 10, 30.)} Click: the payoff row of the table fills in.
 
-\say Two prices give $C=0$, so their probabilities add up:
+\needspace{0.22\textheight}
+\onslide
+\begin{center}
+	\begin{tabular}{c|cccc}
+		$s$               & 80  & 100 & 120 & 140 \\\hline
+		$P(S=s)$          & 0.2 & 0.4 & 0.3 & 0.1 \\
+		$c=\max(s-110,0)$ & 0   & 0   & 10  & 30
+	\end{tabular}
+\end{center}
+
+Click. Two prices give $C=0$, so their probabilities add up:
 \[ p_C(0)=0.2+0.4=0.6,\qquad p_C(10)=0.3,\qquad p_C(30)=0.1. \]
+That is the pmf of $C$: three values, probabilities adding to 1. Click.
 \[ \E[C]=0\cdot0.6+10\cdot0.3+30\cdot0.1=3+3=6. \]
-\[ \E[C^2]=0+100\cdot0.3+900\cdot0.1=120,\qquad \Var(C)=120-6^2=84,\qquad
-	\SD(C)=\sqrt{84}\approx9.17. \]
+Click.
+\[ \E[C^2]=0+100\cdot0.3+900\cdot0.1=120,\qquad
+	\Var(C)=120-6^2=84,\qquad \SD(C)=\sqrt{84}\approx9.17. \]
 
-(c) \ask What do we get if we put the expected price into the payoff?
-\emph{($\max(106-110,0)=0$.)}
+(c) \ask What do we get if we plug the expected price into the payoff?
+\emph{($\max(106-110,0)=0$.)} Click. $\max(\E[S]-110,0)=0$, but
+$\E[C]=6$. Click. \say In general $\E[g(X)]\ne g(\E[X])$. Compute
+$\E[g(X)]=\sum_x g(x)\,p(x)$: apply $g$ first, then average.
 
-\say But $\E[C]=6$. The expected price is below the strike, so ``plugging in
-the average'' says the option is worthless. But the price is random: with
-probability $0.4$ it ends above 110, and then the option pays; otherwise it
-pays 0, never a negative amount. So the average payoff is positive.
+Why is $\E[C]$ bigger? The average price, 106, is below the strike, but
+the price is not always 106: in 40\% of the cases it ends above 110, and
+then the option pays. The payoff cuts off the losses at 0 and keeps the
+gains.
 
-\say In general $\E[g(X)]\ne g(\E[X])$. Apply $g$ first, then average:
-$\E[g(X)]=\sum_x g(x)\,p(x)$.
+\begin{cue}
+	Common mistake in (b): forgetting to add the two probabilities of
+	$C=0$.
+\end{cue}
 
-\begin{bg}{call options and why uncertainty has value}
-	\emph{Call option}: the right, but not the obligation, to buy an asset
-	(the \emph{underlying}) at the \emph{strike price} $K$ on the
-	\emph{expiry date}. Its payoff $\max(S-K,0)$ has the famous
-	``hockey stick'' graph: zero below $K$, then rising one-for-one. A
-	\emph{put} is the right to sell, with payoff $\max(K-S,0)$. The buyer
-	pays a price up front (the \emph{premium}). An option with $S$ above $K$
-	is \emph{in the money}, below $K$ \emph{out of the money}.
+\begin{bg}{call options and convexity}
+	A call gives the right, not the obligation, to buy the underlying at
+	the strike $K$ on the expiry date; its payoff $\max(S-K,0)$ is the
+	``hockey stick''. Since the payoff is convex,
+	$\E[\max(S-K,0)]\ge\max(\E[S]-K,0)$ (Jensen's inequality): the option
+	keeps the upside and cuts off the downside, so more volatility means a
+	more valuable option.
 
-	\emph{The lesson of part (c)} is a central idea of option theory: since
-	the payoff function is convex (it bends upward), $\E[\max(S-K,0)]\ge
-	\max(\E[S]-K,0)$ (Jensen's inequality). The option keeps the upside and
-	cuts off the downside, so more uncertainty in $S$ means a more valuable
-	option. That is why option prices rise with \emph{volatility}, the
-	standard deviation of returns.
+	\terms underlying; strike; expiry; premium; volatility; convexity.
 
-	\terms underlying; strike; expiry; premium; in/out of the money;
-	payoff diagram; volatility; convexity.
-
-	\sq{So is 6 the price of this option?}
-	\ans Not exactly. The fair price today discounts the payoff (money in a
-	year is worth less than money today), and in option pricing theory the
-	expectation is taken with special ``risk-neutral'' probabilities, not
-	with the real-world probabilities of the exercise. But the structure ---
-	price = (discounted) expected payoff --- is exactly this computation.
-
-	\sq{Why is $\SD(C)\approx9.17$ smaller than $\SD(S)=18$, if options are
-		``risky''?}
-	\ans In euros the payoff varies less, but the option costs much less than
-	the stock. Relative to the money invested, an option is far riskier: the
-	payoff is 0 with probability $0.6$, so the buyer loses the whole premium
-	more often than not.
+	\sq{So is 6 the price of the option?}
+	\ans Not exactly: the fair price discounts the payoff, and the
+	expectation is taken under risk-neutral probabilities. But the structure,
+	price $=$ discounted expected payoff, is this computation.
 \end{bg}
 
-\subsection{Exercise~\exref{trading-strategy} --- A simple trading strategy, finance (7 min)}\slide{41--42}
-
-\scriptexercise{trading-strategy}
+\subsection{Bernoulli distribution (2 min)}\slide{31}
 
 \begin{cue}
-	Short on time? Skip this exercise first in Session 2 (7 min): go from
-	slide 40 straight to the summary, slide 43. Say: ``One more finance
-	example, a trading strategy, is in the exercises PDF with its full
-	solution.''
+	Clock check: this slide is planned for minute 20. If you start it after
+	about minute 25, skip part (e) of Exercise~\exref{first-sale}.
 \end{cue}
+
+Transition: now the named distributions. Each one comes with a story;
+if the story fits the problem, the formulas are ready to use. The
+simplest story first.
+
+\onslide the Bernoulli distribution with parameter $p$: one trial with two
+outcomes, success with probability $p$, failure with probability $1-p$;
+$X=1$ on success and $X=0$ on failure:
+\[ P(X=1)=p,\qquad P(X=0)=1-p, \]
+\[ \E[X]=1\cdot p+0\cdot(1-p)=p,\qquad
+	\Var(X)=\E[X^2]-p^2=p-p^2=p(1-p). \]
+Two bullet points: examples (a loan defaults or not; a call ends in a sale
+or not; a coin shows heads or not); $X$ is an indicator, it counts 1 if
+the event happens, so $\E[X]=P(\text{event})$.
+
+\say A Bernoulli variable is a yes-or-no question turned into a number:
+1 for yes, 0 for no. Its mean is $1\cdot p+0\cdot(1-p)=p$. For the
+variance: $X$ is 0 or 1, so $X^2=X$ and $\E[X^2]=p$; then
+$\Var(X)=p-p^2=p(1-p)$.
+
+\say The key sentence: the expected value of an indicator is the
+probability of its event. Counting with indicators is how we get the
+binomial mean on the next slide.
+
+Tiny example: a loan defaults with probability $0.05$; $X=1$ if it
+defaults. $\E[X]=0.05$, $\Var(X)=0.05\cdot0.95=0.0475$.
+
+\ask For which $p$ is the variance largest? \emph{($p=1/2$: then
+$p(1-p)=1/4$. At $p=0$ or $p=1$ there is no uncertainty, and the variance
+is 0.)}
+
+\subsection{Binomial distribution (4 min)}\slide{32}
+
+\onslide the binomial distribution with parameters $(n,p)$: $X$ is the
+number of successes in $n$ independent Bernoulli trials, each a success
+with the same probability $p$:
+\[ P(X=i)=\binom{n}{i}p^i(1-p)^{n-i},\qquad i=0,1,\dots,n,\qquad
+	\E[X]=np,\qquad \Var(X)=np(1-p). \]
+Three bullet points: $\binom{n}{i}$ says which $i$ of the $n$ trials are
+the successes, $p^i(1-p)^{n-i}$ is the probability of one such order; $X$
+is the sum of $n$ Bernoulli variables, so its mean and variance are $n$
+times those of one trial; the binomial with $n=1$ is the Bernoulli
+distribution.
+
+\say The binomial story: $n$ independent trials, each a success with the
+same probability $p$; $X$ counts the successes. Why this formula? One
+order with $i$ successes and $n-i$ failures has probability
+$p^i(1-p)^{n-i}$, by independence we multiply. There are $\binom{n}{i}$
+such orders, one for each choice of the $i$ successful trials, and they
+are mutually exclusive, so we add.
+
+\say Why $np$ and $np(1-p)$? $X=X_1+\dots+X_n$, where $X_k$ is the
+Bernoulli indicator of a success on trial $k$. Expected values add, so
+$\E[X]=np$; for independent trials variances add too, so
+$\Var(X)=np(1-p)$. And with $n=1$ we are back at the Bernoulli
+distribution.
+
+Tiny example: three fair coin flips, $X$ = number of heads. $P(X=2)=
+\binom32\,(0.5)^2(0.5)=3/8$: the three orders HHT, HTH, THH, each with
+probability $1/8$. And $\E[X]=3\cdot0.5=1.5$.
+
+\ask What are the three conditions to check before using the binomial?
+\emph{(A fixed number of trials; independent; the same $p$ every time.)}
+
+\subsection{Exercise~\exref{loan-defaults} --- Defaults in a small loan portfolio, finance (8 min)}\slide{33}
+
+\scriptexercise{loan-defaults}
+
+\say Try (a)--(d), three minutes. First decide which distribution.
+
+(a) Click. $10$ independent trials, the loans, each a ``success'', a
+default, with the same probability $0.05$: $X$ is binomial with
+$(n,p)=(10,\,0.05)$,
+\[ P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i},\qquad i=0,1,\dots,10. \]
+``Success'' is just the name of the event we count; here it is bad news.
+
+(b), (c) Click.
+\[ P(X=0)=0.95^{10}\approx0.5987,\qquad
+	P(X=1)=10\cdot0.05\cdot0.95^{9}\approx0.3151. \]
+In (c) any one of the ten loans can be the one that defaults: ten orders.
+
+(d) \ask ``At least two'' means 2, 3, \dots, 10: nine terms. Is there a
+shorter way? \emph{(The complement: 0 or 1.)} Click. Complement,
+$\{X\ge2\}^c=\{X=0\}\cup\{X=1\}$, two terms instead of nine:
+\[ P(X\ge2)=1-P(X=0)-P(X=1)\approx1-0.5987-0.3151=0.0861. \]
+
+(e) Click.
+\[ \E[X]=np=0.5,\qquad \Var(X)=np(1-p)=0.475,\qquad
+	\SD(X)=\sqrt{0.475}\approx0.689. \]
+On average half a default a year: in most years none, sometimes one,
+rarely more.
 
 \begin{cue}
-	Two minutes for (a); then ask (b) and (c) before revealing them --- they
-	are one-line answers with the rules of slide 38.
+	Common mistake in (c): forgetting the factor $\binom{10}{1}=10$; any of
+	the ten loans can be the one that defaults.
 \end{cue}
 
-(a) \say The values of $X$: $300$ with probability $0.55$, and $-200$ with
-probability $0.45$. A loss is a negative number.
-\[ \E[X]=300\cdot0.55+(-200)\cdot0.45=165-90=75. \]
-On average the strategy earns 75 euros a day.
+\begin{bg}{default counts in a portfolio}
+	The number of defaults in a portfolio of similar loans is the basis of
+	credit portfolio risk. With independent defaults it is binomial, and
+	$\E[X]\cdot\text{loan size}\cdot\text{LGD}$ is the expected loss. Real
+	defaults are positively dependent (Exercise~\exref{bond-defaults}), which
+	makes many defaults in one year more likely than the binomial says;
+	portfolio models such as the Vasicek model (behind the Basel formula) add
+	a common factor for this.
 
-For the variance, $\E[X^2]$ first:
-\[ \E[X^2]=300^2\cdot0.55+(-200)^2\cdot0.45=49\,500+18\,000=67\,500. \]
-\[ \Var(X)=\E[X^2]-\big(\E[X]\big)^2=67\,500-75^2=67\,500-5625=61\,875. \]
-
-\say Next slide. $61\,875$ is in squared euros; back to euros:
-\[ \SD(X)=\sqrt{61\,875}\approx248.7\text{ euros}. \]
-\say The typical deviation, about 249 euros, is much larger than the mean, 75
-euros: on a single day the result is very uncertain.
-
-\board Rules for $aX+b$: $\E[aX+b]=a\E[X]+b$, \ $\SD(aX+b)=|a|\,\SD(X)$.
-
-(b) \ask The position is doubled: what are $a$ and $b$? \emph{($a=2$,
-	$b=0$.)}
-\[ \E[2X]=2\cdot75=150,\qquad \SD(2X)=2\cdot\SD(X)\approx497.5. \]
-\say Leverage doubles the expected profit, but it doubles the risk too.
-
-\begin{cue}
-	Common mistake: $\Var(2X)=2\Var(X)$. The variance is multiplied by $4$
-	(it is $247\,500$); only the standard deviation is doubled.
-\end{cue}
-
-(c) \ask A fixed fee of 20 euros: $a$ and $b$? \emph{($a=1$, $b=-20$.)}
-\[ \E[X-20]=75-20=55,\qquad \SD(X-20)=\SD(X)\approx248.7. \]
-\say A constant shifts every outcome by the same amount --- $280$ and $-220$
-instead of $300$ and $-200$. The center moves, the spread does not change.
-
-\begin{bg}{P\&L, leverage and risk-adjusted return}
-	\emph{P\&L} (profit and loss): the money a trading account gains or loses
-	over a period. \emph{Position size}: how much is invested; doubling it
-	doubles every gain and every loss. \emph{Leverage}: taking a larger
-	position with borrowed money. \emph{Volatility}: the standard deviation
-	of the P\&L (or of returns), the standard measure of risk.
-
-	\emph{Risk-adjusted return.} Traders compare strategies by the ratio of
-	mean to standard deviation (the idea behind the \emph{Sharpe ratio}).
-	Here it is $75/248.7\approx0.30$ per day. Leverage does not change it:
-	$150/497.5\approx0.30$ --- both numbers double. The fee lowers it:
-	$55/248.7\approx0.22$. So leverage scales a strategy up or down, but it
-	does not make it better; costs make it worse.
-
-	\terms P\&L; position size; leverage; volatility; Sharpe ratio;
-	transaction costs; margin call.
-
-	\sq{If the expected profit doubles, why not use as much leverage as
-		possible?}
-	\ans Because losses double too. A run of bad days can wipe out the
-	account, and the broker demands more collateral (a \emph{margin call})
-	exactly when the trader is losing. Many trading firms failed this way.
-
-	\sq{Is a 20-euro fee a big deal when the mean is 75?}
-	\ans It takes more than a quarter of the expected daily profit. For
-	active strategies, transaction costs often decide whether the strategy
-	is profitable at all.
+	\terms credit portfolio; expected loss; default correlation.
 \end{bg}
 
-\subsection{Summary (3 min)}\slide{43}
+\subsection{Poisson distribution (4 min)}\slide{34}
 
-\begin{itemize}
-	\item Partition $F_1,\dots,F_n$: $P(E)=\sum_i P(E\mid F_i)P(F_i)$, and
-	      the generalized Bayes formula gives $P(F_j\mid E)$: one path divided
-	      by all of them.
-	\item Independence: $P(EF)=P(E)P(F)$; for three events all four product
-	      rules; pairwise independence is not enough. ``At least one'' in $n$
-	      independent trials: $1-(1-p)^n$.
-	\item pmf $p(x)=P(X=x)$; distribution function $F(x)=P(X\le x)$, a step
-	      function.
-	\item $\E[X]=\sum x\,p(x)$; $\E[g(X)]=\sum g(x)p(x)$, in general not
-	      $g(\E[X])$.
-	\item $\Var(X)=\E[X^2]-(\E[X])^2$; $\Var(aX+b)=a^2\Var(X)$;
-	      $\SD(X)=\sqrt{\Var(X)}$.
-\end{itemize}
+\onslide
+\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots,\qquad
+	\E[X]=\lambda,\qquad \Var(X)=\lambda. \]
 
-\say That was a long day: from probabilities of events, through conditional
-probability and Bayes, to independence and random variables. Next week we
-continue with random variables. Every exercise of today is in the study
-guide on the course website, with a detailed, step-by-step solution, and the
-Exercises page there has more problems on every topic of today for
-self-study. Thank you, and see you next week.
+\say The Poisson story: the number of rare events in a fixed period:
+claims a day, defaults a year, errors on a page. With parameter
+$\lambda>0$ the pmf is the formula above, and $\E[X]=\Var(X)=\lambda$: $\lambda$ is the average number of events in
+the period.
+
+\say If $n$ is large and $p$ is small, the binomial $(n,p)$ is close to the
+Poisson with $\lambda=np$. Many independent chances, each small, counted
+together: that is where the Poisson comes from.
+
+Example: an insurer has $1000$ policies, each with a claim on a given day
+with probability $0.003$. The number of claims is binomial
+$(1000,\,0.003)$, close to Poisson with $\lambda=3$. For no claim, the
+binomial gives $0.997^{1000}\approx0.0496$ and the Poisson
+$e^{-3}\approx0.0498$: almost the same, and the Poisson needs only
+$\lambda$, not $n$ and $p$ separately.
+
+\subsection{Exercise~\exref{claims-per-day} --- Insurance claims in a day, finance (7 min)}\slide{35}
+
+\scriptexercise{claims-per-day}
+
+\say Try it, three minutes.
+
+\needspace{0.32\textheight}
+\onslide a bar chart of the pmf, the bar at 2 highlighted:
+\begin{center}
+	\begin{tikzpicture}[xscale=.75,yscale=14]
+		\draw[->] (-.6,0) -- (8.8,0) node[right] {\small $i$};
+		\foreach \i/\p in {0/0.0498,1/0.1494,2/0.2240,3/0.2240,
+				4/0.1680,5/0.1008,6/0.0504,7/0.0216,8/0.0081}
+			{
+				\fill[navy!60] (\i-.35,0) rectangle (\i+.35,\p);
+				\node[below] at (\i,0) {\footnotesize $\i$};
+			}
+		\fill[gold] (2-.35,0) rectangle (2+.35,0.2240);
+		\draw (-.6,.2240) -- (-.4,.2240) node[left,xshift=-1mm] {\footnotesize $0.224$};
+		\node[above] at (4,.25) {\small pmf of $X$};
+	\end{tikzpicture}
+\end{center}
+(Click.) Poisson with $\lambda=3$: $P(X=i)=e^{-3}\,3^i/i!$.
+
+(a), (b) Click.
+\[ P(X=0)=e^{-3}\approx0.0498,\qquad
+	P(X=2)=e^{-3}\frac{3^2}{2!}=\frac92e^{-3}\approx0.2240. \]
+A day without claims happens about once in twenty days.
+
+(c) \ask Which values are left out of ``at least 2''? \emph{(Only 0 and
+1.)} Click. Complement: only $X=0$ and $X=1$ are left out,
+\[ P(X\ge2)=1-e^{-3}(1+3)\approx0.8009. \]
+
+(d) Click. $\E[X]=\Var(X)=3$, $\SD(X)=\sqrt3\approx1.732$. A typical day
+brings 3 claims, give or take about 2.
 
 \begin{cue}
-	If there is reserve time, let them start one of the self-study exercises
-	on random variables in class and walk around. Next week: start with a
-	two-minute recap of the pmf, $\E[X]$ and $\Var(X)$, using the urn game of
-	Exercise~\exref{urn-game}.
+	Common mistakes: $\SD(X)=3$ (it is the variance that equals $\lambda$);
+	in (c), leaving out the value 2 as well.
 \end{cue}
 
+\begin{bg}{claim counts in insurance}
+	Actuaries model the number of claims in a period with the Poisson
+	distribution: many policies, each with a small claim probability, is the
+	Poisson approximation of the binomial. The claim count is combined with
+	the claim sizes into the total loss (the compound Poisson model), which
+	sets premiums and reserves. Real claim counts often vary more than
+	Poisson ($\Var>\E$), and then a negative binomial is used.
+
+	\terms claim frequency; claim severity; compound Poisson model;
+	overdispersion.
+\end{bg}
+
+\subsection{Geometric distribution (4 min)}\slide{36}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 45. If you start it after
+	about minute 50, also skip part (d) of Exercise~\exref{audit-sample}.
+\end{cue}
+
+\onslide
+\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots,\qquad
+	\E[X]=\frac1p,\qquad \Var(X)=\frac{1-p}{p^2}, \]
+\[ P(X>n)=(1-p)^n,\qquad P(X>n+k\mid X>n)=P(X>k). \]
+
+\say The geometric story: independent trials with success probability
+$p$; $X$ is the number of the trial on which the first success happens.
+Then $P(X=n)=(1-p)^{n-1}p$, with mean $1/p$ and variance $(1-p)/p^2$.
+Why this formula? The first success on trial $n$ means: $n-1$ failures,
+then one success, and by independence we multiply.
+
+\say $P(X>n)=(1-p)^n$: the first $n$ trials are all failures. And it is
+memoryless: $P(X>n+k\mid X>n)=P(X>k)$. Past failures do not make a
+success ``due''.
+
+Tiny example: roll a die until the first six, $p=1/6$. On average it takes
+$\E[X]=6$ rolls. No six in the first six rolls: $(5/6)^6\approx0.335$, so
+a third of the time it takes longer than the average.
+
+\subsection{Exercise~\exref{first-sale} --- Calling clients until the first sale, finance (8 min)}\slide{37--38}
+
+\scriptexercise{first-sale}
+
+\say Try (a)--(d), three minutes.
+
+(a) \ask Binomial or geometric? \emph{(Geometric: the number of calls is
+not fixed; we wait for the first sale.)} Click. Independent trials, same
+success probability, we wait for the first success: $X$ is geometric with
+$p=0.2$,
+\[ P(X=n)=0.8^{\,n-1}\cdot0.2,\qquad n=1,2,\dots \]
+
+(b) Click. $P(X=3)$: two failures, then a sale,
+$0.8^2\cdot0.2=0.128$.
+
+(c) Click. $P(X>5)$: the first five calls all fail,
+$0.8^5\approx0.3277$. In a third of the cases the advisor needs more than
+five calls.
+
+\begin{cue}
+	Slide 38.
+\end{cue}
+
+(d) Geometric with $p=0.2$:
+\[ \E[X]=\frac1p=\frac1{0.2}=5,\qquad
+	\Var(X)=\frac{1-p}{p^2}=\frac{0.8}{0.04}=20,\qquad
+	\SD(X)=\sqrt{20}\approx4.472. \]
+On average the first sale comes on the 5th call. The standard deviation
+is almost as large as the mean: waiting times vary a lot.
+
+(e) \ask Five calls failed. Is a sale now ``due''? Does the chance of
+three more failures go up or down? \emph{(Let them vote; many say down.)}
+Click. No sale in calls 6, 7, 8, given no sale in calls 1--5:
+\[ P(X>8\mid X>5)=\frac{P(X>8)}{P(X>5)}=\frac{0.8^8}{0.8^5}=0.8^3=0.512. \]
+Why $P(X>8)$ in the numerator? ``More than 8'' and ``more than 5''
+together is just ``more than 8'', since $X>8$ implies $X>5$. Click. And
+$P(X>3)=0.8^3=0.512$: the same! Click. \say Memoryless property: after
+five failed calls the waiting starts afresh; past failures do not make a
+sale ``due''.
+
+\begin{cue}
+	Common mistake: $P(X=n)=(1-p)^np$; only the $n-1$ calls before the sale
+	fail.
+\end{cue}
+
+\begin{bg}{the gambler's fallacy in sales and trading}
+	Memorylessness is the formal answer to the gambler's fallacy: after a run
+	of losses a win is not ``due'' if the trials are independent. In
+	practice sales calls are not quite independent (lead quality, time of
+	day), but the geometric model is the standard first approximation for
+	``trials until the first success'', for example the number of periods
+	until a first default with a constant default probability.
+
+	\terms gambler's fallacy; memoryless; waiting time.
+\end{bg}
+
+\subsection{Hypergeometric distribution (3 min)}\slide{39}
+
+\onslide
+\[ P(X=i)=\frac{\binom{m}{i}\binom{N-m}{n-i}}{\binom{N}{n}},\qquad
+	\E[X]=\frac{nm}{N}. \]
+
+\say The hypergeometric story: from $N$ items, $m$ of which are special, we
+pick $n$ at random without replacement; $X$ counts the special ones
+picked. The formula is favorable over all, with last week's counting: choose $i$
+of the $m$ special items and $n-i$ of the $N-m$ others, out of all ways to
+choose $n$ of $N$.
+
+\say Without replacement the picks are not independent, so $X$ is not
+binomial: each special item drawn makes the next one less likely. If $N$
+is large compared with $n$, removing a few items hardly matters, and it is
+close to the binomial $(n,m/N)$.
+
+Tiny example: an urn with 5 balls, 2 of them red; pick 2. Exactly one red:
+$\binom21\binom31/\binom52=6/10=0.6$.
+
+\subsection{Exercise~\exref{audit-sample} --- An auditor's sample, finance (7 min)}\slide{40}
+
+\scriptexercise{audit-sample}
+
+\say Try (a)--(c), three minutes.
+
+(a) \ask Binomial with $p=4/20=0.2$? \emph{(No: without replacement, the
+draws are not independent.)} Click. $n=5$ of $N=20$ without replacement,
+$m=4$ erroneous: hypergeometric, not binomial.
+\[ P(X=i)=\frac{\binom{4}{i}\binom{16}{5-i}}{\binom{20}{5}},\qquad
+	\binom{20}{5}=15504. \]
+
+(b) Click. No error found: all five from the sixteen correct invoices,
+\[ P(X=0)=\frac{\binom40\binom{16}{5}}{\binom{20}{5}}=\frac{4368}{15504}
+	\approx0.2817. \]
+
+(c) Click. Complement: $P(X\ge1)=1-P(X=0)\approx0.7183$.
+
+(d) Click. Two erroneous and three correct invoices:
+\[ P(X=2)=\frac{\binom42\binom{16}{3}}{\binom{20}{5}}=\frac{6\cdot560}{15504}
+	=\frac{3360}{15504}\approx0.2167. \]
+
+(e) Click.
+\[ \E[X]=\frac{nm}{N}=\frac{5\cdot4}{20}=1. \]
+The sample is a quarter of the invoices, so on average it catches a
+quarter of the four errors.
+
+\say The point for the auditor: even though a fifth of the invoices are
+wrong, more than one sample in four shows no error at all.
+
+\begin{cue}
+	Common mistake: binomial with $p=0.2$. It gives $P(X=0)=0.8^5\approx
+		0.3277$ instead of $0.2817$; the mean, 1, is the same.
+\end{cue}
+
+\begin{bg}{audit sampling}
+	Auditors cannot check every document, so they test a random sample and
+	draw a conclusion about the whole population. Sampling is without
+	replacement from a finite population, so the hypergeometric distribution
+	is the exact model. The key risk is \emph{sampling risk}: here in 28\% of
+	the samples the auditor finds no error although a fifth of the invoices
+	are wrong. Larger samples reduce this risk.
+
+	\terms audit sampling; population; sampling risk.
+\end{bg}
+
+\subsection{Summary (3 min)}\slide{41}
+
+\needspace{0.22\textheight}
+\onslide
+\begin{center}
+	\begin{tabular}{@{}llll@{}}
+		\toprule
+		Distribution & $P(X=i)$ & $\E[X]$ & $\Var(X)$ \\\midrule
+		Bernoulli $(p)$ & $P(X=1)=p$ & $p$ & $p(1-p)$ \\[3pt]
+		binomial $(n,p)$ & $\binom{n}{i}p^i(1-p)^{n-i}$ & $np$ & $np(1-p)$ \\[3pt]
+		Poisson $(\lambda)$ & $e^{-\lambda}\lambda^i/i!$ & $\lambda$ & $\lambda$ \\[3pt]
+		geometric $(p)$ & $(1-p)^{i-1}p$ & $1/p$ & $(1-p)/p^2$ \\[3pt]
+		hypergeometric & $\binom{m}{i}\binom{N-m}{n-i}\big/\binom{N}{n}$ & $nm/N$ & \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\say Session 2 in a few lines: $\E[X]=\sum x\,p(x)$,
+$\Var(X)=\E[X^2]-(\E[X])^2$, $\SD(X)=\sqrt{\Var(X)}$. The table has the five
+distributions; the key is the story. One trial, success or not: Bernoulli.
+A fixed number of independent trials: binomial, a sum of Bernoulli
+variables. Rare events in a period: Poisson. Waiting for the first success:
+geometric. Sampling without replacement: hypergeometric. And for ``at
+least one'' or ``at least two'', use the complement.
+
+\say For self-study: Exercises~\exref{urn-game}, \exref{trading-strategy},
+\exref{guessing-on-a-test}, \exref{payment-errors},
+\exref{waiting-for-a-six} and \exref{bonds-with-and-without-replacement}.
+They are in the exercises PDF, with full solutions. Thank you, and see you
+next week.
+
+\begin{cue}
+	Use the reserve for questions, or let them start a self-study exercise
+	and walk around.
+\end{cue}
 
 \end{document}

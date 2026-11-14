@@ -5,21 +5,21 @@
 
 \begin{problem}
 	A graduate takes three professional (actuarial) exams, one after the other.
-	After a failure she stops and takes no further exam. She passes the first
-	exam with probability $0.9$. If she passed the first exam, she passes the
-	second with probability $0.8$. If she passed the first two exams, she passes
+	After a failure they stop and take no further exam. They pass the first
+	exam with probability $0.9$. If they passed the first exam, they pass the
+	second with probability $0.8$. If they passed the first two exams, they pass
 	the third with probability $0.7$.
-	(a) What is the probability that she passes all three exams?
-	(b) What is the probability that she fails exactly at the third exam?
-	(c) She did not pass all three exams. What is the conditional probability
-	that she failed the second exam?
+	(a) What is the probability that they pass all three exams?
+	(b) What is the probability that they fail exactly at the third exam?
+	(c) The graduate did not pass all three exams. What is the conditional
+	probability that they failed the second exam?
 \end{problem}
 
 \begin{slideproblem}
-	Three exams in a row; after a failure she stops. $P(\text{pass 1st})=0.9$;
-	if she passed the 1st: $P(\text{pass 2nd})=0.8$; if she passed the first
-	two: $P(\text{pass 3rd})=0.7$. Probability that she (a) passes all three;
-	(b) fails exactly at the third; (c) failed the second, given that she did
+	Three exams in a row; after a failure they stop. $P(\text{pass 1st})=0.9$;
+	if they passed the 1st: $P(\text{pass 2nd})=0.8$; if they passed the first
+	two: $P(\text{pass 3rd})=0.7$. Probability that they (a) pass all three;
+	(b) fail exactly at the third; (c) failed the second, given that they did
 	not pass all three?
 \end{slideproblem}
 
@@ -28,7 +28,7 @@
 	\exstatement
 	\begin{columns}[T]
 		\begin{column}{.5\textwidth}
-			\uncover<2->{\sol $E_i$ = ``she passes exam $i$''.
+			\uncover<2->{\sol $E_i$ = ``they pass exam $i$''.
 				The numbers are \emph{conditional}:\\[.5mm]
 				$P(E_1)=0.9$,\quad $P(E_2\mid E_1)=0.8$,\\
 				$P(E_3\mid E_1E_2)=0.7$.}\\[1mm]
@@ -77,7 +77,7 @@
 				\[ P\big((E_1E_2E_3)^c\big)=1-0.504=0.496. \]}%
 			\uncover<3->{Failed the 2nd: $P(E_1E_2^c)=0.9\cdot0.2=0.18$.
 				Check: $0.1+0.18+0.216=0.496$.}\\[1mm]
-			\uncover<4->{Failing the 2nd means she did not pass all three: the
+			\uncover<4->{Failing the 2nd means they did not pass all three: the
 				intersection is $E_1E_2^c$ itself.}
 		\end{column}
 		\begin{column}{.46\textwidth}
@@ -120,11 +120,11 @@
 	branches. The probability of a path is the product of the probabilities
 	along it (the multiplication rule).
 
-	\step{Events and data.} Let $E_i$ = ``she passes exam $i$'' ($i=1,2,3$).
+	\step{Events and data.} Let $E_i$ = ``the graduate passes exam $i$'' ($i=1,2,3$).
 	The statement gives
 	\[ P(E_1)=0.9,\qquad P(E_2\mid E_1)=0.8,\qquad P(E_3\mid E_1E_2)=0.7. \]
 	The second number is \emph{not} $P(E_2)$: it is the probability of passing
-	the second exam among the cases where she passed the first. By the complement
+	the second exam among the cases where they passed the first. By the complement
 	rule for a fixed condition, the failure probabilities are
 	\[ P(E_1^c)=0.1,\qquad P(E_2^c\mid E_1)=0.2,\qquad
 		P(E_3^c\mid E_1E_2)=0.3. \]
@@ -153,7 +153,7 @@
 			\node[lab,right=2pt] at (F1.east) {fails 1st: $0.1$};
 		\end{tikzpicture}
 	\end{center}
-	After a failure she stops, so a failure branch ends the path. The tree has
+	After a failure the graduate stops, so a failure branch ends the path. The tree has
 	four paths, and every possible history is exactly one of them.
 
 	\step{(a)} Passing all three is the top path, $E_1E_2E_3$. The
@@ -170,17 +170,17 @@
 	\[ P(E_1E_2E_3^c)=P(E_1)\,P(E_2\mid E_1)\,P(E_3^c\mid E_1E_2)
 		=0.9\cdot0.8\cdot0.3=0.216. \]
 
-	\step{(c)} The condition is ``she did not pass all three'', the complement
+	\step{(c)} The condition is ``they did not pass all three'', the complement
 	of $E_1E_2E_3$. By the complement rule,
 	\[ P\big((E_1E_2E_3)^c\big)=1-0.504=0.496. \]
 	Check with the tree: not passing all three means failing the first, the
 	second or the third exam (three separate paths, which cannot happen
 	together):
 	\[ 0.1+0.18+0.216=0.496. \]
-	``She failed the second exam'' means she passed the first and failed the
+	``They failed the second exam'' means they passed the first and failed the
 	second: the path $E_1E_2^c$, with probability
 	\[ P(E_1E_2^c)=P(E_1)\,P(E_2^c\mid E_1)=0.9\cdot0.2=0.18. \]
-	If she failed the second exam, she certainly did not pass all three, so
+	If they failed the second exam, they certainly did not pass all three, so
 	$E_1E_2^c$ lies inside $(E_1E_2E_3)^c$ and their intersection is
 	$E_1E_2^c$ itself. The definition of conditional probability gives
 	\[ P\big(E_1E_2^c\mid(E_1E_2E_3)^c\big)
@@ -191,8 +191,8 @@
 	\end{answer}
 	\begin{remark}
 		\textbf{Common mistake:} in (c), writing the event as $E_2^c$ alone.
-		She also does not pass the second exam if she fails the first one and
-		stops, so $P(E_2^c)=0.1+0.18=0.28$. ``Failed the second exam'' means she
+		The graduate also does not pass the second exam if they fail the first
+		one and stop, so $P(E_2^c)=0.1+0.18=0.28$. ``Failed the second exam'' means they
 		took it and failed: $E_1E_2^c$.
 	\end{remark}
 	\begin{remark}

@@ -66,6 +66,88 @@
   \end{tikzpicture}}
 \newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
 
+% Visual proof of Bayes' formula: Omega = gray box, the hypothesis F = blue
+% diamond, the observation E = light blue circle, their overlap FE = red.
+% Mini shapes (pics): bvOm, bvF, bvE, bvFE; bvfrac={top}{bottom} is a
+% fraction of two mini shapes. Each row is one tikzpicture, so the HTML
+% conversion sees no math around TikZ. Optional argument: scale.
+\definecolor{bvblue}{RGB}{95,107,216}
+\definecolor{bvlight}{RGB}{214,228,250}
+\definecolor{bvrose}{RGB}{248,122,134}
+\definecolor{bvgray}{RGB}{231,234,237}
+\tikzset{
+  bvline/.style={draw=black!80,line width=.5pt},
+  bvclip/.style={draw=black!80,line width=1pt},
+  bvstrike/.style={draw=red!85!black,line width=1pt},
+  pics/bvOm/.style={code={\filldraw[bvline,fill=bvgray,rounded corners=2pt]
+    (-.3,-.16) rectangle (.3,.16);}},
+  pics/bvF/.style={code={\filldraw[bvline,fill=bvblue]
+    (0,.21)--(.21,0)--(0,-.21)--(-.21,0)--cycle;}},
+  pics/bvE/.style={code={\filldraw[bvline,fill=bvlight] (0,0) circle (.2);}},
+  pics/bvFE/.style={code={%
+    \begin{scope}[scale=.25,shift={(-.12,0)}]
+      \clip (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \filldraw[bvclip,fill=bvrose] (.8,0) circle (1.2);
+    \end{scope}
+    \begin{scope}[scale=.25,shift={(-.12,0)}]
+      \clip (.8,0) circle (1.2);
+      \draw[bvclip] (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \end{scope}}},
+  pics/bvfrac/.style 2 args={code={\pic at (0,.3) {#1};
+    \draw[line width=.5pt] (-.36,0)--(.36,0); \pic at (0,-.3) {#2};}},
+  pics/bvx/.style={code={\draw[bvstrike] (-.3,-.21)--(.3,.21);}},
+}
+% Row 1: Omega, F, E and the overlap FE
+\newcommand{\bayesvenn}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \filldraw[bvline,line width=.8pt,fill=bvgray,rounded corners=6pt]
+      (-2.4,-1.6) rectangle (2.4,1.6);
+    \filldraw[bvline,line width=.8pt,fill=bvlight] (.8,0) circle (1.2);
+    \filldraw[bvline,line width=.8pt,fill=bvblue]
+      (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \begin{scope}
+      \clip (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \fill[bvrose] (.8,0) circle (1.2);
+    \end{scope}
+    \draw[bvline,line width=.8pt] (.8,0) circle (1.2)
+      (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+    \node[white,font=\large] at (-.85,0) {$F$};
+    \node[font=\large] at (1.3,0) {$E$};
+    \node[font=\footnotesize] at (.13,0) {$FE$};
+    \node at (2.05,1.25) {$\Omega$};
+  \end{tikzpicture}}
+% Row 2: probability = share of a shape
+\newcommand{\bayesshares}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0) {$P(F)=$};
+    \pic at (.42,0) {bvfrac={bvF}{bvOm}};
+    \node[left] at (2.55,0) {$P(E)=$};
+    \pic at (2.97,0) {bvfrac={bvE}{bvOm}};
+    \node[left] at (5.55,0) {$P(F\mid E)=$};
+    \pic at (5.97,0) {bvfrac={bvFE}{bvE}};
+    \node[left] at (8.55,0) {$P(E\mid F)=$};
+    \pic at (8.97,0) {bvfrac={bvFE}{bvF}};
+  \end{tikzpicture}}
+% Row 3: plug the shares into Bayes' formula; F and Omega cancel
+\newcommand{\bayesproof}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}=$};
+    \pic at (.8,.72) {bvfrac={bvFE}{bvF}};
+    \node at (1.4,.72) {$\cdot$};
+    \pic at (2,.72) {bvfrac={bvF}{bvOm}};
+    \draw[line width=.6pt] (.3,0)--(2.5,0);
+    \pic at (1.4,-.72) {bvfrac={bvE}{bvOm}};
+    \pic at (.8,.42) {bvx};
+    \pic at (2,1.02) {bvx};
+    \pic at (2,.42) {bvx};
+    \pic at (1.4,-1.02) {bvx};
+    \node at (2.9,0) {$=$};
+    \pic at (3.55,0) {bvfrac={bvFE}{bvE}};
+    \node[right] at (3.95,0) {$=P(F\mid E)$};
+    \node[right,font=\footnotesize] at (3.95,-.45) {(the definition)};
+  \end{tikzpicture}}
+
 % The exercises (one file each in exercises/) and \exerciseframe
 \input{exercises/macros}
 
@@ -76,7 +158,7 @@
 \title[Mathematics for Finance]{Mathematics for Finance}
 \author{Tibor SÁNDOR}
 \subtitle{Week 9: Probability, conditional probability, independence,
-  random variables}
+  random variables, named discrete distributions}
 \institute{Corvinus University of Budapest\\[2pt]
   \href{mailto:\myemail}{\texttt{\myemail}}}
 
@@ -88,26 +170,26 @@
 
 \begin{frame}{Plan for today}
   \begin{enumerate}
-    \item \textbf{Session 1 (90 min):} probability of unions, intersections
-          and complements; equally likely outcomes; conditional probability;
-          Bayes' formula; odds.
-    \item \textbf{Session 2 (90 min):} the generalized Bayes formula;
-          independent events; discrete random variables, distribution
-          function, expected value, variance and standard deviation.
+    \item \textbf{Session 1 (90 min):} rules of probability; conditional
+          probability; Bayes' formula and odds; the generalized Bayes
+          formula; independent events.
+    \item \textbf{Session 2 (90 min):} discrete random variables, expected
+          value and standard deviation; the named discrete distributions:
+          Bernoulli, binomial, Poisson, geometric, hypergeometric.
   \end{enumerate}
   \vspace{.3cm}
-  \textbf{Why does a finance student need this?} Default probabilities,
-  early-warning models, betting odds, option payoffs and the risk of a
-  strategy are all described with exactly these tools.
+  You have seen most of this before, so we go fast: a short recap of each
+  topic, then one exercise. More exercises, all with full solutions, are in
+  the exercises PDF for self-study.
 \end{frame}
 
 %======================================================================
-\section{Session 1: Probability and Bayes' formula}
+\section{Session 1: Probability, Bayes' formula, independence}
 %======================================================================
 
 \begin{frame}
-  \centering\Large\color{navy}Session 1: Probability, conditional
-  probability, Bayes' formula
+  \centering\Large\color{navy}Session 1: Probability, Bayes' formula,
+  independence
 \end{frame}
 
 \begin{frame}{From counting to probability}
@@ -164,8 +246,6 @@
   \end{itemize}
 \end{frame}
 
-\exerciseframe{five-cards}
-
 \begin{frame}{Conditional probability}
   \small
   \begin{columns}[T]
@@ -206,18 +286,16 @@
 
 \exerciseframe{exams-conditional}
 
-\exerciseframe{actuarial-exams}
-
 \begin{frame}{Total probability and Bayes' formula}
   \small
   \begin{columns}[T]
     \begin{column}{.56\textwidth}
-      \begin{block}{Law of total probability}
-        \[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c) \]
-      \end{block}
       \begin{block}{Bayes' formula}
-        \[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}
-          {P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c)} \]
+        \[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)} \]
+      \end{block}
+      \begin{block}{Law of total probability}
+        The denominator: $E$ happens with $F$ or with $F^c$,
+        \[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
       \end{block}
       We know $P(E\mid F)$, but we need $P(F\mid E)$: Bayes' formula turns
       the condition around.
@@ -245,6 +323,26 @@
   \end{columns}
 \end{frame}
 
+\begin{frame}{Why Bayes' formula works: a picture}
+  \small
+  \begin{columns}[c]
+    \begin{column}{.34\textwidth}
+      \centering
+      \bayesvenn[.75]
+    \end{column}
+    \begin{column}{.62\textwidth}
+      Probability of an event $=$ its share of $\Om$ (the gray box).\\[1mm]
+      Conditional probability $=$ share inside the shape we know
+      happened.
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \centering
+  \bayesshares
+  \pause\\[2mm]
+  \bayesproof
+\end{frame}
+
 \exerciseframe{early-warning}
 
 \begin{frame}{Odds}
@@ -262,58 +360,18 @@
   Evidence that is more likely if $H$ is true raises the odds of $H$.
 \end{frame}
 
-\exerciseframe{early-warning-odds}
-
-\begin{frame}{Session 1: summary}
-  \small
-  \begin{itemize}
-    \item $P(E^c)=1-P(E)$; \ $P(E\cup F)=P(E)+P(F)-P(EF)$;
-          \ $P(EF^c)=P(E)-P(EF)$.
-    \item Equally likely outcomes: $P(E)=|E|/|\Om|$; ``at least one''
-          $\to$ complement.
-    \item $P(E\mid F)=P(EF)/P(F)$; multiplication rule: multiply along a
-          path of a tree.
-    \item Total probability: add the paths that end in $E$. Bayes' formula:
-          one path divided by all of them.
-    \item Odds: new odds $=$ old odds $\times$ likelihood ratio.
-    \item Rare events and imperfect signals: most alarms are false.
-  \end{itemize}
-\end{frame}
-
-%======================================================================
-\section{Session 2: Independence, random variables}
-%======================================================================
-
-\begin{frame}
-  \centering\Large\color{navy}Session 2: Independence and discrete random
-  variables
-\end{frame}
-
-\begin{frame}{Recap of Session 1}
-  \begin{itemize}
-    \item $P(E\cup F)=P(E)+P(F)-P(EF)$, \ $P(E^c)=1-P(E)$.
-    \item $P(E\mid F)=\dfrac{P(EF)}{P(F)}$, \ $P(EF)=P(F)\,P(E\mid F)$.
-    \item Two hypotheses $F$, $F^c$: total probability and Bayes' formula,
-          best drawn as a tree.
-    \item Odds: new odds $=$ old odds $\times$ likelihood ratio.
-  \end{itemize}
-  \vspace{2mm}
-  \textbf{Now:} more than two hypotheses, independent events, and random
-  variables: their distribution, expected value and standard deviation.
-\end{frame}
-
 \begin{frame}{The generalized Bayes formula}
   \small
   \begin{columns}[T]
     \begin{column}{.6\textwidth}
       $F_1,\dots,F_n$ is a \textbf{partition} of $\Om$: mutually exclusive
       events, and exactly one of them occurs.
-      \begin{block}{Total probability}
-        \[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i) \]
-      \end{block}
       \begin{block}{Generalized Bayes formula}
-        \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
-          {\sum_{i=1}^n P(E\mid F_i)\,P(F_i)} \]
+        \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)} \]
+      \end{block}
+      \begin{block}{Total probability}
+        The denominator: add the paths that end in $E$,
+        \[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
       \end{block}
     \end{column}
     \begin{column}{.38\textwidth}
@@ -363,9 +421,48 @@
   \end{itemize}
 \end{frame}
 
-\exerciseframe{pairwise-not-mutual}
-
 \exerciseframe{bond-defaults}
+
+\begin{frame}{Session 1: summary}
+  \small
+  \begin{itemize}
+    \item $P(E^c)=1-P(E)$; \ $P(E\cup F)=P(E)+P(F)-P(EF)$;
+          \ equally likely outcomes: $P(E)=|E|/|\Om|$.
+    \item $P(E\mid F)=P(EF)/P(F)$; multiplication rule: multiply along a
+          path of a tree.
+    \item Total probability: add the paths that end in $E$ (the pieces
+          of $E$). Bayes: $P(F\mid E)=P(E\mid F)P(F)/P(E)$, one path (one
+          piece) divided by all of them, for two or more hypotheses.
+    \item Odds: new odds $=$ old odds $\times$ likelihood ratio.
+    \item Independence: $P(EF)=P(E)P(F)$; at least one success in $n$
+          independent trials: $1-(1-p)^n$.
+  \end{itemize}
+  \vspace{1mm}
+  \textbf{Self-study:} Exercises~\exref{five-cards},
+  \exref{actuarial-exams}, \exref{early-warning-odds} and
+  \exref{pairwise-not-mutual}.
+\end{frame}
+
+%======================================================================
+\section{Session 2: Random variables, named distributions}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 2: Discrete random variables and the
+  named discrete distributions
+\end{frame}
+
+\begin{frame}{Recap of Session 1}
+  \begin{itemize}
+    \item $P(E\cup F)=P(E)+P(F)-P(EF)$, \ $P(E^c)=1-P(E)$.
+    \item $P(E\mid F)=\dfrac{P(EF)}{P(F)}$, \ $P(EF)=P(F)\,P(E\mid F)$.
+    \item Total probability and Bayes' formula, best drawn as a tree.
+    \item Independent events: $P(EF)=P(E)\,P(F)$.
+  \end{itemize}
+  \vspace{2mm}
+  \textbf{Now:} random variables, their expected value and standard
+  deviation, and five distributions that come up again and again.
+\end{frame}
 
 \begin{frame}{Discrete random variables}
   \small
@@ -407,8 +504,6 @@
   $P(a<X\le b)=F(b)-F(a)$, \quad $P(X>a)=1-F(a)$.
 \end{frame}
 
-\exerciseframe{urn-game}
-
 \begin{frame}{Expected value, variance, standard deviation}
   \small
   \begin{block}{Expected value}
@@ -428,22 +523,115 @@
 
 \exerciseframe{call-option}
 
-\exerciseframe{trading-strategy}
+\begin{frame}{Bernoulli distribution}
+  \begin{block}{Bernoulli distribution with parameter $p$}
+    One trial with two outcomes: success with probability $p$, failure with
+    probability $1-p$. Let $X=1$ on success and $X=0$ on failure:
+    \[ P(X=1)=p,\qquad P(X=0)=1-p. \]
+    $\E[X]=1\cdot p+0\cdot(1-p)=p$, \qquad $\Var(X)=\E[X^2]-p^2=p-p^2=p(1-p)$.
+  \end{block}
+  \begin{itemize}
+    \item Examples: a loan defaults or not; a call ends in a sale or not; a
+          coin shows heads or not.
+    \item $X$ is an \textbf{indicator}: it counts 1 if the event happens.
+          So $\E[X]=P(\text{event})$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Binomial distribution}
+  \begin{block}{Binomial distribution with parameters $(n,p)$}
+    $X=$ number of successes in $n$ \textbf{independent} Bernoulli trials,
+    each a success with the same probability $p$:
+    \[ P(X=i)=\binom{n}{i}p^i(1-p)^{n-i},\qquad i=0,1,\dots,n. \]
+    $\E[X]=np$, \qquad $\Var(X)=np(1-p)$.
+  \end{block}
+  \begin{itemize}
+    \item $\binom{n}{i}$: which $i$ of the $n$ trials are the successes;
+          $p^i(1-p)^{n-i}$: the probability of one such order.
+    \item $X$ is the sum of $n$ Bernoulli variables, so its mean and variance
+          are $n$ times those of one trial.
+    \item The binomial with $n=1$ is the Bernoulli distribution.
+  \end{itemize}
+\end{frame}
+
+\exerciseframe{loan-defaults}
+
+\begin{frame}{Poisson distribution}
+  \small
+  \begin{block}{Poisson distribution with parameter $\lambda>0$}
+    \[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots \]
+    $\E[X]=\lambda$, \qquad $\Var(X)=\lambda$.
+  \end{block}
+  \begin{itemize}
+    \item The number of \textbf{rare events} in a fixed period: claims a
+          day, defaults a year, errors on a page.
+    \item $\lambda$ is the average number of events in the period.
+  \end{itemize}
+  \begin{block}{Poisson approximation of the binomial}
+    If $n$ is large and $p$ is small, the binomial $(n,p)$ distribution is
+    close to the Poisson distribution with $\lambda=np$.
+  \end{block}
+\end{frame}
+
+\exerciseframe{claims-per-day}
+
+\begin{frame}{Geometric distribution}
+  \small
+  \begin{block}{Geometric distribution with parameter $p$}
+    $X=$ the number of the trial on which the \textbf{first} success
+    happens, in independent trials with success probability $p$:
+    \[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]
+    $\E[X]=\dfrac1p$, \qquad $\Var(X)=\dfrac{1-p}{p^2}$.
+  \end{block}
+  \begin{itemize}
+    \item $P(X>n)=(1-p)^n$: the first $n$ trials are all failures.
+    \item \textbf{Memoryless:} $P(X>n+k\mid X>n)=P(X>k)$. Past failures do
+          not make a success ``due''.
+  \end{itemize}
+\end{frame}
+
+\exerciseframe{first-sale}
+
+\begin{frame}{Hypergeometric distribution}
+  \small
+  \begin{block}{Hypergeometric distribution}
+    From $N$ items, $m$ of which are special, we pick $n$ at random
+    \textbf{without replacement}. $X=$ the number of special items picked:
+    \[ P(X=i)=\frac{\binom{m}{i}\binom{N-m}{n-i}}{\binom{N}{n}},
+      \qquad \E[X]=\frac{nm}{N}. \]
+  \end{block}
+  \begin{itemize}
+    \item Without replacement the picks are \emph{not} independent, so $X$
+          is not binomial.
+    \item If $N$ is large compared with $n$, it is close to the binomial
+          $(n,\,m/N)$ distribution.
+  \end{itemize}
+\end{frame}
+
+\exerciseframe{audit-sample}
 
 \begin{frame}{Session 2: summary}
   \small
+  \centering
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    Distribution & $P(X=i)$ & $\E[X]$ & $\Var(X)$ \\\midrule
+    Bernoulli $(p)$ & $P(X=1)=p$ & $p$ & $p(1-p)$ \\[3pt]
+    binomial $(n,p)$ & $\binom{n}{i}p^i(1-p)^{n-i}$ & $np$ & $np(1-p)$ \\[3pt]
+    Poisson $(\lambda)$ & $e^{-\lambda}\lambda^i/i!$ & $\lambda$ & $\lambda$ \\[3pt]
+    geometric $(p)$ & $(1-p)^{i-1}p$ & $1/p$ & $(1-p)/p^2$ \\[3pt]
+    hypergeometric & $\binom{m}{i}\binom{N-m}{n-i}\big/\binom{N}{n}$ & $nm/N$ & \\\bottomrule
+  \end{tabular}
+  \vspace{2mm}
   \begin{itemize}
-    \item Partition $F_1,\dots,F_n$: $P(E)=\sum_i P(E\mid F_i)P(F_i)$, and
-          the generalized Bayes formula gives $P(F_j\mid E)$.
-    \item Independence: $P(EF)=P(E)P(F)$; for three events all four
-          product rules; pairwise independence is not enough.
-    \item pmf $p(x)=P(X=x)$; distribution function $F(x)=P(X\le x)$, a step
-          function.
-    \item $\E[X]=\sum x\,p(x)$; \ $\E[g(X)]=\sum g(x)p(x)$, in general not
-          $g(\E[X])$.
-    \item $\Var(X)=\E[X^2]-(\E[X])^2$; \ $\Var(aX+b)=a^2\Var(X)$; \
+    \item $\E[X]=\sum x\,p(x)$; \ $\Var(X)=\E[X^2]-(\E[X])^2$; \
           $\SD(X)=\sqrt{\Var(X)}$.
+    \item ``At least one'', ``at least two'': use the complement.
   \end{itemize}
+  \textbf{Self-study:} Exercises~\exref{urn-game},
+  \exref{trading-strategy}, \exref{guessing-on-a-test},
+  \exref{payment-errors}, \exref{waiting-for-a-six},
+  \exref{bonds-with-and-without-replacement}.
 \end{frame}
 
 \end{document}

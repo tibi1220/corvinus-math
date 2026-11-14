@@ -4,6 +4,8 @@
 % (2 x 90 min with a short break in between).
 % Exercises are numbered by week (10.1, 10.2, ...); finance examples share the
 % numbering. Each one lives in exercises/NN-slug.tex.
+% The pictures and tables of the slides are copied into the script (after an
+% "On the slide:" line), so that the script can be read without the deck.
 
 \documentclass[11pt,a4paper,parskip=half]{scrartcl}
 \usepackage{amsmath}
@@ -11,6 +13,7 @@
 \usepackage[english]{babel}
 \usepackage{booktabs}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage{tikz}
 \usepackage[most]{tcolorbox}
 \usepackage[a4paper,margin=1in,marginparwidth=1.9cm,marginparsep=2mm]{geometry}
@@ -54,6 +57,9 @@
 \newcommand{\board}{\textbf{\color{gold}Board:}\ }
 \newcommand{\ask}{\textbf{\color{navy}Ask the class:}\ }
 \newcommand{\slide}[1]{\marginpar{\raggedright\footnotesize\color{gray}slide #1}}
+% What the slide shows (a picture or a table), copied into the script
+\newcommand{\onslide}{\par\needspace{10\baselineskip}%
+  \textbf{\color{gray}On the slide:}\ }
 
 % The exercises (one file each in exercises/) and \scriptexercise
 \input{exercises/macros}
@@ -83,9 +89,12 @@
 			you'' boxes} explain the finance behind the examples; they are
 		\emph{not} meant to be read out.\fi\ The script follows the deck frame by
 	frame; the slide numbers in the margin are the frame numbers in the
-	footline of the deck. Every new idea gets one tiny example; before each
-	exercise the students try it in pairs, then you reveal the solution step
-	by step. Only the exercises of the slides are in this script.
+	footline of the deck. Every picture and table of the slides is copied
+	into the script after an \textbf{On the slide} line, and the formulas of
+	each theory slide are displayed, so you can teach from the script alone.
+	Every new idea gets one tiny example; before each exercise the students
+	try it in pairs, then you reveal the solution step by step. Only the
+	exercises of the slides are in this script.
 \end{cue}
 
 \subsection*{Timing overview}
@@ -211,21 +220,65 @@ Instead, we ask for the probability of an \emph{interval},
 $P(a\le X\le b)$, and we describe it with a curve, the density. The
 probability is the \emph{area under the curve} between $a$ and $b$.
 
+\onslide a bell-shaped density $f(x)$; the shaded area between $a$ and $b$
+is the probability $P(a\le X\le b)$.
+\begin{center}
+	\begin{tikzpicture}[scale=.9]
+		\fill[teal!25] (1.2,0) -- plot[domain=1.2:2.6,samples=40]
+			(\x,{1.6*exp(-0.5*(\x-2)^2)}) -- (2.6,0) -- cycle;
+		\draw[->] (-.2,0) -- (4.6,0) node[right] {$x$};
+		\draw[thick,navy] plot[domain=0:4.3,samples=60]
+			(\x,{1.6*exp(-0.5*(\x-2)^2)});
+		\node[navy] at (3.9,1.2) {$f(x)$};
+		\node[below] at (1.2,0) {\small $a$};
+		\node[below] at (2.6,0) {\small $b$};
+		\node at (1.9,.55) {\small area};
+	\end{tikzpicture}
+\end{center}
+
+\say Look at the picture: the curve itself is not a probability. The
+probability lives in the shaded \emph{area}. Where the curve is high,
+intervals collect a lot of area, so values there are likely; where it is
+low, values are unlikely. Think of a histogram of many observed waiting
+times with narrower and narrower bars: in the limit, the tops of the bars
+become this smooth curve.
+
 \subsection{Continuous random variables and their density (5 min)}\slide{5}
+
+\onslide the definition, the two properties of a density, and two
+remarks: $P(X=a)=\int_a^a f=0$, so $P(a\le X\le b)=P(a<X<b)$; and $f(x)$ is
+\emph{not} a probability, it can be bigger than 1. The formulas are
+displayed below.
 
 \say $X$ is continuous if there is a function $f$, its density, such that
 \[ P(a\le X\le b)=\int_a^b f(x)\,dx. \]
 A density has two properties: $f(x)\ge0$ everywhere, and the total area
-is 1: $\int_{-\infty}^{\infty}f(x)\,dx=1$.
+is 1:
+\[ \text{(1) } f(x)\ge0 \text{ for every } x, \qquad
+	\text{(2) } \int_{-\infty}^{\infty}f(x)\,dx=1. \]
+
+Why exactly these two? Probabilities are never negative, so the area over
+any interval must be nonnegative, and that forces $f\ge0$. And $X$ takes
+\emph{some} value with certainty, so the area over the whole line, the
+probability of everything, must be 1. These two conditions are all we ever
+check when someone hands us a function and says ``this is a density''.
 
 Tiny example: $f(x)=3x^2$ on $[0,1]$, zero elsewhere. Total area:
 $\int_0^1 3x^2\,dx=\big[x^3\big]_0^1=1$. And
-$P(X\le\tfrac12)=\int_0^{1/2}3x^2\,dx=\tfrac18$.
+$P(X\le\tfrac12)=\int_0^{1/2}3x^2\,dx=\tfrac18$. So the left half of the
+interval carries only one eighth of the probability, the right half seven
+eighths: the density grows, and large values are more likely.
 
 \say Two warnings. First, a single point has no area, so $P(X=a)=0$, and
 for a continuous $X$ it does not matter whether we write $<$ or $\le$.
 Second, $f(x)$ itself is not a probability. In the example $f(1)=3$, bigger
 than 1. Only areas are probabilities.
+
+What does $f(1)=3$ mean then? It is a \emph{rate}: probability per unit
+length. For a short interval of length $h$ near 1, the probability is about
+$f(1)\cdot h$. With $h=0.01$:
+$P(0.99\le X\le1)=1-0.99^3\approx0.0297$, very close to $3\cdot0.01=0.03$.
+A density of 3 over a short stretch gives a small probability.
 
 \subsection{Exercise~\exref{settlement-time} --- Settling a payment (10 min)}\slide{6--7}
 
@@ -235,32 +288,86 @@ than 1. Only areas are probabilities.
 area be?
 
 \begin{cue}
-	After 3 minutes, click: the two properties and ``probability $=$ area''.
+	While they work, walk around. Typical problem: they integrate
+	$c\,x(2-x)$ but do not know what to set it equal to. Point them back to
+	the second property of a density. After 3 minutes, click: the two
+	properties and ``probability $=$ area''.
 \end{cue}
 
+\say Let us start with the rule we use in every part: a density is
+nonnegative, its total area is 1, and every probability is an area under
+it.
+
 (a) Click. \ask What condition fixes $c$? \emph{(The total area is 1.)}
+Outside $[0,2]$ the density is zero, so the total area is the integral
+over $[0,2]$. We integrate first without $c$; multiplying out,
+$x(2-x)=2x-x^2$:
 \[ \int_0^2 x(2-x)\,dx=\Big[x^2-\frac{x^3}{3}\Big]_0^2=4-\frac83=\frac43. \]
 Click. So $c\cdot\tfrac43=1$ and $c=\tfrac34$.
+
+Quick check of the first property: on $[0,2]$ both $x$ and $2-x$ are
+nonnegative, so $f(x)=\tfrac34x(2-x)\ge0$. The density is a parabola arch
+with its top $f(1)=\tfrac34$ at $x=1$: settling takes about one hour most
+often.
 
 \begin{cue}
 	Slide 7.
 \end{cue}
 
+\onslide the density $f(x)=\tfrac34x(2-x)$ on $[0,2]$, a parabola arch
+with height $0.75$ at $x=1$, a dashed gold line at $x=1$; from the second
+click, the area between $0.5$ and $1.5$ is shaded, labeled $0.6875$.
+\begin{center}
+	\begin{tikzpicture}[xscale=2.4,yscale=3.6]
+		\fill[teal!30] (.5,0) -- plot[domain=.5:1.5,samples=40]
+			(\x,{.75*\x*(2-\x)}) -- (1.5,0) -- cycle;
+		\node[teal!70!black] at (1,.28) {\small $0.6875$};
+		\draw[->] (-.2,0) -- (2.35,0) node[right] {\small $x$};
+		\draw[->] (0,-.05) -- (0,.95) node[above] {\small $f(x)$};
+		\draw[navy,thick] plot[domain=0:2,samples=50] (\x,{.75*\x*(2-\x)});
+		\foreach \x in {0.5,1,1.5,2}
+		\draw (\x,.02) -- (\x,-.02) node[below] {\scriptsize $\x$};
+		\draw (.04,.75) -- (-.04,.75) node[left] {\scriptsize $0.75$};
+		\draw[gold,dashed] (1,0) -- (1,.75);
+	\end{tikzpicture}
+\end{center}
+
 (b) \ask Look at the graph. Do we need to integrate? \emph{(No: the graph
 	is symmetric around $x=1$, so the area splits in half.)}
 $P(X>1)=\tfrac12$.
 
-(c) Click. Now we integrate $\tfrac34(2x-x^2)$ from $0.5$ to $1.5$:
+\say The dashed line at $x=1$ cuts the arch into two mirror images: the
+area to the right equals the area to the left, and together they are 1.
+In formulas, $f(1+t)=\tfrac34(1+t)(1-t)=f(1-t)$. Whenever you see a
+symmetric density, use it: it saves an integral.
+
+\ask Before we compute (c): will $P(0.5<X<1.5)$ be more or less than
+$\tfrac12$? \emph{(More: the interval has half the length of $[0,2]$, but
+it sits in the middle, where the density is highest.)}
+
+(c) Click. Now we integrate $\tfrac34(2x-x^2)$ from $0.5$ to $1.5$. The
+shaded area in the picture:
 \[ \frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}
 	=\frac34\Big(\frac98-\frac5{24}\Big)=\frac34\cdot\frac{22}{24}
 	=\frac{11}{16}=0.6875. \]
+The two values of the antiderivative: at $1.5$ it is
+$2.25-1.125=\tfrac98$, at $0.5$ it is $0.25-\tfrac{0.125}{3}=\tfrac5{24}$.
+So with probability $0.6875$ the payment is settled between half an hour
+and one and a half hours after it arrives; our guess ``more than half''
+was right.
 
 (d) Click. \ask $P(X=1)$? \emph{(Zero: a single point has no area.)}
 So $P(X<1)=P(X\le1)$.
 
+\say Zero probability does not mean that settling in exactly one hour is
+impossible. It means that one exact value carries no area. And because of
+that, in (c) it makes no difference whether we write $0.5<X<1.5$ or
+$0.5\le X\le1.5$.
+
 \begin{cue}
 	Common mistake: reading $f(1)=0.75$ as a probability. The value of a
-	density is not a probability; only areas are.
+	density is not a probability; only areas are. Another one in (c):
+	forgetting the factor $\tfrac34$ and getting $\tfrac{11}{12}$.
 \end{cue}
 
 \subsection{The distribution function (5 min)}\slide{8}
@@ -270,21 +377,59 @@ So $P(X<1)=P(X\le1)$.
 	about minute 26, skip part (d) of Exercise~\exref{loss-given-default}.
 \end{cue}
 
+\say So far every probability needed an integral. The distribution
+function stores all these integrals in one function, so that afterward
+we only subtract.
+
+\onslide the definitions, and on the right a picture.
+\[ F(x)=P(X\le x),\qquad F(x)=\int_{-\infty}^{x}f(t)\,dt,\qquad f(x)=F'(x), \]
+\[ P(a<X\le b)=F(b)-F(a),\qquad P(X>a)=1-F(a). \]
+The picture: an S-shaped curve $F(x)$ that starts at 0 and rises to the
+dashed level 1; two points $a<b$ on the $x$-axis, dotted lines up to the
+curve, and a teal arrow on the right showing the height difference
+$F(b)-F(a)$.
+\begin{center}
+	\begin{tikzpicture}[scale=.9]
+		\draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+		\draw[->] (0,-.1) -- (0,2.3);
+		\draw[dashed,gray] (0,2) node[left,black] {\small 1} -- (4.1,2);
+		\draw[thick,navy] (-.3,0) -- (.5,0)
+			plot[domain=.5:3.5,samples=40]
+			(\x,{2*(3*((\x-.5)/3)^2-2*((\x-.5)/3)^3)}) -- (4.1,2);
+		\node[navy] at (.9,1.4) {$F(x)$};
+		\draw[dotted] (1.6,0) node[below] {\small $a$} -- (1.6,.52)
+			-- (4.1,.52);
+		\draw[dotted] (2.8,0) node[below] {\small $b$} -- (2.8,1.55)
+			-- (4.1,1.55);
+		\draw[<->,teal,thick] (4.1,.52) -- (4.1,1.55);
+		\node[teal,right] at (4.1,1.03) {\small $F(b)-F(a)$};
+	\end{tikzpicture}
+\end{center}
+
 \say For any random variable, discrete or continuous, the distribution
-function is
-\[ F(x)=P(X\le x). \]
-For a continuous $X$ it is the area to the left of $x$:
+function is $F(x)=P(X\le x)$. For a continuous $X$ it is the area to the left of $x$:
 $F(x)=\int_{-\infty}^x f(t)\,dt$, and by the fundamental theorem of
 calculus $f(x)=F'(x)$. Integrate the density to get $F$; differentiate $F$
 to get the density.
 
 \board $P(a<X\le b)=F(b)-F(a)$, \quad $P(X>a)=1-F(a)$.
 
+Why the first rule? The event $X\le b$ splits into two disjoint pieces,
+$X\le a$ and $a<X\le b$. So $F(b)=F(a)+P(a<X\le b)$, and we subtract. In the
+picture: the probability of the interval is the height of the teal arrow,
+the rise of $F$ between $a$ and $b$. The second rule is the complement
+rule: ``greater than $a$'' is everything except ``at most $a$''.
+
 Tiny example: for $f(x)=3x^2$ on $[0,1]$, $F(x)=x^3$ on $[0,1]$, so
-$P(X>\tfrac12)=1-\tfrac18=\tfrac78$.
+$P(X>\tfrac12)=1-\tfrac18=\tfrac78$. And
+$P(\tfrac14<X\le\tfrac12)=\tfrac18-\tfrac1{64}=\tfrac7{64}$, with no integral
+at all.
 
 \say $F$ grows from 0 to 1. For a continuous $X$ it has no jumps; last
 week, for a discrete $X$, it was a step function.
+
+\ask Where is $F$ steepest in the picture? \emph{(In the middle, where
+the density is largest: the slope of $F$ is the density.)}
 
 \subsection{Exercise~\exref{loss-given-default} --- Loss given default, finance (10 min)}\slide{9--10}
 
@@ -294,22 +439,80 @@ week, for a discrete $X$, it was a step function.
 loses if the borrower defaults: 0 means nothing lost, 1 means everything.
 Try (a)--(c), three minutes.
 
+\begin{cue}
+	If a pair is stuck, ask them: ``How are $f$ and $F$ related?''
+\end{cue}
+
 (a) Click. The density is the derivative of $F$: $f(x)=2x$ on $[0,1]$, $0$
-otherwise. Click. Check: $\int_0^1 2x\,dx=1$. The density grows, so large
-losses are more likely than small ones.
+otherwise. Outside $[0,1]$, $F$ is constant (0 on the left, 1 on the
+right), and the derivative of a constant is 0. Click. Check:
+$\int_0^1 2x\,dx=\big[x^2\big]_0^1=1$. The density grows, so large losses
+are more likely than small ones.
+
+\onslide the two functions in one picture: the density $f(x)=2x$ (navy), a
+straight line from 0 up to 2 at $x=1$, then 0; and the distribution
+function $F(x)=x^2$ (gold), a curve from 0 up to 1, then flat at 1.
+\begin{center}
+	\begin{tikzpicture}[xscale=2.2,yscale=1.2]
+		\draw[->] (-.1,0) -- (1.4,0) node[right] {\small $x$};
+		\draw[->] (0,-.1) -- (0,2.3) node[above] {\small $y$};
+		\draw[gold,thick] plot[domain=0:1,samples=50] (\x,{\x*\x});
+		\draw[navy,thick] (0,0) -- (1,2);
+		\draw[navy,thick] (1,0) -- (1.3,0);
+		\draw[navy,dashed] (1,0) -- (1,2);
+		\draw[gold,thick] (1,1) -- (1.3,1);
+		\draw (1,.04) -- (1,-.04) node[below] {\scriptsize $1$};
+		\draw (.04,1) -- (-.04,1) node[left] {\scriptsize $1$};
+		\draw (.04,2) -- (-.04,2) node[left] {\scriptsize $2$};
+		\node[navy,left] at (.95,2.08) {\small $f(x)=2x$};
+		\node[gold!80!black,right] at (1.02,1.25) {\small $F(x)=x^2$};
+	\end{tikzpicture}
+\end{center}
+
+\say In the picture the density, the straight navy line, is twice as
+high at 1 as at $0.5$; the gold curve $F$ is flat at the start and steep at
+the end. Steep $F$ means high density: most of the probability sits near
+1. In this model, when this borrower defaults, the bank typically loses a
+large part of the loan.
 
 \begin{cue}
 	Slide 10, one part per click.
 \end{cue}
 
+\onslide the density $f(x)=2x$ again; the area under it between $0.5$ and
+1 is shaded and labeled $0.75$ (``shaded area $=P(L>0.5)$'').
+\begin{center}
+	\begin{tikzpicture}[scale=1.7]
+		\fill[teal!30] (.5,0) -- (.5,1) -- (1,2) -- (1,0) -- cycle;
+		\draw[->] (-.1,0) -- (1.3,0) node[right] {\small $x$};
+		\draw[->] (0,-.1) -- (0,2.25) node[above] {\small $f(x)$};
+		\draw[navy,thick] (0,0) -- (1,2);
+		\draw[navy,dashed] (1,0) -- (1,2);
+		\draw (.5,.04) -- (.5,-.04) node[below] {\scriptsize $0.5$};
+		\draw (1,.04) -- (1,-.04) node[below] {\scriptsize $1$};
+		\draw (.04,2) -- (-.04,2) node[left] {\scriptsize $2$};
+		\node[teal!60!black] at (.78,.55) {\small $0.75$};
+	\end{tikzpicture}
+\end{center}
+
+\ask Before the click: a student says $P(L>0.5)=0.5$, ``because $0.5$ is
+half of the interval''. Right or wrong? \emph{(Wrong: that would be true
+for a uniform $L$; here the right half carries more area.)}
+
 (b) Complement:
 $P(L>0.5)=1-F(0.5)=1-0.5^2=0.75$.
+
+\say The shaded region in the picture is a trapezoid with parallel sides
+$f(0.5)=1$ and $f(1)=2$ and width $0.5$: area
+$\tfrac{1+2}{2}\cdot0.5=0.75$. Geometry and $F$ give the same number.
 
 (c) No integral needed: $P(0.2<L\le0.6)=F(0.6)-F(0.2)=0.36-0.04=0.32$.
 
 (d) \ask Which equation gives the median? \emph{($F(m)=\tfrac12$.)}
 So $m^2=\tfrac12$, $m=\sqrt{0.5}\approx0.707$: half of the defaults lose
 more than 70.7\% of the loan.
+
+\say We take the positive root because $m$ must lie between 0 and 1.
 
 \begin{cue}
 	Common mistakes: (b) as $1-0.5=0.5$, as if $L$ were uniform; (c) as
@@ -340,16 +543,63 @@ more than 70.7\% of the loan.
 
 \say Two distributions we will use again and again.
 
+\onslide two blocks with a picture under each.
+\[ \text{Uniform on }[\alpha,\beta]:\quad f(x)=\frac{1}{\beta-\alpha}
+	\text{ on }[\alpha,\beta],\ 0\text{ outside};\qquad
+	\text{probability}=\frac{\text{length}}{\beta-\alpha}. \]
+\[ \text{Exponential with rate }\lambda>0:\quad
+	f(x)=\lambda e^{-\lambda x}\ (x\ge0),\qquad F(x)=1-e^{-\lambda x},\qquad
+	P(X>x)=e^{-\lambda x}. \]
+Left picture: the uniform density, a flat line between $\alpha$ and
+$\beta$, with a shaded rectangle over a small interval inside. Right
+picture: the exponential density, a decreasing curve; the area to the
+right of a point $x$ is shaded and labeled $e^{-\lambda x}$.
+\begin{center}
+	\begin{tikzpicture}[scale=.85]
+		\draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+		\fill[teal!25] (1.6,0) rectangle (2.6,1.2);
+		\draw[thick,navy] (-.3,0) -- (.6,0) (.6,1.2) -- (3.4,1.2)
+			(3.4,0) -- (4,0);
+		\draw[dotted] (.6,0) node[below] {\small $\alpha$} -- (.6,1.2);
+		\draw[dotted] (3.4,0) node[below] {\small $\beta$} -- (3.4,1.2);
+	\end{tikzpicture}
+	\hspace{1.5cm}
+	\begin{tikzpicture}[scale=.85]
+		\draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+		\fill[teal!25] (1.5,0) -- plot[domain=1.5:4,samples=30]
+			(\x,{1.6*exp(-0.9*\x)}) -- (4,0) -- cycle;
+		\draw[thick,navy] (-.3,0) -- (0,0) plot[domain=0:4,samples=40]
+			(\x,{1.6*exp(-0.9*\x)});
+		\node[below] at (1.5,0) {\small $x$};
+		\node[teal] at (2.9,.65) {\small $e^{-\lambda x}$};
+	\end{tikzpicture}
+\end{center}
+
 \emph{Uniform on $[\alpha,\beta]$}: the density is the constant
 $1/(\beta-\alpha)$ on the interval, zero outside. Probability is length
 divided by $\beta-\alpha$. Tiny example: uniform on $[0,10]$,
 $P(2\le X\le5)=3/10$.
+
+\say The height $1/(\beta-\alpha)$ is not a choice: it is what makes the
+rectangle under the flat line have area 1, width times height. In the
+left picture the shaded rectangle has the same height everywhere, so
+every interval of the same length gets the same probability, wherever it
+sits. ``Uniform'' is the continuous version of ``all outcomes equally
+likely''.
 
 \emph{Exponential with rate $\lambda>0$}: $f(x)=\lambda e^{-\lambda x}$ for
 $x\ge0$. Then $F(x)=1-e^{-\lambda x}$, and the tail is
 \[ P(X>x)=e^{-\lambda x}. \]
 It models waiting times: the next order, a default. Tiny example:
 $\lambda=1$, $P(X>2)=e^{-2}\approx0.135$.
+
+\say Where does $F$ come from? Integrate the density:
+$\int_0^x\lambda e^{-\lambda t}\,dt=\big[-e^{-\lambda t}\big]_0^x=1-e^{-\lambda x}$.
+The tail, the shaded area in the right picture, is $1-F(x)=e^{-\lambda x}$:
+the probability of waiting longer than $x$. Remember this tail; it is the
+fastest route to most exponential questions. The rate $\lambda$ says how
+often the events come: the larger $\lambda$, the faster the curve drops,
+and the shorter the typical wait.
 
 \subsection{Exercise~\exref{order-arrivals} --- Waiting for the next order, finance (10 min)}\slide{12--13}
 
@@ -360,13 +610,45 @@ minutes.
 
 (a) Click. $f\ge0$, and
 $\int_0^\infty 2e^{-2x}\,dx=\big[-e^{-2x}\big]_0^\infty=0-(-1)=1$.
-Click. For $x\ge0$, $F(x)=1-e^{-2x}$. Click. The tail is $P(X>x)=e^{-2x}$.
+
+\say The antiderivative of $2e^{-2x}$ is $-e^{-2x}$: differentiate it,
+and the chain rule brings down the factor $-2$. At infinity, $e^{-2x}$
+goes to 0; at 0 it is 1. Hence $0-(-1)=1$.
+
+Click. For $x\ge0$,
+\[ F(x)=\int_0^x2e^{-2t}\,dt=\big[-e^{-2t}\big]_0^x=1-e^{-2x}, \]
+and $F(x)=0$ for $x<0$. Click. The tail is $P(X>x)=e^{-2x}$.
+
+\onslide the density $2e^{-2x}$, starting at height 2 and falling fast;
+the area to the right of 1 is shaded, with an arrow labeled $P(X>1)$.
+\begin{center}
+	\begin{tikzpicture}[xscale=2,yscale=1.2]
+		\fill[teal!30] (1,0) -- plot[domain=1:2.4,samples=40]
+			(\x,{2*exp(-2*\x)}) -- (2.4,0) -- cycle;
+		\draw[->] (-.2,0) -- (2.6,0) node[right] {\small $x$};
+		\draw[->] (0,-.1) -- (0,2.3) node[above] {\small $f(x)$};
+		\draw[navy,thick] plot[domain=0:2.4,samples=50]
+			(\x,{2*exp(-2*\x)});
+		\foreach \x in {0.5,1,1.5,2}
+		\draw (\x,.04) -- (\x,-.04) node[below] {\scriptsize $\x$};
+		\draw (.04,2) -- (-.04,2) node[left] {\scriptsize $2$};
+		\draw[teal,->] (1.6,.7) node[above] {\small $P(X>1)$}
+			-- (1.2,.12);
+	\end{tikzpicture}
+\end{center}
+
+\say The density starts at 2, above 1: fine for a density. The shaded
+tail to the right of 1 is thin: long waits are rare.
 
 \begin{cue}
 	Slide 13, one part per click.
 \end{cue}
 
-(b) $P(X>1)=e^{-2}\approx0.135$.
+\ask How big do you expect the shaded area to be: closer to $0.5$ or to
+$0.1$? \emph{(Closer to $0.1$: the curve is already low at $x=1$.)}
+
+(b) $P(X>1)=e^{-2}\approx0.135$. About a 13.5\% chance that a whole minute
+passes without an order.
 
 (c) $X$ is continuous, so $P(X<0.5)=F(0.5)=1-e^{-1}\approx0.632$.
 
@@ -374,13 +656,26 @@ Click. For $x\ge0$, $F(x)=1-e^{-2x}$. Click. The tail is $P(X>x)=e^{-2x}$.
 	X>0.5)$.)} ``More than $1.5$'' already contains ``more than $0.5$'', so
 \[ P(X>1.5\mid X>0.5)=\frac{P(X>1.5)}{P(X>0.5)}=\frac{e^{-3}}{e^{-1}}
 	=e^{-2}\approx0.135. \]
+The definition of conditional probability from last week: the probability
+of both events over the probability of the condition. ``Both'' is simply
+$X>1.5$, since it implies $X>0.5$. Then the tail formula twice:
+$P(X>1.5)=e^{-2\cdot1.5}=e^{-3}$ and $P(X>0.5)=e^{-2\cdot0.5}=e^{-1}$.
+
+\ask Before the last click: compare with (b). What do you notice?
+
 Click. \say The same as (b)! Having waited half a minute does not change
 the chance of waiting one more minute. The exponential distribution has
 no memory.
 
+In general, $P(X>s+t\mid X>s)=e^{-\lambda(s+t)}/e^{-\lambda s}=e^{-\lambda
+t}=P(X>t)$: the exponents subtract, and the past waiting time $s$
+disappears. A quiet market in the last half minute tells us nothing about
+how much longer the quiet will last.
+
 \begin{cue}
 	Common mistake in (d): computing $P(X>1.5)=e^{-3}$ and forgetting the
-	condition.
+	condition. Another one: computing $P(0.5<X\le1.5)$, the probability of
+	the interval, instead of the conditional probability.
 \end{cue}
 
 \begin{bg}{order arrivals and memorylessness}
@@ -414,6 +709,10 @@ $Y=g(X)$, for example $X^2$, or the value $1000(1+X)$ of an investment
 with return $X$? The method: always go through the distribution
 function.
 
+\onslide the method in three steps, and the example $Y=2X+3$:
+\[ F_Y(y)=P(2X+3\le y)=P\Big(X\le \frac{y-3}{2}\Big)=\frac{y-3}{2},
+	\qquad f_Y(y)=\frac12 . \]
+
 \board
 \begin{enumerate}[nosep]
 	\item $F_Y(y)=P(Y\le y)=P(g(X)\le y)$;
@@ -422,11 +721,21 @@ function.
 	\item if you need the density: $f_Y(y)=F_Y'(y)$.
 \end{enumerate}
 
+Why through $F$, and not straight through the density? Because $F_Y(y)$
+is a probability, $P(Y\le y)$, and probabilities do not care how we
+describe an event: ``$Y\le y$'' and the equivalent statement about $X$ are
+the same event, so they have the same probability. A density is not a
+probability, and it does not survive such a rewriting.
+
 Example from the slide: $X$ uniform on $[0,1]$, $Y=2X+3$. For
 $3\le y\le5$:
 \[ F_Y(y)=P(2X+3\le y)=P\Big(X\le\frac{y-3}{2}\Big)=\frac{y-3}{2}, \]
 so $f_Y(y)=\tfrac12$: $Y$ is uniform on $[3,5]$. A linear function keeps
 the shape; other functions change it, as we see now.
+
+Step by step: subtract 3 and divide by 2 on both sides of the
+inequality; for the uniform $X$, $P(X\le t)=t$. The uniform is stretched
+to twice the length, so its height halves: $\tfrac12$.
 
 \subsection{Exercise~\exref{square-of-uniform} --- The square of a uniform random variable (10 min)}\slide{15--16}
 
@@ -434,23 +743,70 @@ the shape; other functions change it, as we see now.
 
 \say Try (a) and (b), three minutes. Start with $P(X^2\le y)$.
 
+Click. \say The method again: first the distribution function, then
+differentiate.
+
 (a) Click. $Y$ is between 0 and 1. For $0\le y\le1$, since $X\ge0$,
 \[ F_Y(y)=P(X^2\le y)=P\big(X\le\sqrt y\big)=\sqrt y, \]
 and $F_Y(y)=0$ for $y<0$, $F_Y(y)=1$ for $y>1$.
 
+\say In general $X^2\le y$ means $-\sqrt y\le X\le\sqrt y$; here $X$ is
+never negative, so only $X\le\sqrt y$ is left. And for the uniform $X$,
+$P(X\le t)=t$, with $t=\sqrt y$. Check the ends: $F_Y(0)=0$ and
+$F_Y(1)=1$, as it should be.
+
 (b) Click. Differentiate: $f_Y(y)=\dfrac{1}{2\sqrt y}$ for $0<y\le1$, zero
 otherwise.
+
+\say $\sqrt y=y^{1/2}$, and its derivative is $\tfrac12y^{-1/2}$. This
+density goes to infinity near 0, but its area stays 1:
+$\int_0^1\frac{1}{2\sqrt y}\,dy=\big[\sqrt y\big]_0^1=1$. A density may be
+unbounded; it only has to be nonnegative with total area 1.
 
 \begin{cue}
 	Slide 16.
 \end{cue}
 
+\onslide the density $f_Y(y)=1/(2\sqrt y)$ on $(0,1]$: very high near 0,
+falling to $0.5$ at $y=1$. The area over $[0,0.25]$ is shaded teal
+(labeled $0.5$), the area over $[0.81,1]$ gold (labeled $0.1$). A dashed
+gray line at height 1 is the uniform density, for comparison.
+\begin{center}
+	\begin{tikzpicture}[xscale=5,yscale=.75]
+		\fill[teal!30] (0,0) -- (0,{1/(2*sqrt(.016))}) -- plot[domain=.016:.25,samples=50]
+			(\x,{1/(2*sqrt(\x))}) -- (.25,0) -- cycle;
+		\fill[gold!50] (.81,0) -- plot[domain=.81:1,samples=20]
+			(\x,{1/(2*sqrt(\x))}) -- (1,0) -- cycle;
+		\draw[->] (0,0) -- (1.15,0) node[right] {\small $y$};
+		\draw[->] (0,0) -- (0,4.3) node[above] {\small $f_Y(y)$};
+		\draw[navy,thick] plot[domain=.016:1,samples=60]
+			(\x,{1/(2*sqrt(\x))});
+		\draw[navy,thick] (1,.5) -- (1,0);
+		\foreach \x/\l in {.25/0.25,.81/0.81,1/1}
+		\draw (\x,.08) -- (\x,-.08) node[below] {\scriptsize $\l$};
+		\draw (.02,1) -- (-.02,1) node[left] {\scriptsize $1$};
+		\draw[dashed,gray] (0,1) -- (1,1);
+		\node[teal!60!black] at (.15,.45) {\scriptsize $0.5$};
+		\node at (.9,.25) {\scriptsize $0.1$};
+	\end{tikzpicture}
+\end{center}
+
+\ask Look at the two shaded areas. Which is bigger, and why, when the
+gold interval is not much shorter than the teal one? \emph{(The teal one:
+the density is much higher near 0.)}
+
 (c) $P(Y\le0.25)=\sqrt{0.25}=0.5$, and $P(Y>0.81)=1-\sqrt{0.81}=0.1$.
 Check: $Y\le0.25$ means $X\le0.5$; $Y>0.81$ means $X>0.9$.
+
+\say Half of the probability lands in the first quarter of the interval.
 
 (d) \ask Is $Y$ uniform? \emph{(No: the density $1/(2\sqrt y)$ is not
 	constant.)} Click. Squaring pushes numbers in $(0,1)$ toward 0, for
 example $0.5^2=0.25$, so small values of $Y$ are more likely.
+
+\say In the picture, the curve is above the dashed uniform line for
+$y<0.25$ and below it for $y>0.25$. Squaring does not create or destroy
+probability; it moves it toward 0.
 
 \begin{cue}
 	Common mistake: $f_Y(y)=f_X(\sqrt y)=1$, plugging into the density of
@@ -458,6 +814,9 @@ example $0.5^2=0.25$, so small values of $Y$ are more likely.
 \end{cue}
 
 \subsection{Summary (3 min)}\slide{17}
+
+\onslide five bullet points with the formulas of this session; they are
+the five lines you say now.
 
 \say Today's first session in five lines: probability is the area under
 the density; $F(x)=P(X\le x)$ and $f=F'$; uniform means length over total
@@ -480,11 +839,35 @@ variables at the same time.
 	Slide 18 (title), then slide 19.
 \end{cue}
 
+\onslide four bullet points, the summary of Session 1 again.
+
 \say Welcome back. Before the break: densities, $F$, uniform and
 exponential, and $Y=g(X)$. Now two random variables at the same time: how
 do two stocks, two loans, two insurance claims behave \emph{together}?
 
+Knowing each one alone is not enough. Two loans that each default with
+probability 2\% can default together very rarely, or quite often, if a
+recession hits both borrowers. To describe this we need the
+\emph{joint} distribution: the probability of every combination.
+
 \subsection{Joint distribution: the discrete case (6 min)}\slide{20}
+
+\onslide three blocks of formulas, the joint pmf, the marginal pmfs
+and the joint distribution function,
+\[ p_X(x)=\sum_y p(x,y),\qquad p_Y(y)=\sum_x p(x,y),\qquad
+	F(a,b)=P(X\le a,\,Y\le b), \]
+and next to them a small table with the sums in the margins:
+\begin{center}
+	\renewcommand{\arraystretch}{1.25}
+	\begin{tabular}{c|cc|c}
+		$X\backslash Y$ & $0$ & $1$ & $p_X$\\\hline
+		$0$ & $0.3$ & $0.2$ & \textcolor{teal}{$0.5$}\\
+		$1$ & $0.1$ & $0.4$ & \textcolor{teal}{$0.5$}\\\hline
+		$p_Y$ & \textcolor{teal}{$0.4$} & \textcolor{teal}{$0.6$} & $1$
+	\end{tabular}\\[1mm]
+	{\small the sums are written in the \emph{margins}: hence
+		``marginal''; \ here $F(0,1)=0.3+0.2=0.5$}
+\end{center}
 
 \say If $X$ and $Y$ are discrete, their joint pmf is
 \[ p(x,y)=P(X=x,\,Y=y). \]
@@ -497,16 +880,28 @@ It is a table: one cell for each pair of values, and all cells add up to
 row sum: $p_X(x)=\sum_y p(x,y)$. The marginal of $Y$ is the column sum. We
 write the sums in the margins of the table: hence the name.
 
+Why the row sum? The event $X=0$ splits into disjoint pieces according to
+the value of $Y$: $X=0$ and $Y=0$, or $X=0$ and $Y=1$. Disjoint pieces:
+add their probabilities. That is the addition rule of last week, nothing
+new.
+
 \ask In the table, what is $P(X=0)$? \emph{($0.3+0.2=0.5$.)}
+
+\ask And $P(Y=1)$? \emph{($0.2+0.4=0.6$, the second column.)}
 
 \say Finally, the joint distribution function, for any $X$, $Y$:
 $F(a,b)=P(X\le a,\,Y\le b)$. Here $F(0,1)=0.3+0.2=0.5$: the cells with
 $X\le0$ and $Y\le1$.
 
+To compute $F(a,b)$ from a table, add all cells that are ``up to $a$'' in
+$X$ and ``up to $b$'' in $Y$.
+
 \subsection{Exercise~\exref{two-stocks} --- Two stocks on the same day, finance (10 min)}\slide{21--22}
 
 \scriptexercise{two-stocks}
 
+\onslide the table under the statement (the margins stay empty until the
+clicks of part (a)):
 \begin{center}
 	\small
 	\begin{tabular}{c|ccc}
@@ -516,10 +911,30 @@ $X\le0$ and $Y\le1$.
 	\end{tabular}
 \end{center}
 
-\say Try (a)--(c), three minutes.
+\say Before you start, read the table aloud with me: the cell $0.40$ in
+the bottom right is ``A rises and B rises''; the $0.20$ in the top left is
+``both fall''. Try (a)--(c), three minutes.
 
-(a) Click. Click. Row sums: $p_X(-1)=0.4$, $p_X(1)=0.6$. Click. Column sums:
-$p_Y(-1)=0.25$, $p_Y(0)=0.25$, $p_Y(1)=0.5$.
+(a) Click. \say Marginals: add up the rows and the columns, and write the
+sums in the margins. Click. Row sums: $p_X(-1)=0.2+0.1+0.1=0.4$,
+$p_X(1)=0.05+0.15+0.4=0.6$. Click. Column sums: $p_Y(-1)=0.25$,
+$p_Y(0)=0.25$, $p_Y(1)=0.5$.
+
+\onslide after the clicks of (a), the margins are filled in:
+\begin{center}
+	\renewcommand{\arraystretch}{1.25}
+	\begin{tabular}{c|ccc|c}
+		       & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+		\hline
+		$x=-1$ & $0.20$ & $0.10$ & $0.10$ & \textcolor{teal}{$0.4$} \\
+		$x=1$  & $0.05$ & $0.15$ & $0.40$ & \textcolor{teal}{$0.6$} \\
+		\hline
+		$p_Y(y)$ & \textcolor{teal}{$0.25$} & \textcolor{teal}{$0.25$}
+		& \textcolor{teal}{$0.5$} & $1$
+	\end{tabular}
+\end{center}
+
+\say Both margins add up to 1, a quick check of the arithmetic.
 
 \begin{cue}
 	Slide 22, one part per click.
@@ -531,11 +946,19 @@ $p_Y(-1)=0.25$, $p_Y(0)=0.25$, $p_Y(1)=0.5$.
 (c) $X\le0$ means $X=-1$; $Y\le0$ means $Y=-1$ or $0$:
 $F(0,0)=0.20+0.10=0.30$.
 
+\ask Before (d): the probability that B rises is $0.5$. If you know that
+A rose today, do you expect the chance for B to be higher, lower, or the
+same? \emph{(Higher: the big number $0.40$ sits in the up--up cell.)}
+
 (d) Conditional probability: the cell divided by the marginal,
 \[ P(Y=1\mid X=1)=\frac{p(1,1)}{p_X(1)}=\frac{0.40}{0.60}=\frac23
 	\approx0.667. \]
-\say Compare with $P(Y=1)=0.5$. Knowing that A rises makes it more likely
-that B rises too.
+The definition from last week, $P(E\mid F)=P(E\cap F)/P(F)$: the
+condition ``A rises'' keeps only the bottom row, which has total
+probability $0.60$, and within it, the cell $0.40$.
+
+Click. \say Compare with $P(Y=1)=0.5$. Knowing that A rises makes it more
+likely that B rises too.
 
 \begin{cue}
 	Common mistake in (d): answering $p(1,1)=0.40$, without dividing by
@@ -568,11 +991,35 @@ that B rises too.
 	Exercise~\exref{joint-density-square} in one sentence.
 \end{cue}
 
+\say Now the same ideas for continuous random variables: the table
+becomes a surface, sums become integrals.
+
+\onslide three blocks, the joint density, the marginal densities and
+$F(a,b)$; their formulas are displayed below. The picture: the unit square in the $(x,y)$-plane, lightly shaded, and in
+it a darker triangle $A$, the part below the diagonal; ``the probability of
+a region $A$ is the volume above it; do the inner integral first''.
+\begin{center}
+	\begin{tikzpicture}[scale=1.7]
+		\fill[teal!20] (0,0) rectangle (1.4,1.4);
+		\fill[teal!50] (0,0) -- (1.4,0) -- (1.4,1.4) -- cycle;
+		\draw[->] (-.1,0) -- (1.7,0) node[right] {$x$};
+		\draw[->] (0,-.1) -- (0,1.7) node[above] {$y$};
+		\draw[thick,navy] (0,0) rectangle (1.4,1.4);
+		\node[below] at (1.4,0) {\small 1};
+		\node[left] at (0,1.4) {\small 1};
+		\node at (1.0,.35) {\small $A$};
+	\end{tikzpicture}
+\end{center}
+
 \say For two continuous random variables, a joint density $f(x,y)\ge0$
 plays the role of the table. The probability of a region $A$ in the plane
 is the double integral
 \[ P\big((X,Y)\in A\big)=\iint_A f(x,y)\,dx\,dy, \]
 the volume above $A$ under the surface, and the total is 1.
+
+Picture the density as a tent or a roof over the square in the picture.
+The probability that the point $(X,Y)$ lands in the dark triangle $A$ is
+the volume of the part of the tent standing above the triangle.
 
 \say Marginal densities: integrate the other variable out,
 \[ f_X(x)=\int_{-\infty}^{\infty}f(x,y)\,dy,\qquad
@@ -583,10 +1030,16 @@ the sum. And
 
 Tiny example: $f(x,y)=1$ on the unit square. Then
 $P(X\le\tfrac12,\,Y\le\tfrac12)$ is the area of the small square,
-$\tfrac14$.
+$\tfrac14$. With a constant density 1, volume is just height 1 times area,
+so probabilities are areas. The triangle $A$ of the picture, where
+$X>Y$, has area $\tfrac12$, so $P(X>Y)=\tfrac12$. And the marginal is
+$f_X(x)=\int_0^1 1\,dy=1$: $X$ alone is uniform on $[0,1]$.
 
 \say For a double integral, do the inner integral first, with the other
 variable held fixed.
+
+\board $\displaystyle\int_0^1\!\!\int_0^1 f(x,y)\,dy\,dx$: inner over $y$
+with $x$ fixed, then outer over $x$.
 
 \subsection{Exercise~\exref{joint-density-square} --- A joint density on the unit square (12 min)}\slide{24--25}
 
@@ -595,30 +1048,75 @@ variable held fixed.
 \say Try (a) and (b), four minutes. Inner integral first, over $y$, with
 $x$ fixed.
 
-(a) Click. Inner: $\int_0^1(x+y)\,dy=x+\tfrac12$. Outer:
-$\int_0^1(x+\tfrac12)\,dx=\tfrac12+\tfrac12=1$.
+(a) Click. Inner: $\int_0^1(x+y)\,dy=\big[xy+\tfrac{y^2}{2}\big]_0^1=x+\tfrac12$.
+Outer: $\int_0^1(x+\tfrac12)\,dx=\big[\tfrac{x^2}{2}+\tfrac x2\big]_0^1
+=\tfrac12+\tfrac12=1$.
+
+\say With $x$ held fixed, $x$ behaves like a number, so its integral in
+$y$ is $xy$. Together with $f\ge0$ on the square, the total of 1 tells us
+$f$ is a joint density.
+
+\ask Before (b): with the small square being a quarter of the big one, do
+you expect $\tfrac14$, more, or less? \emph{(Less: $x+y$ is smallest near
+the origin, so the small square sits under the low part of the roof.)}
 
 (b) Click. The same over the small square $[0,\tfrac12]\times[0,\tfrac12]$:
-inner $\tfrac x2+\tfrac18$, outer
-\[ \int_0^{1/2}\Big(\frac x2+\frac18\Big)dx=\frac1{16}+\frac1{16}=\frac18. \]
+inner $\int_0^{1/2}(x+y)\,dy=\tfrac x2+\tfrac18$, outer
+\[ \int_0^{1/2}\Big(\frac x2+\frac18\Big)dx
+	=\Big[\frac{x^2}{4}+\frac{x}{8}\Big]_0^{1/2}=\frac1{16}+\frac1{16}=\frac18. \]
+
+\say One eighth, half of $\tfrac14$: the guess was right. This number is
+the value of the joint distribution function, $F(\tfrac12,\tfrac12)$.
 
 \begin{cue}
 	Slide 25.
 \end{cue}
 
+\onslide the unit square with the diagonal $y=x$ (dashed). The small
+square $[0,\tfrac12]\times[0,\tfrac12]$ is outlined in gold, labeled (b);
+the triangle below the diagonal is shaded teal, labeled (d).
+\begin{center}
+	\begin{tikzpicture}[scale=2.6]
+		\fill[teal!30] (0,0) -- (1,0) -- (1,1) -- cycle;
+		\fill[gold!55,opacity=.5] (0,0) rectangle (.5,.5);
+		\draw[gold!80!black,thick] (0,0) rectangle (.5,.5);
+		\draw[navy,thick] (0,0) rectangle (1,1);
+		\draw[navy,dashed] (0,0) -- (1,1) node[above right] {\scriptsize $y=x$};
+		\draw[->] (0,0) -- (1.2,0) node[right] {\small $x$};
+		\draw[->] (0,0) -- (0,1.2) node[above] {\small $y$};
+		\node[below] at (.5,0) {\scriptsize $\frac12$};
+		\node[below] at (1,0) {\scriptsize $1$};
+		\node[left] at (0,.5) {\scriptsize $\frac12$};
+		\node[left] at (0,1) {\scriptsize $1$};
+		\node at (.15,.37) {\scriptsize (b)};
+		\node at (.75,.3) {\scriptsize (d)};
+	\end{tikzpicture}
+\end{center}
+
 (c) \ask Haven't we done this already? \emph{(Yes: the inner integral in
 	(a).)} $f_X(x)=x+\tfrac12$ for $0\le x\le1$, zero otherwise.
+
+\say Integrating out $y$ is exactly what the inner integral of (a) did.
+A quick check: $\int_0^1(x+\tfrac12)\,dx=1$, the outer integral of (a).
+By the same computation, $f_Y(y)=y+\tfrac12$. Keep these two marginals in
+mind; we will need them in a few minutes for independence.
 
 (d) Click. \ask Do we need a double integral over the triangle? \emph{(No.)}
 Swapping $x$ and $y$ does not change $f$, so $P(X>Y)=P(Y>X)$; and
 $P(X=Y)=0$, a line has no area. The two add up to 1, so
 $P(X>Y)=\tfrac12$.
 
+\say In the picture: the teal triangle below the diagonal is $X>Y$, its
+mirror image above the diagonal is $Y>X$. The roof $x+y$ looks the same
+from both sides of the diagonal, so the two volumes are equal. The
+diagonal itself is a line: no area, no volume.
+
 \begin{cue}
 	Common mistake in (b): taking the area $\tfrac14$ of the small square;
 	that works only for a constant density. If someone integrates over the
 	triangle in (d) ($y$ from $0$ to $x$), let them: it also gives
-	$\tfrac12$.
+	$\tfrac12$, since $\int_0^1\int_0^x(x+y)\,dy\,dx=\int_0^1\tfrac32x^2\,dx
+		=\tfrac12$.
 \end{cue}
 
 \subsection{Independent random variables (6 min)}\slide{26}
@@ -631,18 +1129,32 @@ $P(X>Y)=\tfrac12$.
 	you have not decided so yet.
 \end{cue}
 
+\say Last week, two \emph{events} were independent if the probability of
+both is the product. Now we lift this to random variables.
+
+\onslide the definition (below) and two blocks with the practical tests:
+\[ \text{discrete: } p(x,y)=p_X(x)\,p_Y(y)\ \text{in every cell};\qquad
+	\text{continuous: } f(x,y)=f_X(x)\,f_Y(y). \]
+
 \say $X$ and $Y$ are independent if every event about $X$ is independent
 of every event about $Y$:
 \[ P(X\in A,\,Y\in B)=P(X\in A)\,P(Y\in B). \]
 Equivalently, $F(a,b)=F_X(a)F_Y(b)$ for all $a,b$.
 
-In practice: discrete, $p(x,y)=p_X(x)p_Y(y)$ in \emph{every} cell; one
-cell that fails, and they are not independent. Continuous,
-$f(x,y)=f_X(x)f_Y(y)$; on a rectangle, $f$ splits into a function of $x$
+In practice: discrete, the product rule must hold in \emph{every} cell;
+one cell that fails, and they are not independent. Continuous, the joint
+density is the product of the marginals; on a rectangle, $f$ splits into a function of $x$
 times a function of $y$.
 
-Tiny example: $f(x,y)=4xy$ on the unit square is $2x\cdot2y$: independent.
-$f(x,y)=x+y$ of the last exercise does not split: not independent.
+Tiny example, discrete: the small table of slide 20. The top left cell is
+$p(0,0)=0.3$, but $p_X(0)\,p_Y(0)=0.5\cdot0.4=0.2$. One cell fails: not
+independent.
+
+Tiny example, continuous: $f(x,y)=4xy$ on the unit square is
+$2x\cdot2y$: independent; its marginals are $2x$ and $2y$.
+$f(x,y)=x+y$ of the last exercise does not split: not independent. Its
+marginals were $x+\tfrac12$ and $y+\tfrac12$; at $(0,0)$ their product
+is $\tfrac14$, but $f(0,0)=0$.
 
 \say In words: knowing the value of $X$ does not change the distribution
 of $Y$.
@@ -654,10 +1166,17 @@ of $Y$.
 \say The same two stocks as before. Try (a), two minutes: compare one cell
 with the product of its margins.
 
+\ask Which cell would you test first? \emph{(A cell with a big or a small
+number, for example $0.20$ or $0.40$: those are the most likely to fail.)}
+
 (a) Click. $p(-1,-1)=0.20$, but $p_X(-1)p_Y(-1)=0.4\cdot0.25=0.10$. Not
 independent. Click. \say One bad cell is enough for ``no''; for ``yes'' all
 cells must match. The cell $(-1,0)$ happens to match, $0.10=0.4\cdot0.25$,
 and proves nothing.
+
+\say The cell ``both fall'' has twice the probability that independent
+stocks would give it: the two stocks fall together more often than
+chance alone would explain.
 
 \begin{cue}
 	Slide 28.
@@ -667,9 +1186,41 @@ and proves nothing.
 	is row sum times column sum.)} Click. For example $0.4\cdot0.5=0.20$ and
 $0.6\cdot0.25=0.15$.
 
+\onslide the table of independent stocks with the same margins (the cells
+appear at the click):
+\begin{center}
+	\renewcommand{\arraystretch}{1.25}
+	\begin{tabular}{c|ccc|c}
+		       & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+		\hline
+		$x=-1$ & $0.10$ & $0.10$ & $0.20$ & $0.4$ \\
+		$x=1$  & $0.15$ & $0.15$ & $0.30$ & $0.6$ \\
+		\hline
+		$p_Y(y)$ & $0.25$ & $0.25$ & $0.5$ & $1$
+	\end{tabular}
+\end{center}
+
+\say Check the new table: each row still adds up to its margin,
+$0.10+0.10+0.20=0.4$ and $0.15+0.15+0.30=0.6$, and each column too. So the
+two stocks behave exactly as before \emph{one at a time}; only the way
+they move together has changed.
+
+\ask Before (c): for these independent stocks, will $P(X=Y)$ be bigger or
+smaller than the $0.60$ of the real stocks? \emph{(Smaller.)}
+
 (c) Click. $P(X=Y)=0.10+0.30=0.40$, against $0.60$ for the real stocks.
 Click. \say The real stocks move in the same direction more often than
 independent ones would: they tend to move together.
+
+\say And this is the lesson of the whole exercise: the two tables have
+the same margins, yet $0.60$ against $0.40$. The marginals alone cannot
+tell how two random variables move together; for that we need the joint
+distribution.
+
+\begin{cue}
+	Common mistake in (a): testing only the cell $(-1,0)$, finding a match,
+	and concluding ``independent''.
+\end{cue}
 
 \begin{bg}{correlation and diversification}
 	The table of (b) is what the stocks would look like with the same
@@ -695,6 +1246,9 @@ independent ones would: they tend to move together.
 (a) Click. $P(T>t)=e^{-\lambda t}$. Click. So
 $P(T_A>10)=e^{-0.2}\approx0.819$ and $P(T_B>10)=e^{-0.3}\approx0.741$.
 
+\say The exponent is rate times time: $0.02\cdot10=0.2$ and
+$0.03\cdot10=0.3$. Company B, with the higher rate, is the riskier one.
+
 (b) Click. Independent, so the probabilities multiply:
 \[ P(T_A>10,\,T_B>10)=e^{-0.2}e^{-0.3}=e^{-0.5}\approx0.607. \]
 
@@ -702,11 +1256,42 @@ $P(T_A>10)=e^{-0.2}\approx0.819$ and $P(T_B>10)=e^{-0.3}\approx0.741$.
 	Slide 30.
 \end{cue}
 
+\onslide the $(t_A,t_B)$-plane, split by dashed lines at $t_A=10$ and
+$t_B=10$. The upper right region ($T_A>10$ and $T_B>10$) is shaded teal,
+``both survive''; from the third click, the lower left square ($T_A\le10$
+and $T_B\le10$) is shaded gold, ``both default''.
+\begin{center}
+	\begin{tikzpicture}[scale=.6]
+		\fill[teal!20] (2.5,2.5) rectangle (6,6);
+		\fill[gold!50] (0,0) rectangle (2.5,2.5);
+		\draw[->] (0,0) -- (6.3,0) node[below left,font=\small] {$t_A$};
+		\draw[->] (0,0) -- (0,6.3) node[below left,font=\small] {$t_B$};
+		\draw[dashed] (2.5,0) -- (2.5,6) (0,2.5) -- (6,2.5);
+		\node[below,font=\small] at (2.5,0) {$10$};
+		\node[left,font=\small] at (0,2.5) {$10$};
+		\node[font=\small,align=center] at (4.25,4.25) {both\\survive};
+		\node[font=\small,align=center] at (1.25,1.25) {both\\def.};
+	\end{tikzpicture}
+\end{center}
+
 (c) \ask What is the complement of ``at least one defaults''? \emph{(Both
 	survive.)} So $1-e^{-0.5}\approx0.393$.
 
+\say In the picture: ``at least one defaults'' is everything outside the
+teal region, the three other pieces of the plane together. Its
+probability is one minus the teal one.
+
 (d) Click. $P(T_A\le10)\approx0.181$, $P(T_B\le10)\approx0.259$. Click. By
 independence the product, $\approx0.047$.
+
+\say The gold square in the picture. Each default probability is one
+minus the survival probability: $1-0.819$ and $1-0.741$. A check that ties
+(c) and (d) together: by inclusion--exclusion,
+$P(\text{at least one})=0.181+0.259-0.047\approx0.393$, the answer of (c).
+
+\ask Is $0.047$, under 5\%, realistic for two borrowers in the same
+economy? \emph{(Probably too low: in a recession, both get into trouble at
+the same time.)}
 
 Click. \say In a crisis, defaults come together, so independence underestimates
 (d).
@@ -735,6 +1320,9 @@ Click. \say In a crisis, defaults come together, so independence underestimates
 \end{bg}
 
 \subsection{Summary (3 min)}\slide{31}
+
+\onslide five bullet points with the formulas of this session; they are
+the lines you say now.
 
 \say Session 2 in a few lines: a discrete joint distribution is a table,
 and the marginals are its row and column sums; a continuous one is a joint

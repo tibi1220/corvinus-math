@@ -176,11 +176,13 @@
 	\step{(b)} We need $P(A\mid D)$, $P(B\mid D)$ and $P(C\mid D)$. By the
 	definition of conditional probability,
 	\[ P(A\mid D)=\frac{P(AD)}{P(D)}. \]
-	The numerator is one path of the tree, the denominator is the sum of all three
-	default paths from (a). This is the generalized Bayes formula: for a
+	The numerator is one path of the tree, $P(AD)=P(D\mid A)P(A)=0.005$; the
+	denominator is $P(D)=0.03$ from (a), the sum of all three default paths
+	(total probability). This is the generalized Bayes formula: for a
 	partition $F_1,\dots,F_n$,
-	\[ P(F_j\mid D)=\frac{P(D\mid F_j)P(F_j)}{\sum_{i=1}^{n}P(D\mid F_i)P(F_i)}. \]
-	Here the partition is $A$, $B$, $C$:
+	\[ P(F_j\mid D)=\frac{P(D\mid F_j)P(F_j)}{P(D)},\qquad
+		\text{where}\quad P(D)=\sum_{i=1}^{n}P(D\mid F_i)P(F_i). \]
+	Here the partition is $A$, $B$, $C$, and $P(D)=0.03$:
 	\[ P(A\mid D)=\frac{0.005}{0.03}=\frac16\approx0.167,\qquad
 		P(B\mid D)=\frac{0.009}{0.03}=0.3,\qquad
 		P(C\mid D)=\frac{0.016}{0.03}=\frac{8}{15}\approx0.533. \]

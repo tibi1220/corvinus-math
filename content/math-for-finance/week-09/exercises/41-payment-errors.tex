@@ -1,0 +1,83 @@
+% ---
+% title: Errors in bank transfers
+% tags: finance, binomial, poisson
+% ---
+
+\begin{problem}
+	\begin{context}
+		The \emph{back office} of a bank is the department that processes and
+		settles transactions, for example the money transfers ordered by
+		clients. A large bank processes thousands of transfers a day. A few of
+		them go wrong (a mistyped account number, a wrong amount, and so on).
+		Each error is rare, and errors in different transfers happen
+		independently of each other.
+	\end{context}
+	On a given day a bank processes 2000 transfers. Each transfer is erroneous
+	with probability $0.001$, independently of the others. Let $X$ be the
+	number of erroneous transfers on that day.
+	(a) What is the exact distribution of $X$? Give its parameters.
+	(b) Find $P(X=0)$ exactly and with the Poisson approximation.
+	(c) Find $P(X\le 2)$ with the Poisson approximation.
+	(d) Why is the Poisson approximation good here?
+\end{problem}
+
+\begin{solution}
+	\idea $X$ counts the ``successes'' (here: errors) in many independent trials
+	with the same probability, so it is binomial. When $n$ is large and $p$ is
+	small, the binomial is close to a Poisson distribution with $\lambda=np$,
+	and the Poisson formula is much easier to evaluate.
+
+	\step{(a)} Each of the $2000$ transfers is a trial with two outcomes:
+	erroneous (``success'') or not. The trials are independent and the
+	probability of an error is the same, $0.001$, for every transfer. The number
+	of successes in $n$ independent trials with success probability $p$ is
+	binomial with parameters $(n,p)$. So $X$ is binomial with parameters
+	$(2000,\,0.001)$:
+	\[
+		P(X=i)=\binom{2000}{i}0.001^i\,0.999^{2000-i},\qquad i=0,1,\dots,2000.
+	\]
+
+	\step{(b)} \emph{Exactly.} $X=0$ means that every one of the 2000 transfers
+	is correct. Put $i=0$ in the binomial formula ($\binom{2000}{0}=1$ and
+	$0.001^0=1$):
+	\[
+		P(X=0)=0.999^{2000}\approx 0.1352.
+	\]
+	\emph{Poisson approximation.} The parameter is the expected number of
+	errors, $\lambda=np=2000\cdot0.001=2$. The Poisson formula with $i=0$
+	gives ($\lambda^0=1$, $0!=1$)
+	\[
+		P(X=0)\approx e^{-\lambda}\frac{\lambda^0}{0!}=e^{-2}\approx 0.1353.
+	\]
+	The two values differ only in the fourth decimal.
+
+	\step{(c)} ``$X\le2$'' means $X=0$, $1$ or $2$. These three events are
+	mutually exclusive, so their probabilities add up. With the Poisson formula
+	and $\lambda=2$:
+	\[
+		P(X\le 2)\approx e^{-2}\left(\frac{2^0}{0!}+\frac{2^1}{1!}+\frac{2^2}{2!}\right)
+		=e^{-2}(1+2+2)=5e^{-2}\approx 0.6767.
+	\]
+	For comparison, the exact binomial value (three terms of the binomial
+	formula, which is more work by hand) is also $\approx0.6767$.
+
+	\step{(d)} The Poisson approximation of the binomial works when $n$ is large,
+	$p$ is small and $\lambda=np$ is of moderate size. Here $n=2000$ is large,
+	$p=0.001$ is small, and $np=2$ is moderate. Intuitively: there are many
+	chances for an error, but each one is rare, which is exactly the situation
+	the Poisson distribution describes (counts of rare events).
+
+	\begin{answer}
+		(a) binomial with parameters $(2000,\,0.001)$ \quad
+		(b) exactly $0.999^{2000}\approx0.1352$; Poisson ($\lambda=2$):
+		$e^{-2}\approx0.1353$ \quad
+		(c) $5e^{-2}\approx0.6767$ \quad
+		(d) $n$ is large, $p$ is small, $np=2$ is moderate
+	\end{answer}
+	\begin{remark}
+		The approximation also gives the expected value and variance almost
+		exactly. The binomial has $\E[X]=np=2$ and
+		$\Var(X)=np(1-p)=2\cdot0.999=1.998$; the Poisson with $\lambda=2$ has
+		$\E[X]=\Var(X)=2$. The factor $1-p$ is close to $1$ because $p$ is small.
+	\end{remark}
+\end{solution}
