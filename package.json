@@ -7,7 +7,9 @@
     "sync": "node scripts/sync-content.mjs",
     "content": "node scripts/build-content.mjs",
     "dev": "node scripts/dev.mjs",
+    "dev:public": "PRIVATE_SITE=0 node scripts/dev.mjs",
     "build": "node scripts/build-content.mjs --production && next build",
+    "deploy:private": "node scripts/deploy-private.mjs",
     "lint": "eslint",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

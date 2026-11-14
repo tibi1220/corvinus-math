@@ -110,8 +110,9 @@
 	scratch with a tiny example, and before each exercise the students try it
 	themselves (the script says for how long); then you walk through the
 	solution in the order in which the slide reveals it.
-	Timings are approximate; items marked \emph{(optional)} can be dropped if
-	you run late. Only the exercises of the slides are in this script.
+	Timings are approximate; if you run late, skip in the order of
+	\emph{If you are short on time} below. Only the exercises of the slides
+	are in this script.
 \end{cue}
 
 \subsection*{Timing overview}
@@ -132,11 +133,11 @@ sessions.
 		8--9   & Exercise~\exref{five-cards}                       & 8  & 31 \\
 		10     & Conditional probability                           & 6  & 37 \\
 		11--12 & Exercise~\exref{exams-conditional}                & 8  & 45 \\
-		13--14 & Exercise~\exref{actuarial-exams}                  & 8  & 53 \\
+		13--14 & Exercise~\exref{actuarial-exams} (skip 1st)      & 8  & 53 \\
 		15     & Total probability and Bayes' formula              & 5  & 58 \\
 		16--17 & Exercise~\exref{early-warning}                    & 11 & 69 \\
 		18     & Odds                                              & 4  & 73 \\
-		19--20 & Exercise~\exref{early-warning-odds}               & 8  & 81 \\
+		19--20 & Exercise~\exref{early-warning-odds} (skip 2nd)   & 8  & 81 \\
 		21     & Summary                                           & 3  & 84 \\
 		       & Reserve (questions, students working alone)       & 6  & 90 \\\midrule
 		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
@@ -150,20 +151,64 @@ sessions.
 		Slides & Session 2 & min & cum. \\\midrule
 		22--23 & Session 2 title, recap of Session 1               & 4  & 4  \\
 		24     & The generalized Bayes formula                     & 5  & 9  \\
-		25--27 & Exercise~\exref{default-by-rating}                & 10 & 19 \\
+		25--27 & Exercise~\exref{default-by-rating} (skip (c) 3rd) & 10 & 19 \\
 		28     & Independent events                                & 6  & 25 \\
-		29--30 & Exercise~\exref{pairwise-not-mutual}              & 7  & 32 \\
+		29--30 & Exercise~\exref{pairwise-not-mutual} (skip 2nd)  & 7  & 32 \\
 		31--33 & Exercise~\exref{bond-defaults}                    & 9  & 41 \\
 		34     & Discrete random variables, distribution function  & 6  & 47 \\
 		35--37 & Exercise~\exref{urn-game}                         & 12 & 59 \\
 		38     & Expected value, variance, standard deviation      & 6  & 65 \\
 		39--40 & Exercise~\exref{call-option}                      & 9  & 74 \\
-		41--42 & Exercise~\exref{trading-strategy}                 & 7  & 81 \\
+		41--42 & Exercise~\exref{trading-strategy} (skip 1st)     & 7  & 81 \\
 		43     & Summary                                           & 3  & 84 \\
 		       & Reserve (questions, students working alone)       & 6  & 90 \\\midrule
 		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
 	\end{tabular}
 \end{center}
+
+\subsection*{If you are short on time}
+
+\begin{cue}
+	Skip in this order. Each skipped exercise has a full solution in the
+	exercises PDF: tell the students so. Every topic keeps its theory frame
+	and at least one exercise. Gold \emph{Clock check} boxes in the script
+	say when to decide.
+
+	\textbf{Session 1} (frees about 16 minutes):
+	\begin{enumerate}
+		\item Exercise~\exref{actuarial-exams}, three exams in a row (slides
+		      13--14, 8 min). The multiplication rule is already on slide 10.
+		      Decide at slide 10: skip it if you start that slide after about
+		      minute 35.
+		\item Exercise~\exref{early-warning-odds}, two warning signals
+		      (slides 19--20, 8 min). Keep the odds frame (slide 18), and apply
+		      the odds form once to the numbers of
+		      Exercise~\exref{early-warning} instead (1--2 min). Decide at
+		      slide 18: skip it if you start that slide after about minute 74.
+	\end{enumerate}
+
+	\textbf{Session 2} (frees about 17 minutes):
+	\begin{enumerate}
+		\item Exercise~\exref{trading-strategy}, the trading strategy (slides
+		      41--42, 7 min). Exercise~\exref{call-option} already covers
+		      expected value, variance and standard deviation. Decide at
+		      slide 38: skip it if you start that slide after about minute 64.
+		\item Exercise~\exref{pairwise-not-mutual}, pairwise but not mutually
+		      independent (slides 29--30, 7 min). Exercise~\exref{bond-defaults}
+		      covers independence on its own. Decide at slide 28: skip it if
+		      you start that slide after about minute 24.
+		\item Part (c) of Exercise~\exref{default-by-rating} (slide 27,
+		      about 3 min): give the result $0.19$ and the one-sentence lesson.
+	\end{enumerate}
+
+	\textbf{Never skip} Exercise~\exref{early-warning} (Bayes' formula),
+	(a) and (b) of Exercise~\exref{default-by-rating} (the generalized
+	Bayes formula) or Exercise~\exref{urn-game} (the only exercise on the
+	pmf and the distribution function).
+
+	If you are behind everywhere, the cheapest fix is shorter try-first
+	pauses: one or two minutes instead of three, on every exercise.
+\end{cue}
 
 \tableofcontents
 
@@ -466,6 +511,11 @@ Click.
 
 \subsection{Conditional probability (6 min)}\slide{10}
 
+\begin{cue}
+	Clock check: this slide is planned for minute 31. If you start it after
+	about minute 35, skip Exercise~\exref{actuarial-exams} (slides 13--14).
+\end{cue}
+
 \say Now the most important idea of today. Very often we do not know the
 outcome, but we know \emph{something} about it. How does that change the
 probabilities?
@@ -585,6 +635,13 @@ $0.878$.
 \subsection{Exercise~\exref{actuarial-exams} --- Three exams in a row (8 min)}\slide{13--14}
 
 \scriptexercise{actuarial-exams}
+
+\begin{cue}
+	Short on time? Skip this whole exercise first (8 min): go from slide 12
+	straight to slide 15. Say: ``Exercise~\exref{actuarial-exams} is the
+	multiplication rule along a tree; its full solution is in the exercises
+	PDF.''
+\end{cue}
 
 \say A word on the story: actuaries are the mathematicians of insurance
 companies and pension funds, and to become one you pass a series of
@@ -827,6 +884,13 @@ no flag lowers it to about $0.2\%$.
 
 \subsection{Odds (4 min)}\slide{18}
 
+\begin{cue}
+	Clock check: this slide is planned for minute 69. If you start it after
+	about minute 74, keep this slide but skip
+	Exercise~\exref{early-warning-odds} (slides 19--20); see the box there
+	for what to say instead.
+\end{cue}
+
 \say There is another way of describing how likely something is, which you
 know from betting: \emph{odds}. The odds of an event $H$ are the probability
 that it happens divided by the probability that it does not:
@@ -863,6 +927,16 @@ evidence that is less likely if $H$ is true lowers them.
 \subsection{Exercise~\exref{early-warning-odds} --- Two warning signals: odds, finance (8 min)}\slide{19--20}
 
 \scriptexercise{early-warning-odds}
+
+\begin{cue}
+	Short on time? Skip slides 19--20 (8 min) and use the odds form once on
+	Exercise~\exref{early-warning} instead (1--2 min). \say Prior odds of
+	default: $\frac{0.02}{0.98}=\frac1{49}$. A flag is
+	$\frac{0.9}{0.05}=18$ times as likely for a defaulter. New odds:
+	$\frac{18}{49}$, so $P(\text{default}\mid\text{flagged})=\frac{18}{18+49}
+		=\frac{18}{67}\approx0.269$, the same as in
+	Exercise~\exref{early-warning}, with one multiplication.
+\end{cue}
 
 \begin{cue}
 	Give them 3 minutes for (a). Hint: ``prior odds, then likelihood ratio,
@@ -1152,6 +1226,13 @@ Check: $0.167+0.3+0.533=1$. A defaulted loan was rated A, B or C.
 	defaulted ones.
 \end{cue}
 
+\begin{cue}
+	Short on time? Third thing to skip in Session 2: do not work out (c).
+	Show the slide and say: ``Given no default, the probability of class C
+	is about $0.19$, almost the prior $0.2$: nearly every loan survives the
+	year, so `no default' tells us little.'' Then go on to the lesson below.
+\end{cue}
+
 (c) \say Last slide of the exercise. Same idea, but now the paths that end in
 $D^c$. First the denominator, by the complement:
 $P(D^c)=1-0.03=0.97$. The path through $C$ to $D^c$:
@@ -1205,6 +1286,12 @@ sixth of the defaults.
 \end{bg}
 
 \subsection{Independent events (6 min)}\slide{28}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 19. If you start it after
+	about minute 24, skip Exercise~\exref{pairwise-not-mutual} (slides
+	29--30).
+\end{cue}
 
 \say Usually, knowing that $F$ has happened changes the probability of $E$:
 that was the whole point of conditional probability. Sometimes, however, it
@@ -1262,6 +1349,14 @@ For example, three tosses of a fair coin: $P(\text{at least one head})=
 \subsection{Exercise~\exref{pairwise-not-mutual} --- Pairwise but not mutually independent (7 min)}\slide{29--30}
 
 \scriptexercise{pairwise-not-mutual}
+
+\begin{cue}
+	Short on time? Skip this exercise (7 min): go from slide 28 straight to
+	slide 31. Say: ``For three events, pairwise independence is not enough:
+	you need the product rule for every group, including all three
+	together. Exercise~\exref{pairwise-not-mutual} in the exercises PDF
+	shows an example.''
+\end{cue}
 
 \begin{cue}
 	Give them two minutes for (a): list $\Om$ and the three events as sets,
@@ -1583,6 +1678,12 @@ euros.
 
 \subsection{Expected value, variance, standard deviation (6 min)}\slide{38}
 
+\begin{cue}
+	Clock check: this slide is planned for minute 59. If you start it after
+	about minute 64, skip Exercise~\exref{trading-strategy} (slides 41--42)
+	after the call option.
+\end{cue}
+
 \say The \emph{expected value} of $X$ is the average of its values, weighted
 by their probabilities:
 \[ \E[X]=\sum_x x\,p(x). \]
@@ -1715,6 +1816,13 @@ $\E[g(X)]=\sum_x g(x)\,p(x)$.
 \subsection{Exercise~\exref{trading-strategy} --- A simple trading strategy, finance (7 min)}\slide{41--42}
 
 \scriptexercise{trading-strategy}
+
+\begin{cue}
+	Short on time? Skip this exercise first in Session 2 (7 min): go from
+	slide 40 straight to the summary, slide 43. Say: ``One more finance
+	example, a trading strategy, is in the exercises PDF with its full
+	solution.''
+\end{cue}
 
 \begin{cue}
 	Two minutes for (a); then ask (b) and (c) before revealing them --- they

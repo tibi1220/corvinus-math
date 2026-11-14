@@ -7,6 +7,8 @@ build
 /src/generated/
 /public/downloads/
 /public/slides/
+# Only in the private build (PRIVATE_SITE=1), never published
+/public/audio/
 
 # dependencies
 /node_modules
@@ -25,8 +27,9 @@ build
 npm-debug.log*
 .pnpm-debug.log*
 
-# env files
+# env files (.env.dev: where pnpm deploy:private puts the private build)
 .env*
+!.env.dev.example
 
 # typescript
 *.tsbuildinfo

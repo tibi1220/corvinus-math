@@ -18,7 +18,10 @@
 - When script.tex changes, update audio/script-spoken.txt and
   audio/script-print-spoken.txt to match. Regenerate audio only when asked.
 - Only the documents listed in src/lib/catalog.ts are published. The lecturer's
-  read-aloud script (script.tex) and the audio must never be.
+  read-aloud script (script.tex) and the audio must never be. They appear only
+  with the private features (PRIVATE_SITE=1): in `pnpm dev` (`pnpm dev:public`
+  turns them off) and in the private build (`pnpm deploy:private`), served
+  behind the home server's login. Never set PRIVATE_SITE in the GitHub workflow.
 
 # Build cache
 

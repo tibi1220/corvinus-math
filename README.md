@@ -28,10 +28,10 @@ website and into downloadable PDFs, so the same source serves both.
 - **Exercises one by one**: every exercise, numbered by week (8.1, 8.2, …), with
   its topics as tags to filter by and its solution on demand, on each week's
   page and in one collection for the whole course (filter by week and topic; for
-  now only in development, `page.dev.tsx`, while a single week is published;
-  `pnpm build` leaves out its PDFs too). Both are also plain PDFs, without
-  solutions and with each solution right after its exercise; the course PDFs
-  join the weekly ones.
+  now only with the private features, `page.dev.tsx`, while a single week is
+  published; `pnpm build` leaves out its PDFs too). Both are also plain PDFs,
+  without solutions and with each solution right after its exercise; the course
+  PDFs join the weekly ones.
 - **Slide viewer**: beamer decks are shown page by page (arrow keys, full
   screen, shareable page links), and downloadable as PDF.
 - **Typeset math**: formulas rendered with KaTeX in STIX Two, the font of the
@@ -130,14 +130,15 @@ pnpm install
 pnpm dev        # http://localhost:3000
 ```
 
-| Command        | What it does                                                                                           |
-| -------------- | ------------------------------------------------------------------------------------------------------ |
-| `pnpm sync`    | Import a new week's sources from the old working folder (never overwrites)                             |
-| `pnpm dev`     | Content watcher and development server                                                                 |
-| `pnpm content` | Compile the content only (`--force` ignores the cache, `--verbose` logs every step)                    |
-| `pnpm build`   | Compile the content (`--production`: no development-only PDFs), then build the static site into `out/` |
-| `pnpm lint`    | ESLint                                                                                                 |
-| `pnpm format`  | Prettier                                                                                               |
+| Command           | What it does                                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm sync`       | Import a new week's sources from the old working folder (never overwrites)                                                      |
+| `pnpm dev`        | Content watcher and development server, with the private features (see The private build)                                       |
+| `pnpm dev:public` | The same, without the private features: the site as the public sees it                                                          |
+| `pnpm content`    | Compile the content only (`--force` ignores the cache, `--verbose` logs every step; `PRIVATE_SITE=1` adds the private features) |
+| `pnpm build`      | Compile the public content (`--production`: refuses `PRIVATE_SITE=1`), then build the static site into `out/`                   |
+| `pnpm lint`       | ESLint                                                                                                                          |
+| `pnpm format`     | Prettier                                                                                                                        |
 
 ### How the pipeline works
 
@@ -182,3 +183,24 @@ content in a TeX Live container, builds the site and publishes it to GitHub
 Pages. To set it up on a new repository, choose **GitHub Actions** as the source
 under **Settings → Pages**, with `corvinus.tibi1220.hu` as the custom domain.
 The site is built for the root of that domain.
+
+### The private build
+
+`pnpm deploy:private` builds a private version for the lecturer alone and copies
+it to a server that serves it behind a login. It is the public site plus each
+week's read-aloud scripts (`script.tex`, `script-print.tex`) as PDFs, their
+audio in the US male voice (`audio/*-michael.mp3`, which must be generated
+first), and the course-wide Exercises page.
+
+Where it goes is set in `.env.dev`, which is not in git: copy `.env.dev.example`
+and fill in the server (as ssh knows it), the folder on it, and the address it
+serves that folder at, which becomes the site's base path.
+
+It sets `PRIVATE_SITE=1` (see `privateSite` in `src/lib/catalog.ts`), which the
+GitHub Pages workflow never does, so none of this reaches the public site.
+Afterwards it deletes `out/`.
+
+`pnpm dev` shows the same private features, so you see what the private build
+will have; `pnpm dev:public` turns them off, to see the site as the public does.
+`pnpm build` always builds the public site: it refuses `PRIVATE_SITE=1` and
+removes the private files from `public/` first.

@@ -41,11 +41,19 @@ type GeneratedDocument = {
   exercises?: Exercise[];
 };
 
+// A recording of a lecturer's document, in the private build only: the slug
+// of the document it reads aloud, its file in public/audio and its size.
+export type Audio = { document: string; file: string; size: number };
+
 type GeneratedCourse = {
   slug: string;
   // The PDF of every exercise of the course (all weeks), if any.
   collections?: Record<string, PdfInfo>;
-  weeks: { number: number; documents: GeneratedDocument[] }[];
+  weeks: {
+    number: number;
+    audio?: Audio[];
+    documents: GeneratedDocument[];
+  }[];
 };
 
 const generatedCourses: GeneratedCourse[] = generated.courses;
@@ -57,6 +65,8 @@ export type Week = Omit<WeekInfo, 'documents'> & {
   // Only the documents the pipeline has built; empty for a week that is not
   // published yet.
   documents: Document[];
+  // The recordings of the lecturer's documents (private build only).
+  audio: Audio[];
 };
 
 export type Course = Omit<CourseInfo, 'weeks'> & {
@@ -78,7 +88,12 @@ function buildCourse(info: CourseInfo): Course {
         const result = built?.documents.find(d => d.slug === document.slug);
         return result ? [{ ...document, ...result, kind: document.kind }] : [];
       });
-      return { ...week, slug: weekSlug(week), documents };
+      return {
+        ...week,
+        slug: weekSlug(week),
+        documents,
+        audio: built?.audio ?? [],
+      };
     }),
   };
 }
@@ -189,6 +204,16 @@ export function courseExerciseDownloads(course: Course): ExerciseDownloads {
 // The documents that have a page of their own (not the PDF-only ones).
 export function pages(week: Week) {
   return week.documents.filter(document => document.kind !== 'pdf');
+}
+
+// The lecturer's own documents of a week (private build only).
+export function lecturerDocuments(week: Week) {
+  return week.documents.filter(document => document.lecturer);
+}
+
+// The URL of a recording.
+export function audioHref(course: Course, week: Week, audio: Audio) {
+  return withBasePath(`/audio/${course.slug}/${week.slug}/${audio.file}`);
 }
 
 // The image of a slide (pages count from 1).

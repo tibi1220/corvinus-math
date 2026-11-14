@@ -19,8 +19,12 @@
 // changed documents are recompiled. --force ignores the cache. --watch
 // rebuilds whenever a .tex file under content/ changes (pnpm dev runs it next
 // to next dev). --verbose (on by default with --watch) logs every step.
-// --production (pnpm build) leaves out what is only shown in development: the
-// course-wide exercise PDFs (see showCourseExercises in src/lib/site.ts).
+// With PRIVATE_SITE=1 (pnpm dev and the private build, see privateSite in
+// src/lib/catalog.ts) it also compiles the lecturer's scripts and the
+// course-wide exercise PDFs, and copies each week's audio in the US male voice
+// (audio/*-michael.mp3) to public/audio. Without it, all of these are removed
+// from public/, so the public site never has them. --production (pnpm build)
+// refuses PRIVATE_SITE=1.
 
 import { execFile } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -30,7 +34,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import katex from 'katex';
-import { courses, pdfName, weekDir, weekSlug } from '../src/lib/catalog.ts';
+import {
+  courses,
+  pdfName,
+  privateSite,
+  weekDir,
+  weekSlug,
+} from '../src/lib/catalog.ts';
 
 const execFileAsync = promisify(execFile);
 
@@ -49,6 +59,9 @@ const OUT_FILE = path.join(ROOT, 'src', 'generated', 'content.json');
 const CACHE_DIR = path.join(ROOT, 'node_modules', '.cache', 'lwarp');
 const DOWNLOADS_DIR = path.join(ROOT, 'public', 'downloads');
 const SLIDES_DIR = path.join(ROOT, 'public', 'slides');
+const AUDIO_DIR = path.join(ROOT, 'public', 'audio');
+// The voice whose audio the private build carries: Kokoro's am_michael.
+const AUDIO_SUFFIX = '-michael.mp3';
 
 // Bump these whenever the conversion below changes, to invalidate the cache.
 const PIPELINE_VERSION = { document: '1', slides: '1' };
@@ -60,6 +73,10 @@ let force = process.argv.includes('--force');
 const watchMode = process.argv.includes('--watch');
 const verbose = watchMode || process.argv.includes('--verbose');
 const production = process.argv.includes('--production');
+if (production && privateSite) {
+  console.error('pnpm build makes the public site: unset PRIVATE_SITE.');
+  process.exit(1);
+}
 
 function debug(message) {
   if (!verbose) return;
@@ -910,7 +927,7 @@ async function build() {
   // The exercises of every week of a course in one PDF, with and without
   // solutions: course → { [name]: { size, modified } }.
   const collections = new Map();
-  for (const course of production ? [] : courses) {
+  for (const course of privateSite ? courses : []) {
     for (const collection of COLLECTIONS) {
       const parts = jobs.filter(
         job =>
@@ -951,8 +968,41 @@ async function build() {
     }
   }
 
+  // The audio of each week, in the private build only: week → its files.
+  const audio = new Map();
+  for (const course of privateSite ? courses : []) {
+    for (const week of course.weeks.filter(w => w.documents.length > 0)) {
+      const source = path.join(CONTENT_DIR, course.dir, weekDir(week), 'audio');
+      const names = (await fs.readdir(source).catch(() => []))
+        .filter(name => name.endsWith(AUDIO_SUFFIX))
+        .sort();
+      const files = [];
+      for (const name of names) {
+        const from = path.join(source, name);
+        const to = path.join(AUDIO_DIR, course.slug, weekSlug(week), name);
+        const stat = await fs.stat(from);
+        const old = await fs.stat(to).catch(() => null);
+        // The files are large: copied only when they changed.
+        if (!old || old.size !== stat.size || old.mtimeMs < stat.mtimeMs) {
+          await fs.mkdir(path.dirname(to), { recursive: true });
+          await fs.copyFile(from, to);
+          console.log(`copied ${path.relative(ROOT, to)}`);
+        }
+        written.add(to);
+        files.push({
+          // The document it reads aloud: script-print-michael.mp3 → script-print.
+          document: name.slice(0, -AUDIO_SUFFIX.length),
+          file: name,
+          size: stat.size,
+        });
+      }
+      audio.set(week, files);
+    }
+  }
+
   await prune(DOWNLOADS_DIR, written);
   await prune(SLIDES_DIR, written);
+  await prune(AUDIO_DIR, written);
 
   const output = {
     courses: courses.map(course => ({
@@ -962,6 +1012,7 @@ async function build() {
         .filter(week => week.documents.length > 0)
         .map(week => ({
           number: week.number,
+          ...(audio.has(week) && { audio: audio.get(week) }),
           documents: week.documents.map(document =>
             results.find(
               (result, i) =>

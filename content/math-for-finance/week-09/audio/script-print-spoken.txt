@@ -3,13 +3,26 @@ Mathematics for Finance. Week 9. Probability, conditional probability, independe
 
 How to use this script.
 [[slnc 600]]
-Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Exercise numbers match the slides. This week the pace is deliberately slow: every new idea is introduced from scratch with a tiny example, and before each exercise the students try it themselves; the script says for how long. Then you walk through the solution in the order in which the slide reveals it. Timings are approximate; items marked optional can be dropped if you run late. Only the exercises of the slides are in this script.
+Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Exercise numbers match the slides. This week the pace is deliberately slow: every new idea is introduced from scratch with a tiny example, and before each exercise the students try it themselves; the script says for how long. Then you walk through the solution in the order in which the slide reveals it. Timings are approximate; if you run late, skip in the order given under If you are short on time, after the timing overview. Only the exercises of the slides are in this script.
 [[slnc 500]]
 Both sessions are on the same day: Session 1, 90 minutes, then a short break, then Session 2, another 90 minutes. The timings leave about 6 minutes of reserve in both sessions.
 [[slnc 500]]
-Timing overview for Session 1. Welcome, recap of week 8, and the plan for today, slides 1 to 3: 4 minutes. From counting to probability: 7 minutes. Exercise 9.1, two exams: 9 minutes. Equally likely outcomes: 3 minutes. Exercise 9.5, five cards: 8 minutes. Conditional probability: 6 minutes. Exercise 9.11, two exams, conditionally: 8 minutes. Exercise 9.14, three exams in a row: 8 minutes. Total probability and Bayes' formula: 5 minutes. Exercise 9.15, the early-warning model: 11 minutes. Odds: 4 minutes. Exercise 9.18, two warning signals: 8 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+Timing overview for Session 1. Welcome, recap of week 8, and the plan for today, slides 1 to 3: 4 minutes. From counting to probability: 7 minutes. Exercise 9.1, two exams: 9 minutes. Equally likely outcomes: 3 minutes. Exercise 9.5, five cards: 8 minutes. Conditional probability: 6 minutes. Exercise 9.11, two exams, conditionally: 8 minutes. Exercise 9.14, three exams in a row, the first to skip: 8 minutes. Total probability and Bayes' formula: 5 minutes. Exercise 9.15, the early-warning model: 11 minutes. Odds: 4 minutes. Exercise 9.18, two warning signals, the second to skip: 8 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
 [[slnc 400]]
-Timing overview for Session 2. The Session 2 title and the recap of Session 1, slides 22 and 23: 4 minutes. The generalized Bayes formula: 5 minutes. Exercise 9.21, defaults by rating class: 10 minutes. Independent events: 6 minutes. Exercise 9.26, pairwise but not mutually independent: 7 minutes. Exercise 9.27, bond defaults: 9 minutes. Discrete random variables and the distribution function: 6 minutes. Exercise 9.32, a game with an urn: 12 minutes. Expected value, variance and standard deviation: 6 minutes. Exercise 9.36, the call option: 9 minutes. Exercise 9.37, the trading strategy: 7 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+Timing overview for Session 2. The Session 2 title and the recap of Session 1, slides 22 and 23: 4 minutes. The generalized Bayes formula: 5 minutes. Exercise 9.21, defaults by rating class, whose part c is the third to skip: 10 minutes. Independent events: 6 minutes. Exercise 9.26, pairwise but not mutually independent, the second to skip: 7 minutes. Exercise 9.27, bond defaults: 9 minutes. Discrete random variables and the distribution function: 6 minutes. Exercise 9.32, a game with an urn: 12 minutes. Expected value, variance and standard deviation: 6 minutes. Exercise 9.36, the call option: 9 minutes. Exercise 9.37, the trading strategy, the first to skip: 7 minutes. Summary: 3 minutes. That is 84 minutes; the remaining 6 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+[[slnc 2000]]
+
+If you are short on time.
+[[slnc 600]]
+Note for you: skip in this order. Each skipped exercise has a full solution in the exercises PDF: tell the students so. Every topic keeps its theory frame and at least one exercise. Notes starting with Clock check say when to decide.
+[[slnc 500]]
+Session 1 frees about 16 minutes. First, skip Exercise 9.14, three exams in a row, slides 13 and 14, 8 minutes. The multiplication rule is already on slide 10. Decide at slide 10: skip it if you start that slide after about minute 35. Second, skip Exercise 9.18, two warning signals, slides 19 and 20, 8 minutes. Keep the odds frame, slide 18, and apply the odds form once to the numbers of Exercise 9.15 instead, in 1 or 2 minutes. Decide at slide 18: skip it if you start that slide after about minute 74.
+[[slnc 500]]
+Session 2 frees about 17 minutes. First, skip Exercise 9.37, the trading strategy, slides 41 and 42, 7 minutes. Exercise 9.36 already covers expected value, variance and standard deviation. Decide at slide 38: skip it if you start that slide after about minute 64. Second, skip Exercise 9.26, pairwise but not mutually independent, slides 29 and 30, 7 minutes. Exercise 9.27 covers independence on its own. Decide at slide 28: skip it if you start that slide after about minute 24. Third, skip part c of Exercise 9.21, slide 27, about 3 minutes: give the result, 0.19, and the one-sentence lesson.
+[[slnc 500]]
+Never skip Exercise 9.15, Bayes' formula, parts a and b of Exercise 9.21, the generalized Bayes formula, or Exercise 9.32, the only exercise on the pmf and the distribution function.
+[[slnc 500]]
+If you are behind everywhere, the cheapest fix is shorter try-first pauses: one or two minutes instead of three, on every exercise.
 [[slnc 2000]]
 
 Session 1. Probability, conditional probability, Bayes' formula.
@@ -188,6 +201,8 @@ Click.
 
 Conditional probability. Slide 10.
 [[slnc 600]]
+Note for you: clock check. This slide is planned for minute 31. If you start it after about minute 35, skip Exercise 9.14, slides 13 and 14.
+[[slnc 500]]
 Now the most important idea of today. Very often we do not know the outcome, but we know something about it. How does that change the probabilities?
 [[slnc 400]]
 Tiny example.
@@ -260,6 +275,8 @@ Exercise 9.14. Three exams in a row. Slides 13 and 14.
 [[slnc 600]]
 Three exams in a row; after a failure she stops. P of passing the first is 0.9; if she passed the first, P of passing the second is 0.8; if she passed the first two, P of passing the third is 0.7. What is the probability that she: a, passes all three; b, fails exactly at the third; c, failed the second, given that she did not pass all three?
 [[slnc 800]]
+Note for you: short on time? Skip this whole exercise first, 8 minutes: go from slide 12 straight to slide 15. Say: Exercise 9.14 is the multiplication rule along a tree; its full solution is in the exercises PDF.
+[[slnc 500]]
 A word on the story: actuaries are the mathematicians of insurance companies and pension funds, and to become one you pass a series of professional exams, one after the other.
 [[slnc 500]]
 Note for you: give them 3 minutes for parts a and b. Hint: draw a tree, one branching per exam.
@@ -365,6 +382,8 @@ Note for you, a common mistake: answering part b with 0.9. That is P of A given 
 
 Odds. Slide 18.
 [[slnc 600]]
+Note for you: clock check. This slide is planned for minute 69. If you start it after about minute 74, keep this slide but skip Exercise 9.18, slides 19 and 20; the note there says what to say instead.
+[[slnc 500]]
 There is another way of describing how likely something is, which you know from betting: odds. The odds of an event H are the probability that it happens divided by the probability that it does not: the odds of H equal P of H over P of H complement, which is P of H over 1 minus P of H.
 [[slnc 500]]
 Tiny examples. If P of H is two thirds, the odds are two thirds over one third, which is 2: 2 to 1 in favor. Two cases where H happens for every one where it does not. If P of H is 0.2, the odds are 0.2 over 0.8, which is one quarter: 4 to 1 against.
@@ -384,6 +403,8 @@ Exercise 9.18. Two warning signals: odds, a finance example. Slides 19 and 20.
 [[slnc 600]]
 2 percent of borrowers default, D. A model flags 90 percent of the defaulters and 5 percent of the non-defaulters, as in Exercise 9.15; a flag is A 1. Part a: using odds, find P of D given A 1. Part b: a second model with the same rates, whose errors are independent of the first one's given D or D complement, also flags her; this is A 2. Find P of D given A 1 A 2. Part c: the first model flags her, the second does not. Find P of D given A 1 A 2 complement.
 [[slnc 800]]
+Note for you: short on time? Skip slides 19 and 20, 8 minutes, and use the odds form once on Exercise 9.15 instead, in 1 or 2 minutes. Say: prior odds of default: 0.02 over 0.98, which is 1 over 49. A flag is 0.9 over 0.05, which is 18 times as likely for a defaulter. New odds: 18 over 49, so P of default given flagged is 18 over 18 plus 49, which is 18 over 67, approximately 0.269, the same as in Exercise 9.15, with one multiplication.
+[[slnc 500]]
 Note for you: give them 3 minutes for part a. Hint: prior odds, then likelihood ratio, then multiply, then convert back to a probability.
 [[slnc 500]]
 This is the same bank and the same model. Try part a with odds: three minutes.
@@ -523,6 +544,8 @@ So P of B given D equals 0.009 over 0.03, which is 0.3, and P of C given D equal
 [[slnc 500]]
 Note for you, a common mistake: answering 0.08 for P of C given D. Write the two numbers next to each other on the board: P of D given C, 0.08, is the default rate of a C loan; P of C given D, approximately 0.533, is the share of C loans among the defaulted ones.
 [[slnc 500]]
+Note for you: short on time? The third thing to skip in Session 2: do not work out part c. Show the slide and say: given no default, the probability of class C is about 0.19, almost the prior 0.2. Nearly every loan survives the year, so no default tells us little. Then go on to the lesson.
+[[slnc 500]]
 Part c. Last slide of the exercise. Same idea, but now the paths that end in D complement. First the denominator, by the complement: P of D complement equals 1 minus 0.03, which is 0.97. The path through C to D complement: P of D complement given C, times P of C, which is 0.92 times 0.2, which is 0.184. So P of C given D complement equals P of D complement given C times P of C, over P of D complement, which is 0.184 over 0.97, approximately 0.190.
 [[slnc 500]]
 Ask the class: why is this so close to the prior P of C, 0.2?
@@ -534,6 +557,8 @@ The lesson: class C is only 20 percent of the loans, but it gives more than half
 
 Independent events. Slide 28.
 [[slnc 600]]
+Note for you: clock check. This slide is planned for minute 19. If you start it after about minute 24, skip Exercise 9.26, slides 29 and 30.
+[[slnc 500]]
 Usually, knowing that F has happened changes the probability of E: that was the whole point of conditional probability. Sometimes, however, it does not change anything. Then we call the events independent.
 [[slnc 500]]
 E and F are independent if P of E F equals P of E times P of F.
@@ -565,6 +590,8 @@ Exercise 9.26. Pairwise but not mutually independent. Slides 29 and 30.
 [[slnc 600]]
 Two fair coins are tossed. Let A be the event that the first coin shows heads, B the event that the second coin shows heads, and C the event that the two coins show the same side. Part a: are A and B independent? A and C? B and C? Part b: are A, B, C mutually independent? Part c: explain in words why knowing two of the events tells you everything about the third.
 [[slnc 800]]
+Note for you: short on time? Skip this exercise, 7 minutes: go from slide 28 straight to slide 31. Say: for three events, pairwise independence is not enough. You need the product rule for every group, including all three together. Exercise 9.26 in the exercises PDF shows an example.
+[[slnc 500]]
 Note for you: give them two minutes for part a: list omega and the three events as sets, then check the three product rules. Most students guess that A and C are dependent; let them find out that they are not.
 [[slnc 500]]
 Four equally likely outcomes, each with probability one quarter: omega consists of heads heads, heads tails, tails heads, and tails tails. The first letter is the first coin.
@@ -707,6 +734,8 @@ Note for you: if you run late, do part d only for E of X, and leave the variance
 
 Expected value, variance, standard deviation. Slide 38.
 [[slnc 600]]
+Note for you: clock check. This slide is planned for minute 59. If you start it after about minute 64, skip Exercise 9.37, slides 41 and 42, after the call option.
+[[slnc 500]]
 The expected value of X is the average of its values, weighted by their probabilities: E of X equals the sum, over all values x, of x times p of x. Think of it as the long-run average: if we play the game many times, the average winnings per game get close to E of X.
 [[slnc 500]]
 Tiny example, the two coins again: X is the number of heads, with probabilities one quarter, one half and one quarter for 0, 1 and 2. E of X equals 0 times one quarter, plus 1 times one half, plus 2 times one quarter, which is 1.
@@ -771,6 +800,8 @@ Exercise 9.37. A simple trading strategy, a finance example. Slides 41 and 42.
 [[slnc 600]]
 A day-trading strategy gains 300 euros with probability 0.55 and loses 200 euros with probability 0.45 on a given day. Let X be the daily profit and loss, P and L, in euros. Part a: find E of X, the variance of X and the standard deviation of X. Part b: the trader doubles the position size, so the daily P and L becomes 2 X. Find its expectation and standard deviation. Part c: instead of part b, the broker charges a fixed fee of 20 euros per day, so the daily P and L becomes X minus 20. Find its expectation and standard deviation.
 [[slnc 800]]
+Note for you: short on time? Skip this exercise first in Session 2, 7 minutes: go from slide 40 straight to the summary, slide 43. Say: one more finance example, a trading strategy, is in the exercises PDF with its full solution.
+[[slnc 500]]
 Note for you: two minutes for part a; then ask parts b and c before revealing them. They are one-line answers with the rules of slide 38.
 [[slnc 500]]
 Part a. The values of X: 300 with probability 0.55, and minus 200 with probability 0.45. A loss is a negative number. E of X equals 300 times 0.55, plus minus 200 times 0.45, which is 165 minus 90, which is 75. On average the strategy earns 75 euros a day.

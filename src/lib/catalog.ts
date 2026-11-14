@@ -24,6 +24,9 @@ export type DocumentInfo = {
   kind: DocumentKind;
   title: string;
   description: string;
+  // Only in the private build (see privateSite): the lecturer's own files,
+  // listed apart from the published documents on the week's page.
+  lecturer?: boolean;
 };
 
 export type WeekInfo = {
@@ -52,6 +55,35 @@ export type CourseInfo = {
   source: string;
   weeks: WeekInfo[];
 };
+
+// The private build for the lecturer alone (pnpm deploy:private), served
+// behind a login, and pnpm dev unless run as pnpm dev:public: it adds the
+// read-aloud scripts and their audio to each week, and the course-wide
+// Exercises page. Never set for the public site; the GitHub Pages workflow
+// does not set it, and pnpm build refuses it.
+export const privateSite = process.env.PRIVATE_SITE === '1';
+
+// The lecturer's files of a week, only in the private build.
+function lecturerDocuments(): DocumentInfo[] {
+  return [
+    {
+      slug: 'script',
+      file: 'script.tex',
+      kind: 'document',
+      title: 'Script',
+      description: 'The read-aloud script of both sessions',
+      lecturer: true,
+    },
+    {
+      slug: 'script-print',
+      file: 'script-print.tex',
+      kind: 'document',
+      title: 'Script, print version',
+      description: 'The same script, laid out for printing',
+      lecturer: true,
+    },
+  ];
+}
 
 // The documents of a regular week: slides, the study guide (key formulas and
 // the exercises of the slides with detailed solutions), and all exercises one by one (a
@@ -89,6 +121,7 @@ function weekDocuments(): DocumentInfo[] {
       title: 'Exercises',
       description: 'Every exercise of the week, without solutions',
     },
+    ...(privateSite ? lecturerDocuments() : []),
   ];
 }
 

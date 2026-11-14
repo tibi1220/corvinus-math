@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/page-header';
 import { SlideViewer } from '@/components/slide-viewer';
 import { TableOfContents } from '@/components/table-of-contents';
 import {
+  audioHref,
   courseHref,
   courses,
   documentHref,
@@ -114,6 +115,19 @@ export default async function DocumentPage({ params }: { params: Params }) {
           </Link>
         ))}
       </div>
+
+      {/* The recording of a lecturer's document (private build only). */}
+      {week.audio
+        .filter(audio => audio.document === document.slug)
+        .map(audio => (
+          <audio
+            key={audio.file}
+            controls
+            preload='metadata'
+            src={audioHref(course, week, audio)}
+            className='mb-8 w-full'
+          />
+        ))}
 
       {document.kind === 'exercises' ? (
         <ExerciseBrowser

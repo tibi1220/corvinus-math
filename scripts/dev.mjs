@@ -10,6 +10,17 @@ import path from 'node:path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
 
+// The development server shows what only the private build has (the
+// lecturer's scripts and audio, the course-wide Exercises page; see
+// privateSite in src/lib/catalog.ts). pnpm dev:public (PRIVATE_SITE=0) shows
+// the site as the public sees it. Both children inherit this.
+if (process.env.PRIVATE_SITE !== '0') process.env.PRIVATE_SITE = '1';
+console.log(
+  process.env.PRIVATE_SITE === '1'
+    ? 'Private features on (pnpm dev:public turns them off).'
+    : 'Private features off: the site as the public sees it.',
+);
+
 // The generated content is not in git, so a fresh clone has none yet, and
 // next dev cannot start without it: only then is it built first. A failed
 // file is reported, and the watcher retries it after the next edit.

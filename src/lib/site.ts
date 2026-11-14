@@ -1,4 +1,5 @@
 import { basePath } from '@/lib/base-path';
+import { privateSite } from '@/lib/catalog';
 
 // Where the site is published. The canonical URLs of the pages, the sitemap
 // (app/sitemap.ts) and robots.txt (app/robots.ts) are built from it.
@@ -30,11 +31,11 @@ export const operator = {
 export const repositoryUrl = 'https://github.com/tibi1220/corvinus-math';
 
 // The course-wide Exercises page (every week's exercises together, with its
-// PDFs): only in development for now, while a single week is published. The
-// page itself is src/app/[course]/exercises/page.dev.tsx, which only next dev
-// builds (see next.config.ts); this flag hides the links to it, and pnpm build
-// does not make the PDFs (build-content.mjs --production).
-export const showCourseExercises = process.env.NODE_ENV === 'development';
+// PDFs): only with the private features for now (pnpm dev and the private
+// build). The page itself is src/app/[course]/exercises/page.dev.tsx, which
+// only they compile (see next.config.ts); this flag hides the links to it, and
+// without it the pipeline does not make the PDFs.
+export const showCourseExercises = privateSite;
 
 // The anonymous feedback form (Google Forms, no sign-in, no email addresses
 // collected), linked from the home page and described in the privacy policy.
