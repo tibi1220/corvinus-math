@@ -1,0 +1,104 @@
+% ---
+% title: Meeting for lunch
+% tags: independent-rv, uniform, joint-continuous
+% ---
+
+\begin{problem}
+	Two colleagues agree to meet for lunch between 12:00 and 13:00. Each of
+	them arrives at a time that is uniformly distributed over the hour,
+	independently of the other. Whoever arrives first waits 10 minutes for the
+	other, then leaves. Let $X$ and $Y$ be their arrival times in minutes after
+	12:00.
+	(a) Find the joint density of $X$ and $Y$.
+	(b) Find the probability that they meet, $P(|X-Y|\le 10)$.
+\end{problem}
+
+\begin{solution}
+	\idea Independent random variables have a joint density that is the product
+	of the marginal densities. Here the product is constant on a square, so a
+	probability is simply (area of the region)$\,\times\,$(the constant). We
+	find the area by geometry instead of a double integral.
+
+	\step{(a)} $X$ is uniform on $[0,60]$, so its density is
+	\[
+		f_X(x)=\begin{cases}
+			\dfrac{1}{60} & 0\le x\le 60, \\[6pt]
+			0             & \text{otherwise,}
+		\end{cases}
+	\]
+	and $Y$ has the same density $f_Y(y)=\frac{1}{60}$ on $[0,60]$. The two
+	arrival times are independent, so the joint density is the product of the
+	marginals:
+	\[
+		f(x,y)=f_X(x)\,f_Y(y)=\frac{1}{60}\cdot\frac{1}{60}=\frac{1}{3600}
+		\qquad\text{for } 0\le x\le 60,\ 0\le y\le 60,
+	\]
+	and $f(x,y)=0$ outside this square. Check: the square has area
+	$60\cdot60=3600$, so the total probability is $3600\cdot\frac1{3600}=1$.
+
+	\step{(b)} The first to arrive waits 10 minutes. So they meet exactly when
+	the two arrival times are at most 10 minutes apart: $|X-Y|\le10$, that is,
+	\[
+		x-10\le y\le x+10 .
+	\]
+	In the $(x,y)$-plane this is the band between the lines $y=x-10$ and
+	$y=x+10$ (shaded below).
+	\begin{center}
+		\begin{tikzpicture}[scale=0.075,>=stealth]
+			\fill[teal!30] (0,0)--(10,0)--(60,50)--(60,60)--(50,60)--(0,10)--cycle;
+			\draw[thick] (0,0) rectangle (60,60);
+			\draw[navy,thick] (10,0)--(60,50);
+			\draw[navy,thick] (0,10)--(50,60);
+			\draw[gray,dashed] (0,0)--(60,60);
+			\draw[->] (0,0)--(68,0) node[right] {$x$};
+			\draw[->] (0,0)--(0,68) node[above] {$y$};
+			\node[below] at (0,0) {$0$};
+			\node[below] at (10,0) {$10$};
+			\node[below] at (60,0) {$60$};
+			\node[left] at (0,10) {$10$};
+			\node[left] at (0,60) {$60$};
+			\node at (42,15) {\small no meeting};
+			\node at (18,45) {\small no meeting};
+			\node[navy,right] at (60,50) {\small $y=x-10$};
+			\node[navy,above] at (50,60) {\small $y=x+10$};
+		\end{tikzpicture}
+	\end{center}
+	Because the joint density is the constant $\frac{1}{3600}$ on the square,
+	\[
+		P(|X-Y|\le10)=\frac{\text{area of the band}}{3600}.
+	\]
+	The band is easiest to get through its complement. Outside the band there
+	are two right triangles, one in each corner. The lower one has its corners
+	at $(10,0)$, $(60,0)$ and $(60,50)$: both legs have length $50$, so its area
+	is $\frac12\cdot50\cdot50=1250$. By symmetry (swap the roles of $x$ and
+	$y$) the upper triangle has the same area. Together the two triangles have
+	area $2\cdot1250=2500$. So
+	\[
+		\text{area of the band}=3600-2500=1100,
+	\]
+	and
+	\[
+		P(|X-Y|\le10)=\frac{1100}{3600}=\frac{11}{36}\approx0.306 .
+	\]
+	The same result in one line: the two triangles together make one
+	$50$-by-$50$ square, so
+	\[
+		P(|X-Y|\le10)=1-\frac{50^2}{60^2}=1-\left(\frac{50}{60}\right)^2
+		=1-\frac{25}{36}=\frac{11}{36}.
+	\]
+
+	\begin{answer}
+		(a) $f(x,y)=\frac{1}{3600}$ for $0\le x\le60$, $0\le y\le60$, and $0$
+		otherwise \quad
+		(b) $P(|X-Y|\le10)=\frac{11}{36}\approx0.306$
+	\end{answer}
+	\begin{remark}
+		The double integral gives the same answer, but it is longer: the band
+		has to be split into pieces, because the bounds for $y$ change at
+		$x=10$ and at $x=50$. With a constant joint density, a probability is
+		an area times the constant, and simple geometry is the fastest route.
+		\textbf{Common mistake:} computing only $P(X-Y\le10)$ or forgetting one
+		of the two triangles. Either colleague can arrive first, so both
+		corners must be removed.
+	\end{remark}
+\end{solution}

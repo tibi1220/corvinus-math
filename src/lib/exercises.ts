@@ -28,6 +28,11 @@ const TAG_LABELS: Record<string, string> = {
   'equally-likely': 'equally likely outcomes',
   bayes: 'Bayes’ formula',
   'generalized-bayes': 'generalized Bayes formula',
+  continuous: 'continuous random variables',
+  'function-of-rv': 'function of a random variable',
+  'joint-discrete': 'joint distribution, discrete',
+  'joint-continuous': 'joint distribution, continuous',
+  'independent-rv': 'independent random variables',
 };
 
 export function tagLabel(tag: string) {

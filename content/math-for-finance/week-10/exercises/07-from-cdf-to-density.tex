@@ -1,0 +1,111 @@
+% ---
+% title: From the distribution function to the density
+% tags: distribution-function, density
+% ---
+
+\begin{problem}
+	A continuous random variable $X$ has distribution function
+	\[
+		F(x)=\begin{cases}
+			0           & x<0,      \\[2pt]
+			1-e^{-x^2}  & x\ge 0.
+		\end{cases}
+	\]
+	(a) Find the density $f(x)$ of $X$.
+	(b) Find $P(X>1)$.
+	(c) Find $P(1<X\le 2)$.
+	(d) Find the median of $X$, that is, the number $m$ with $P(X\le m)=\frac12$.
+\end{problem}
+
+\begin{solution}
+	\idea The density is the derivative of the distribution function:
+	$f(x)=F'(x)$. Probabilities of intervals need no integration at all: they
+	are differences of values of $F$. The median is found by solving $F(m)=\frac12$.
+
+	\step{(a)} For $x<0$ the function $F$ is constant $0$, so its derivative is
+	$0$: there is no probability on the negative numbers. For $x>0$
+	differentiate $1-e^{-x^2}$ with the chain rule. The inner function is
+	$-x^2$, with derivative $-2x$:
+	\[
+		f(x)=F'(x)=0-e^{-x^2}\cdot(-2x)=2x\,e^{-x^2},\qquad x>0.
+	\]
+	At the single point $x=0$ the value of a density does not matter (any
+	value gives the same probabilities), so we may use the same formula there
+	too. So
+	\[
+		f(x)=\begin{cases}
+			2x\,e^{-x^2} & x\ge 0, \\[2pt]
+			0            & x<0.
+		\end{cases}
+	\]
+	Check: $f(x)\ge0$ everywhere, and the total area is
+	\[
+		\int_0^\infty 2x\,e^{-x^2}\,dx=\Bigl[-e^{-x^2}\Bigr]_0^\infty=0-(-1)=1,
+	\]
+	as it must be (because $e^{-x^2}\to0$ as $x\to\infty$, the bracket is $0$
+	at the upper end). The graph below shows $f$; the shaded area is the
+	probability in part (c).
+	\begin{center}
+		\begin{tikzpicture}[x=2cm,y=3cm,>=stealth]
+			\fill[teal!30] (1,0) -- plot[domain=1:2,samples=50]
+			(\x,{2*\x*exp(-\x*\x)}) -- (2,0) -- cycle;
+			\draw[->] (-0.3,0)--(3.2,0) node[right] {$x$};
+			\draw[->] (0,-0.05)--(0,1.05) node[above] {$f(x)$};
+			\foreach \x in {1,2,3} \draw (\x,0.02)--(\x,-0.02) node[below] {$\x$};
+			\node[below left] at (0,0) {$0$};
+			\draw[navy,very thick] (-0.3,0)--(0,0);
+			\draw[navy,very thick] plot[domain=0:3,samples=80]
+			(\x,{2*\x*exp(-\x*\x)});
+			\draw[gold,thick,dashed] (0.8326,0)--(0.8326,{2*0.8326*exp(-0.6931)});
+			\node[gold!80!black,above right] at (0.83,0.86) {\footnotesize median $m\approx0.833$};
+			\draw[teal!70!black] (1.4,0.2)--(2.05,0.45) node[right] {\footnotesize $P(1<X\le2)$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(b)} ``$X>1$'' is the complement of ``$X\le1$'', so
+	\[
+		P(X>1)=1-F(1)=1-\bigl(1-e^{-1}\bigr)=e^{-1}\approx 0.368.
+	\]
+
+	\step{(c)} The event ``$X\le2$'' splits into the two disjoint events
+	``$X\le1$'' and ``$1<X\le2$''. So $F(2)=F(1)+P(1<X\le2)$, and
+	\[
+		P(1<X\le2)=F(2)-F(1)=\bigl(1-e^{-4}\bigr)-\bigl(1-e^{-1}\bigr)
+		=e^{-1}-e^{-4}\approx 0.3679-0.0183=0.3496\approx 0.350.
+	\]
+	The same number comes from integrating the density from (a):
+	\[
+		\int_1^2 2x\,e^{-x^2}\,dx=\Bigl[-e^{-x^2}\Bigr]_1^2
+		=-e^{-4}-\bigl(-e^{-1}\bigr)=e^{-1}-e^{-4}.
+	\]
+	This is no accident: $-e^{-x^2}$ is an antiderivative of $f$, and it
+	differs from $F$ only by the constant $1$.
+
+	\step{(d)} The median $m$ splits the probability in half: $F(m)=\frac12$.
+	Since $F(x)=0$ for $x<0$, the median is positive, and we solve
+	\[
+		1-e^{-m^2}=\frac12
+		\quad\Longleftrightarrow\quad
+		e^{-m^2}=\frac12
+		\quad\Longleftrightarrow\quad
+		-m^2=\ln\frac12=-\ln 2
+		\quad\Longleftrightarrow\quad
+		m^2=\ln 2.
+	\]
+	We take the positive root: $m=\sqrt{\ln 2}\approx\sqrt{0.6931}\approx 0.833$.
+
+	\begin{answer}
+		(a)~$f(x)=2x\,e^{-x^2}$ for $x\ge0$, $f(x)=0$ for $x<0$ \quad
+		(b)~$e^{-1}\approx0.368$ \\
+		(c)~$e^{-1}-e^{-4}\approx0.350$ \quad
+		(d)~$m=\sqrt{\ln2}\approx0.833$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing $P(1<X\le2)$ as $f(2)-f(1)$. The
+		\emph{density} at a point is not a probability; differences of the
+		\emph{distribution function} $F$ are. Also, for a continuous random
+		variable a single point has probability $0$, so here
+		$P(1<X\le2)=P(1\le X\le2)=P(1<X<2)$: unlike in the discrete case, it
+		does not matter whether the endpoints are included.
+	\end{remark}
+\end{solution}

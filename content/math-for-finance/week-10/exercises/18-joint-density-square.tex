@@ -1,0 +1,161 @@
+% ---
+% title: A joint density on the unit square
+% tags: joint-continuous, marginal, joint-distribution-function
+% ---
+
+\begin{problem}
+	The random variables $X$ and $Y$ have joint density
+	\[ f(x,y)=\begin{cases}
+			x+y, & 0\le x\le 1,\ 0\le y\le 1, \\
+			0,   & \text{otherwise.}
+		\end{cases} \]
+	(a) Check that the total probability is 1.
+	(b) Find $F\bigl(\frac12,\frac12\bigr)=P\bigl(X\le\frac12,\,Y\le\frac12\bigr)$.
+	(c) Find the marginal density $f_X(x)$ of $X$.
+	(d) Find $P(X>Y)$.
+\end{problem}
+
+\begin{slideproblem}
+	$X$ and $Y$ have joint density $f(x,y)=x+y$ for $0\le x\le1$, $0\le y\le1$,
+	and $f(x,y)=0$ otherwise.\\
+	(a)~Check that the total probability is 1.
+	\ (b) $F\bigl(\frac12,\frac12\bigr)=P\bigl(X\le\frac12,\,Y\le\frac12\bigr)$?
+	\ (c) Marginal density $f_X(x)$?
+	\ (d) $P(X>Y)$?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Inner integral over $y$ ($x$ fixed), then over $x$:
+	\vspace{-1mm}
+	\[ \int_0^1(x+y)\,dy=\Bigl[xy+\frac{y^2}{2}\Bigr]_0^1=x+\frac12,
+		\qquad
+		\int_0^1\Bigl(x+\frac12\Bigr)dx=\Bigl[\frac{x^2}{2}+\frac{x}{2}\Bigr]_0^1
+		=\frac12+\frac12=1. \]
+	\pause
+	(b) Integrate over the small square $[0,\frac12]\times[0,\frac12]$:
+	\[ \int_0^{1/2}(x+y)\,dy=\frac{x}{2}+\frac18, \qquad
+		\int_0^{1/2}\Bigl(\frac{x}{2}+\frac18\Bigr)dx
+		=\Bigl[\frac{x^2}{4}+\frac{x}{8}\Bigr]_0^{1/2}
+		=\frac1{16}+\frac1{16}=\frac18. \]
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.64\textwidth}
+			(c) Integrate out $y$ (already done in (a)):
+			\[ f_X(x)=\int_0^1(x+y)\,dy=x+\frac12,\qquad 0\le x\le 1, \]
+			and $f_X(x)=0$ otherwise.
+			\pause
+			\medskip
+
+			(d) $f(x,y)=f(y,x)$: the density is \alert{symmetric}, so
+			$P(X>Y)=P(Y>X)$.
+			Also $P(X=Y)=0$ (a line has no area). The two add up to 1:
+			\[ P(X>Y)=\frac12. \]
+		\end{column}
+		\begin{column}{.34\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=2.2]
+				\fill[teal!30] (0,0) -- (1,0) -- (1,1) -- cycle;
+				\fill[gold!55,opacity=.5] (0,0) rectangle (.5,.5);
+				\draw[gold!80!black,thick] (0,0) rectangle (.5,.5);
+				\draw[navy,thick] (0,0) rectangle (1,1);
+				\draw[navy,dashed] (0,0) -- (1,1) node[above right] {\tiny $y=x$};
+				\draw[->] (0,0) -- (1.2,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,0) -- (0,1.2) node[above] {\scriptsize $y$};
+				\node[below] at (.5,0) {\tiny $\frac12$};
+				\node[below] at (1,0) {\tiny $1$};
+				\node[left] at (0,.5) {\tiny $\frac12$};
+				\node[left] at (0,1) {\tiny $1$};
+				\node at (.15,.37) {\tiny (b)};
+				\node at (.75,.3) {\tiny (d)};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea A probability for a pair $(X,Y)$ is the double integral of the joint
+	density over the region in question. Compute the inner integral first (over
+	$y$, with $x$ held fixed), then the outer one. The marginal density of $X$ is
+	obtained by integrating the joint density over all values of $y$. In (d),
+	symmetry gives the answer without any integration.
+
+	\step{(a)} The density is zero outside the unit square, so we only integrate
+	over $0\le x\le1$, $0\le y\le1$. Inner integral: hold $x$ fixed and integrate
+	over $y$. An antiderivative of $x+y$ in $y$ is $xy+\frac{y^2}{2}$ ($x$ is a
+	constant here). So
+	\[ \int_0^1(x+y)\,dy=\Bigl[xy+\frac{y^2}{2}\Bigr]_{y=0}^{y=1}
+		=\Bigl(x+\frac12\Bigr)-0=x+\frac12. \]
+	Outer integral: an antiderivative of $x+\frac12$ is $\frac{x^2}{2}+\frac{x}{2}$, so
+	\[ \int_0^1\Bigl(x+\frac12\Bigr)dx=\Bigl[\frac{x^2}{2}+\frac{x}{2}\Bigr]_0^1
+		=\frac12+\frac12=1. \]
+	The density is also nonnegative everywhere, so it is a valid joint density.
+
+	\step{(b)} By definition, $F(a,b)=P(X\le a,\,Y\le b)$. The event
+	$\{X\le\frac12,\,Y\le\frac12\}$ is the small square $[0,\frac12]\times[0,\frac12]$
+	in the lower left corner of the unit square (see the picture). Integrate over it,
+	again over $y$ first with $x$ fixed:
+	\[ \int_0^{1/2}(x+y)\,dy=\Bigl[xy+\frac{y^2}{2}\Bigr]_{y=0}^{y=1/2}
+		=\frac{x}{2}+\frac{1}{8}. \]
+	Then over $x$: an antiderivative of $\frac{x}{2}+\frac18$ is
+	$\frac{x^2}{4}+\frac{x}{8}$, so
+	\[ F\Bigl(\frac12,\frac12\Bigr)=\int_0^{1/2}\Bigl(\frac{x}{2}+\frac18\Bigr)dx
+		=\Bigl[\frac{x^2}{4}+\frac{x}{8}\Bigr]_0^{1/2}
+		=\frac{1}{16}+\frac{1}{16}=\frac18. \]
+	The small square covers a quarter of the area, but it gets only $\frac18$ of
+	the probability: the density $x+y$ is small near the origin and large near the
+	corner $(1,1)$.
+	\begin{center}
+		\begin{tikzpicture}[scale=2.6]
+			\fill[teal!30] (0,0) -- (1,0) -- (1,1) -- cycle;
+			\fill[gold!55,opacity=.5] (0,0) rectangle (.5,.5);
+			\draw[gold!80!black,thick] (0,0) rectangle (.5,.5);
+			\draw[navy,thick] (0,0) rectangle (1,1);
+			\draw[navy,dashed] (0,0) -- (1,1) node[above right] {\scriptsize $y=x$};
+			\draw[->] (0,0) -- (1.2,0) node[right] {\small $x$};
+			\draw[->] (0,0) -- (0,1.2) node[above] {\small $y$};
+			\node[below] at (.5,0) {\scriptsize $\frac12$};
+			\node[below] at (1,0) {\scriptsize $1$};
+			\node[left] at (0,.5) {\scriptsize $\frac12$};
+			\node[left] at (0,1) {\scriptsize $1$};
+			\node at (.15,.37) {\scriptsize (b)};
+			\node at (.75,.3) {\scriptsize (d): $x>y$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(c)} To get the density of $X$ alone, integrate the joint density over all
+	values of $y$, with $x$ fixed. For $0\le x\le1$ this is exactly the inner
+	integral of (a):
+	\[ f_X(x)=\int_{-\infty}^{\infty}f(x,y)\,dy=\int_0^1(x+y)\,dy=x+\frac12. \]
+	For $x$ outside $[0,1]$ the joint density is zero for every $y$, so
+	$f_X(x)=0$. Check: $\int_0^1\bigl(x+\frac12\bigr)dx=1$, as computed in (a).
+
+	\step{(d)} The density does not change if we swap $x$ and $y$:
+	$f(x,y)=x+y=y+x=f(y,x)$, and the unit square is also symmetric about the
+	diagonal $y=x$. So the triangle below the diagonal ($x>y$) and the triangle
+	above it ($y>x$) carry the same probability: $P(X>Y)=P(Y>X)$. The diagonal
+	itself is a line, which has zero area, so $P(X=Y)=0$. The three events cover
+	all cases, hence
+	\[ P(X>Y)+P(Y>X)+0=1 \quad\Longrightarrow\quad P(X>Y)=\frac12. \]
+	Direct check: for fixed $x$, the triangle has $0\le y\le x$, and
+	\[ \int_0^x(x+y)\,dy=x^2+\frac{x^2}{2}=\frac{3x^2}{2},\qquad
+		\int_0^1\frac{3x^2}{2}\,dx=\Bigl[\frac{x^3}{2}\Bigr]_0^1=\frac12. \]
+	\begin{answer}
+		(a) $\int_0^1\!\int_0^1(x+y)\,dy\,dx=1$
+		\quad (b) $F\bigl(\frac12,\frac12\bigr)=\frac18$
+		\quad (c) $f_X(x)=x+\frac12$ for $0\le x\le1$, and $0$ otherwise
+		\quad (d) $P(X>Y)=\frac12$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (b), taking the area of the small square
+		($\frac14$) as the probability. That works only for a constant (uniform)
+		density. Here the density varies, so we must integrate. Another mistake is
+		to forget that the inner bound depends on the region: in the direct check of
+		(d), $y$ runs from $0$ to $x$, not from $0$ to $1$.
+	\end{remark}
+\end{solution}

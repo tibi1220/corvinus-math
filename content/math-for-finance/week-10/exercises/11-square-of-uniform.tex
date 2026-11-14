@@ -1,0 +1,158 @@
+% ---
+% title: The square of a uniform random variable
+% tags: function-of-rv, uniform, distribution-function
+% ---
+
+\begin{problem}
+	Let $X$ be uniformly distributed on $[0,1]$, that is, its density is
+	$f_X(x)=1$ for $0\le x\le1$ and $f_X(x)=0$ otherwise. Let $Y=X^2$.
+	(a) Find the distribution function $F_Y(y)=P(Y\le y)$ of $Y$.
+	(b) Find the density $f_Y(y)$ of $Y$.
+	(c) Find $P(Y\le0.25)$ and $P(Y>0.81)$.
+	(d) Is $Y$ uniformly distributed on $[0,1]$? Explain.
+\end{problem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol \alert{Method:} first the distribution function, then differentiate.
+	\pause
+
+	(a) $0\le Y\le1$. For $0\le y\le1$ (using $X\ge0$ and $F_X(x)=x$ on $[0,1]$):
+	\[ F_Y(y)=P(X^2\le y)=P\big(X\le\sqrt y\,\big)=\sqrt y ; \]
+	$F_Y(y)=0$ for $y<0$ and $F_Y(y)=1$ for $y>1$.
+	\pause
+
+	(b) Differentiate: \
+	$f_Y(y)=F_Y'(y)=\dfrac{1}{2\sqrt y}$ for $0<y\le1$, \ $f_Y(y)=0$ otherwise.
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.52\textwidth}
+			(c) Use $F_Y$:
+			\[ P(Y\le0.25)=F_Y(0.25)=\sqrt{0.25}=0.5, \]
+			\[ P(Y>0.81)=1-F_Y(0.81)=1-0.9=0.1. \]
+			Check: $Y\le0.25 \iff X\le0.5$, \ and $Y>0.81\iff X>0.9$.
+		\end{column}
+		\begin{column}{.46\textwidth}
+			\centering
+			\begin{tikzpicture}[xscale=3.6,yscale=.62]
+				\fill[teal!30] (0,0) -- (0,{1/(2*sqrt(.016))}) -- plot[domain=.016:.25,samples=50]
+					(\x,{1/(2*sqrt(\x))}) -- (.25,0) -- cycle;
+				\fill[gold!50] (.81,0) -- plot[domain=.81:1,samples=20]
+					(\x,{1/(2*sqrt(\x))}) -- (1,0) -- cycle;
+				\draw[->] (0,0) -- (1.15,0) node[right] {\scriptsize $y$};
+				\draw[->] (0,0) -- (0,4.3) node[above] {\scriptsize $f_Y(y)$};
+				\draw[navy,thick] plot[domain=.016:1,samples=60]
+					(\x,{1/(2*sqrt(\x))});
+				\draw[navy,thick] (1,.5) -- (1,0);
+				\foreach \x/\l in {.25/0.25,.81/0.81,1/1}
+				\draw (\x,.08) -- (\x,-.08) node[below] {\tiny $\l$};
+				\draw (.02,1) -- (-.02,1) node[left] {\tiny $1$};
+				\draw[dashed,gray] (0,1) -- (1,1);
+				\node[teal!60!black] at (.15,.45) {\tiny $0.5$};
+				\node at (.9,.25) {\tiny $0.1$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	\pause
+	\medskip
+
+	(d) \alert{No.} The density $1/(2\sqrt y)$ is not constant: it is large
+	near 0. Squaring pushes numbers in $(0,1)$ toward 0
+	(e.g.\ $0.5^2=0.25$), so small values of $Y$ are more likely.
+	The dashed line is the uniform density, for comparison.
+\end{slides}
+
+\begin{solution}
+	\idea To find the distribution of a function of a random variable, first find
+	its distribution function: write the event $\{Y\le y\}$ as an event about $X$,
+	whose distribution we know. Then differentiate to get the density.
+
+	\step{(a)} Since $0\le X\le1$, also $0\le Y=X^2\le1$. So $F_Y(y)=0$ for
+	$y<0$ (the event $Y\le y$ is impossible), and $F_Y(y)=1$ for $y>1$ (the event
+	is certain). Now take $0\le y\le1$. The event $\{X^2\le y\}$ means
+	$-\sqrt y\le X\le\sqrt y$; as $X$ is never negative, this is the same as
+	$\{X\le\sqrt y\}$. Hence
+	\[ F_Y(y)=P(X^2\le y)=P\big(X\le\sqrt y\,\big)=F_X\big(\sqrt y\,\big). \]
+	The distribution function of the uniform $X$ is, for $0\le x\le1$,
+	\[ F_X(x)=\int_{-\infty}^{x}f_X(t)\,dt=\int_0^x1\,dt=\big[t\big]_0^x=x-0=x. \]
+	With $x=\sqrt y$ (which is in $[0,1]$):
+	\[ F_Y(y)=\begin{cases}
+			0,       & y<0,         \\
+			\sqrt y, & 0\le y\le1, \\
+			1,       & y>1.
+		\end{cases} \]
+	Check: $F_Y(0)=0$ and $F_Y(1)=1$, so $F_Y$ is continuous and increases from
+	0 to 1, as it should.
+
+	\step{(b)} The density is the derivative of the distribution function.
+	On $0<y<1$, writing $\sqrt y=y^{1/2}$,
+	\[ f_Y(y)=F_Y'(y)=\frac12\,y^{-1/2}=\frac{1}{2\sqrt y}. \]
+	Outside $[0,1]$ the distribution function is constant, so the density is 0.
+	(The value at the single points $y=0$ and $y=1$ does not matter: a single
+	point has probability 0.) So
+	\[ f_Y(y)=\begin{cases}
+			\dfrac{1}{2\sqrt y}, & 0<y\le1,    \\[2mm]
+			0,                   & \text{otherwise}.
+		\end{cases} \]
+	Check that the total area is 1. An antiderivative of $\frac12 y^{-1/2}$ is
+	$y^{1/2}$, so
+	\[ \int_0^1\frac{1}{2\sqrt y}\,dy=\big[\sqrt y\,\big]_0^1=\sqrt1-\sqrt0=1. \]
+	The density goes to infinity as $y\to0$, but the area under it stays finite.
+	This is allowed: a density need not be bounded, only nonnegative with total
+	area 1.
+
+	\step{(c)} Use the distribution function from (a):
+	\[ P(Y\le0.25)=F_Y(0.25)=\sqrt{0.25}=0.5. \]
+	The event $Y>0.81$ is the complement of $Y\le0.81$, so
+	\[ P(Y>0.81)=1-F_Y(0.81)=1-\sqrt{0.81}=1-0.9=0.1. \]
+	Both results are easy to check with $X$ directly: $Y\le0.25$ happens exactly
+	when $X\le0.5$, which has probability 0.5 for a uniform $X$; and $Y>0.81$
+	happens exactly when $X>0.9$, which has probability $1-0.9=0.1$. In the
+	picture the two probabilities are the shaded areas under $f_Y$.
+	\begin{center}
+		\begin{tikzpicture}[xscale=5,yscale=.8]
+			\fill[teal!30] (0,0) -- (0,{1/(2*sqrt(.016))}) -- plot[domain=.016:.25,samples=50]
+				(\x,{1/(2*sqrt(\x))}) -- (.25,0) -- cycle;
+			\fill[gold!50] (.81,0) -- plot[domain=.81:1,samples=20]
+				(\x,{1/(2*sqrt(\x))}) -- (1,0) -- cycle;
+			\draw[->] (0,0) -- (1.15,0) node[right] {\small $y$};
+			\draw[->] (0,0) -- (0,4.3) node[above] {\small $f_Y(y)$};
+			\draw[navy,thick] plot[domain=.016:1,samples=60]
+				(\x,{1/(2*sqrt(\x))});
+			\draw[navy,thick] (1,.5) -- (1,0);
+			\foreach \x/\l in {.25/0.25,.81/0.81,1/1}
+			\draw (\x,.08) -- (\x,-.08) node[below] {\scriptsize $\l$};
+			\draw (.02,1) -- (-.02,1) node[left] {\scriptsize $1$};
+			\draw[dashed,gray] (0,1) -- (1,1);
+			\node[teal!60!black] at (.15,.45) {\scriptsize $0.5$};
+			\node at (.9,.25) {\scriptsize $0.1$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(d)} No. A uniform distribution on $[0,1]$ has constant density 1 (the
+	dashed line in the picture), and its distribution function is $F(y)=y$. Here
+	$f_Y(y)=\frac{1}{2\sqrt y}$ is not constant: it is above 1 for $y<0.25$ and
+	below 1 for $y>0.25$. The reason is that squaring a number between 0 and 1
+	makes it smaller and pushes it toward 0: for example $0.5^2=0.25$ and
+	$0.1^2=0.01$. So half of the probability lands in $[0,0.25]$, a quarter of
+	the interval, and small values of $Y$ are more likely than large ones.
+	\begin{answer}
+		(a) $F_Y(y)=0$ for $y<0$, $F_Y(y)=\sqrt y$ for $0\le y\le1$, $F_Y(y)=1$ for $y>1$
+		\quad (b) $f_Y(y)=\frac{1}{2\sqrt y}$ for $0<y\le1$, and 0 otherwise
+		\quad (c) $P(Y\le0.25)=0.5$, $P(Y>0.81)=0.1$
+		\quad (d) no: the density is not constant; values near 0 are more likely
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} trying to get the density of $Y$ by plugging
+		into the density of $X$, as in $f_Y(y)=f_X(\sqrt y)=1$. This would say
+		that $Y$ is uniform, which is false. Densities do not transform this
+		way, because squaring stretches and squeezes the intervals; always go
+		through the distribution function, $F_Y(y)=P(Y\le y)$, and differentiate
+		at the end.
+	\end{remark}
+\end{solution}

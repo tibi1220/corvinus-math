@@ -1,0 +1,427 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Week 10: continuous random variables, density, distribution function, the
+% distribution of a function of a random variable, joint distributions
+% (discrete and continuous), independent random variables.
+% Sessions 1 and 2 are held on the SAME DAY, back to back (2 x 90 min,
+% short break in between).
+% Reference: Ross, A First Course in Probability, 8th ed., Ch. 5--6 (notation
+% and the problems paraphrased); the course lecture slides only for comparison.
+% The exercises are in exercises/ (one file each), placed by \exerciseframe.
+
+\documentclass[aspectratio=169,11pt,usepdftitle=false]{beamer}
+\usepackage{fontspec}
+\setsansfont{Latin Modern Sans}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{booktabs}
+\usepackage{cancel}
+
+\usetheme{Madrid}
+
+\definecolor{navy}{RGB}{24,48,75}
+\definecolor{teal}{RGB}{0,120,125}
+\definecolor{gold}{RGB}{190,130,20}
+
+\setbeamercolor{structure}{fg=navy}
+\setbeamercolor{alerted text}{fg=teal}
+\setbeamercolor{block title}{bg=navy,fg=white}
+\setbeamercolor{block body}{bg=navy!5}
+\setbeamercolor{block title example}{bg=teal,fg=white}
+\setbeamercolor{block body example}{bg=teal!6}
+\setbeamercolor{block title alerted}{bg=gold,fg=white}
+\setbeamercolor{block body alerted}{bg=gold!8}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{%
+  \usebeamerfont{footline}\hspace{1em}\insertshortauthor\hfill%
+  \insertshorttitle\quad|\quad%
+  \insertframenumber/\inserttotalframenumber%
+  \hspace{1em}\vspace{2mm}%
+}
+\setbeamertemplate{itemize items}[circle]
+
+% Contact (beamer loads hyperref itself)
+\newcommand{\myemail}{tiborsandor2001@gmail.com}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Om}{\Omega}
+% Expectation, variance and standard deviation, as in Ross: E[X],
+% Var(X), SD(X)
+\newcommand{\E}{\operatorname{E}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\SD}{\operatorname{SD}}
+\newcommand{\sol}{\alert{Solution.}\ }
+
+% Small Venn diagram of two events E, F in Omega; #1 = shading commands
+\newcommand{\venn}[1]{%
+  \begin{tikzpicture}[scale=.42,baseline=(O.base)]
+    \node (O) at (.5,0) {\phantom{x}};
+    #1
+    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
+    \draw[thick,navy] (0,0) circle (.85);
+    \draw[thick,navy] (1,0) circle (.85);
+    \node at (-.35,0) {\scriptsize $E$};
+    \node at (1.35,0) {\scriptsize $F$};
+    \node at (2.15,.8) {\scriptsize $\Omega$};
+  \end{tikzpicture}}
+\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+
+% The exercises (one file each in exercises/) and \exerciseframe
+\input{exercises/macros}
+
+% PDF properties and the date on the title slide
+\input{document-info}
+\documentinfo{Slides}
+
+\title[Mathematics for Finance]{Mathematics for Finance}
+\author{Tibor SÁNDOR}
+\subtitle{Week 10: Continuous random variables, joint distributions,
+  independence}
+\institute{Corvinus University of Budapest\\[2pt]
+  \href{mailto:\myemail}{\texttt{\myemail}}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}{Plan for today}
+  \begin{enumerate}
+    \item \textbf{Session 1 (90 min):} continuous random variables and
+          their density; the distribution function; two examples, the
+          uniform and the exponential distribution; the distribution of a
+          function of a random variable.
+    \item \textbf{Session 2 (90 min):} joint distributions of two random
+          variables, discrete and continuous; marginal distributions; the
+          joint distribution function; independent random variables.
+  \end{enumerate}
+  \vspace{.3cm}
+  \textbf{Why does a finance student need this?} Waiting times, losses and
+  returns can take any value in an interval, and the risk of a portfolio
+  depends on how its parts move \emph{together}.
+\end{frame}
+
+%======================================================================
+\section{Session 1: Continuous random variables}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 1: Continuous random variables
+\end{frame}
+
+\begin{frame}{From discrete to continuous}
+  \small
+  \textbf{Last week:} a discrete random variable takes finitely (or
+  countably) many values $x_1,x_2,\dots$; its pmf $p(x)=P(X=x)$ gives each
+  value a probability, and the probabilities add up to 1.
+  \vspace{2mm}
+
+  \textbf{Now:} the time until the next order, the loss on a loan, a
+  return. These can take \emph{any} value in an interval.
+  \begin{itemize}
+    \item There are too many values to give each a positive probability:
+          $P(X=a)=0$ for every single number $a$.
+    \item Instead we ask for the probability of an \emph{interval}:
+          $P(a\le X\le b)$.
+    \item We describe it with a curve, the \textbf{density}: the
+          probability is the \emph{area} under the curve.
+  \end{itemize}
+  \vspace{1mm}
+  \begin{center}
+    \begin{tikzpicture}[scale=.75]
+      \fill[teal!25] (1.2,0) -- plot[domain=1.2:2.6,samples=40]
+        (\x,{1.6*exp(-0.5*(\x-2)^2)}) -- (2.6,0) -- cycle;
+      \draw[->] (-.2,0) -- (4.6,0) node[right] {$x$};
+      \draw[thick,navy] plot[domain=0:4.3,samples=60]
+        (\x,{1.6*exp(-0.5*(\x-2)^2)});
+      \node[navy] at (3.9,1.2) {$f(x)$};
+      \node[below] at (1.2,0) {\scriptsize $a$};
+      \node[below] at (2.6,0) {\scriptsize $b$};
+      \node at (1.9,.55) {\scriptsize area};
+    \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Continuous random variables and their density}
+  \small
+  \begin{block}{Definition}
+    $X$ is \textbf{continuous} if there is a function $f$, its
+    \textbf{density}, such that for every interval
+    \[ P(a\le X\le b)=\int_a^b f(x)\,dx . \]
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{.55\textwidth}
+      \begin{block}{A density has two properties}
+        (1) $f(x)\ge 0$ for every $x$;\\[2pt]
+        (2) $\displaystyle\int_{-\infty}^{\infty} f(x)\,dx=1$: the total
+        area is 1.
+      \end{block}
+    \end{column}
+    \begin{column}{.43\textwidth}
+      \begin{itemize}
+        \item $P(X=a)=\int_a^a f=0$, so
+              $P(a\le X\le b)=P(a<X<b)$.
+        \item $f(x)$ is \emph{not} a probability: it can be bigger
+              than 1. Only areas are probabilities.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{settlement-time}
+
+\begin{frame}{The distribution function}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.56\textwidth}
+      \begin{block}{Distribution function (any random variable)}
+        \[ F(x)=P(X\le x). \]
+        For a continuous $X$: \
+        $F(x)=\displaystyle\int_{-\infty}^{x} f(t)\,dt$, \ and \
+        $f(x)=F'(x)$.
+      \end{block}
+      \begin{block}{Probabilities from $F$}
+        $P(a<X\le b)=F(b)-F(a)$, \quad $P(X>a)=1-F(a)$.
+      \end{block}
+      $F$ grows from 0 to 1; for a continuous $X$ it has no jumps (a
+      discrete $X$ has a step function).
+    \end{column}
+    \begin{column}{.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=.75]
+        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+        \draw[->] (0,-.1) -- (0,2.3);
+        \draw[dashed,gray] (0,2) node[left,black] {\scriptsize 1} -- (4.1,2);
+        \draw[thick,navy] (-.3,0) -- (.5,0)
+          plot[domain=.5:3.5,samples=40]
+          (\x,{2*(3*((\x-.5)/3)^2-2*((\x-.5)/3)^3)}) -- (4.1,2);
+        \node[navy] at (.9,1.4) {$F(x)$};
+        \draw[dotted] (1.6,0) node[below] {\scriptsize $a$} -- (1.6,.52)
+          -- (4.1,.52);
+        \draw[dotted] (2.8,0) node[below] {\scriptsize $b$} -- (2.8,1.55)
+          -- (4.1,1.55);
+        \draw[<->,teal,thick] (4.1,.52) -- (4.1,1.55);
+        \node[teal,right] at (4.1,1.03) {\scriptsize $F(b)-F(a)$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{loss-given-default}
+
+\begin{frame}{Two examples: uniform and exponential}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.49\textwidth}
+      \begin{block}{Uniform on $[\alpha,\beta]$}
+        $f(x)=\dfrac{1}{\beta-\alpha}$ on $[\alpha,\beta]$, 0 outside.\\[3pt]
+        Probability $=$ length$/(\beta-\alpha)$: every interval of the same
+        length is equally likely.
+      \end{block}
+      \centering
+      \begin{tikzpicture}[scale=.7]
+        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+        \fill[teal!25] (1.6,0) rectangle (2.6,1.2);
+        \draw[thick,navy] (-.3,0) -- (.6,0) (.6,1.2) -- (3.4,1.2)
+          (3.4,0) -- (4,0);
+        \draw[dotted] (.6,0) node[below] {\scriptsize $\alpha$} -- (.6,1.2);
+        \draw[dotted] (3.4,0) node[below] {\scriptsize $\beta$} -- (3.4,1.2);
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \begin{block}{Exponential with rate $\lambda>0$}
+        $f(x)=\lambda e^{-\lambda x}$ for $x\ge0$, 0 for $x<0$.\\[3pt]
+        $F(x)=1-e^{-\lambda x}$, \ $P(X>x)=e^{-\lambda x}$.\\[3pt]
+        Waiting times: the next order, a default.
+      \end{block}
+      \centering
+      \begin{tikzpicture}[scale=.7]
+        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
+        \fill[teal!25] (1.5,0) -- plot[domain=1.5:4,samples=30]
+          (\x,{1.6*exp(-0.9*\x)}) -- (4,0) -- cycle;
+        \draw[thick,navy] (-.3,0) -- (0,0) plot[domain=0:4,samples=40]
+          (\x,{1.6*exp(-0.9*\x)});
+        \node[below] at (1.5,0) {\scriptsize $x$};
+        \node[teal] at (2.9,.65) {\scriptsize $e^{-\lambda x}$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{order-arrivals}
+
+\begin{frame}{The distribution of a function of a random variable}
+  \small
+  We know the distribution of $X$; what is the distribution of
+  $Y=g(X)$, e.g.\ $Y=X^2$ or $Y=1000(1+X)$?
+  \begin{block}{Method: first the distribution function}
+    \begin{enumerate}
+      \item $F_Y(y)=P(Y\le y)=P(g(X)\le y)$;
+      \item rewrite the event $g(X)\le y$ as an event about $X$, and use
+            the distribution of $X$;
+      \item if a density is needed: $f_Y(y)=F_Y'(y)$.
+    \end{enumerate}
+  \end{block}
+  \textbf{Example.} $X$ uniform on $[0,1]$, $Y=2X+3$. For $3\le y\le 5$:
+  \[ F_Y(y)=P(2X+3\le y)=P\Big(X\le \frac{y-3}{2}\Big)=\frac{y-3}{2}, \qquad
+    f_Y(y)=\frac12 . \]
+  So $Y$ is uniform on $[3,5]$. A linear function keeps the shape; other
+  functions change it.
+\end{frame}
+
+\exerciseframe{square-of-uniform}
+
+\begin{frame}{Session 1: summary}
+  \small
+  \begin{itemize}
+    \item Continuous $X$: $P(a\le X\le b)=\int_a^b f(x)\,dx$, the area
+          under the density. $f\ge0$, total area 1, $P(X=a)=0$.
+    \item Distribution function $F(x)=P(X\le x)=\int_{-\infty}^x f(t)\,dt$;
+          \ $f=F'$; \ $P(a<X\le b)=F(b)-F(a)$.
+    \item Uniform on $[\alpha,\beta]$: probability $=$ length$/(\beta-\alpha)$.
+    \item Exponential with rate $\lambda$: $P(X>x)=e^{-\lambda x}$; it has
+          no memory.
+    \item The distribution of $Y=g(X)$: first $F_Y(y)=P(g(X)\le y)$, then
+          differentiate.
+  \end{itemize}
+\end{frame}
+
+%======================================================================
+\section{Session 2: Joint distributions, independence}
+%======================================================================
+
+\begin{frame}
+  \centering\Large\color{navy}Session 2: Joint distributions and
+  independent random variables
+\end{frame}
+
+\begin{frame}{Recap of Session 1}
+  \begin{itemize}
+    \item Density: $P(a\le X\le b)=\int_a^b f(x)\,dx$; $f\ge0$, total
+          area 1.
+    \item $F(x)=P(X\le x)$, \ $f=F'$, \ $P(a<X\le b)=F(b)-F(a)$.
+    \item Uniform: probability $=$ length$/$total length. Exponential:
+          $P(X>x)=e^{-\lambda x}$.
+    \item $Y=g(X)$: first the distribution function, then differentiate.
+  \end{itemize}
+  \vspace{2mm}
+  \textbf{Now:} two random variables at the same time. How do two stocks,
+  two loans, two claims behave \emph{together}?
+\end{frame}
+
+\begin{frame}{Joint distribution: the discrete case}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.55\textwidth}
+      \begin{block}{Joint pmf}
+        $p(x,y)=P(X=x,\,Y=y)$: a table; all entries add up to 1.
+      \end{block}
+      \begin{block}{Marginal pmfs}
+        $p_X(x)=\sum_y p(x,y)$ \ (row sums),\\[2pt]
+        $p_Y(y)=\sum_x p(x,y)$ \ (column sums).
+      \end{block}
+      \begin{block}{Joint distribution function (any $X$, $Y$)}
+        $F(a,b)=P(X\le a,\,Y\le b)$
+      \end{block}
+    \end{column}
+    \begin{column}{.43\textwidth}
+      \centering
+      \renewcommand{\arraystretch}{1.25}
+      \begin{tabular}{c|cc|c}
+        $X\backslash Y$ & $0$ & $1$ & $p_X$\\\hline
+        $0$ & $0.3$ & $0.2$ & \alert{$0.5$}\\
+        $1$ & $0.1$ & $0.4$ & \alert{$0.5$}\\\hline
+        $p_Y$ & \alert{$0.4$} & \alert{$0.6$} & $1$
+      \end{tabular}\\[2mm]
+      \footnotesize the sums are written in the \emph{margins}: hence
+      ``marginal''\\[1mm]
+      here $F(0,1)=0.3+0.2=0.5$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{two-stocks}
+
+\begin{frame}{Joint distribution: the continuous case}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.58\textwidth}
+      \begin{block}{Joint density}
+        $f(x,y)\ge0$ with
+        \[ P\big((X,Y)\in A\big)=\iint_A f(x,y)\,dx\,dy , \]
+        and the total is $\iint f=1$.
+      \end{block}
+      \begin{block}{Marginal densities: integrate the other variable out}
+        $f_X(x)=\displaystyle\int_{-\infty}^{\infty} f(x,y)\,dy$, \quad
+        $f_Y(y)=\displaystyle\int_{-\infty}^{\infty} f(x,y)\,dx$
+      \end{block}
+      $F(a,b)=\displaystyle\int_{-\infty}^{a}\!\int_{-\infty}^{b}
+      f(x,y)\,dy\,dx$
+    \end{column}
+    \begin{column}{.4\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.5]
+        \fill[teal!20] (0,0) rectangle (1.4,1.4);
+        \fill[teal!50] (0,0) -- (1.4,0) -- (1.4,1.4) -- cycle;
+        \draw[->] (-.1,0) -- (1.7,0) node[right] {$x$};
+        \draw[->] (0,-.1) -- (0,1.7) node[above] {$y$};
+        \draw[thick,navy] (0,0) rectangle (1.4,1.4);
+        \node[below] at (1.4,0) {\scriptsize 1};
+        \node[left] at (0,1.4) {\scriptsize 1};
+        \node at (1.0,.35) {\scriptsize $A$};
+      \end{tikzpicture}\\[1mm]
+      \footnotesize the probability of a region $A$ is the volume above it;
+      do the inner integral first
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{joint-density-square}
+
+\begin{frame}{Independent random variables}
+  \small
+  \begin{block}{Definition}
+    $X$ and $Y$ are \textbf{independent} if for all sets $A$, $B$
+    \[ P(X\in A,\ Y\in B)=P(X\in A)\,P(Y\in B), \]
+    equivalently $F(a,b)=F_X(a)\,F_Y(b)$ for all $a$, $b$.
+  \end{block}
+  \begin{columns}[T]
+    \begin{column}{.49\textwidth}
+      \begin{block}{Discrete}
+        $p(x,y)=p_X(x)\,p_Y(y)$ for \emph{every} cell of the table.
+        One cell that fails: not independent.
+      \end{block}
+    \end{column}
+    \begin{column}{.49\textwidth}
+      \begin{block}{Continuous}
+        $f(x,y)=f_X(x)\,f_Y(y)$ for all $x$, $y$.\\
+        On a rectangle: $f$ splits into
+        (function of $x$)$\times$(function of $y$).
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  Knowing the value of $X$ does not change the distribution of $Y$.
+\end{frame}
+
+\exerciseframe{two-stocks-independence}
+
+\exerciseframe{two-default-times}
+
+\begin{frame}{Session 2: summary}
+  \small
+  \begin{itemize}
+    \item Discrete: joint pmf $p(x,y)$ in a table; marginals are the row and
+          column sums.
+    \item Continuous: joint density $f(x,y)$; probability of a region $=$
+          double integral; marginals: integrate the other variable out.
+    \item Joint distribution function $F(a,b)=P(X\le a,\,Y\le b)$.
+    \item Independent: $p(x,y)=p_X(x)p_Y(y)$, or $f(x,y)=f_X(x)f_Y(y)$,
+          for \emph{all} $x$, $y$; then probabilities of ``and'' multiply.
+    \item The marginals alone do not tell how $X$ and $Y$ move together.
+  \end{itemize}
+\end{frame}
+
+\end{document}

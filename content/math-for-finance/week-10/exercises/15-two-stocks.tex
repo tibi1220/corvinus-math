@@ -1,0 +1,148 @@
+% ---
+% title: Two stocks on the same day
+% tags: finance, joint-discrete, marginal, joint-distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		The daily price moves of two stocks are usually not unrelated. On a good
+		day for the market most stocks rise, and on a bad day most of them fall.
+		To describe two moves together, we need their \emph{joint}
+		distribution: the probability of every combination of outcomes, not
+		only the probabilities for each stock on its own.
+	\end{context}
+	On a given day, let $X=1$ if stock A rises and $X=-1$ if it falls. Let
+	$Y=1$, $0$ or $-1$ if stock B rises, stays unchanged or falls. The joint
+	probability mass function $p(x,y)=P(X=x,Y=y)$ is given by the table
+	\begin{center}
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{c|ccc}
+			         & $y=-1$ & $y=0$  & $y=1$  \\
+			\hline
+			$x=-1$   & $0.20$ & $0.10$ & $0.10$ \\
+			$x=1$    & $0.05$ & $0.15$ & $0.40$
+		\end{tabular}
+	\end{center}
+	(a) Find the marginal probability mass functions $p_X$ and $p_Y$.
+	(b) Find $P(X=Y)$, the probability that both stocks fall or both rise.
+	(c) Find the value of the joint distribution function at $(0,0)$:
+	$F(0,0)=P(X\le0,\,Y\le0)$.
+	(d) Find the probability that stock B rises, given that stock A rises.
+\end{problem}
+
+\begin{slideproblem}
+	$X=1$ / $-1$ if stock A rises / falls; $Y=1$, $0$, $-1$ if stock B rises,
+	stays, falls. The joint pmf $p(x,y)=P(X=x,Y=y)$ is in the table below.
+	(a) Marginal pmfs $p_X$, $p_Y$. \ (b)~$P(X=Y)$. \
+	(c)~$F(0,0)=P(X\le0,\,Y\le0)$. \ (d)~$P(\text{B rises}\mid\text{A rises})$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\begin{center}
+		\renewcommand{\arraystretch}{1.25}
+		\begin{tabular}{c|ccc|c}
+			       & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+			\hline
+			$x=-1$ & $0.20$ & $0.10$ & $0.10$ & \uncover<3->{$\alert{0.4}$} \\
+			$x=1$  & $0.05$ & $0.15$ & $0.40$ & \uncover<3->{$\alert{0.6}$} \\
+			\hline
+			$p_Y(y)$ & \uncover<4->{$\alert{0.25}$} & \uncover<4->{$\alert{0.25}$}
+			& \uncover<4->{$\alert{0.5}$} & \uncover<4->{$1$}
+		\end{tabular}
+	\end{center}
+	\uncover<2->{\sol (a) Marginals: add up the rows and the columns; write
+		the sums in the \alert{margins}.}\\
+	\uncover<3->{Row sums: $p_X(-1)=0.2+0.1+0.1=0.4$, \ $p_X(1)=0.05+0.15+0.4=0.6$.}\\
+	\uncover<4->{Column sums: $p_Y(-1)=0.25$, \ $p_Y(0)=0.25$, \ $p_Y(1)=0.5$.}
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) $X=Y$: both fall $(-1,-1)$ or both rise $(1,1)$. Disjoint cells: add.
+	\[ P(X=Y)=p(-1,-1)+p(1,1)=0.20+0.40=\alert{0.60}. \]
+	\pause
+	(c) $X\le0$ means $X=-1$; \ $Y\le0$ means $Y=-1$ or $Y=0$:
+	\[ F(0,0)=P(X\le0,\,Y\le0)=p(-1,-1)+p(-1,0)=0.20+0.10=\alert{0.30}. \]
+	\pause
+	(d) Conditional probability: the joint cell divided by the marginal.
+	\[ P(Y=1\mid X=1)=\frac{p(1,1)}{p_X(1)}=\frac{0.40}{0.60}=\frac23
+		\approx\alert{0.667}. \]
+	\pause
+	Compare: $P(Y=1)=p_Y(1)=0.5$. Knowing that A rises makes it more likely
+	that B rises too.
+\end{slides}
+
+\begin{solution}
+	\idea All the information is in the joint table. A marginal pmf is a row
+	or column sum of the table. Any other probability is the sum of the cells
+	that belong to the event, because different cells are mutually exclusive
+	outcomes.
+
+	\step{(a)} The event $\{X=-1\}$ happens together with exactly one of the
+	values $Y=-1$, $Y=0$, $Y=1$. These three events are mutually exclusive,
+	so
+	\[ p_X(-1)=P(X=-1)=p(-1,-1)+p(-1,0)+p(-1,1)=0.20+0.10+0.10=0.4. \]
+	In the same way, the second row gives
+	\[ p_X(1)=p(1,-1)+p(1,0)+p(1,1)=0.05+0.15+0.40=0.6. \]
+	For $Y$ we add the columns instead:
+	\[ p_Y(-1)=0.20+0.05=0.25,\qquad p_Y(0)=0.10+0.15=0.25,\qquad
+		p_Y(1)=0.10+0.40=0.5. \]
+	It is natural to write these sums in the margins of the table. This is
+	where the name \emph{marginal} distribution comes from:
+	\begin{center}
+		\renewcommand{\arraystretch}{1.25}
+		\begin{tabular}{c|ccc|c}
+			         & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+			\hline
+			$x=-1$   & $0.20$ & $0.10$ & $0.10$ & $0.4$ \\
+			$x=1$    & $0.05$ & $0.15$ & $0.40$ & $0.6$ \\
+			\hline
+			$p_Y(y)$ & $0.25$ & $0.25$ & $0.5$  & $1$
+		\end{tabular}
+	\end{center}
+	Check: both margins add up to $1$ ($0.4+0.6=1$ and $0.25+0.25+0.5=1$),
+	as every pmf must. So stock A rises with probability $0.6$, and stock B
+	rises with probability $0.5$.
+
+	\step{(b)} $X$ takes only the values $-1$ and $1$, so $X=Y$ can happen in
+	two ways: both stocks fall, $(X,Y)=(-1,-1)$, or both rise,
+	$(X,Y)=(1,1)$. The value $Y=0$ can never equal $X$. The two cells are
+	mutually exclusive, so we add them:
+	\[ P(X=Y)=p(-1,-1)+p(1,1)=0.20+0.40=0.60. \]
+	On 60\% of the days the two stocks move in the same direction.
+
+	\step{(c)} The joint distribution function is
+	$F(a,b)=P(X\le a,\,Y\le b)$: both conditions must hold. At $(0,0)$:
+	$X\le0$ holds only for $X=-1$, and $Y\le0$ holds for $Y=-1$ and $Y=0$. So
+	we add the cells in the first row and the first two columns:
+	\[ F(0,0)=P(X\le0,\,Y\le0)=p(-1,-1)+p(-1,0)=0.20+0.10=0.30. \]
+	In words: with probability $0.30$, stock A falls and stock B does not
+	rise.
+
+	\step{(d)} We need $P(Y=1\mid X=1)$. By the definition of conditional
+	probability, it is the probability of both events divided by the
+	probability of the condition. The numerator is one cell of the table,
+	the denominator is the marginal from (a):
+	\[ P(Y=1\mid X=1)=\frac{P(X=1,\,Y=1)}{P(X=1)}=\frac{p(1,1)}{p_X(1)}
+		=\frac{0.40}{0.60}=\frac23\approx0.667. \]
+	Without any information about stock A, stock B rises with probability
+	$p_Y(1)=0.5$. Knowing that A rises raises this to $2/3$: on a day when A
+	rises, B tends to rise as well.
+	\begin{answer}
+		(a) $p_X(-1)=0.4$, $p_X(1)=0.6$; \ $p_Y(-1)=0.25$, $p_Y(0)=0.25$,
+		$p_Y(1)=0.5$
+		\quad (b) $P(X=Y)=0.60$
+		\quad (c) $F(0,0)=0.30$
+		\quad (d) $P(Y=1\mid X=1)=\frac23\approx0.667$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (d), dividing by the whole table (that is,
+		answering $p(1,1)=0.40$) instead of by $p_X(1)=0.60$. The value $0.40$
+		is the probability that \emph{both} stocks rise; the condition
+		``A rises'' restricts us to the second row, whose total is $0.60$.
+		Another mistake in (c) is to use strict inequalities: $Y\le0$ includes
+		$Y=0$, so the cell $p(-1,0)$ belongs to $F(0,0)$.
+	\end{remark}
+\end{solution}

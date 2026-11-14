@@ -1,0 +1,148 @@
+% ---
+% title: The value of an investment
+% tags: finance, function-of-rv, uniform
+% ---
+
+\begin{problem}
+	\begin{context}
+		The \emph{return} of an investment over a year is the gain as a fraction
+		of the money invested: a return of $0.05$ means a 5\% gain, a return of
+		$-0.1$ a 10\% loss. The return is not known in advance. One simple way
+		to describe this uncertainty is to say that the return is equally likely
+		to be anywhere in a given range, that is, uniformly distributed.
+	\end{context}
+	You invest 1000 euros for one year. The annual return $X$ is uniformly
+	distributed on $[-0.1,\,0.2]$ (anywhere between $-10\%$ and $+20\%$). The
+	value of your investment at the end of the year is $V=1000(1+X)$ euros.
+	(a) Find the distribution function and the density of $V$.
+	(b) Find $P(V>1100)$.
+	(c) What is the probability that you lose money?
+\end{problem}
+
+\begin{solution}
+	\idea $V$ is a function of $X$. To find its distribution, write the event
+	$\{V\le v\}$ as an event about $X$ and use the distribution function of $X$
+	(the distribution-function method). Then differentiate to get the density.
+
+	\step{The distribution of $X$.} $X$ is uniform on $[-0.1,\,0.2]$, an
+	interval of length $0.3$. Its density is constant on the interval:
+	\[
+		f_X(x)=\begin{cases}
+			\dfrac{1}{0.3} & -0.1\le x\le 0.2, \\[6pt]
+			0              & \text{otherwise},
+		\end{cases}
+	\]
+	and for $-0.1\le x\le0.2$ its distribution function is
+	\[
+		F_X(x)=\int_{-0.1}^{x}\frac{1}{0.3}\,dt
+		=\Big[\frac{t}{0.3}\Big]_{-0.1}^{x}
+		=\frac{x-(-0.1)}{0.3}=\frac{x+0.1}{0.3}.
+	\]
+	Below the interval $F_X(x)=0$, above it $F_X(x)=1$.
+
+	\step{(a)} First the possible values of $V$. The smallest return $-0.1$
+	gives $V=1000\cdot0.9=900$, the largest return $0.2$ gives
+	$V=1000\cdot1.2=1200$. So $V$ is always between $900$ and $1200$, and
+	$F_V(v)=0$ for $v<900$, $F_V(v)=1$ for $v\ge1200$.
+
+	Now take $900\le v\le 1200$. The function $x\mapsto1000(1+x)$ is
+	increasing, so we can solve the inequality for $X$ without flipping it:
+	\[
+		1000(1+X)\le v
+		\iff 1+X\le\frac{v}{1000}
+		\iff X\le\frac{v}{1000}-1.
+	\]
+	The two events $\{V\le v\}$ and $\{X\le \frac{v}{1000}-1\}$ are the same
+	event, so they have the same probability:
+	\[
+		F_V(v)=P(V\le v)=P\Big(X\le\frac{v}{1000}-1\Big)
+		=F_X\Big(\frac{v}{1000}-1\Big).
+	\]
+	For $900\le v\le1200$ the point $\frac{v}{1000}-1$ lies in
+	$[-0.1,\,0.2]$, so we use the formula for $F_X$ found above:
+	\[
+		F_V(v)=\frac{\frac{v}{1000}-1+0.1}{0.3}
+		=\frac{\frac{v}{1000}-0.9}{0.3}
+		=\frac{v-900}{300}.
+	\]
+	(In the last step we multiplied numerator and denominator by $1000$.)
+	Altogether
+	\[
+		F_V(v)=\begin{cases}
+			0                  & v<900,            \\[4pt]
+			\dfrac{v-900}{300} & 900\le v\le 1200, \\[6pt]
+			1                  & v>1200.
+		\end{cases}
+	\]
+	The density is the derivative of the distribution function. On
+	$(900,1200)$ the derivative of $\frac{v-900}{300}$ is $\frac1{300}$;
+	outside the interval $F_V$ is constant, so the derivative is $0$:
+	\[
+		f_V(v)=\begin{cases}
+			\dfrac{1}{300} & 900\le v\le 1200, \\[6pt]
+			0              & \text{otherwise}.
+		\end{cases}
+	\]
+	This is the density of the uniform distribution on $[900,\,1200]$: $V$ is
+	again uniform. This makes sense: multiplying by $1000$ and shifting does
+	not make any value of the return more likely than another, it only moves
+	and stretches the interval.
+
+	\begin{center}
+		\begin{tikzpicture}[x=1.6cm,y=1.6cm,>=stealth]
+			% v is drawn at (v-800)/100
+			\fill[teal!30] (3,0) rectangle (4,1);
+			\fill[gold!40] (1,0) rectangle (2,1);
+			\draw[->] (0,0)--(4.8,0) node[right] {$v$};
+			\draw[->] (0,0)--(0,1.5) node[above] {$f_V(v)$};
+			\draw[navy,very thick] (0,0)--(1,0);
+			\draw[navy,very thick] (1,1)--(4,1);
+			\draw[navy,very thick] (4,0)--(4.7,0);
+			\draw[navy,densely dotted] (1,0)--(1,1);
+			\draw[navy,densely dotted] (4,0)--(4,1);
+			\draw (0.05,1)--(-0.05,1) node[left] {$\frac1{300}$};
+			\foreach \x/\l in {1/900,2/1000,3/1100,4/1200}
+			\draw (\x,0.05)--(\x,-0.05) node[below] {$\l$};
+			\node at (1.5,0.5) {$\frac13$};
+			\node at (3.5,0.5) {$\frac13$};
+			\node[gold!60!black,above] at (1.5,1) {\footnotesize loss};
+			\node[teal,above] at (3.5,1) {\footnotesize $V>1100$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(b)} ``$V>1100$'' is the complement of ``$V\le1100$'', so
+	\[
+		P(V>1100)=1-F_V(1100)=1-\frac{1100-900}{300}=1-\frac{200}{300}
+		=\frac13.
+	\]
+	Geometry gives the same: the teal rectangle has width $1200-1100=100$ and
+	height $\frac1{300}$, so its area is $\frac{100}{300}=\frac13$.
+
+	\step{(c)} You lose money when the final value is below the 1000 euros
+	invested, that is, when $V<1000$. $V$ is continuous, so a single value has
+	probability $0$, and $P(V<1000)=P(V\le1000)$:
+	\[
+		P(V<1000)=F_V(1000)=\frac{1000-900}{300}=\frac{100}{300}=\frac13.
+	\]
+	In the picture this is the gold rectangle, of width $100$ and height
+	$\frac1{300}$. Check with $X$: you lose money exactly when the return is
+	negative, and
+	$P(X<0)=F_X(0)=\frac{0+0.1}{0.3}=\frac13$.
+
+	\begin{answer}
+		(a) $V$ is uniform on $[900,\,1200]$:
+		$F_V(v)=\frac{v-900}{300}$ and $f_V(v)=\frac1{300}$ for
+		$900\le v\le1200$ ($F_V=0$, $f_V=0$ below $900$; $F_V=1$, $f_V=0$
+		above $1200$) \quad
+		(b) $P(V>1100)=\frac13$ \quad
+		(c) $P(V<1000)=\frac13$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} keeping the density $\frac1{0.3}$ of $X$ for
+		$V$. The density is not a probability: when the interval is stretched
+		by the factor $1000$ (from length $0.3$ to length $300$), the height of
+		the density must shrink by the same factor: $\frac{1}{0.3}$ divided by $1000$ is
+		$\frac1{300}$, so that the total area stays $1$. The distribution
+		function method takes care of this automatically.
+	\end{remark}
+\end{solution}

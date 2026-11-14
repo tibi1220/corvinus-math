@@ -37,6 +37,9 @@ export type WeekInfo = {
   topics?: string;
   // Empty until the week's materials are published.
   documents: DocumentInfo[];
+  // Ready, but not yet for the students: only in the private build (see
+  // privateSite). The public site shows the week as not yet published.
+  privateOnly?: boolean;
 };
 
 export type CourseInfo = {
@@ -152,7 +155,11 @@ export const courses: CourseInfo[] = [
       },
       {
         number: 10,
-        documents: [],
+        title: 'Continuous random variables, joint distributions',
+        topics:
+          'Continuous random variables, density, distribution function, uniform and exponential distributions, the distribution of a function of a random variable, joint distributions in the discrete and continuous case, joint distribution function, independent random variables',
+        documents: weekDocuments(),
+        privateOnly: true,
       },
       {
         number: 11,
@@ -162,9 +169,17 @@ export const courses: CourseInfo[] = [
         number: 12,
         documents: [],
       },
-    ],
+    ].map(publicWeek),
   },
 ];
+
+// Outside the private build, a week that is not yet for the students is shown
+// like one whose materials are not ready: no title, topics or documents.
+function publicWeek(week: WeekInfo): WeekInfo {
+  return week.privateOnly && !privateSite
+    ? { number: week.number, documents: [] }
+    : week;
+}
 
 // The folder of a week in content/<course>/ and its URL slug (also in the
 // names of its PDFs), both with two digits: week-08.

@@ -1,0 +1,438 @@
+Mathematics for Finance. Week 10. Continuous random variables, joint distributions, independence. Teaching script for two ninety-minute practical classes held on the same day, back to back. By Tibor Sandor, tibor sandor 2001 at gmail dot com.
+[[slnc 1500]]
+
+How to use this script.
+[[slnc 600]]
+Plain text is meant to be read out loud or paraphrased. Some sentences are key sentences to say. Questions marked Ask the class are put to the class: wait for answers before revealing the solution. Lines starting with On the board tell you what to write. Short notes for you only are introduced with Note for you. The sections called Background for you explain the finance behind the examples; they are not meant to be read out. The script follows the deck frame by frame; the slide numbers given with each heading are the frame numbers in the footline of the deck. Every new idea gets one tiny example; before each exercise the students try it in pairs, then you reveal the solution step by step. Only the exercises of the slides are in this script.
+[[slnc 500]]
+Both sessions are on the same day: Session 1, 90 minutes, then a short break, then Session 2, another 90 minutes. The plan leaves a generous reserve: 20 minutes in Session 1 and 25 in Session 2, for questions and for students working alone.
+[[slnc 500]]
+Timing overview for Session 1. Welcome, recap, the plan for today, and from discrete to continuous, slides 1 to 4: 6 minutes. Continuous random variables and their density: 5 minutes. Exercise 10.1, settling a payment: 10 minutes. The distribution function: 5 minutes. Exercise 10.5, loss given default: 10 minutes. Uniform and exponential: 5 minutes. Exercise 10.8, waiting for the next order: 10 minutes. The distribution of a function of a random variable: 6 minutes. Exercise 10.11, the square of a uniform random variable: 10 minutes. Summary: 3 minutes. That is 70 minutes; the remaining 20 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+[[slnc 400]]
+Timing overview for Session 2. The Session 2 title and the recap of Session 1, slides 18 and 19: 4 minutes. Joint distribution, the discrete case: 6 minutes. Exercise 10.15, two stocks on the same day: 10 minutes. Joint distribution, the continuous case: 6 minutes. Exercise 10.18, a joint density on the unit square: 12 minutes. Independent random variables: 6 minutes. Exercise 10.21, do the two stocks move independently: 8 minutes. Exercise 10.22, two borrowers, independent defaults: 10 minutes. Summary: 3 minutes. That is 65 minutes; the remaining 25 minutes are a reserve for questions and for students working alone. Total: 90 minutes.
+[[slnc 2000]]
+
+If you are short on time.
+[[slnc 600]]
+Note for you: skip parts of exercises, never a whole topic, in this order. Every skipped part has a full solution in the exercises PDF: tell the students so. Notes starting with Clock check say when to decide.
+[[slnc 500]]
+Session 1. First, part d of Exercise 10.5, the median, slide 10, about 2 minutes. Decide at slide 8. Second, part c of Exercise 10.11, slide 16: just give the two numbers, 0.5 and 0.1. Decide at slide 14.
+[[slnc 500]]
+Session 2. First, part d of Exercise 10.22, slide 30, about 2 minutes. Decide at slide 23. Second, part d of Exercise 10.18, slide 25: state the symmetry argument in one sentence. Decide at slide 23. Third, part c of Exercise 10.21, slide 28: give 0.40 against 0.60 and the one-sentence lesson. Decide at slide 26.
+[[slnc 500]]
+If you are behind everywhere, shorten the try-first pauses: one or two minutes instead of three.
+[[slnc 2000]]
+
+Session 1. Continuous random variables.
+[[slnc 1200]]
+
+Welcome, recap, plan, from discrete to continuous. Slides 1 to 4.
+[[slnc 600]]
+Note for you: slide 1, the title, while they settle down.
+[[slnc 600]]
+Good morning, everyone, and welcome back.
+[[slnc 500]]
+Last week we met probability, conditional probability, independence, and discrete random variables: numbers that depend on chance and take values like 0, 1, 2, and so on. A discrete random variable is described by its pmf, p of x, which is P of X equals x, and the probabilities add up to 1.
+[[slnc 600]]
+Note for you: slide 2, plan for today.
+[[slnc 500]]
+Today, Session 1: random variables that can take any value in an interval, described by a density; the distribution function; two important examples, the uniform and the exponential distribution; and how to find the distribution of a function of a random variable. Session 2: two random variables at the same time, and when they are independent.
+[[slnc 500]]
+Why do we need this in finance? Waiting times, losses and returns can take any value in an interval, and the risk of a portfolio depends on how its parts move together.
+[[slnc 600]]
+Note for you: as last week, before every exercise they get a few minutes to try in pairs. Slide 3, the Session 1 title: click through to slide 4.
+[[slnc 500]]
+Think of the time until the next order arrives for a stock. It could be 0.5 minutes, 0.51, 0.5132, and so on. There are far too many values to give each one a positive probability: the sum would explode. So for a continuous quantity, P of X equals a is 0 for every single number a.
+[[slnc 500]]
+Instead, we ask for the probability of an interval, P of a less than or equal to X less than or equal to b, and we describe it with a curve, the density. The probability is the area under the curve between a and b.
+[[slnc 1200]]
+
+Continuous random variables and their density. Slide 5.
+[[slnc 600]]
+X is continuous if there is a function f, its density, such that P of a less than or equal to X less than or equal to b equals the integral from a to b of f of x, d x.
+[[slnc 400]]
+A density has two properties: f of x is greater than or equal to 0 everywhere, and the total area is 1: the integral from minus infinity to infinity of f of x, d x, equals 1.
+[[slnc 500]]
+Tiny example: f of x equals 3 x squared on the interval from 0 to 1, zero elsewhere. Total area: the integral from 0 to 1 of 3 x squared, d x, equals x cubed, evaluated from 0 to 1, which is 1. And P of X less than or equal to one half equals the integral from 0 to one half of 3 x squared, d x, which is one eighth.
+[[slnc 500]]
+Two warnings. First, a single point has no area, so P of X equals a is 0, and for a continuous X it does not matter whether we write less than, or less than or equal to. Second, f of x itself is not a probability. In the example f of 1 equals 3, bigger than 1. Only areas are probabilities.
+[[slnc 1200]]
+
+Exercise 10.1. Settling a payment. Slides 6 and 7.
+[[slnc 600]]
+The time X, in hours, that a bank needs to settle an incoming international payment has density f of x equals c times x times the quantity 2 minus x, for x between 0 and 2, and f of x equals 0 otherwise. Part a: find c. Part b: find P of X greater than 1. Part c: find P of 0.5 less than X less than 1.5. Part d: what is P of X equals 1?
+[[slnc 800]]
+Try parts a and b in pairs, three minutes. Hint: what must the total area be?
+[[slnc 500]]
+Note for you: after 3 minutes, click: the two properties and probability equals area.
+[[slnc 500]]
+Part a. Click.
+[[slnc 400]]
+Ask the class: what condition fixes c?
+[[slnc 800]]
+The total area is 1.
+[[slnc 400]]
+The integral from 0 to 2 of x times the quantity 2 minus x, d x, equals x squared minus x cubed over 3, evaluated from 0 to 2, which is 4 minus 8 thirds, which is 4 thirds. Click. So c times 4 thirds equals 1, and c equals three quarters.
+[[slnc 500]]
+Note for you: slide 7.
+[[slnc 500]]
+Part b.
+[[slnc 400]]
+Ask the class: look at the graph. Do we need to integrate?
+[[slnc 800]]
+No: the graph is symmetric around x equals 1, so the area splits in half.
+[[slnc 400]]
+P of X greater than 1 equals one half.
+[[slnc 500]]
+Part c. Click. Now we integrate three quarters times the quantity 2 x minus x squared, from 0.5 to 1.5: three quarters times x squared minus x cubed over 3, evaluated from 0.5 to 1.5, equals three quarters times the quantity 9 eighths minus 5 over 24, which is three quarters times 22 over 24, which is 11 over 16, that is 0.6875.
+[[slnc 500]]
+Part d. Click.
+[[slnc 400]]
+Ask the class: what is P of X equals 1?
+[[slnc 800]]
+Zero: a single point has no area.
+[[slnc 400]]
+So P of X less than 1 equals P of X less than or equal to 1.
+[[slnc 500]]
+Note for you, a common mistake: reading f of 1 equals 0.75 as a probability. The value of a density is not a probability; only areas are.
+[[slnc 1200]]
+
+The distribution function. Slide 8.
+[[slnc 600]]
+Note for you: clock check. This slide is planned for minute 21. If you start it after about minute 26, skip part d of Exercise 10.5.
+[[slnc 500]]
+For any random variable, discrete or continuous, the distribution function is F of x equals P of X less than or equal to x.
+[[slnc 400]]
+For a continuous X it is the area to the left of x: F of x equals the integral from minus infinity to x of f of t, d t, and by the fundamental theorem of calculus f of x equals F prime of x. Integrate the density to get F; differentiate F to get the density.
+[[slnc 400]]
+On the board: P of a less than X less than or equal to b equals F of b minus F of a, and P of X greater than a equals 1 minus F of a.
+[[slnc 500]]
+Tiny example: for f of x equals 3 x squared on the interval from 0 to 1, F of x equals x cubed on that interval, so P of X greater than one half equals 1 minus one eighth, which is seven eighths.
+[[slnc 500]]
+F grows from 0 to 1. For a continuous X it has no jumps; last week, for a discrete X, it was a step function.
+[[slnc 1200]]
+
+Exercise 10.5. Loss given default, a finance example. Slides 9 and 10.
+[[slnc 600]]
+The loss given default L of a loan has distribution function F of x equals x squared for x between 0 and 1; F of x equals 0 for x less than 0, and F of x equals 1 for x greater than 1. Part a: find the density f of x of L. Part b: find P of L greater than 0.5. Part c: find P of 0.2 less than L less than or equal to 0.6. Part d: find the median loss: the number m with P of L less than or equal to m equals one half.
+[[slnc 800]]
+The loss given default is the fraction of the loan that the bank loses if the borrower defaults: 0 means nothing lost, 1 means everything. Try parts a to c, three minutes.
+[[slnc 500]]
+Part a. Click. The density is the derivative of F: f of x equals 2 x on the interval from 0 to 1, and 0 otherwise. Click. Check: the integral from 0 to 1 of 2 x, d x, equals 1. The density grows, so large losses are more likely than small ones.
+[[slnc 500]]
+Note for you: slide 10, one part per click.
+[[slnc 500]]
+Part b. Complement: P of L greater than 0.5 equals 1 minus F of 0.5, which is 1 minus 0.5 squared, which is 0.75.
+[[slnc 500]]
+Part c. No integral needed: P of 0.2 less than L less than or equal to 0.6 equals F of 0.6 minus F of 0.2, which is 0.36 minus 0.04, which is 0.32.
+[[slnc 500]]
+Part d.
+[[slnc 400]]
+Ask the class: which equation gives the median?
+[[slnc 800]]
+F of m equals one half.
+[[slnc 400]]
+So m squared equals one half, and m equals the square root of 0.5, approximately 0.707: half of the defaults lose more than 70.7 percent of the loan.
+[[slnc 500]]
+Note for you, common mistakes: part b as 1 minus 0.5, which is 0.5, as if L were uniform; part c as F of 0.6 minus 0.2, which is F of 0.4, which is 0.16. An interval is the difference of F at the endpoints.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Loss given default. Loss given default, L G D, is the share of the exposure a lender loses when the borrower defaults, after collateral and recoveries. L G D equals 1 minus the recovery rate. Typical values: around 0.2 to 0.45 for secured or senior loans, and 0.6 to 0.8 for unsecured or subordinated debt. The expected loss equals P D times L G D times E A D, the exposure at default; under the Basel rules banks estimate all three. L G D is a random variable between 0 and 1, so it is modeled with a density on the interval from 0 to 1. In practice this is often a beta distribution; F of x equals x squared here is a simple special case.
+[[slnc 400]]
+Key terms: loss given default, L G D; recovery rate; exposure at default, E A D; expected loss.
+[[slnc 400]]
+A student may ask: why would large losses be more likely?
+[[slnc 400]]
+Answer: for unsecured loans, recoveries are often small: the bank gets back little. Then L G D piles up near 1.
+[[slnc 1200]]
+
+Two examples: uniform and exponential. Slide 11.
+[[slnc 600]]
+Two distributions we will use again and again.
+[[slnc 500]]
+Uniform on the interval from alpha to beta: the density is the constant 1 over beta minus alpha on the interval, zero outside. Probability is length divided by beta minus alpha. Tiny example: uniform on the interval from 0 to 10, P of 2 less than or equal to X less than or equal to 5 equals 3 over 10.
+[[slnc 500]]
+Exponential with rate lambda greater than 0: f of x equals lambda e to the minus lambda x, for x greater than or equal to 0. Then F of x equals 1 minus e to the minus lambda x, and the tail is P of X greater than x equals e to the minus lambda x.
+[[slnc 400]]
+It models waiting times: the next order, a default. Tiny example: lambda equals 1, P of X greater than 2 equals e to the minus 2, approximately 0.135.
+[[slnc 1200]]
+
+Exercise 10.8. Waiting for the next order, a finance example. Slides 12 and 13.
+[[slnc 600]]
+The waiting time X, in minutes, until the next order for a stock has density f of x equals 2 e to the minus 2 x, for x greater than or equal to 0, and 0 for x less than 0. Part a: check that f is a density; find F. Part b: P of X greater than 1. Part c: P of X less than 0.5. Part d: no order in the first half minute. What is the probability that we wait more than 1.5 minutes in total? Compare with part b.
+[[slnc 800]]
+This is an exponential with rate lambda equals 2. Try parts a to c, three minutes.
+[[slnc 500]]
+Part a. Click. f is greater than or equal to 0, and the integral from 0 to infinity of 2 e to the minus 2 x, d x, equals minus e to the minus 2 x, evaluated from 0 to infinity, which is 0 minus the quantity minus 1, which is 1. Click. For x greater than or equal to 0, F of x equals 1 minus e to the minus 2 x. Click. The tail is P of X greater than x equals e to the minus 2 x.
+[[slnc 500]]
+Note for you: slide 13, one part per click.
+[[slnc 500]]
+Part b. P of X greater than 1 equals e to the minus 2, approximately 0.135.
+[[slnc 500]]
+Part c. X is continuous, so P of X less than 0.5 equals F of 0.5, which is 1 minus e to the minus 1, approximately 0.632.
+[[slnc 500]]
+Part d.
+[[slnc 400]]
+Ask the class: which conditional probability is this?
+[[slnc 800]]
+P of X greater than 1.5, given X greater than 0.5.
+[[slnc 400]]
+More than 1.5 already contains more than 0.5, so P of X greater than 1.5, given X greater than 0.5, equals P of X greater than 1.5 over P of X greater than 0.5, which is e to the minus 3 over e to the minus 1, which is e to the minus 2, approximately 0.135.
+[[slnc 500]]
+Click. The same as part b! Having waited half a minute does not change the chance of waiting one more minute. The exponential distribution has no memory.
+[[slnc 500]]
+Note for you, a common mistake in part d: computing P of X greater than 1.5, which is e to the minus 3, and forgetting the condition.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Order arrivals and memorylessness. In market microstructure, orders arriving at an exchange are often modeled as a Poisson process: the waiting times between orders are independent and exponential, with rate lambda orders per unit of time, here 2 per minute. Memorylessness says that the market does not remember how long it has been quiet. Real order flow comes in bursts, which is called clustering, so the exponential model is a first approximation; models such as Hawkes processes add self-excitation.
+[[slnc 400]]
+Key terms: order flow; arrival rate; Poisson process; memoryless.
+[[slnc 400]]
+A student may ask: is memorylessness realistic for defaults?
+[[slnc 400]]
+Answer: for short horizons it is a common working assumption, a constant hazard rate in credit models; over longer horizons the rate changes with the economy.
+[[slnc 1200]]
+
+The distribution of a function of a random variable. Slide 14.
+[[slnc 600]]
+Note for you: clock check. This slide is planned for minute 51. If you start it after about minute 56, give only the two numbers in part c of Exercise 10.11.
+[[slnc 500]]
+We know the distribution of X. What is the distribution of Y equals g of X, for example X squared, or the value 1000 times the quantity 1 plus X of an investment with return X? The method: always go through the distribution function.
+[[slnc 400]]
+On the board, three steps. First: F Y of y equals P of Y less than or equal to y, which is P of g of X less than or equal to y. Second: rewrite g of X less than or equal to y as an event about X, and use the distribution of X. Third, if you need the density: f Y of y equals F Y prime of y.
+[[slnc 500]]
+Example from the slide: X uniform on the interval from 0 to 1, and Y equals 2 X plus 3. For y between 3 and 5: F Y of y equals P of 2 X plus 3 less than or equal to y, which is P of X less than or equal to the quantity y minus 3, over 2, which is the quantity y minus 3, over 2. So f Y of y equals one half: Y is uniform on the interval from 3 to 5. A linear function keeps the shape; other functions change it, as we see now.
+[[slnc 1200]]
+
+Exercise 10.11. The square of a uniform random variable. Slides 15 and 16.
+[[slnc 600]]
+Let X be uniformly distributed on the interval from 0 to 1, that is, its density is f X of x equals 1 for x between 0 and 1, and f X of x equals 0 otherwise. Let Y equal X squared. Part a: find the distribution function of Y, F Y of y, which is P of Y less than or equal to y. Part b: find the density f Y of y of Y. Part c: find P of Y less than or equal to 0.25 and P of Y greater than 0.81. Part d: is Y uniformly distributed on the interval from 0 to 1? Explain.
+[[slnc 800]]
+Try parts a and b, three minutes. Start with P of X squared less than or equal to y.
+[[slnc 500]]
+Part a. Click. Y is between 0 and 1. For y between 0 and 1, since X is greater than or equal to 0, F Y of y equals P of X squared less than or equal to y, which is P of X less than or equal to the square root of y, which is the square root of y. And F Y of y equals 0 for y less than 0, and F Y of y equals 1 for y greater than 1.
+[[slnc 500]]
+Part b. Click. Differentiate: f Y of y equals 1 over twice the square root of y, for y greater than 0 and at most 1, zero otherwise.
+[[slnc 500]]
+Note for you: slide 16.
+[[slnc 500]]
+Part c. P of Y less than or equal to 0.25 equals the square root of 0.25, which is 0.5, and P of Y greater than 0.81 equals 1 minus the square root of 0.81, which is 0.1. Check: Y less than or equal to 0.25 means X less than or equal to 0.5; Y greater than 0.81 means X greater than 0.9.
+[[slnc 500]]
+Part d.
+[[slnc 400]]
+Ask the class: is Y uniform?
+[[slnc 800]]
+No: the density, 1 over twice the square root of y, is not constant.
+[[slnc 400]]
+Click. Squaring pushes numbers between 0 and 1 toward 0, for example 0.5 squared is 0.25, so small values of Y are more likely.
+[[slnc 500]]
+Note for you, a common mistake: f Y of y equals f X of the square root of y, which is 1, plugging into the density of X; that would make Y uniform. Always go through F Y.
+[[slnc 1200]]
+
+Summary for Session 1. Slide 17.
+[[slnc 600]]
+Today's first session in five lines: probability is the area under the density; F of x equals P of X less than or equal to x, and f equals F prime; uniform means length over total length; the exponential has the tail e to the minus lambda x and no memory; and for Y equals g of X, first F Y, then differentiate. After the break: two random variables at the same time.
+[[slnc 500]]
+Note for you: use the reserve for questions, or let them start a self-study exercise on densities or on Y equals g of X, and walk around.
+[[slnc 2000]]
+
+Session 2. Joint distributions and independent random variables.
+[[slnc 1200]]
+
+Session 2 title and recap of Session 1. Slides 18 and 19.
+[[slnc 600]]
+Note for you: slide 18, the title, then slide 19.
+[[slnc 500]]
+Welcome back. Before the break: densities, F, uniform and exponential, and Y equals g of X. Now two random variables at the same time: how do two stocks, two loans, two insurance claims behave together?
+[[slnc 1200]]
+
+Joint distribution: the discrete case. Slide 20.
+[[slnc 600]]
+If X and Y are discrete, their joint pmf is p of x, y equals P of X equals x and Y equals y. It is a table: one cell for each pair of values, and all cells add up to 1.
+[[slnc 400]]
+On the board: copy the small table of the slide.
+[[slnc 500]]
+The distribution of X alone, the marginal pmf p X, is the row sum: p X of x equals the sum over y of p of x, y. The marginal of Y is the column sum. We write the sums in the margins of the table: hence the name.
+[[slnc 500]]
+Ask the class: in the table, what is P of X equals 0?
+[[slnc 800]]
+0.3 plus 0.2, which is 0.5.
+[[slnc 500]]
+Finally, the joint distribution function, for any X and Y: F of a, b equals P of X less than or equal to a and Y less than or equal to b. Here F of 0, 1 equals 0.3 plus 0.2, which is 0.5: the cells with X less than or equal to 0 and Y less than or equal to 1.
+[[slnc 1200]]
+
+Exercise 10.15. Two stocks on the same day, a finance example. Slides 21 and 22.
+[[slnc 600]]
+X equals 1 or minus 1 if stock A rises or falls; Y equals 1, 0 or minus 1 if stock B rises, stays or falls. The joint pmf, p of x, y, which is P of X equals x and Y equals y, is in the table below. Part a: the marginal pmfs p X and p Y. Part b: P of X equals Y. Part c: F of 0, 0, which is P of X less than or equal to 0 and Y less than or equal to 0. Part d: P of B rises, given A rises.
+[[slnc 500]]
+The table. For x equals minus 1: 0.20 for y equals minus 1, 0.10 for y equals 0, and 0.10 for y equals 1. For x equals 1: 0.05 for y equals minus 1, 0.15 for y equals 0, and 0.40 for y equals 1.
+[[slnc 800]]
+Try parts a to c, three minutes.
+[[slnc 500]]
+Part a. Click. Click. Row sums: p X of minus 1 equals 0.4, and p X of 1 equals 0.6. Click. Column sums: p Y of minus 1 equals 0.25, p Y of 0 equals 0.25, and p Y of 1 equals 0.5.
+[[slnc 500]]
+Note for you: slide 22, one part per click.
+[[slnc 500]]
+Part b.
+[[slnc 400]]
+Ask the class: which cells have X equal to Y?
+[[slnc 800]]
+Both fall, the cell minus 1, minus 1, and both rise, the cell 1, 1.
+[[slnc 400]]
+So P of X equals Y equals 0.20 plus 0.40, which is 0.60.
+[[slnc 500]]
+Part c. X less than or equal to 0 means X equals minus 1; Y less than or equal to 0 means Y equals minus 1 or 0. So F of 0, 0 equals 0.20 plus 0.10, which is 0.30.
+[[slnc 500]]
+Part d. Conditional probability: the cell divided by the marginal. P of Y equals 1, given X equals 1, equals p of 1, 1 over p X of 1, which is 0.40 over 0.60, which is two thirds, approximately 0.667.
+[[slnc 500]]
+Compare with P of Y equals 1, which is 0.5. Knowing that A rises makes it more likely that B rises too.
+[[slnc 500]]
+Note for you, a common mistake in part d: answering p of 1, 1, which is 0.40, without dividing by p X of 1, which is 0.60. In part c, Y less than or equal to 0 includes Y equals 0.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Co-movement of stocks. Two stocks of the same market are exposed to common factors: the overall market, interest rates, the sector. So they tend to rise and fall on the same days. This co-movement is what correlation measures, and it is the reason diversification has limits: if all assets fall together, holding many of them does not help much. Here the up-up and down-down cells carry 0.60 of the probability.
+[[slnc 400]]
+Key terms: co-movement; common factor; market, or systematic, risk; diversification.
+[[slnc 400]]
+A student may ask: can we read the co-movement from the marginals?
+[[slnc 400]]
+Answer: no. The marginals say how each stock behaves alone; only the joint table says how they move together. Exercise 10.21 shows this.
+[[slnc 1200]]
+
+Joint distribution: the continuous case. Slide 23.
+[[slnc 600]]
+Note for you: clock check. This slide is planned for minute 20. If you start it after about minute 25, skip part d of Exercise 10.22; after about minute 30, also do part d of Exercise 10.18 in one sentence.
+[[slnc 500]]
+For two continuous random variables, a joint density f of x, y, greater than or equal to 0, plays the role of the table. The probability of a region A in the plane is the double integral: P of the pair X, Y lying in A equals the double integral over A of f of x, y, d x d y. It is the volume above A under the surface, and the total is 1.
+[[slnc 500]]
+Marginal densities: integrate the other variable out. f X of x equals the integral from minus infinity to infinity of f of x, y, d y, and f Y of y equals the integral from minus infinity to infinity of f of x, y, d x. It is the same as the row sum in the table, with an integral in place of the sum. And F of a, b equals the integral from minus infinity to a of the integral from minus infinity to b of f of x, y, d y d x.
+[[slnc 500]]
+Tiny example: f of x, y equals 1 on the unit square. Then P of X less than or equal to one half and Y less than or equal to one half is the area of the small square, one quarter.
+[[slnc 500]]
+For a double integral, do the inner integral first, with the other variable held fixed.
+[[slnc 1200]]
+
+Exercise 10.18. A joint density on the unit square. Slides 24 and 25.
+[[slnc 600]]
+X and Y have joint density f of x, y equals x plus y, for x between 0 and 1 and y between 0 and 1, and f of x, y equals 0 otherwise. Part a: check that the total probability is 1. Part b: what is F of one half, one half, which is P of X less than or equal to one half and Y less than or equal to one half? Part c: what is the marginal density f X of x? Part d: what is P of X greater than Y?
+[[slnc 800]]
+Try parts a and b, four minutes. Inner integral first, over y, with x fixed.
+[[slnc 500]]
+Part a. Click. Inner: the integral from 0 to 1 of x plus y, d y, equals x plus one half. Outer: the integral from 0 to 1 of x plus one half, d x, equals one half plus one half, which is 1.
+[[slnc 500]]
+Part b. Click. The same over the small square, with x and y both from 0 to one half. Inner: x over 2 plus one eighth. Outer: the integral from 0 to one half of x over 2 plus one eighth, d x, equals 1 over 16 plus 1 over 16, which is one eighth.
+[[slnc 500]]
+Note for you: slide 25.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: haven't we done this already?
+[[slnc 800]]
+Yes: the inner integral in part a.
+[[slnc 400]]
+f X of x equals x plus one half for x between 0 and 1, zero otherwise.
+[[slnc 500]]
+Part d. Click.
+[[slnc 400]]
+Ask the class: do we need a double integral over the triangle?
+[[slnc 800]]
+No.
+[[slnc 400]]
+Swapping x and y does not change f, so P of X greater than Y equals P of Y greater than X; and P of X equals Y is 0, because a line has no area. The two add up to 1, so P of X greater than Y equals one half.
+[[slnc 500]]
+Note for you, a common mistake in part b: taking the area of the small square, one quarter; that works only for a constant density. If someone integrates over the triangle in part d, with y from 0 to x, let them: it also gives one half.
+[[slnc 1200]]
+
+Independent random variables. Slide 26.
+[[slnc 600]]
+Note for you: clock check. This slide is planned for minute 38. If you start it after about minute 43, give part c of Exercise 10.21 as one number and one sentence, and skip part d of Exercise 10.22 if you have not decided so yet.
+[[slnc 500]]
+X and Y are independent if every event about X is independent of every event about Y: P of X in A and Y in B equals P of X in A times P of Y in B. Equivalently, F of a, b equals F X of a times F Y of b, for all a and b.
+[[slnc 500]]
+In practice: discrete, p of x, y equals p X of x times p Y of y in every cell; one cell that fails, and they are not independent. Continuous, f of x, y equals f X of x times f Y of y; on a rectangle, f splits into a function of x times a function of y.
+[[slnc 500]]
+Tiny example: f of x, y equals 4 x y on the unit square is 2 x times 2 y: independent. f of x, y equals x plus y of the last exercise does not split: not independent.
+[[slnc 500]]
+In words: knowing the value of X does not change the distribution of Y.
+[[slnc 1200]]
+
+Exercise 10.21. Do the two stocks move independently? A finance example. Slides 27 and 28.
+[[slnc 600]]
+Stocks A and B of Exercise 10.15: X equals plus or minus 1 if A rises or falls, Y equals 1, 0 or minus 1 if B rises, stays or falls. The joint pmf, with the marginals in the margins: for x equals minus 1, the cells are 0.20, 0.10 and 0.10, for y equals minus 1, 0 and 1, and p X of minus 1 is 0.4. For x equals 1, the cells are 0.05, 0.15 and 0.40, and p X of 1 is 0.6. The column sums, p Y of y, are 0.25, 0.25 and 0.5, and the total is 1. Part a: are X and Y independent? Part b: write down the joint pmf of independent X and Y with the same marginals. Part c: for those, find P of X equals Y and compare it with 0.60 for the real stocks.
+[[slnc 800]]
+The same two stocks as before. Try part a, two minutes: compare one cell with the product of its margins.
+[[slnc 500]]
+Part a. Click. p of minus 1, minus 1 equals 0.20, but p X of minus 1 times p Y of minus 1 equals 0.4 times 0.25, which is 0.10. Not independent. Click. One bad cell is enough for no; for yes, all cells must match. The cell minus 1, 0 happens to match, 0.10 equals 0.4 times 0.25, and proves nothing.
+[[slnc 500]]
+Note for you: slide 28.
+[[slnc 500]]
+Part b.
+[[slnc 400]]
+Ask the class: how do we fill the table of independent stocks?
+[[slnc 800]]
+Each cell is row sum times column sum.
+[[slnc 400]]
+Click. For example, 0.4 times 0.5 is 0.20, and 0.6 times 0.25 is 0.15.
+[[slnc 500]]
+Part c. Click. P of X equals Y equals 0.10 plus 0.30, which is 0.40, against 0.60 for the real stocks. Click. The real stocks move in the same direction more often than independent ones would: they tend to move together.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Correlation and diversification. The table of part b is what the stocks would look like with the same individual behavior but no common driver. The gap between 0.60 and 0.40 is the dependence. In portfolio theory, dependence, measured by correlation, decides how much risk diversification removes: with independent assets, risk shrinks as more are added; with assets that move together, a part of the risk always remains.
+[[slnc 400]]
+Key terms: independence; correlation; diversification.
+[[slnc 400]]
+A student may ask: are stock returns ever independent?
+[[slnc 400]]
+Answer: almost never exactly: most stocks share exposure to the market. Independence is a modeling simplification.
+[[slnc 1200]]
+
+Exercise 10.22. Two borrowers, independent defaults, a finance example. Slides 29 and 30.
+[[slnc 600]]
+The default times T A and T B, in years, of two companies are independent, exponential with rates 0.02 and 0.03. Part a: find P of T A greater than 10 and P of T B greater than 10. Part b: what is the probability that both survive 10 years? Part c: what is the probability that at least one defaults within 10 years? Part d: what is the probability that both default within 10 years?
+[[slnc 800]]
+Try parts a to c, three minutes. Remember the tail of the exponential.
+[[slnc 500]]
+Part a. Click. P of T greater than t equals e to the minus lambda t. Click. So P of T A greater than 10 equals e to the minus 0.2, approximately 0.819, and P of T B greater than 10 equals e to the minus 0.3, approximately 0.741.
+[[slnc 500]]
+Part b. Click. Independent, so the probabilities multiply: P of T A greater than 10 and T B greater than 10 equals e to the minus 0.2 times e to the minus 0.3, which is e to the minus 0.5, approximately 0.607.
+[[slnc 500]]
+Note for you: slide 30.
+[[slnc 500]]
+Part c.
+[[slnc 400]]
+Ask the class: what is the complement of at least one defaults?
+[[slnc 800]]
+Both survive.
+[[slnc 400]]
+So the answer is 1 minus e to the minus 0.5, approximately 0.393.
+[[slnc 500]]
+Part d. Click. P of T A less than or equal to 10 is approximately 0.181, and P of T B less than or equal to 10 is approximately 0.259. Click. By independence the product, approximately 0.047.
+[[slnc 500]]
+Click. In a crisis, defaults come together, so independence underestimates part d.
+[[slnc 500]]
+Note for you, a common mistake in part c: P of T A less than or equal to 10 plus P of T B less than or equal to 10, approximately 0.440, which counts both default twice.
+[[slnc 800]]
+Background for you.
+[[slnc 600]]
+Default times and default correlation. In reduced-form credit models the default time of a company is exponential with a hazard rate, or intensity, lambda: the rate 0.02 means roughly a 2 percent chance of default per year. Survival probability is e to the minus lambda t. The probability that both default is what matters for a lender with exposure to both, and for products such as first-to-default baskets and C D O tranches. Assuming independence understates joint defaults; in 2007 and 2008 this was one reason why such products lost far more than models predicted.
+[[slnc 400]]
+Key terms: hazard rate; survival probability; default correlation; first-to-default basket.
+[[slnc 400]]
+A student may ask: how do practitioners model dependent defaults?
+[[slnc 400]]
+Answer: with common factors or copulas: the marginals stay exponential, but the joint distribution makes defaults cluster.
+[[slnc 1200]]
+
+Summary for Session 2. Slide 31.
+[[slnc 600]]
+Session 2 in a few lines: a discrete joint distribution is a table, and the marginals are its row and column sums; a continuous one is a joint density, probabilities are double integrals, and the marginals come from integrating the other variable out; F of a, b equals P of X less than or equal to a and Y less than or equal to b; and independent means the joint pmf or density is the product of the marginals, so probabilities of and multiply. The marginals alone do not tell how X and Y move together.
+[[slnc 500]]
+Every exercise of today is in the study guide on the course website, with a step-by-step solution, and the Exercises page there has more problems on every topic for self-study. Thank you, and see you next week.
+[[slnc 500]]
+Note for you: use the reserve for questions, or let them start a self-study exercise on independence and walk around.
+[[slnc 1500]]
+End of the week 10 script.

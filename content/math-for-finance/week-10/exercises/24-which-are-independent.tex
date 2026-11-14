@@ -1,0 +1,124 @@
+% ---
+% title: Which ones are independent?
+% tags: independent-rv, joint-continuous, marginal
+% ---
+
+\begin{problem}
+	In each part, $X$ and $Y$ have the given joint density on the unit square
+	$0\le x\le 1$, $0\le y\le 1$, and the joint density is $0$ elsewhere.
+	Decide whether $X$ and $Y$ are independent.\\
+	(a) $f(x,y)=x+y$.\\
+	(b) $f(x,y)=4xy$.\\
+	(c) For the density of (b), find $P\big(X<\frac12,\,Y<\frac12\big)$ in
+	two ways: directly with a double integral, and using independence.
+\end{problem}
+
+\begin{solution}
+	\idea Two continuous random variables are independent exactly when the
+	joint density is the product of the marginal densities,
+	$f(x,y)=f_X(x)\,f_Y(y)$ for all $x$ and $y$. So we find the marginals and
+	compare their product with $f$.
+
+	\step{(a)} The marginal density of $X$: hold $x$ fixed and integrate the
+	joint density over all $y$. Outside $[0,1]$ the density is $0$, so only
+	$0\le y\le1$ counts. For $0\le x\le1$,
+	\[
+		f_X(x)=\int_0^1 (x+y)\,dy=\Big[xy+\frac{y^2}{2}\Big]_{y=0}^{y=1}
+		=\Big(x+\frac12\Big)-0=x+\frac12 .
+	\]
+	(Here $x$ is a constant, so the antiderivative of $x$ in $y$ is $xy$.)
+	The density is symmetric in $x$ and $y$, so in the same way
+	$f_Y(y)=y+\frac12$ for $0\le y\le1$. (This marginal is also computed in
+	Exercise~\exref{joint-density-square}.)
+
+	The product of the marginals is
+	\[
+		f_X(x)\,f_Y(y)=\Big(x+\frac12\Big)\Big(y+\frac12\Big)
+		=xy+\frac{x}{2}+\frac{y}{2}+\frac14 ,
+	\]
+	which is not the same function as $x+y$. Look near the corner $(0,0)$:
+	at $(0,0)$ itself the joint density is $f(0,0)=0$, but the product is
+	$\frac12\cdot\frac12=\frac14$. More than one point is involved: for all
+	$x$ and $y$ close to $0$, $f(x,y)=x+y$ is close to $0$, while the product
+	is close to $\frac14$. So the two functions differ on a whole small square,
+	not just at a single point, and $X$ and $Y$ are \emph{not} independent.
+
+	\step{(b)} Again hold $x$ fixed and integrate over $y$. For $0\le x\le1$,
+	\[
+		f_X(x)=\int_0^1 4xy\,dy=4x\Big[\frac{y^2}{2}\Big]_{y=0}^{y=1}
+		=4x\cdot\frac12=2x .
+	\]
+	By symmetry $f_Y(y)=2y$ for $0\le y\le1$. Both marginals are $0$ outside
+	$[0,1]$. Now
+	\[
+		f_X(x)\,f_Y(y)=2x\cdot 2y=4xy=f(x,y)
+	\]
+	on the unit square, and outside the square both sides are $0$ (there $x$
+	or $y$ is outside $[0,1]$, so one of the marginal factors is $0$). The
+	equality holds everywhere, so $X$ and $Y$ \emph{are} independent.
+
+	\step{(c)} The event is the small square $0\le x<\frac12$, $0\le y<\frac12$
+	(shaded below), the lower left quarter of the unit square.
+	\begin{center}
+		\begin{tikzpicture}[scale=2.6,>=stealth]
+			\fill[teal!25] (0,0) rectangle (0.5,0.5);
+			\draw[navy,thick] (0,0) rectangle (1,1);
+			\draw[->] (-0.1,0)--(1.2,0) node[right] {$x$};
+			\draw[->] (0,-0.1)--(0,1.2) node[above] {$y$};
+			\draw[dashed] (0.5,0)--(0.5,0.5)--(0,0.5);
+			\node[below] at (0.5,0) {$\frac12$};
+			\node[below] at (1,0) {$1$};
+			\node[left] at (0,0.5) {$\frac12$};
+			\node[left] at (0,1) {$1$};
+			\node[below left] at (0,0) {$0$};
+		\end{tikzpicture}
+	\end{center}
+
+	\emph{Directly.} Integrate the joint density over the shaded square.
+	Inner integral first, over $y$ with $x$ held fixed:
+	\[
+		\int_0^{1/2} 4xy\,dy=4x\Big[\frac{y^2}{2}\Big]_{y=0}^{y=1/2}
+		=4x\cdot\frac{1}{8}=\frac{x}{2}.
+	\]
+	Then the outer integral over $x$:
+	\[
+		P\Big(X<\frac12,\,Y<\frac12\Big)=\int_0^{1/2}\frac{x}{2}\,dx
+		=\Big[\frac{x^2}{4}\Big]_{0}^{1/2}=\frac{1/4}{4}-0=\frac1{16}.
+	\]
+
+	\emph{Using independence.} By (b), $X$ and $Y$ are independent, so the
+	probability of the joint event is the product of the two probabilities:
+	\[
+		P\Big(X<\frac12,\,Y<\frac12\Big)=P\Big(X<\frac12\Big)\,P\Big(Y<\frac12\Big).
+	\]
+	From the marginal density $f_X(x)=2x$,
+	\[
+		P\Big(X<\frac12\Big)=\int_0^{1/2}2x\,dx=\big[x^2\big]_0^{1/2}=\frac14 ,
+	\]
+	and in the same way $P\big(Y<\frac12\big)=\frac14$. The product is
+	$\frac14\cdot\frac14=\frac1{16}$: the two methods agree.
+
+	\begin{answer}
+		(a) $f_X(x)=x+\frac12$, $f_Y(y)=y+\frac12$; their product is not
+		$x+y$ (at $(0,0)$: $\frac14\ne0$), so not independent \quad
+		(b) $f_X(x)=2x$, $f_Y(y)=2y$, product $4xy=f(x,y)$, so independent
+		\quad
+		(c) $\frac1{16}$ both ways
+	\end{answer}
+	\begin{remark}
+		\textbf{A quick test.} When the joint density is $0$ outside a
+		rectangle (here the unit square), $X$ and $Y$ are
+		independent exactly when $f(x,y)$ splits into a function of $x$ times a
+		function of $y$. In (b), $4xy=(4x)\cdot y$ splits; in (a), $x+y$ is a
+		sum and cannot be written as $g(x)\,h(y)$. The constants in the factors
+		do not matter: $4xy=(4x)\cdot y=(2x)\cdot(2y)$, and normalizing each
+		factor so that it integrates to $1$ over $[0,1]$ gives the marginals
+		$2x$ and $2y$.
+
+		\textbf{Common mistake:} forgetting the region. The test needs a
+		rectangle. If $X$ and $Y$ are uniform on the triangle $0<y<x<1$, the
+		density is the constant $2$ there, which looks as if it splits, but
+		$X$ and $Y$ are not independent: knowing $X$ restricts $Y$ to $Y<X$
+		(see Exercise~\exref{triangle-density}).
+	\end{remark}
+\end{solution}

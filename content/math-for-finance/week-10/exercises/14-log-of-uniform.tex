@@ -1,0 +1,98 @@
+% ---
+% title: Making an exponential from a uniform
+% tags: function-of-rv, uniform, exponential
+% ---
+
+\begin{problem}
+	Let $U$ be uniformly distributed on $(0,1)$, and let $Y=-\ln U$.
+	(a) Find the distribution function $F_Y(y)=P(Y\le y)$ of $Y$.
+	(b) Find the density of $Y$. Which well-known distribution is it?
+	(c) Find $P(Y>2)$.
+\end{problem}
+
+\begin{solution}
+	\idea To find the distribution of a function of $U$, start from the
+	distribution function: write the event $\{Y\le y\}$ as an event about $U$,
+	and compute its probability with the uniform distribution. Then
+	differentiate to get the density.
+
+	\step{Possible values.} $U$ takes values in $(0,1)$. There $\ln U<0$, so
+	$Y=-\ln U>0$. When $U$ is close to $1$, $Y$ is close to $0$; when $U$ is
+	close to $0$, $Y$ is very large. So $Y$ takes every value in $(0,\infty)$,
+	and $F_Y(y)=0$ for $y\le 0$.
+
+	\step{(a)} Fix $y\ge 0$. We rewrite $Y\le y$ step by step:
+	\[
+		-\ln U\le y
+		\iff \ln U\ge -y
+		\iff U\ge e^{-y}.
+	\]
+	In the first step we multiply by $-1$, which flips the inequality. In the
+	second step we apply the exponential function to both sides; it is
+	increasing, so the inequality keeps its direction. The number $e^{-y}$ lies
+	in $(0,1]$, so the event $U\ge e^{-y}$ is the interval $[e^{-y},1)$, which
+	lies inside $(0,1)$. For a uniform random variable on $(0,1)$ the
+	probability of such an interval is its length, $1-e^{-y}$:
+	\[
+		F_Y(y)=P(U\ge e^{-y})=1-e^{-y},\qquad y\ge 0.
+	\]
+	At $y=0$ this gives $1-e^{0}=0$, the same value as for $y\le 0$, so $F_Y$
+	has no jump there. Together with $F_Y(y)=0$ for $y<0$ (from the possible
+	values):
+	\[
+		F_Y(y)=\begin{cases}
+			0          & y<0,     \\
+			1-e^{-y}   & y\ge 0.
+		\end{cases}
+	\]
+
+	\step{(b)} The density is the derivative of the distribution function. For
+	$y>0$, the derivative of $-e^{-y}$ is $e^{-y}$ (chain rule: the inner
+	derivative is $-1$), so
+	\[
+		f_Y(y)=F_Y'(y)=e^{-y},\quad y\ge 0,\qquad f_Y(y)=0,\quad y<0.
+	\]
+	This is the exponential density $\lambda e^{-\lambda y}$ with rate
+	$\lambda=1$. So $Y$ is exponential with rate $1$.
+
+	\step{(c)} ``$Y>2$'' is the complement of ``$Y\le 2$'', so
+	\[
+		P(Y>2)=1-F_Y(2)=1-\bigl(1-e^{-2}\bigr)=e^{-2}\approx 0.135.
+	\]
+	The same answer comes straight from $U$: $Y>2$ means $U<e^{-2}$, and
+	$P(U<e^{-2})=e^{-2}$. In the picture, $P(Y>2)$ is the shaded area under the
+	density to the right of $2$.
+	\begin{center}
+		\begin{tikzpicture}[x=1.3cm,y=3cm,>=stealth]
+			\fill[teal!30] (2,0)--plot[domain=2:5,samples=50] (\x,{exp(-\x)})--(5,0)--cycle;
+			\draw[->] (-0.4,0)--(5.4,0) node[right] {$y$};
+			\draw[->] (0,-0.08)--(0,1.2) node[above] {$f_Y(y)$};
+			\draw[navy,very thick] (-0.4,0)--(0,0);
+			\draw[navy,very thick] plot[domain=0:5,samples=50] (\x,{exp(-\x)});
+			\fill[navy] (0,1) circle (1.6pt);
+			\node[left] at (0,1) {$1$};
+			\foreach \x in {1,2,3,4} \draw (\x,0.03)--(\x,-0.03) node[below] {$\x$};
+			\node[below left] at (0,0) {$0$};
+			\node[teal!70!black] at (3.2,0.35) {$P(Y>2)=e^{-2}$};
+			\draw[teal!70!black,->] (3.0,0.28)--(2.4,0.06);
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{answer}
+		(a) $F_Y(y)=1-e^{-y}$ for $y\ge0$, and $0$ for $y<0$ \quad
+		(b) $f_Y(y)=e^{-y}$ for $y\ge0$: exponential with rate $1$ \quad
+		(c) $P(Y>2)=e^{-2}\approx0.135$
+	\end{answer}
+	\begin{remark}
+		This is how computers simulate exponential waiting times. A random
+		number generator produces (approximately) uniform numbers $U$ in
+		$(0,1)$, and $-\ln U$ turns each into an exponential with rate $1$.
+		For rate $\lambda$, use $-\frac1\lambda\ln U$: the same steps give
+		$P\bigl(-\tfrac1\lambda\ln U\le y\bigr)=P(U\ge e^{-\lambda y})
+			=1-e^{-\lambda y}$.
+
+		\textbf{Common mistake:} forgetting to flip the inequality when
+		multiplying by $-1$. That gives $P(U\le e^{-y})=e^{-y}$, which
+		\emph{decreases} in $y$, so it cannot be a distribution function.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,160 @@
+% ---
+% title: Two borrowers, independent defaults
+% tags: finance, independent-rv, exponential
+% ---
+
+\begin{problem}
+	\begin{context}
+		A bank's credit loss depends on how many of its borrowers default
+		(stop paying their debt), not only on each borrower alone. The simplest
+		model of a portfolio assumes that the default times of the borrowers are
+		independent: one company's default tells us nothing about the other's.
+		Each default time is modeled with an exponential distribution, whose
+		rate is the yearly hazard rate of the company.
+	\end{context}
+	A bank has lent to two companies, A and B. Their default times $T_A$ and
+	$T_B$, in years, are independent and exponential with rates $0.02$ and
+	$0.03$, so their densities are
+	\[ f_{T_A}(t)=0.02\,e^{-0.02t},\qquad f_{T_B}(t)=0.03\,e^{-0.03t},
+		\qquad t\ge0. \]
+	(a) Find the probability that A survives 10 years (does not default in
+	the first 10 years), and the same for B.
+	(b) What is the probability that both companies survive 10 years?
+	(c) What is the probability that at least one of them defaults within
+	10 years?
+	(d) What is the probability that both default within 10 years?
+\end{problem}
+
+\begin{slideproblem}
+	The default times $T_A$, $T_B$ (years) of two companies are
+	\emph{independent}, exponential with rates $0.02$ and $0.03$.
+	(a) Find $P(T_A>10)$ and $P(T_B>10)$.
+	(b) Probability that both survive 10 years?
+	(c) Probability that at least one defaults within 10 years?
+	(d) Probability that both default within 10 years?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Exponential with rate $\lambda$: $F(t)=1-e^{-\lambda t}$, so
+	\[ P(T>t)=1-F(t)=e^{-\lambda t}. \]
+	\pause
+	\vspace{-2mm}
+	\[ P(T_A>10)=e^{-0.02\cdot10}=e^{-0.2}\approx\alert{0.819},\qquad
+		P(T_B>10)=e^{-0.03\cdot10}=e^{-0.3}\approx\alert{0.741}. \]
+	\pause
+	(b) $T_A$, $T_B$ independent: probabilities of events about them
+	\alert{multiply}:
+	\[ P(T_A>10,\ T_B>10)=P(T_A>10)\,P(T_B>10)=e^{-0.2}e^{-0.3}
+		=e^{-0.5}\approx\alert{0.607}. \]
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.56\textwidth}
+			(c) ``At least one defaults'' is the complement of ``both
+			survive'':
+			\[ 1-e^{-0.5}\approx1-0.607=\alert{0.393}. \]
+			\uncover<2->{(d) $P(T_A\le10)=1-e^{-0.2}\approx0.181$,\\
+			$P(T_B\le10)=1-e^{-0.3}\approx0.259$.}
+			\uncover<3->{\[ P(T_A\le10,\ T_B\le10)\approx0.181\cdot0.259\approx\alert{0.047}. \]}
+			\uncover<4->{\alert{In a crisis} defaults come together: independence
+			\emph{underestimates} (d).}
+		\end{column}
+		\begin{column}{.40\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=.5]
+				\fill[teal!20] (2.5,2.5) rectangle (6,6);
+				\uncover<3->{\fill[gold!50] (0,0) rectangle (2.5,2.5);}
+				\draw[->] (0,0) -- (6.3,0) node[below left,font=\scriptsize] {$t_A$};
+				\draw[->] (0,0) -- (0,6.3) node[below left,font=\scriptsize] {$t_B$};
+				\draw[dashed] (2.5,0) -- (2.5,6) (0,2.5) -- (6,2.5);
+				\node[below,font=\scriptsize] at (2.5,0) {$10$};
+				\node[left,font=\scriptsize] at (0,2.5) {$10$};
+				\node[font=\scriptsize,align=center] at (4.25,4.25) {both\\survive};
+				\uncover<3->{\node[font=\scriptsize,align=center] at (1.25,1.25) {both\\def.};}
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea Each default time is exponential, so its survival probability is
+	$P(T>t)=e^{-\lambda t}$. Because $T_A$ and $T_B$ are independent, the
+	probability that $T_A$ falls in one set \emph{and} $T_B$ falls in
+	another is the product of the two probabilities. The complement rule
+	gives ``at least one''.
+
+	\step{(a)} First the distribution function of an exponential random
+	variable with rate $\lambda$ (see also Exercise~\exref{default-time}). For
+	$t\ge0$ an antiderivative of $\lambda e^{-\lambda s}$ is $-e^{-\lambda s}$, so
+	\[ F(t)=\int_{0}^{t}\lambda e^{-\lambda s}\,ds
+		=\Bigl[-e^{-\lambda s}\Bigr]_{0}^{t}
+		=-e^{-\lambda t}-\bigl(-e^{0}\bigr)=1-e^{-\lambda t}. \]
+	``Survives 10 years'' means the default time is later than 10, and
+	\[ P(T>t)=1-P(T\le t)=1-F(t)=e^{-\lambda t}. \]
+	With $\lambda=0.02$ and $\lambda=0.03$:
+	\[ P(T_A>10)=e^{-0.02\cdot10}=e^{-0.2}\approx0.819,\qquad
+		P(T_B>10)=e^{-0.03\cdot10}=e^{-0.3}\approx0.741. \]
+	Company B is riskier (higher rate), so it is less likely to survive.
+
+	\step{(b)} ``Both survive'' is the event $\{T_A>10,\ T_B>10\}$: an
+	event about $T_A$ \emph{and} an event about $T_B$ at the same time. The
+	random variables are independent, which means exactly that for any sets
+	$C$ and $D$
+	\[ P(T_A\in C,\ T_B\in D)=P(T_A\in C)\,P(T_B\in D). \]
+	With $C=D=(10,\infty)$:
+	\[ P(T_A>10,\ T_B>10)=P(T_A>10)\,P(T_B>10)=e^{-0.2}\cdot e^{-0.3}
+		=e^{-0.5}\approx0.607. \]
+	(The exponents add, because $e^{x}e^{y}=e^{x+y}$.)
+
+	\step{(c)} ``At least one defaults within 10 years'' happens exactly when
+	it is \emph{not} true that both survive. So it is the complement of the
+	event in (b):
+	\[ P(\text{at least one defaults})=1-P(T_A>10,\ T_B>10)
+		=1-e^{-0.5}\approx1-0.607=0.393. \]
+
+	\step{(d)} The default probabilities within 10 years are the complements
+	of (a):
+	\[ P(T_A\le10)=1-e^{-0.2}\approx0.181,\qquad
+		P(T_B\le10)=1-e^{-0.3}\approx0.259. \]
+	By independence again, now with $C=D=[0,10]$,
+	\[ P(T_A\le10,\ T_B\le10)=\bigl(1-e^{-0.2}\bigr)\bigl(1-e^{-0.3}\bigr)
+		\approx0.1813\cdot0.2592\approx0.047. \]
+	In the $(t_A,t_B)$-plane the four events are four regions cut out by the
+	lines $t_A=10$ and $t_B=10$: ``both survive'' is the upper right region,
+	``both default'' is the square $[0,10]\times[0,10]$, and ``at least one
+	defaults'' is everything except the upper right region.
+	\begin{center}
+		\begin{tikzpicture}[scale=.55]
+			\fill[teal!20] (2.5,2.5) rectangle (6,6);
+			\fill[gold!50] (0,0) rectangle (2.5,2.5);
+			\draw[->] (0,0) -- (6.3,0) node[below left,font=\small] {$t_A$};
+			\draw[->] (0,0) -- (0,6.3) node[below left,font=\small] {$t_B$};
+			\draw[dashed] (2.5,0) -- (2.5,6) (0,2.5) -- (6,2.5);
+			\node[below,font=\small] at (2.5,0) {$10$};
+			\node[left,font=\small] at (0,2.5) {$10$};
+			\node[font=\scriptsize,align=center] at (4.25,4.25) {both survive\\$\approx0.607$};
+			\node[font=\scriptsize,align=center] at (1.25,1.25) {both\\default\\$\approx0.047$};
+		\end{tikzpicture}
+	\end{center}
+	\begin{answer}
+		(a) $P(T_A>10)=e^{-0.2}\approx0.819$, $P(T_B>10)=e^{-0.3}\approx0.741$
+		\quad (b) $e^{-0.5}\approx0.607$ \quad (c) $1-e^{-0.5}\approx0.393$
+		\quad (d) $(1-e^{-0.2})(1-e^{-0.3})\approx0.047$
+	\end{answer}
+	\begin{remark}
+		Independence is a modeling assumption, and for defaults it is often
+		wrong. In a recession many companies get into trouble at the same time,
+		so defaults come together. Then the probability that both default is
+		larger than the product $0.047$: the independent model
+		\emph{underestimates} the chance of joint defaults, which are the
+		events that cause the largest losses for the bank.
+
+		\textbf{Common mistake:} in (c), adding the two default probabilities,
+		$0.181+0.259=0.440$. This counts the case ``both default'' twice.
+	\end{remark}
+\end{solution}

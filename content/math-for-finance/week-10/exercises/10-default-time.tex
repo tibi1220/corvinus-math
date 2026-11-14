@@ -1,0 +1,109 @@
+% ---
+% title: When does the borrower default?
+% tags: finance, exponential, distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		In credit risk models the time until a company defaults (stops paying
+		its debt) is often modeled with an exponential distribution. Its rate
+		is called the \emph{hazard rate}: roughly, the chance per year that a
+		company which has not defaulted yet defaults now. A constant hazard rate
+		means that the company does not get riskier or safer as time passes.
+	\end{context}
+	The time $T$, in years, until a company defaults is exponential with rate
+	$\lambda=0.04$, so its density is
+	\[ f(t)=0.04\,e^{-0.04t},\qquad t\ge0, \]
+	and $f(t)=0$ for $t<0$.
+	(a) What is the probability that the company defaults within 5 years?
+	(b) What is the probability that it survives 10 years (does not default
+	in the first 10 years)?
+	(c) The company has survived the first 5 years. What is the probability
+	that it defaults within the next 5 years?
+\end{problem}
+
+\begin{solution}
+	\idea First find the distribution function $F(t)=P(T\le t)$ by
+	integrating the density once. Then every question is a difference of
+	values of $F$; (c) is a conditional probability, computed from its
+	definition.
+
+	\step{The distribution function.} For $t<0$ the density is $0$, so
+	$F(t)=0$. For $t\ge0$ we integrate the density from $0$ to $t$. An
+	antiderivative of $0.04\,e^{-0.04s}$ is $-e^{-0.04s}$ (differentiate it:
+	$-e^{-0.04s}\cdot(-0.04)=0.04\,e^{-0.04s}$). So
+	\[
+		F(t)=\int_{0}^{t}0.04\,e^{-0.04s}\,ds
+		=\Bigl[-e^{-0.04s}\Bigr]_{0}^{t}
+		=-e^{-0.04t}-\bigl(-e^{0}\bigr)
+		=1-e^{-0.04t},\qquad t\ge0.
+	\]
+	The complement is the \emph{survival probability}:
+	\[ P(T>t)=1-F(t)=e^{-0.04t}. \]
+	The picture shows the density. The navy area is the probability in (a),
+	the teal area (it goes on to the right forever) is the probability in (b).
+	\begin{center}
+		\begin{tikzpicture}[x=0.28cm,y=60cm,>=stealth]
+			\fill[navy!35] (0,0) -- plot[domain=0:5,samples=30] (\x,{0.04*exp(-0.04*\x)}) -- (5,0) -- cycle;
+			\fill[teal!35] (10,0) -- plot[domain=10:40,samples=50] (\x,{0.04*exp(-0.04*\x)}) -- (40,0) -- cycle;
+			\draw[->] (-1,0)--(42,0) node[right] {$t$};
+			\draw[->] (0,-0.003)--(0,0.05) node[above] {$f(t)$};
+			\draw[navy,very thick] plot[domain=0:40,samples=60] (\x,{0.04*exp(-0.04*\x)});
+			\foreach \x in {5,10,20,30} \draw (\x,0.001)--(\x,-0.001) node[below] {\small$\x$};
+			\node[below left] at (0,0) {\small$0$};
+			\draw (0.3,0.04)--(-0.3,0.04) node[left] {\small$0.04$};
+			\node[navy!80!black,fill=white,inner sep=1pt] at (2.5,0.012) {\small(a)};
+			\node[teal!70!black] at (14,0.009) {\small(b)};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(a)} ``Defaults within 5 years'' means $T\le5$. This is exactly the
+	distribution function at $5$:
+	\[ P(T\le5)=F(5)=1-e^{-0.04\cdot5}=1-e^{-0.2}\approx1-0.8187=0.1813. \]
+	So about 18.1\% of such companies default within 5 years.
+
+	\step{(b)} ``Survives 10 years'' means $T>10$, the complement of
+	$T\le10$:
+	\[ P(T>10)=1-F(10)=e^{-0.04\cdot10}=e^{-0.4}\approx0.6703. \]
+
+	\step{(c)} We know that $T>5$, and we want $5<T\le10$. This is a
+	conditional probability:
+	\[ P(T\le10\mid T>5)=\frac{P(T\le10,\ T>5)}{P(T>5)}=\frac{P(5<T\le10)}{P(T>5)}. \]
+	The event in the numerator is ``$T\le10$ and $T>5$'', i.e.\ $5<T\le10$.
+	Its probability is a difference of values of $F$, because ``$T\le10$''
+	splits into the disjoint pieces ``$T\le5$'' and ``$5<T\le10$'':
+	\[ P(5<T\le10)=F(10)-F(5)=\bigl(1-e^{-0.4}\bigr)-\bigl(1-e^{-0.2}\bigr)
+		=e^{-0.2}-e^{-0.4}. \]
+	The denominator is the survival probability $P(T>5)=e^{-0.2}$. Divide,
+	and use $e^{-0.4}/e^{-0.2}=e^{-0.4+0.2}=e^{-0.2}$:
+	\[
+		P(T\le10\mid T>5)=\frac{e^{-0.2}-e^{-0.4}}{e^{-0.2}}
+		=1-e^{-0.2}\approx0.1813.
+	\]
+	This is the same number as in (a).
+
+	\begin{answer}
+		(a) $1-e^{-0.2}\approx0.181$ \quad
+		(b) $e^{-0.4}\approx0.670$ \quad
+		(c) $1-e^{-0.2}\approx0.181$, the same as (a)
+	\end{answer}
+	\begin{remark}
+		Result (c) is the \emph{memoryless property} of the exponential
+		distribution: a company that has survived 5 years is in the same
+		position as a brand new one, so its chance of defaulting in the next
+		5 years is again $1-e^{-0.2}$. In general
+		\[
+			P(T>s+t\mid T>s)=\dfrac{e^{-\lambda(s+t)}}{e^{-\lambda s}}
+			=e^{-\lambda t}=P(T>t).
+		\]
+		This is exactly what a constant hazard rate means. Real companies are
+		not always like this (a firm's credit quality can drift up or down),
+		but the model is simple and widely used.
+	\end{remark}
+	\begin{remark}
+		\textbf{Common mistake:} answering (c) with $P(5<T\le10)=e^{-0.2}-e^{-0.4}
+			\approx0.148$. That is the probability of defaulting between years
+		5 and 10 seen from today; it forgets that we already know the company
+		survived the first 5 years, so we must divide by $P(T>5)$.
+	\end{remark}
+\end{solution}

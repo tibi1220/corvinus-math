@@ -1,0 +1,130 @@
+% ---
+% title: Lifetime of a device
+% tags: continuous, density, distribution-function
+% ---
+
+\begin{problem}
+	The lifetime $X$, in hours, of an electronic component is a continuous
+	random variable with density
+	\[
+		f(x)=\begin{cases}
+			\dfrac{10}{x^2} & x>10,      \\[8pt]
+			0               & x\le 10.
+		\end{cases}
+	\]
+	(a) Check that $f$ is a density.
+	(b) Find the distribution function $F$ of $X$.
+	(c) Find $P(X>20)$.
+	(d) Find $P(X>15)$.
+\end{problem}
+
+\begin{solution}
+	\idea A function is a density if it is never negative and the total area
+	under it is $1$. The distribution function is the area under the density
+	to the left of $x$: $F(x)=\int_{-\infty}^{x}f(t)\,dt$. Once we have $F$,
+	every probability of the form $P(X>a)$ is simply $1-F(a)$.
+
+	\step{The graph.} The density is $0$ up to and including $10$. Just to
+	the right of $10$ it starts at the height $\frac{10}{10^2}=0.1$ (the
+	limit as $x\to10$ from the right), then decreases towards $0$, but never
+	reaches it. The shaded area is $P(X>20)$, the probability asked in~(c).
+	\begin{center}
+		\begin{tikzpicture}[x=0.16cm,y=30cm,>=stealth]
+			\fill[teal!30] (20,0)--plot[domain=20:60,samples=50] (\x,{10/(\x*\x)})--(60,0)--cycle;
+			\draw[->] (-3,0)--(63,0) node[right] {$x$};
+			\draw[->] (0,-0.005)--(0,0.12) node[above] {$f(x)$};
+			\draw[navy,very thick] (-3,0)--(10,0);
+			\draw[navy,very thick] plot[domain=10:60,samples=60] (\x,{10/(\x*\x)});
+			\draw[navy,thick,densely dotted] (10,0)--(10,0.1);
+			\draw[navy,thick,fill=white] (10,0.1) circle (1.5pt);
+			\fill[navy] (10,0) circle (1.5pt);
+			\draw (0.6,0.1)--(-0.6,0.1) node[left] {\footnotesize$0.1$};
+			\foreach \x in {10,20,30,40,50}
+			\draw (\x,0.002)--(\x,-0.002) node[below] {\footnotesize$\x$};
+			\node[below left] at (0,0) {\footnotesize$0$};
+			\node[teal!70!black] at (32,0.035) {\footnotesize$P(X>20)$};
+			\draw[teal!70!black,->] (30,0.03)--(25,0.009);
+		\end{tikzpicture}
+	\end{center}
+	(The value of $f$ at the single point $x=10$ does not matter: a single
+	point has no area.)
+
+	\step{(a)} Two things to check.
+	\begin{itemize}
+		\item $f(x)\ge0$ for every $x$: it is $0$ for $x\le10$, and
+		      $\frac{10}{x^2}>0$ for $x>10$.
+		\item The total area is $1$. The density is $0$ to the left of $10$,
+		      so only the part from $10$ to $\infty$ counts. An antiderivative
+		      of $\frac{10}{x^2}=10x^{-2}$ is $-\frac{10}{x}$
+		      (check: the derivative of $-10x^{-1}$ is $10x^{-2}$). The upper
+		      bound is $\infty$, so we integrate up to a large number $b$ and
+		      let $b\to\infty$:
+		      \[
+			      \int_{10}^{b}\frac{10}{x^2}\,dx
+			      =\Bigl[-\frac{10}{x}\Bigr]_{10}^{b}
+			      =-\frac{10}{b}-\Bigl(-\frac{10}{10}\Bigr)
+			      =1-\frac{10}{b}
+			      \;\longrightarrow\; 1 \quad (b\to\infty).
+		      \]
+	\end{itemize}
+	Both conditions hold, so $f$ is a density.
+
+	\step{(b)} $F(x)=\int_{-\infty}^{x}f(t)\,dt$ is the area under $f$ to the
+	left of $x$. Two cases.
+	\begin{itemize}
+		\item If $x\le10$: $f$ is $0$ on the whole range $(-\infty,x]$, so
+		      there is no area: $F(x)=0$. (A component never fails before
+		      $10$ hours.)
+		\item If $x>10$: the area from $-\infty$ to $10$ is $0$, and from $10$
+		      to $x$ we use the same antiderivative as in~(a):
+		      \[
+			      F(x)=\int_{10}^{x}\frac{10}{t^2}\,dt
+			      =\Bigl[-\frac{10}{t}\Bigr]_{10}^{x}
+			      =-\frac{10}{x}+\frac{10}{10}
+			      =1-\frac{10}{x}.
+		      \]
+	\end{itemize}
+	So
+	\[
+		F(x)=\begin{cases}
+			0                  & x\le 10, \\[4pt]
+			1-\dfrac{10}{x}    & x>10.
+		\end{cases}
+	\]
+	Check: $F$ is continuous at $10$ ($1-\frac{10}{10}=0$), it increases, and
+	$F(x)\to1$ as $x\to\infty$, as a distribution function must.
+
+	\step{(c)} ``$X>20$'' is the complement of ``$X\le20$'', so
+	\[
+		P(X>20)=1-F(20)=1-\Bigl(1-\frac{10}{20}\Bigr)=\frac{10}{20}=\frac12.
+	\]
+	Half of the components last longer than $20$ hours. In general, for
+	$a>10$ we get $P(X>a)=\frac{10}{a}$.
+
+	\step{(d)} In the same way,
+	\[
+		P(X>15)=1-F(15)=\frac{10}{15}=\frac23\approx0.6667.
+	\]
+	This is larger than in~(c), as it should be: lasting more than $20$
+	hours implies lasting more than $15$ hours.
+
+	\begin{answer}
+		(a) $f\ge0$ and $\int_{10}^{\infty}\frac{10}{x^2}\,dx
+			=\bigl[-\frac{10}{x}\bigr]_{10}^{\infty}=1$ \newline
+		(b) $F(x)=1-\frac{10}{x}$ for $x>10$, and $F(x)=0$ otherwise \newline
+		(c) $P(X>20)=\frac12$ \quad
+		(d) $P(X>15)=\frac23\approx0.6667$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} starting the integral at $-\infty$ or at $0$
+		with the formula $\frac{10}{x^2}$. The formula is valid only for
+		$x>10$; below $10$ the density is $0$. Integrating $\frac{10}{x^2}$
+		from $0$ would even give an infinite area. Always cut the integral to
+		the region where the density is positive.
+
+		Note also that the height $0.1$ of the density just to the right of
+		$10$ is not a probability: for a continuous
+		random variable $P(X=10)=0$. Probabilities are areas under $f$, not
+		values of $f$.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,113 @@
+% ---
+% title: Claims on two policies
+% tags: finance, joint-discrete, marginal, joint-distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		Many customers hold several policies with the same insurer, for
+		example a car policy and a home policy. The insurer pays for every
+		claim, so it matters how the claims on the different policies occur
+		together: a customer who claims on one policy may also be more likely
+		to claim on the other. The joint distribution of the
+		claim counts describes this.
+	\end{context}
+	A customer has a car policy and a home policy with the same insurer. Let
+	$X$ be the number of claims on the car policy in a year ($0$ or $1$), and
+	$Y$ the number of claims on the home policy in the same year ($0$, $1$ or
+	$2$). The joint probability mass function $p(x,y)=P(X=x,Y=y)$ is
+	\begin{center}
+		\begin{tabular}{c|ccc}
+			          & $y=0$  & $y=1$  & $y=2$  \\ \hline
+			$x=0$     & $0.50$ & $0.15$ & $0.05$ \\
+			$x=1$     & $0.15$ & $0.10$ & $0.05$
+		\end{tabular}
+	\end{center}
+	(a) Find the marginal probability mass functions $p_X$ and $p_Y$.
+	(b) Find the probability that the customer makes at least two claims in
+	total, $P(X+Y\ge2)$.
+	(c) Find the joint distribution function $F(a,b)=P(X\le a,Y\le b)$ at the
+	points $(0,0)$, $(0,1)$, $(1,0)$ and $(1,1)$.
+\end{problem}
+
+\begin{solution}
+	\idea Every probability about $X$ and $Y$ is a sum of cells of the table:
+	find the cells where the event happens and add them. The marginal pmfs are
+	the row sums and the column sums. $F(a,b)$ is the sum of the cells with
+	$x\le a$ and $y\le b$: a ``lower left'' block of the table.
+
+	\step{Check the table.} The six cells are all the possible pairs
+	$(x,y)$, so they must add up to $1$:
+	\[ 0.50+0.15+0.05+0.15+0.10+0.05=1. \]
+
+	\step{(a)} The event $\{X=0\}$ happens together with exactly one of
+	$\{Y=0\}$, $\{Y=1\}$, $\{Y=2\}$. These three are mutually exclusive, so
+	\[ p_X(0)=P(X=0)=p(0,0)+p(0,1)+p(0,2)=0.50+0.15+0.05=0.70. \]
+	In words: $p_X(0)$ is the sum of the row $x=0$. In the same way, the row
+	$x=1$ gives
+	\[ p_X(1)=p(1,0)+p(1,1)+p(1,2)=0.15+0.10+0.05=0.30. \]
+	For $Y$ we add the columns instead:
+	\[
+		\begin{aligned}
+			p_Y(0) & =p(0,0)+p(1,0)=0.50+0.15=0.65, \\
+			p_Y(1) & =p(0,1)+p(1,1)=0.15+0.10=0.25, \\
+			p_Y(2) & =p(0,2)+p(1,2)=0.05+0.05=0.10.
+		\end{aligned}
+	\]
+	It is convenient to write these sums into the margins of the table (this
+	is where the name ``marginal'' comes from):
+	\begin{center}
+		\begin{tabular}{c|ccc|c}
+			          & $y=0$  & $y=1$  & $y=2$  & $p_X(x)$ \\ \hline
+			$x=0$     & $0.50$ & $0.15$ & $0.05$ & $0.70$   \\
+			$x=1$     & $0.15$ & $0.10$ & $0.05$ & $0.30$   \\ \hline
+			$p_Y(y)$  & $0.65$ & $0.25$ & $0.10$ & $1$
+		\end{tabular}
+	\end{center}
+	Check: $0.70+0.30=1$ and $0.65+0.25+0.10=1$. So the car policy has no
+	claim in 70\% of the years, and the home policy has no claim in 65\% of
+	the years.
+
+	\step{(b)} List the pairs $(x,y)$ with $x+y\ge2$. With $x=0$ we need
+	$y=2$; with $x=1$ we need $y\ge1$, so $y=1$ or $y=2$. The three cells
+	$(0,2)$, $(1,1)$, $(1,2)$ are different outcomes, so they are mutually
+	exclusive, and their probabilities add up:
+	\[ P(X+Y\ge2)=p(0,2)+p(1,1)+p(1,2)=0.05+0.10+0.05=0.20. \]
+	Check with the complement: $X+Y\le1$ means $(0,0)$, $(0,1)$ or $(1,0)$,
+	with probability $0.50+0.15+0.15=0.80=1-0.20$.
+
+	\step{(c)} $F(a,b)$ adds the cells with $x\le a$ \emph{and} $y\le b$.
+	\begin{itemize}
+		\item $F(0,0)=P(X\le0,Y\le0)$. Both counts are at least $0$, so this is
+		      just the one cell $(0,0)$: $F(0,0)=p(0,0)=0.50$.
+		\item $F(0,1)$: $x=0$ and $y\in\{0,1\}$, two cells:
+		      $F(0,1)=p(0,0)+p(0,1)=0.50+0.15=0.65$.
+		\item $F(1,0)$: $x\in\{0,1\}$ and $y=0$, two cells:
+		      $F(1,0)=p(0,0)+p(1,0)=0.50+0.15=0.65$.
+		\item $F(1,1)$: $x\in\{0,1\}$ and $y\in\{0,1\}$, four cells:
+		      \[ F(1,1)=p(0,0)+p(0,1)+p(1,0)+p(1,1)=0.50+0.15+0.15+0.10=0.90. \]
+	\end{itemize}
+	A faster way for $F(1,1)$: the only cells left out are those with $y=2$,
+	so $F(1,1)=1-P(Y=2)=1-0.10=0.90$.
+
+	\begin{answer}
+		(a) ${p_X(0)=0.70}$, ${p_X(1)=0.30}$; ${p_Y(0)=0.65}$, ${p_Y(1)=0.25}$,
+		${p_Y(2)=0.10}$ \quad
+		(b)~${P(X+Y\ge2)=0.20}$ \quad
+		(c) ${F(0,0)=0.50}$, ${F(0,1)=0.65}$, ${F(1,0)=0.65}$, ${F(1,1)=0.90}$
+	\end{answer}
+	\begin{remark}
+		$F(0,1)$ and $F(1,0)$ are equal here, but they are sums of different
+		cells: $F(0,1)$ uses $(0,0)$ and $(0,1)$, $F(1,0)$ uses $(0,0)$ and
+		$(1,0)$. They agree only because $p(0,1)=p(1,0)=0.15$.
+		Since $X\le1$ always, $F(1,b)=P(Y\le b)$ is the distribution function
+		of $Y$ alone: for example $F(1,0)=p_Y(0)=0.65$.
+		The claims do tend to occur together:
+		$P(X=1,Y=1)=0.10$ is larger than $p_X(1)\,p_Y(1)=0.30\cdot0.25=0.075$,
+		so a car claim makes a home claim more likely here, and $X$ and $Y$ are
+		not independent.
+		\textbf{Common mistake:} computing $F(1,1)$ as $P(X=1,Y=1)=0.10$. The
+		joint distribution function uses ``$\le$'', so it collects a whole
+		block of cells, not a single cell.
+	\end{remark}
+\end{solution}

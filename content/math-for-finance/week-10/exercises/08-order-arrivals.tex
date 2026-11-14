@@ -1,0 +1,164 @@
+% ---
+% title: Waiting for the next order
+% tags: finance, exponential, density, distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		On an electronic exchange, buy and sell orders for a stock arrive at
+		random moments. Traders and market makers care about how long they have
+		to wait for the next order. The waiting time between orders is often
+		modeled with an exponential distribution.
+	\end{context}
+	The waiting time $X$, in minutes, until the next order for a stock has
+	density
+	\[ f(x)=\begin{cases} 2e^{-2x}, & x\ge0,\\ 0, & x<0 \end{cases} \]
+	(an exponential distribution with rate $\lambda=2$ per minute).
+	(a) Check that $f$ is a density and find the distribution function $F$.
+	(b) Find $P(X>1)$.
+	(c) Find $P(X<0.5)$.
+	(d) No order has arrived in the first half minute. What is the
+	probability that we wait more than 1.5 minutes in total? Compare with (b).
+\end{problem}
+
+\begin{slideproblem}
+	The waiting time $X$ (minutes) until the next order for a stock has
+	density $f(x)=2e^{-2x}$ for $x\ge0$ (and $0$ for $x<0$).
+	(a) Check that $f$ is a density; find $F$.
+	\ (b) $P(X>1)$.
+	\ (c) $P(X<0.5)$.
+	\ (d) No order in the first half minute. Probability that we wait more
+	than 1.5 minutes in total? Compare with (b).
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.58\textwidth}
+			\sol (a) $f(x)\ge0$, and
+			\[ \int_0^{\infty}2e^{-2x}\,dx=\Bigl[-e^{-2x}\Bigr]_0^{\infty}
+				=0-(-1)=1. \]
+			\pause
+			For $x\ge0$:
+			\[ F(x)=\int_0^{x}2e^{-2t}\,dt=\Bigl[-e^{-2t}\Bigr]_0^{x}
+				=1-e^{-2x}, \]
+			$F(x)=0$ for $x<0$.
+			\pause
+			\ Tail: \ $\alert{P(X>x)=e^{-2x}}$.
+		\end{column}
+		\begin{column}{.40\textwidth}
+			\centering
+			\begin{tikzpicture}[xscale=1.5,yscale=1.1]
+				\fill[teal!30] (1,0) -- plot[domain=1:2.4,samples=40]
+				(\x,{2*exp(-2*\x)}) -- (2.4,0) -- cycle;
+				\draw[->] (-.2,0) -- (2.6,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,-.1) -- (0,2.3) node[above] {\scriptsize $f(x)$};
+				\draw[navy,thick] plot[domain=0:2.4,samples=50]
+				(\x,{2*exp(-2*\x)});
+				\foreach \x in {0.5,1,1.5,2}
+				\draw (\x,.04) -- (\x,-.04) node[below] {\scriptsize $\x$};
+				\draw (.04,2) -- (-.04,2) node[left] {\scriptsize $2$};
+				\draw[teal,->] (1.6,.7) node[above] {\scriptsize $P(X>1)$}
+				-- (1.2,.12);
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) $P(X>1)=e^{-2\cdot1}=e^{-2}\approx0.135$.\\[2mm]
+	\pause
+	(c) $X$ is continuous, so $P(X=0.5)=0$ and
+	\[ P(X<0.5)=F(0.5)=1-e^{-2\cdot0.5}=1-e^{-1}\approx0.632. \]
+	\pause
+	(d) ``More than 1.5 in total'' already contains ``more than 0.5'':
+	\[ P(X>1.5\mid X>0.5)=\frac{P(X>1.5)}{P(X>0.5)}
+		=\frac{e^{-3}}{e^{-1}}=e^{-2}\approx0.135. \]
+	\pause
+	The same as (b)! Having waited half a minute does not change the chance of
+	waiting more than one more minute.\\[1mm]
+	\alert{The exponential distribution has no memory.}
+\end{slides}
+
+\begin{solution}
+	\idea A density must be nonnegative and integrate to 1. The distribution
+	function is the integral of the density from the left up to $x$. Then
+	every probability about $X$ comes from $F$; for (d) we use the definition
+	of conditional probability.
+
+	\step{(a)} For $x\ge0$, $2e^{-2x}>0$ because an exponential is always positive,
+	and $f(x)=0$ for $x<0$, so $f(x)\ge0$ everywhere. The total area under $f$ is
+	\[ \int_{-\infty}^{\infty}f(x)\,dx=\int_0^{\infty}2e^{-2x}\,dx. \]
+	An antiderivative of $2e^{-2x}$ is $-e^{-2x}$ (differentiate: the chain
+	rule gives $-e^{-2x}\cdot(-2)=2e^{-2x}$). At the upper bound,
+	$-e^{-2x}\to0$ as $x\to\infty$; at the lower bound it equals $-e^{0}=-1$.
+	So
+	\[ \int_0^{\infty}2e^{-2x}\,dx=\Bigl[-e^{-2x}\Bigr]_0^{\infty}
+		=0-(-1)=1, \]
+	and $f$ is a density.
+
+	For the distribution function, $F(x)=\int_{-\infty}^{x}f(t)\,dt$. If
+	$x<0$, the density is 0 to the left of $x$, so $F(x)=0$. If $x\ge0$, only
+	the part from 0 to $x$ contributes:
+	\[ F(x)=\int_0^{x}2e^{-2t}\,dt=\Bigl[-e^{-2t}\Bigr]_0^{x}
+		=-e^{-2x}-(-1)=1-e^{-2x}. \]
+	So
+	\[ F(x)=\begin{cases} 0, & x<0,\\ 1-e^{-2x}, & x\ge0. \end{cases} \]
+	A useful consequence is the \emph{tail probability}: for $x\ge0$,
+	\[ P(X>x)=1-F(x)=e^{-2x}. \]
+	\begin{center}
+		\begin{tikzpicture}[xscale=2,yscale=1.2]
+			\fill[teal!30] (1,0) -- plot[domain=1:2.6,samples=40]
+			(\x,{2*exp(-2*\x)}) -- (2.6,0) -- cycle;
+			\draw[->] (-.2,0) -- (2.8,0) node[right] {\small $x$};
+			\draw[->] (0,-.1) -- (0,2.3) node[above] {\small $f(x)$};
+			\draw[navy,thick] plot[domain=0:2.6,samples=60] (\x,{2*exp(-2*\x)});
+			\foreach \x in {0.5,1,1.5,2,2.5}
+			\draw (\x,.04) -- (\x,-.04) node[below] {\scriptsize $\x$};
+			\draw (.03,2) -- (-.03,2) node[left] {\scriptsize $2$};
+			\draw[teal,->] (1.6,.8) node[above] {\scriptsize area $=P(X>1)=e^{-2}$}
+			-- (1.2,.12);
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(b)} Use the tail formula with $x=1$:
+	\[ P(X>1)=e^{-2\cdot1}=e^{-2}\approx0.135. \]
+	This is the shaded area in the picture. There is about a 13.5\% chance
+	that no order arrives within a minute.
+
+	\step{(c)} For a continuous random variable a single point has
+	probability 0, so $P(X<0.5)=P(X\le0.5)=F(0.5)$. Hence
+	\[ P(X<0.5)=1-e^{-2\cdot0.5}=1-e^{-1}\approx1-0.368=0.632. \]
+
+	\step{(d)} We want $P(X>1.5\mid X>0.5)$. By definition,
+	\[ P(X>1.5\mid X>0.5)=\frac{P(\{X>1.5\}\cap\{X>0.5\})}{P(X>0.5)}. \]
+	If $X>1.5$, then certainly $X>0.5$, so the intersection is just the event
+	$\{X>1.5\}$. Using the tail formula twice,
+	\[ P(X>1.5\mid X>0.5)=\frac{P(X>1.5)}{P(X>0.5)}
+		=\frac{e^{-2\cdot1.5}}{e^{-2\cdot0.5}}=\frac{e^{-3}}{e^{-1}}
+		=e^{-2}\approx0.135. \]
+	This is exactly the answer of (b). Having already waited half a minute,
+	the chance of waiting more than one more minute is the same as the chance
+	of waiting more than one minute from the start. The past waiting does not
+	matter: the exponential distribution is \emph{memoryless}. In general,
+	$P(X>s+t\mid X>s)=e^{-\lambda(s+t)}/e^{-\lambda s}=e^{-\lambda t}=P(X>t)$.
+	\begin{answer}
+		(a) $\int_0^\infty 2e^{-2x}\,dx=1$; $F(x)=1-e^{-2x}$ for $x\ge0$,
+		$F(x)=0$ for $x<0$
+		\quad (b) $e^{-2}\approx0.135$
+		\quad (c) $1-e^{-1}\approx0.632$
+		\quad (d) $e^{-2}\approx0.135$, the same as (b)
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (d), computing
+		$P(X>1.5)=e^{-3}\approx0.050$ and ignoring the information that no
+		order came in the first half minute; or computing
+		$P(0.5<X\le1.5)$. The condition shrinks the sample space to
+		$\{X>0.5\}$, so we divide by its probability. In finance terms: if
+		orders arrive in a memoryless way, a quiet market in the last half
+		minute tells us nothing about how much longer the quiet will last.
+	\end{remark}
+\end{solution}

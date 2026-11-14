@@ -1,0 +1,116 @@
+% ---
+% title: Waiting for the bus
+% tags: continuous, density, uniform
+% ---
+
+\begin{problem}
+	A bus arrives at a stop at a random time between $0$ and $15$ minutes from
+	now. The arrival time is uniformly distributed on this interval: its
+	density is constant on $[0,15]$ and $0$ outside. Let $X$ be your
+	waiting time (in minutes).
+	(a) Find the density $f(x)$ of $X$.
+	(b) Find $P(X<5)$.
+	(c) Find $P(3<X<8)$.
+	(d) You have already waited $5$ minutes and the bus has not come yet. What
+	is the probability that you wait more than $10$ minutes in total?
+\end{problem}
+
+\begin{solution}
+	\idea The density is a constant $c$ on $[0,15]$, and the total area under a
+	density is $1$; this gives $c$. A probability is the area under the density
+	over the interval. Here that area is a rectangle, so no integral is really
+	needed: the probability is width times height.
+
+	\step{(a)} Write $f(x)=c$ for $0\le x\le 15$ and $f(x)=0$ otherwise. The
+	total probability is $1$, so
+	\[
+		1=\int_{-\infty}^{\infty}f(x)\,dx=\int_{0}^{15}c\,dx
+		=\Big[c\,x\Big]_{0}^{15}=15c-0=15c .
+	\]
+	Hence $c=\frac1{15}$:
+	\[
+		f(x)=\begin{cases}
+			\dfrac1{15} & 0\le x\le 15, \\[6pt]
+			0           & \text{otherwise.}
+		\end{cases}
+	\]
+	Geometrically: the graph of $f$ is a rectangle of width $15$, and its area
+	must be $1$, so its height is $\frac1{15}$.
+	\begin{center}
+		\begin{tikzpicture}[x=0.55cm,y=30cm,>=stealth]
+			\fill[teal!25] (3,0) rectangle (8,1/15);
+			\fill[gold!40] (0,0) rectangle (3,1/15);
+			\draw[->] (-1,0)--(17,0) node[right] {$x$};
+			\draw[->] (0,0)--(0,0.1) node[above] {$f(x)$};
+			\draw[navy,very thick] (-1,0)--(0,0);
+			\draw[navy,very thick] (0,1/15)--(15,1/15);
+			\draw[navy,very thick] (15,0)--(16.8,0);
+			\draw[navy,densely dotted] (15,0)--(15,1/15);
+			\node[left] at (0,1/15) {\footnotesize$\frac1{15}$};
+			\foreach \x in {3,5,8,10,15}
+			\draw (\x,0.002)--(\x,-0.002) node[below] {\footnotesize$\x$};
+			\draw[navy,thick,dashed] (5,0)--(5,1/15);
+			\node[below left] at (0,0) {\footnotesize$0$};
+		\end{tikzpicture}
+	\end{center}
+	The gold strip plus the left part of the teal strip (up to the dashed line
+	at $5$) is the area for (b); the teal strip from $3$ to $8$ is the area for
+	(c).
+
+	\step{(b)} $X<5$ means the bus comes within the first $5$ minutes. The
+	probability is the area under $f$ between $0$ and $5$ (there is no
+	probability below $0$):
+	\[
+		P(X<5)=\int_{0}^{5}\frac1{15}\,dx=\Big[\frac{x}{15}\Big]_{0}^{5}
+		=\frac5{15}-0=\frac13 .
+	\]
+	The same with geometry: a rectangle of width $5$ and height $\frac1{15}$.
+
+	\step{(c)} Again the area under $f$, now between $3$ and $8$:
+	\[
+		P(3<X<8)=\int_{3}^{8}\frac1{15}\,dx=\Big[\frac{x}{15}\Big]_{3}^{8}
+		=\frac8{15}-\frac3{15}=\frac5{15}=\frac13 .
+	\]
+	This equals the answer of (b). The reason: for a uniform random variable
+	the density is flat, so the probability of an interval inside $[0,15]$ is
+	its length divided by $15$. Only the length of the interval matters, not
+	where it lies. Both $(0,5)$ and $(3,8)$ have length $5$.
+
+	\step{(d)} This is a conditional probability. Let $E=\{X>10\}$ (you wait
+	more than $10$ minutes in total) and $F=\{X>5\}$ (the bus has not come in
+	the first $5$ minutes). By definition
+	\[
+		P(E\mid F)=\frac{P(EF)}{P(F)} .
+	\]
+	If $X>10$, then surely $X>5$, so $EF=E$ and $P(EF)=P(X>10)$. Both
+	probabilities are areas of rectangles of height $\frac1{15}$:
+	\[
+		P(X>10)=\int_{10}^{15}\frac1{15}\,dx=\frac{15-10}{15}=\frac5{15},
+		\qquad
+		P(X>5)=\int_{5}^{15}\frac1{15}\,dx=\frac{15-5}{15}=\frac{10}{15}.
+	\]
+	Therefore
+	\[
+		P(X>10\mid X>5)=\frac{5/15}{10/15}=\frac5{10}=\frac12 .
+	\]
+	Interpretation: once you know $X>5$, the bus comes at a time uniformly
+	spread over the remaining $10$ minutes $(5,15]$, and ``more than $10$ in
+	total'' is the last $5$ of these $10$ minutes.
+
+	\begin{answer}
+		(a) ${f(x)=\frac1{15}}$ for ${0\le x\le15}$, and $0$ otherwise \quad
+		(b) ${P(X<5)=\frac13}$ \quad
+		(c) ${P(3<X<8)=\frac13}$ \quad
+		(d) ${P(X>10\mid X>5)=\frac12}$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (d), answering $P(X>10)=\frac13$. The
+		information ``you have already waited $5$ minutes'' changes the
+		probability: the first $5$ minutes are ruled out, and the remaining
+		$10$ minutes become the whole sample space. The conditional probability
+		$\frac12$ is larger than the unconditional $\frac13$, because the $10$
+		minutes that are left now carry all the probability.
+		Note also that for a continuous random variable $P(X=a)=0$ for every
+		$a$, so it does not matter whether we write $X<5$ or $X\le5$.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,145 @@
+% ---
+% title: The recovery rate
+% tags: finance, density, distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		When a borrower defaults, the bank rarely loses the whole loan: it sells
+		the collateral, or it gets part of the money back in a court procedure.
+		The \emph{recovery rate} is the fraction of the defaulted loan that the
+		bank gets back. It is a number between 0 (nothing is recovered) and 1
+		(everything is recovered), and before the default it is not known.
+	\end{context}
+	The recovery rate $R$ of a defaulted loan is a continuous random variable
+	with density
+	\[
+		f(x)=\begin{cases}
+			6x(1-x) & 0\le x\le 1, \\
+			0       & \text{otherwise}.
+		\end{cases}
+	\]
+	(a) Find the distribution function $F$ of $R$.
+	(b) Find $P(R<0.5)$.
+	(c) Find $P(R>0.8)$.
+	(d) Find $P(0.2<R<0.4)$.
+\end{problem}
+
+\begin{solution}
+	\idea The distribution function is the area under the density to the left
+	of $x$: $F(x)=P(R\le x)=\int_{-\infty}^{x}f(t)\,dt$. Once $F$ is known,
+	every interval probability is a difference of two values of $F$.
+
+	\step{The picture.} The density is a hill on $[0,1]$: it is $0$ at both
+	ends and largest in the middle, $f(0.5)=6\cdot0.5\cdot0.5=1.5$. Each
+	probability below is an area under this curve. The shaded parts show
+	$P(0.2<R<0.4)$ (teal) and $P(R>0.8)$ (gold).
+	\begin{center}
+		\begin{tikzpicture}[x=6cm,y=2.4cm,>=stealth]
+			\fill[teal!35] (0.2,0)
+			-- plot[domain=0.2:0.4,samples=30] (\x,{6*\x*(1-\x)}) -- (0.4,0) -- cycle;
+			\fill[gold!60] (0.8,0)
+			-- plot[domain=0.8:1,samples=30] (\x,{6*\x*(1-\x)}) -- (1,0) -- cycle;
+			\draw[->] (-0.1,0)--(1.15,0) node[right] {$x$};
+			\draw[->] (0,-0.05)--(0,1.75) node[above] {$f(x)$};
+			\foreach \x in {0.2,0.4,0.5,0.8,1}
+			\draw (\x,0.03)--(\x,-0.03) node[below] {\footnotesize$\x$};
+			\node[below left] at (0,0) {\footnotesize$0$};
+			\draw[gray!60,dashed] (0,1.5)--(0.5,1.5);
+			\node[left] at (0,1.5) {\footnotesize$1.5$};
+			\draw[navy,very thick] (-0.1,0)--(0,0);
+			\draw[navy,very thick] plot[domain=0:1,samples=60] (\x,{6*\x*(1-\x)});
+			\draw[navy,very thick] (1,0)--(1.12,0);
+		\end{tikzpicture}
+	\end{center}
+	Before we start, check that $f$ is a density: it is never negative, and
+	the total area is
+	\[
+		\int_0^1 (6x-6x^2)\,dx=\Bigl[3x^2-2x^3\Bigr]_0^1=3-2=1.
+	\]
+
+	\step{(a)} We compute $F(x)=\int_{-\infty}^{x}f(t)\,dt$ separately on the
+	three pieces where $f$ has a different formula.
+	\begin{itemize}
+		\item For $x<0$: the density is $0$ to the left of $x$, so there is no
+		      area, and $F(x)=0$. (The recovery rate cannot be negative.)
+		\item For $0\le x\le1$: the density is $0$ left of $0$, so only the
+		      part from $0$ to $x$ counts. Write the density as $6t-6t^2$. An
+		      antiderivative is $3t^2-2t^3$ (check: its derivative is
+		      $6t-6t^2$). So
+		      \[
+			      F(x)=\int_0^x (6t-6t^2)\,dt=\Bigl[3t^2-2t^3\Bigr]_0^x
+			      =(3x^2-2x^3)-(0-0)=3x^2-2x^3.
+		      \]
+		\item For $x>1$: all the area (which is $1$) lies to the left of $x$,
+		      so $F(x)=1$. Indeed, the formula above gives $F(1)=3-2=1$, and
+		      the density adds nothing after $1$.
+	\end{itemize}
+	So
+	\[
+		F(x)=\begin{cases}
+			0          & x<0,          \\
+			3x^2-2x^3  & 0\le x\le 1,  \\
+			1          & x>1.
+		\end{cases}
+	\]
+	Check: $F'(x)=6x-6x^2=f(x)$ on $(0,1)$, as it must be.
+
+	\step{(b)} $R$ is continuous, so a single point has probability $0$:
+	$P(R=0.5)=0$. Hence $P(R<0.5)=P(R\le0.5)=F(0.5)$, and
+	\[
+		F(0.5)=3\cdot0.25-2\cdot0.125=0.75-0.25=0.5.
+	\]
+	Symmetry gives the same answer without any computation. The density is
+	symmetric about $0.5$: $f(1-x)=6(1-x)x=f(x)$. So the area to the left of
+	$0.5$ equals the area to the right of $0.5$, and the two halves add up to
+	$1$. Each is $\frac12$.
+
+	\step{(c)} ``$R>0.8$'' is the complement of ``$R\le0.8$'', so
+	$P(R>0.8)=1-F(0.8)$. Here
+	\[
+		F(0.8)=3\cdot0.64-2\cdot0.512=1.92-1.024=0.896,
+	\]
+	so
+	\[
+		P(R>0.8)=1-0.896=0.104=\frac{13}{125}.
+	\]
+	The gold area in the picture is small: near $1$ the density is low, so a
+	near-complete recovery is rare.
+
+	\step{(d)} Use $P(a<R\le b)=F(b)-F(a)$. Since $P(R=0.4)=0$, the strict
+	inequality $R<0.4$ changes nothing. First the two values of $F$:
+	\[
+		F(0.4)=3\cdot0.16-2\cdot0.064=0.48-0.128=0.352,
+	\]
+	\[
+		F(0.2)=3\cdot0.04-2\cdot0.008=0.12-0.016=0.104.
+	\]
+	Then
+	\[
+		P(0.2<R<0.4)=F(0.4)-F(0.2)=0.352-0.104=0.248=\frac{31}{125}.
+	\]
+	(Notice $F(0.2)=0.104=1-F(0.8)$: by the symmetry of the density, the
+	area left of $0.2$ equals the area right of $0.8$.)
+
+	\begin{answer}
+		(a) $F(x)=0$ for $x<0$, $F(x)=3x^2-2x^3$ for $0\le x\le1$, $F(x)=1$
+		for $x>1$ \quad
+		(b) $P(R<0.5)=0.5$ \quad
+		(c) $P(R>0.8)=0.104$ \quad
+		(d) $P(0.2<R<0.4)=0.248$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} reading a probability off the density,
+		e.g.\ saying $P(R=0.5)=f(0.5)=1.5$. A density value is not a
+		probability (here it is even larger than $1$). Probabilities are
+		\emph{areas} under $f$, and the area above a single point is $0$.
+		This is also why $<$ and $\le$ give the same probability for a
+		continuous random variable.
+
+		The loss given default is $L=1-R$, the fraction of the loan that is
+		lost (compare Exercise~\exref{loss-given-default}). Since the density
+		of $R$ is symmetric about $0.5$, here $L$ has the same distribution
+		as $R$.
+	\end{remark}
+\end{solution}

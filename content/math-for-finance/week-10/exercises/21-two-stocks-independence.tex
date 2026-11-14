@@ -1,0 +1,165 @@
+% ---
+% title: Do the two stocks move independently?
+% tags: finance, independent-rv, joint-discrete
+% ---
+
+\begin{problem}
+	\begin{context}
+		Investors spread their money over several stocks to reduce risk. This
+		works best when the stocks do not tend to move together. If two stocks
+		usually rise and fall on the same days, holding both protects much less
+		than holding two stocks that move independently of each other.
+	\end{context}
+	These are the two stocks of Exercise~\exref{two-stocks}. On a given day,
+	let $X=1$ if stock A rises and $X=-1$ if it falls. Let $Y=1$, $0$ or $-1$
+	if stock B rises, stays unchanged or falls. The joint probability mass
+	function $p(x,y)=P(X=x,Y=y)$ is given by the table
+	\begin{center}
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{c|ccc}
+			         & $Y=-1$ & $Y=0$  & $Y=1$  \\
+			\hline
+			$X=-1$   & $0.20$ & $0.10$ & $0.10$ \\
+			$X=1$    & $0.05$ & $0.15$ & $0.40$
+		\end{tabular}
+	\end{center}
+	(a) Are $X$ and $Y$ independent?
+	(b) Write down the joint probability mass function that $X$ and $Y$ would
+	have if they were independent, with the same marginal probability mass
+	functions.
+	(c) For these independent stocks, find $P(X=Y)$, the probability that both
+	fall or both rise. Compare it with $P(X=Y)=0.60$ for the real stocks.
+\end{problem}
+
+\begin{slideproblem}
+	Stocks A and B of Exercise~\exref{two-stocks}: $X=\pm1$ if A
+	rises/falls, $Y=1,0,-1$ if B rises/stays/falls. Joint pmf with the
+	marginals in the margins:
+	\begin{center}
+		\renewcommand{\arraystretch}{1.15}
+		\begin{tabular}{c|ccc|c}
+			       & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+			\hline
+			$x=-1$ & $0.20$ & $0.10$ & $0.10$ & $0.4$ \\
+			$x=1$  & $0.05$ & $0.15$ & $0.40$ & $0.6$ \\
+			\hline
+			$p_Y(y)$ & $0.25$ & $0.25$ & $0.5$ & $1$
+		\end{tabular}
+	\end{center}
+	(a) Are $X$ and $Y$ independent?
+	(b) Write down the joint pmf of independent $X$, $Y$ with the same
+	marginals.
+	(c) For those, find $P(X=Y)$ and compare it with $0.60$ for the real
+	stocks.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Independent $\iff$ $p(x,y)=p_X(x)\,p_Y(y)$ in \alert{every}
+	cell. But\\
+	$p(-1,-1)=0.20\neq0.10=0.4\cdot0.25=p_X(-1)\,p_Y(-1)$:
+	\alert{not independent}.\\
+	\pause
+	One bad cell is enough for ``no''; for ``yes'' \emph{all} cells must match.
+\end{slides}
+
+\begin{slides}
+	\small
+	(b) Independent stocks, same marginals: each cell is
+	\alert{row sum $\times$ column sum}.
+	\begin{center}
+		\renewcommand{\arraystretch}{1.25}
+		\begin{tabular}{c|ccc|c}
+			       & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+			\hline
+			$x=-1$ & \uncover<2->{$0.10$} & \uncover<2->{$0.10$}
+			& \uncover<2->{$0.20$} & $0.4$ \\
+			$x=1$  & \uncover<2->{$0.15$} & \uncover<2->{$0.15$}
+			& \uncover<2->{$0.30$} & $0.6$ \\
+			\hline
+			$p_Y(y)$ & $0.25$ & $0.25$ & $0.5$ & $1$
+		\end{tabular}
+	\end{center}
+	\uncover<2->{For example $0.4\cdot0.5=0.20$ and $0.6\cdot0.25=0.15$.}\\[1mm]
+	\pause\pause
+	(c) Both fall or both rise:
+	\[ P(X=Y)=p(-1,-1)+p(1,1)=0.10+0.30=\alert{0.40}\;<\;0.60. \]
+	\pause
+	The real stocks move in the same direction more often than independent
+	ones would: they tend to \alert{move together}.
+\end{slides}
+
+\begin{solution}
+	\idea Two discrete random variables are independent exactly when every
+	cell of the joint table equals the product of its row sum and column sum:
+	$p(x,y)=p_X(x)\,p_Y(y)$ for all $x$ and $y$. To show dependence, one cell
+	where this fails is enough. To build an independent pair with given
+	marginals, fill every cell with this product.
+
+	\step{(a)} First we need the marginals. They are the row sums and the
+	column sums of the table (as in Exercise~\exref{two-stocks}):
+	\[ p_X(-1)=0.20+0.10+0.10=0.4,\qquad p_X(1)=0.05+0.15+0.40=0.6, \]
+	\[ p_Y(-1)=0.20+0.05=0.25,\qquad p_Y(0)=0.10+0.15=0.25,\qquad
+		p_Y(1)=0.10+0.40=0.5. \]
+	Now compare a cell with the product of its marginals. Take the cell where
+	both stocks fall:
+	\[ p(-1,-1)=0.20,\qquad\text{but}\qquad
+		p_X(-1)\,p_Y(-1)=0.4\cdot0.25=0.10. \]
+	These are different, so $P(X=-1,\,Y=-1)\neq P(X=-1)\,P(Y=-1)$, and $X$
+	and $Y$ are not independent. The two stocks fall together twice as often
+	as independent stocks with the same marginals would.
+
+	Note the asymmetry of the check. To prove that $X$ and $Y$ are
+	\emph{dependent}, a single cell that fails is enough. To prove that they
+	are \emph{independent}, we would have to check that \emph{all} six cells
+	match.
+
+	\step{(b)} If $X$ and $Y$ were independent with the same marginals, every
+	cell would be the product of its row sum and its column sum:
+	\[ \begin{aligned}
+		p(-1,-1)&=0.4\cdot0.25=0.10, & p(-1,0)&=0.4\cdot0.25=0.10, &
+		p(-1,1)&=0.4\cdot0.5=0.20,\\
+		p(1,-1)&=0.6\cdot0.25=0.15, & p(1,0)&=0.6\cdot0.25=0.15, &
+		p(1,1)&=0.6\cdot0.5=0.30.
+	\end{aligned} \]
+	In a table, with the marginals in the margins:
+	\begin{center}
+		\renewcommand{\arraystretch}{1.25}
+		\begin{tabular}{c|ccc|c}
+			         & $y=-1$ & $y=0$  & $y=1$  & $p_X(x)$ \\
+			\hline
+			$x=-1$   & $0.10$ & $0.10$ & $0.20$ & $0.4$ \\
+			$x=1$    & $0.15$ & $0.15$ & $0.30$ & $0.6$ \\
+			\hline
+			$p_Y(y)$ & $0.25$ & $0.25$ & $0.5$  & $1$
+		\end{tabular}
+	\end{center}
+	Check: the rows still add up to $0.4$ and $0.6$, and the columns to
+	$0.25$, $0.25$ and $0.5$. So this is a valid joint pmf with the same
+	marginals, but a different joint distribution. The marginals alone do not
+	determine the joint distribution.
+
+	\step{(c)} $X=Y$ happens when both stocks fall, $(-1,-1)$, or both rise,
+	$(1,1)$; the value $Y=0$ never equals $X$. These two cells are mutually
+	exclusive, so we add them, now in the independent table:
+	\[ P(X=Y)=p(-1,-1)+p(1,1)=0.10+0.30=0.40. \]
+	For the real stocks the same two cells give $0.20+0.40=0.60$. So the real
+	stocks move in the same direction on 60\% of the days, but independent
+	stocks with the same marginals would do so on only 40\% of the days. The
+	real stocks tend to move together.
+	\begin{answer}
+		(a) No: $p(-1,-1)=0.20\neq0.10=p_X(-1)\,p_Y(-1)$
+		\quad (b) $x=-1$: $0.10,\ 0.10,\ 0.20$; \ $x=1$: $0.15,\ 0.15,\ 0.30$
+		(for $y=-1,0,1$)
+		\quad (c) $P(X=Y)=0.40$, less than $0.60$ for the real stocks
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} checking only one cell and concluding
+		independence because it happens to match. For example, the cell
+		$(-1,0)$ gives $p(-1,0)=0.10=0.4\cdot0.25$, yet $X$ and $Y$ are not
+		independent. A match in one cell proves nothing; independence needs
+		$p(x,y)=p_X(x)\,p_Y(y)$ in every cell.
+	\end{remark}
+\end{solution}

@@ -1,0 +1,111 @@
+% ---
+% title: Heads in two and in three tosses
+% tags: joint-discrete, marginal, joint-distribution-function
+% ---
+
+\begin{problem}
+	A fair coin is tossed three times. Let $X$ be the number of heads in the
+	first two tosses, and let $Y$ be the number of heads in all three tosses.
+	(a) Find the joint probability mass function of $X$ and $Y$ (give it as a
+	table).
+	(b) Find the marginal probability mass functions $p_X$ and $p_Y$.
+	(c) Find $P(X=Y)$.
+	(d) Find the value $F(1,1)=P(X\le1,\,Y\le1)$ of the joint distribution
+	function.
+\end{problem}
+
+\begin{solution}
+	\idea List the $8$ equally likely outcomes, write down the pair $(X,Y)$ for
+	each, and count. Every probability asked for is then a sum of entries of
+	the joint table.
+
+	\step{(a)} Write H for heads and T for tails. The coin is fair and the
+	tosses do not influence each other, so each of the $2^3=8$ sequences has
+	probability $\frac18$. For each sequence, $X$ counts the heads among the
+	first two letters, and $Y$ counts the heads among all three letters.
+	\begin{center}
+		\begin{tabular}{c|cccccccc}
+			outcome & TTT & TTH & THT & HTT & THH & HTH & HHT & HHH \\ \hline
+			$X$     & 0   & 0   & 1   & 1   & 1   & 1   & 2   & 2   \\
+			$Y$     & 0   & 1   & 1   & 1   & 2   & 2   & 2   & 3
+		\end{tabular}
+	\end{center}
+	Now count how many outcomes give each pair $(x,y)$ and multiply by
+	$\frac18$. For example, the pair $(1,1)$ comes from THT and HTT, so
+	$p(1,1)=\frac28=\frac14$. The pair $(1,2)$ comes from THH and HTH, so
+	$p(1,2)=\frac14$. Every other pair that occurs comes from one outcome only.
+	Pairs that never occur, such as $(2,0)$, have probability $0$.
+	\begin{center}
+		\renewcommand{\arraystretch}{1.4}
+		\begin{tabular}{c|cccc|c}
+			$p(x,y)$       & $y=0$          & $y=1$          & $y=2$          & $y=3$          & $p_X(x)$       \\ \hline
+			$x=0$          & $\tfrac18$     & $\tfrac18$     & $0$            & $0$            & $\tfrac14$     \\
+			$x=1$          & $0$            & $\tfrac14$     & $\tfrac14$     & $0$            & $\tfrac12$     \\
+			$x=2$          & $0$            & $0$            & $\tfrac18$     & $\tfrac18$     & $\tfrac14$     \\ \hline
+			$p_Y(y)$       & $\tfrac18$     & $\tfrac38$     & $\tfrac38$     & $\tfrac18$     & $1$
+		\end{tabular}
+	\end{center}
+	Check: the entries of the table add up to
+	\[ \frac18+\frac18+\frac14+\frac14+\frac18+\frac18=1. \]
+
+	Notice the pattern: in each row, $Y$ is either $X$ (third toss tails) or
+	$X+1$ (third toss heads). That is why each row has only two nonzero
+	entries, next to each other.
+
+	\step{(b)} The marginal pmf of $X$ is obtained by summing the joint pmf
+	over all values of $Y$, i.e.\ along each row:
+	$p_X(x)=\sum_y p(x,y)$. The events $\{X=x,Y=0\}$, \dots, $\{X=x,Y=3\}$ are
+	mutually exclusive and together make up $\{X=x\}$, so this sum is exactly
+	$P(X=x)$:
+	\[
+		p_X(0)=\tfrac18+\tfrac18=\tfrac14,\qquad
+		p_X(1)=\tfrac14+\tfrac14=\tfrac12,\qquad
+		p_X(2)=\tfrac18+\tfrac18=\tfrac14.
+	\]
+	In the same way, $p_Y(y)=\sum_x p(x,y)$ is the sum down each column:
+	\[
+		p_Y(0)=\tfrac18,\qquad
+		p_Y(1)=\tfrac18+\tfrac14=\tfrac38,\qquad
+		p_Y(2)=\tfrac14+\tfrac18=\tfrac38,\qquad
+		p_Y(3)=\tfrac18.
+	\]
+	These are written in the margins of the table above (hence the name).
+	Both agree with what we expect: $X$ is the number of heads in $2$ fair
+	tosses and $Y$ the number of heads in $3$ fair tosses, so
+	$p_Y(1)=\binom31\frac1{2^3}=\frac38$, for example.
+
+	\step{(c)} The event $\{X=Y\}$ consists of the pairs on the ``diagonal''
+	$(0,0)$, $(1,1)$, $(2,2)$. These are mutually exclusive, so we add their
+	probabilities:
+	\[
+		P(X=Y)=p(0,0)+p(1,1)+p(2,2)=\frac18+\frac14+\frac18=\frac12.
+	\]
+	There is a shortcut: $Y=X$ exactly when the third toss adds no head, that
+	is, when the third toss is tails. That has probability $\frac12$.
+
+	\step{(d)} By definition, $F(a,b)=P(X\le a,\,Y\le b)$. So $F(1,1)$ is the
+	sum of the table entries with $x\le1$ \emph{and} $y\le1$: the top-left
+	$2\times2$ block of the table.
+	\[
+		F(1,1)=p(0,0)+p(0,1)+p(1,0)+p(1,1)=\frac18+\frac18+0+\frac14=\frac12.
+	\]
+	Check by outcomes: $X\le1$ and $Y\le1$ hold for TTT, TTH, THT and HTT,
+	which is $4$ outcomes out of $8$.
+
+	\begin{answer}
+		(a) $p(0,0)=p(0,1)=\frac18$, $p(1,1)=p(1,2)=\frac14$,
+		$p(2,2)=p(2,3)=\frac18$, all other pairs $0$ \quad
+		(b) $p_X$: $\frac14,\frac12,\frac14$ for $x=0,1,2$;
+		$p_Y$: $\frac18,\frac38,\frac38,\frac18$ for $y=0,1,2,3$ \quad
+		(c) $\frac12$ \quad
+		(d) $F(1,1)=\frac12$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} computing $F(1,1)$ as the product
+		$P(X\le1)\,P(Y\le1)=\frac34\cdot\frac12=\frac38$. Multiplying is
+		allowed only for independent random variables, and $X$ and $Y$ are
+		clearly not independent: $Y$ contains the first two tosses. For
+		example, $p(2,0)=0$, but $p_X(2)\,p_Y(0)=\frac14\cdot\frac18\ne0$.
+		Always sum the joint table instead.
+	\end{remark}
+\end{solution}

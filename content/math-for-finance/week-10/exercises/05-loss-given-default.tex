@@ -1,0 +1,178 @@
+% ---
+% title: Loss given default
+% tags: finance, distribution-function, density
+% ---
+
+\begin{problem}
+	\begin{context}
+		When a borrower defaults, that is, stops paying back a loan, the bank
+		usually recovers part of the money, for example by selling the
+		collateral. The \emph{loss given default} (LGD) is the fraction of the
+		loan that is lost. An LGD of 0 means that everything is recovered, an
+		LGD of 1 means that nothing is.
+	\end{context}
+	The loss given default $L$ of a loan is a random number between 0 and 1
+	with distribution function
+	\[ F(x)=\begin{cases}
+			0,   & x<0,          \\
+			x^2, & 0\le x\le 1,  \\
+			1,   & x>1.
+		\end{cases} \]
+	(a) Find the density $f(x)$ of $L$.
+	(b) Find $P(L>0.5)$.
+	(c) Find $P(0.2<L\le0.6)$.
+	(d) Find the median loss: the number $m$ with $P(L\le m)=\frac12$.
+\end{problem}
+
+\begin{slideproblem}
+	The loss given default $L$ of a loan has distribution function
+	$F(x)=x^2$ for $0\le x\le1$ ($F(x)=0$ for $x<0$, $F(x)=1$ for $x>1$).
+	(a) Find the density $f(x)$ of $L$.
+	(b) Find $P(L>0.5)$.
+	(c) Find $P(0.2<L\le0.6)$.
+	(d) Find the median loss: the number $m$ with $P(L\le m)=\frac12$.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.55\textwidth}
+			\sol (a) The density is the derivative of $F$:
+			\[ f(x)=F'(x)=\begin{cases}
+					2x, & 0\le x\le1, \\
+					0,  & \text{otherwise}.
+				\end{cases} \]
+			\pause
+			Check: $\int_0^1 2x\,dx=\big[x^2\big]_0^1=1-0=1$.\\[1mm]
+			Large losses are more likely than small ones.
+		\end{column}
+		\begin{column}{.42\textwidth}
+			\centering
+			\begin{tikzpicture}[xscale=1.6,yscale=.95]
+				\draw[->] (-.1,0) -- (1.35,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,-.1) -- (0,2.25) node[above] {\scriptsize $y$};
+				\draw[gold,thick] plot[domain=0:1,samples=50] (\x,{\x*\x});
+				\draw[navy,thick] (0,0) -- (1,2);
+				\draw[navy,thick] (1,0) -- (1.3,0);
+				\draw[navy,dashed] (1,0) -- (1,2);
+				\draw[gold,thick] (1,1) -- (1.3,1);
+				\draw (1,.04) -- (1,-.04) node[below] {\tiny $1$};
+				\draw (.04,1) -- (-.04,1) node[left] {\tiny $1$};
+				\draw (.04,2) -- (-.04,2) node[left] {\tiny $2$};
+				\node[navy,left] at (.95,2.08) {\scriptsize $f(x)=2x$};
+				\node[gold!80!black,right] at (1.02,1.25) {\scriptsize $F(x)=x^2$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.58\textwidth}
+			(b) Complement: $P(L>a)=1-F(a)$.
+			\[ P(L>0.5)=1-F(0.5)=1-0.5^2=0.75. \]
+			\pause
+			(c) $P(a<L\le b)=F(b)-F(a)$:
+			\[ P(0.2<L\le0.6)=0.6^2-0.2^2=0.36-0.04=0.32. \]
+			\pause
+			(d) Solve $F(m)=\frac12$:
+			\[ m^2=\tfrac12,\qquad m=\sqrt{0.5}\approx0.707. \]
+			Half of the defaults lose more than 70.7\% of the loan.
+		\end{column}
+		\begin{column}{.39\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=1.5]
+				\fill[teal!30] (.5,0) -- (.5,1) -- (1,2) -- (1,0) -- cycle;
+				\draw[->] (-.1,0) -- (1.3,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,-.1) -- (0,2.25) node[above] {\scriptsize $f(x)$};
+				\draw[navy,thick] (0,0) -- (1,2);
+				\draw[navy,dashed] (1,0) -- (1,2);
+				\draw (.5,.04) -- (.5,-.04) node[below] {\tiny $0.5$};
+				\draw (1,.04) -- (1,-.04) node[below] {\tiny $1$};
+				\draw (.04,2) -- (-.04,2) node[left] {\tiny $2$};
+				\node[teal!60!black] at (.78,.55) {\scriptsize $0.75$};
+			\end{tikzpicture}\\[1mm]
+			{\scriptsize shaded area $=P(L>0.5)$}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea The density of a continuous random variable is the derivative of its
+	distribution function, $f=F'$. Probabilities of intervals come directly
+	from $F$: $P(a<L\le b)=F(b)-F(a)$, and $P(L>a)=1-F(a)$.
+
+	\step{(a)} Differentiate $F$ piece by piece. For $x<0$ and for $x>1$ the
+	function $F$ is constant (0 and 1), so its derivative is 0 there. For
+	$0<x<1$ we have $F(x)=x^2$, so $F'(x)=2x$. Hence
+	\[ f(x)=\begin{cases}
+			2x, & 0\le x\le1, \\
+			0,  & \text{otherwise}.
+		\end{cases} \]
+	(The value of a density at the single points $x=0$ and $x=1$ does not
+	matter: a single point has zero area under it.) Check that the total area
+	under the density is 1. An antiderivative of $2x$ is $x^2$, so
+	\[ \int_0^1 2x\,dx=\Big[x^2\Big]_0^1=1^2-0^2=1. \]
+	The density grows with $x$: losses close to 1 are more likely than losses
+	close to 0. So in this model, when this borrower defaults, the bank
+	typically loses a large part of the loan.
+	\begin{center}
+		\begin{tikzpicture}[scale=2]
+			\fill[teal!30] (.5,0) -- (.5,1) -- (1,2) -- (1,0) -- cycle;
+			\draw[->] (-.1,0) -- (1.4,0) node[right] {\small $x$};
+			\draw[->] (0,-.1) -- (0,2.25) node[above] {\small $y$};
+			\draw[gold,thick] plot[domain=0:1,samples=50] (\x,{\x*\x});
+			\draw[gold,thick] (1,1) -- (1.35,1);
+			\draw[navy,thick] (0,0) -- (1,2);
+			\draw[navy,dashed] (1,0) -- (1,2);
+			\draw[navy,thick] (1,0) -- (1.35,0);
+			\draw (.5,.03) -- (.5,-.03) node[below] {\scriptsize $0.5$};
+			\draw (1,.03) -- (1,-.03) node[below] {\scriptsize $1$};
+			\draw (.03,1) -- (-.03,1) node[left] {\scriptsize $1$};
+			\draw (.03,2) -- (-.03,2) node[left] {\scriptsize $2$};
+			\node[navy,left] at (.95,2.08) {\small $f(x)=2x$};
+			\node[gold!80!black,right] at (1.05,1.12) {\small $F(x)$};
+			\node[teal!60!black] at (.82,.28) {\small $0.75$};
+		\end{tikzpicture}
+	\end{center}
+	The navy line is the density, the gold curve is the distribution
+	function. The shaded area is $P(L>0.5)$, computed in (b).
+
+	\step{(b)} The event $\{L>0.5\}$ is the complement of $\{L\le0.5\}$, and
+	$P(L\le0.5)=F(0.5)$. So
+	\[ P(L>0.5)=1-F(0.5)=1-0.5^2=1-0.25=0.75. \]
+	The same result from the density: the shaded region in the picture is a
+	trapezoid with parallel sides $f(0.5)=1$ and $f(1)=2$ and width $0.5$, so
+	its area is $\frac{1+2}{2}\cdot0.5=0.75$. With an integral:
+	$\int_{0.5}^1 2x\,dx=\big[x^2\big]_{0.5}^1=1-0.25=0.75$.
+
+	\step{(c)} The event $\{L\le0.6\}$ splits into two disjoint parts,
+	$\{L\le0.2\}$ and $\{0.2<L\le0.6\}$. So $F(0.6)=F(0.2)+P(0.2<L\le0.6)$,
+	which gives the rule $P(a<L\le b)=F(b)-F(a)$:
+	\[ P(0.2<L\le0.6)=F(0.6)-F(0.2)=0.6^2-0.2^2=0.36-0.04=0.32. \]
+	For a continuous random variable it does not matter whether the endpoints
+	are included: $P(L=0.2)=0$, so $P(0.2\le L\le0.6)$ is also $0.32$.
+
+	\step{(d)} We need the point $m$ where $F$ reaches $\frac12$. Since $m$
+	must lie between 0 and 1, here $F(m)=m^2$, and
+	\[ m^2=\frac12 \quad\Longrightarrow\quad m=\sqrt{\frac12}=\sqrt{0.5}\approx0.707 \]
+	(we take the positive root, because $m$ is between 0 and 1). So in half of
+	the defaults the bank loses at most $70.7\%$ of the loan, and in the other
+	half it loses more.
+	\begin{answer}
+		(a) $f(x)=2x$ for $0\le x\le1$, $f(x)=0$ otherwise
+		\quad (b) $P(L>0.5)=0.75$
+		\quad (c) $P(0.2<L\le0.6)=0.32$
+		\quad (d) $m=\sqrt{0.5}\approx0.707$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} answering (b) with $1-0.5=0.5$, as if $L$ were
+		uniform on $[0,1]$. The distribution function is $x^2$, not $x$, so
+		the probabilities must be read off $F$. Another mistake is to compute
+		(c) as $F(0.6-0.2)=F(0.4)=0.16$: the probability of an interval is the
+		\emph{difference} of $F$ at the two endpoints, not $F$ of the length.
+	\end{remark}
+\end{solution}

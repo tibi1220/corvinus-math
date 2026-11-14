@@ -1,0 +1,153 @@
+% ---
+% title: Settling a payment
+% tags: continuous, density
+% ---
+
+\begin{problem}
+	The time $X$, in hours, that a bank needs to settle an incoming
+	international payment is a continuous random variable with density
+	\[ f(x)=\begin{cases}
+			c\,x(2-x), & 0\le x\le 2, \\
+			0,         & \text{otherwise}.
+		\end{cases} \]
+	(a) Find the constant $c$.
+	(b) Find $P(X>1)$.
+	(c) Find $P(0.5<X<1.5)$.
+	(d) What is $P(X=1)$?
+\end{problem}
+
+\begin{slideproblem}
+	The time $X$ (hours) a bank needs to settle an incoming international
+	payment has density $f(x)=c\,x(2-x)$ for $0\le x\le 2$, and $f(x)=0$
+	otherwise.
+	(a) Find $c$. (b) Find $P(X>1)$. (c) Find $P(0.5<X<1.5)$.
+	(d) What is $P(X=1)$?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol A density has two properties: \ $f(x)\ge0$ \ and \
+	$\int_{-\infty}^{\infty}f(x)\,dx=1$ (total area 1).\\[1mm]
+	Probability $=$ area under $f$: \
+	$P(a<X<b)=\int_a^b f(x)\,dx$.
+	\pause
+	\medskip
+
+	(a) $\displaystyle\int_0^2 x(2-x)\,dx=\int_0^2(2x-x^2)\,dx
+		=\Big[x^2-\frac{x^3}{3}\Big]_0^2=4-\frac83=\frac43$.\\[1mm]
+	\pause
+	Total area 1: \ $c\cdot\frac43=1$, \ so \ $c=\frac34$.
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.5\textwidth}
+			(b) The graph is symmetric around $x=1$, so the area splits in half:
+			\ $\displaystyle P(X>1)=\frac12$.\\[1mm]
+			\uncover<2->{%
+			(c) Antiderivative of $\frac34(2x-x^2)$: $\frac34\big(x^2-\frac{x^3}{3}\big)$.
+			\[ \begin{aligned}
+					P(0.5<X<1.5) & =\frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}     \\
+					             & =\frac34\Big(\frac98-\frac5{24}\Big)                         \\
+					             & =\frac34\cdot\frac{22}{24}=\frac{11}{16}=0.6875.
+				\end{aligned} \]}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			\centering
+			\begin{tikzpicture}[xscale=1.9,yscale=3.2]
+				\uncover<2->{\fill[teal!30] (.5,0) -- plot[domain=.5:1.5,samples=40]
+						(\x,{.75*\x*(2-\x)}) -- (1.5,0) -- cycle;
+					\node[teal!70!black] at (1,.28) {\scriptsize $0.6875$};}
+				\draw[->] (-.2,0) -- (2.35,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,-.05) -- (0,.95) node[above] {\scriptsize $f(x)$};
+				\draw[navy,thick] plot[domain=0:2,samples=50] (\x,{.75*\x*(2-\x)});
+				\foreach \x in {0.5,1,1.5,2}
+				\draw (\x,.02) -- (\x,-.02) node[below] {\tiny $\x$};
+				\draw (.04,.75) -- (-.04,.75) node[left] {\tiny $0.75$};
+				\draw[gold,dashed] (1,0) -- (1,.75);
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+	\onslide<3->
+	\medskip
+
+	(d) A single point has no area: $P(X=1)=\displaystyle\int_1^1 f(x)\,dx=0$.\\
+	So $P(X<1)=P(X\le1)$: for a continuous $X$, $<$ or $\le$ does not matter.
+\end{slides}
+
+\begin{solution}
+	\idea A density $f$ has two properties: $f(x)\ge0$ for every $x$, and the
+	total area under its graph is 1. Probabilities are areas under $f$:
+	$P(a<X<b)=\int_a^b f(x)\,dx$. The total-area condition gives $c$; the other
+	parts are areas under the graph.
+
+	\step{(a)} Outside $[0,2]$ the density is $0$, so the total area is the
+	integral over $[0,2]$ only. First integrate without the constant. Multiply
+	out, $x(2-x)=2x-x^2$; an antiderivative is $x^2-\frac{x^3}{3}$. Evaluate it
+	at the bounds:
+	\[ \int_0^2(2x-x^2)\,dx=\Big[x^2-\frac{x^3}{3}\Big]_0^2
+		=\Big(4-\frac83\Big)-(0-0)=\frac43. \]
+	The total area must be 1, so
+	\[ c\cdot\frac43=1,\qquad c=\frac34. \]
+	Check the other property: for $0\le x\le2$ both $x$ and $2-x$ are
+	nonnegative, so $f(x)=\frac34x(2-x)\ge0$. The density is
+	$f(x)=\frac34x(2-x)$ on $[0,2]$: a parabola arch with its highest point
+	$f(1)=\frac34$ at $x=1$.
+
+	\step{(b)} The graph is symmetric around $x=1$: $f(1+t)=\frac34(1+t)(1-t)
+	=f(1-t)$. So the area to the right of 1 equals the area to the left of 1.
+	The two areas add up to 1, so each is $\frac12$:
+	\[ P(X>1)=\frac12. \]
+	By integration, with the same antiderivative:
+	\[ P(X>1)=\int_1^2\frac34(2x-x^2)\,dx
+		=\frac34\Big[x^2-\frac{x^3}{3}\Big]_1^2
+		=\frac34\Big(\frac43-\frac23\Big)=\frac34\cdot\frac23=\frac12. \]
+
+	\step{(c)} The probability is the shaded area in the picture:
+	\[ P(0.5<X<1.5)=\int_{0.5}^{1.5}\frac34(2x-x^2)\,dx
+		=\frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}. \]
+	Evaluate the antiderivative at the upper and at the lower bound:
+	\[ 1.5^2-\frac{1.5^3}{3}=2.25-1.125=1.125=\frac98,\qquad
+		0.5^2-\frac{0.5^3}{3}=0.25-\frac{0.125}{3}=\frac{5}{24}\approx0.2083. \]
+	So
+	\[ P(0.5<X<1.5)=\frac34\Big(\frac98-\frac5{24}\Big)
+		=\frac34\cdot\frac{22}{24}=\frac{11}{16}=0.6875. \]
+	The payment is settled between half an hour and one and a half hours after
+	arrival with probability $0.6875$.
+	\begin{center}
+		\begin{tikzpicture}[xscale=2.4,yscale=3.6]
+			\fill[teal!30] (.5,0) -- plot[domain=.5:1.5,samples=40]
+				(\x,{.75*\x*(2-\x)}) -- (1.5,0) -- cycle;
+			\node[teal!70!black] at (1,.3) {\small $\frac{11}{16}$};
+			\draw[->] (-.2,0) -- (2.4,0) node[right] {\small $x$};
+			\draw[->] (0,-.05) -- (0,.95) node[above] {\small $f(x)$};
+			\draw[navy,thick] plot[domain=0:2,samples=50] (\x,{.75*\x*(2-\x)});
+			\foreach \x in {0.5,1,1.5,2}
+			\draw (\x,.02) -- (\x,-.02) node[below] {\scriptsize $\x$};
+			\draw (.04,.75) -- (-.04,.75) node[left] {\scriptsize $0.75$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(d)} A probability is an area under $f$, and above a single point
+	there is no area:
+	\[ P(X=1)=\int_1^1 f(x)\,dx=0. \]
+	This does not mean that settling in exactly one hour is impossible; it
+	means that a single exact value carries no probability for a continuous
+	random variable. As a consequence, $P(0.5<X<1.5)=P(0.5\le X\le1.5)$: for a
+	continuous random variable it does not matter whether we write $<$ or
+	$\le$.
+	\begin{answer}
+		(a) $c=\frac34$ \quad (b) $P(X>1)=\frac12$ \quad
+		(c) $P(0.5<X<1.5)=\frac{11}{16}=0.6875$ \quad (d) $P(X=1)=0$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} reading $f(1)=0.75$ as a probability. The value of
+		a density is not a probability (a density can even be larger than 1);
+		only areas under it are. Here $f(1)=0.75$ only says that values near
+		1 hour are the most likely: $P(1<X<1+h)\approx f(1)\,h$ for a short
+		interval of length $h$.
+	\end{remark}
+\end{solution}

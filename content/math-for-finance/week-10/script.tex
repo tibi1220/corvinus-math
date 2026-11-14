@@ -1,0 +1,757 @@
+% Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
+% Read-aloud teaching script for Week 10 (companion to beamer.tex, follows it
+% frame by frame). Sessions 1 and 2 are held on the SAME DAY, back to back
+% (2 x 90 min with a short break in between).
+% Exercises are numbered by week (10.1, 10.2, ...); finance examples share the
+% numbering. Each one lives in exercises/NN-slug.tex.
+
+\documentclass[11pt,a4paper,parskip=half]{scrartcl}
+\usepackage{amsmath}
+\usepackage[stixtwo]{fontsetup}
+\usepackage[english]{babel}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage[a4paper,margin=1in,marginparwidth=1.9cm,marginparsep=2mm]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{navy}{RGB}{24,48,75}
+\definecolor{teal}{RGB}{0,120,125}
+\definecolor{gold}{RGB}{190,130,20}
+\definecolor{plum}{RGB}{110,60,120}
+
+\addtokomafont{disposition}{\color{navy}}
+\setkomafont{section}{\Large\bfseries\color{navy}}
+
+% Contact
+\newcommand{\myemail}{tiborsandor2001@gmail.com}
+
+% Exercise statement (what students see on the slide)
+\newtcolorbox{task}[1]{enhanced,breakable,colback=navy!4,colframe=navy,
+  fonttitle=\bfseries,title={#1}}
+% Finance example
+\newtcolorbox{fin}[1]{enhanced,breakable,colback=teal!5,colframe=teal,
+  fonttitle=\bfseries,title={#1}}
+% Teaching cue, not read aloud
+\newtcolorbox{cue}{enhanced,breakable,colback=gold!8,colframe=gold,
+  boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small\itshape}
+% Background for the lecturer (finance theory), NOT read aloud
+\newtcolorbox{bg}[1]{enhanced,breakable,colback=plum!4,colframe=plum,
+  boxrule=.6pt,fonttitle=\bfseries\small,
+  title={Background for you (not read aloud): #1},fontupper=\small,
+  before upper={\setlength{\parskip}{4pt}}}
+% Print version (script-print.tex defines \scriptprint): the background
+% boxes are dropped entirely.
+\ifdefined\scriptprint
+  \RenewDocumentEnvironment{bg}{m +b}{}{}
+\fi
+\newcommand{\terms}{\par\textbf{\color{plum}Key terms.}\ }
+\newcommand{\sq}[1]{\par\textbf{\color{plum}Student may ask:}\ \emph{#1}\par}
+\newcommand{\ans}{\textbf{Answer:}\ }
+
+\newcommand{\say}{\textbf{\color{teal}Say:}\ }
+\newcommand{\board}{\textbf{\color{gold}Board:}\ }
+\newcommand{\ask}{\textbf{\color{navy}Ask the class:}\ }
+\newcommand{\slide}[1]{\marginpar{\raggedright\footnotesize\color{gray}slide #1}}
+
+% The exercises (one file each in exercises/) and \scriptexercise
+\input{exercises/macros}
+
+% PDF properties and the date on the title page
+\input{document-info}
+\documentinfo{Teaching script\ifdefined\scriptprint\space(print version)\fi}
+
+\title{Mathematics for Finance}
+\subtitle{Week 10 --- Continuous random variables, joint distributions,
+  independence\\[2pt]
+  \normalsize Teaching script for two 90-minute practical classes held on the
+  same day, back to back\ifdefined\scriptprint\\[2pt]
+  (print version, without the background boxes)\fi}
+\author{Tibor SÁNDOR\\[2pt]
+  \normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
+
+\begin{document}
+\maketitle
+
+\begin{cue}
+	How to use this script. Plain text is meant to be read out loud or
+	paraphrased. \textbf{Say} marks key sentences; \textbf{Ask} marks questions
+	to put to the class (wait for answers before revealing the solution);
+	\textbf{Board} marks what to write. Gold boxes like this one are short notes
+	for you only.\ifdefined\scriptprint\else\ \textbf{Purple ``Background for
+			you'' boxes} explain the finance behind the examples; they are
+		\emph{not} meant to be read out.\fi\ The script follows the deck frame by
+	frame; the slide numbers in the margin are the frame numbers in the
+	footline of the deck. Every new idea gets one tiny example; before each
+	exercise the students try it in pairs, then you reveal the solution step
+	by step. Only the exercises of the slides are in this script.
+\end{cue}
+
+\subsection*{Timing overview}
+
+Both sessions are on the same day: Session 1 (90 min), a short break,
+Session 2 (90 min). The plan leaves a generous reserve: 20 minutes in
+Session 1 and 25 in Session 2, for questions and for students working
+alone.
+
+\begin{center}
+	\small
+	\begin{tabular}{@{}llrr@{}}
+		\toprule
+		Slides & Session 1 & min & cum. \\\midrule
+		1--4   & Welcome, recap, plan, from discrete to continuous & 6  & 6  \\
+		5      & Continuous random variables and their density     & 5  & 11 \\
+		6--7   & Exercise~\exref{settlement-time}                  & 10 & 21 \\
+		8      & The distribution function                         & 5  & 26 \\
+		9--10  & Exercise~\exref{loss-given-default}               & 10 & 36 \\
+		11     & Uniform and exponential                           & 5  & 41 \\
+		12--13 & Exercise~\exref{order-arrivals}                   & 10 & 51 \\
+		14     & The distribution of a function of a random variable & 6 & 57 \\
+		15--16 & Exercise~\exref{square-of-uniform}                & 10 & 67 \\
+		17     & Summary                                           & 3  & 70 \\
+		       & Reserve (questions, students working alone)       & 20 & 90 \\\midrule
+		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\begin{center}
+	\small
+	\begin{tabular}{@{}llrr@{}}
+		\toprule
+		Slides & Session 2 & min & cum. \\\midrule
+		18--19 & Session 2 title, recap of Session 1               & 4  & 4  \\
+		20     & Joint distribution: the discrete case             & 6  & 10 \\
+		21--22 & Exercise~\exref{two-stocks}                       & 10 & 20 \\
+		23     & Joint distribution: the continuous case           & 6  & 26 \\
+		24--25 & Exercise~\exref{joint-density-square}             & 12 & 38 \\
+		26     & Independent random variables                      & 6  & 44 \\
+		27--28 & Exercise~\exref{two-stocks-independence}          & 8  & 52 \\
+		29--30 & Exercise~\exref{two-default-times}                & 10 & 62 \\
+		31     & Summary                                           & 3  & 65 \\
+		       & Reserve (questions, students working alone)       & 25 & 90 \\\midrule
+		       & \textbf{Total}                                    &    & \textbf{90} \\\bottomrule
+	\end{tabular}
+\end{center}
+
+\subsection*{If you are short on time}
+
+\begin{cue}
+	Skip \emph{parts} of exercises, never a whole topic, in this order. Every
+	skipped part has a full solution in the exercises PDF: tell the students
+	so. Gold \emph{Clock check} boxes in the script say when to decide.
+
+	\textbf{Session 1:}
+	\begin{enumerate}
+		\item Part (d) of Exercise~\exref{loss-given-default}, the median
+		      (slide 10, about 2 min). Decide at slide 8.
+		\item Part (c) of Exercise~\exref{square-of-uniform} (slide 16): just
+		      give the two numbers, $0.5$ and $0.1$. Decide at slide 14.
+	\end{enumerate}
+
+	\textbf{Session 2:}
+	\begin{enumerate}
+		\item Part (d) of Exercise~\exref{two-default-times} (slide 30, about
+		      2 min). Decide at slide 23.
+		\item Part (d) of Exercise~\exref{joint-density-square} (slide 25):
+		      state the symmetry argument in one sentence. Decide at slide 23.
+		\item Part (c) of Exercise~\exref{two-stocks-independence} (slide 28):
+		      give $0.40$ against $0.60$ and the one-sentence lesson. Decide at
+		      slide 26.
+	\end{enumerate}
+
+	If you are behind everywhere, shorten the try-first pauses: one or two
+	minutes instead of three.
+\end{cue}
+
+\tableofcontents
+
+%======================================================================
+\section{Session 1: Continuous random variables}
+%======================================================================
+
+\subsection{Welcome, recap, plan, from discrete to continuous (6 min)}\slide{1--4}
+
+\begin{cue}
+	Slide 1 (title) while they settle down.
+\end{cue}
+
+Good morning, everyone, and welcome back.
+
+\say Last week we met probability, conditional probability, independence,
+and discrete random variables: numbers that depend on chance and take
+values like $0,1,2,\dots$. A discrete random variable is described by its
+pmf, $p(x)=P(X=x)$, and the probabilities add up to 1.
+
+\begin{cue}
+	Slide 2 (Plan for today).
+\end{cue}
+
+\say Today, Session 1: random variables that can take \emph{any} value in
+an interval, described by a density; the distribution function; two
+important examples, the uniform and the exponential distribution; and how
+to find the distribution of a function of a random variable. Session 2:
+two random variables at the same time, and when they are independent.
+
+Why do we need this in finance? Waiting times, losses and returns can
+take any value in an interval, and the risk of a portfolio depends on how
+its parts move together.
+
+\begin{cue}
+	As last week: before every exercise they get a few minutes to try in
+	pairs. Slide 3 (Session 1 title): click through to slide 4.
+\end{cue}
+
+\say Think of the time until the next order arrives for a stock. It could
+be $0.5$ minutes, $0.51$, $0.5132$\ldots{} There are far too many values to
+give each one a positive probability: the sum would explode. So for a
+continuous quantity, $P(X=a)=0$ for every single number $a$.
+
+Instead, we ask for the probability of an \emph{interval},
+$P(a\le X\le b)$, and we describe it with a curve, the density. The
+probability is the \emph{area under the curve} between $a$ and $b$.
+
+\subsection{Continuous random variables and their density (5 min)}\slide{5}
+
+\say $X$ is continuous if there is a function $f$, its density, such that
+\[ P(a\le X\le b)=\int_a^b f(x)\,dx. \]
+A density has two properties: $f(x)\ge0$ everywhere, and the total area
+is 1: $\int_{-\infty}^{\infty}f(x)\,dx=1$.
+
+Tiny example: $f(x)=3x^2$ on $[0,1]$, zero elsewhere. Total area:
+$\int_0^1 3x^2\,dx=\big[x^3\big]_0^1=1$. And
+$P(X\le\tfrac12)=\int_0^{1/2}3x^2\,dx=\tfrac18$.
+
+\say Two warnings. First, a single point has no area, so $P(X=a)=0$, and
+for a continuous $X$ it does not matter whether we write $<$ or $\le$.
+Second, $f(x)$ itself is not a probability. In the example $f(1)=3$, bigger
+than 1. Only areas are probabilities.
+
+\subsection{Exercise~\exref{settlement-time} --- Settling a payment (10 min)}\slide{6--7}
+
+\scriptexercise{settlement-time}
+
+\say Try (a) and (b) in pairs, three minutes. Hint: what must the total
+area be?
+
+\begin{cue}
+	After 3 minutes, click: the two properties and ``probability $=$ area''.
+\end{cue}
+
+(a) Click. \ask What condition fixes $c$? \emph{(The total area is 1.)}
+\[ \int_0^2 x(2-x)\,dx=\Big[x^2-\frac{x^3}{3}\Big]_0^2=4-\frac83=\frac43. \]
+Click. So $c\cdot\tfrac43=1$ and $c=\tfrac34$.
+
+\begin{cue}
+	Slide 7.
+\end{cue}
+
+(b) \ask Look at the graph. Do we need to integrate? \emph{(No: the graph
+	is symmetric around $x=1$, so the area splits in half.)}
+$P(X>1)=\tfrac12$.
+
+(c) Click. Now we integrate $\tfrac34(2x-x^2)$ from $0.5$ to $1.5$:
+\[ \frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}
+	=\frac34\Big(\frac98-\frac5{24}\Big)=\frac34\cdot\frac{22}{24}
+	=\frac{11}{16}=0.6875. \]
+
+(d) Click. \ask $P(X=1)$? \emph{(Zero: a single point has no area.)}
+So $P(X<1)=P(X\le1)$.
+
+\begin{cue}
+	Common mistake: reading $f(1)=0.75$ as a probability. The value of a
+	density is not a probability; only areas are.
+\end{cue}
+
+\subsection{The distribution function (5 min)}\slide{8}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 21. If you start it after
+	about minute 26, skip part (d) of Exercise~\exref{loss-given-default}.
+\end{cue}
+
+\say For any random variable, discrete or continuous, the distribution
+function is
+\[ F(x)=P(X\le x). \]
+For a continuous $X$ it is the area to the left of $x$:
+$F(x)=\int_{-\infty}^x f(t)\,dt$, and by the fundamental theorem of
+calculus $f(x)=F'(x)$. Integrate the density to get $F$; differentiate $F$
+to get the density.
+
+\board $P(a<X\le b)=F(b)-F(a)$, \quad $P(X>a)=1-F(a)$.
+
+Tiny example: for $f(x)=3x^2$ on $[0,1]$, $F(x)=x^3$ on $[0,1]$, so
+$P(X>\tfrac12)=1-\tfrac18=\tfrac78$.
+
+\say $F$ grows from 0 to 1. For a continuous $X$ it has no jumps; last
+week, for a discrete $X$, it was a step function.
+
+\subsection{Exercise~\exref{loss-given-default} --- Loss given default, finance (10 min)}\slide{9--10}
+
+\scriptexercise{loss-given-default}
+
+\say The loss given default is the fraction of the loan that the bank
+loses if the borrower defaults: 0 means nothing lost, 1 means everything.
+Try (a)--(c), three minutes.
+
+(a) Click. The density is the derivative of $F$: $f(x)=2x$ on $[0,1]$, $0$
+otherwise. Click. Check: $\int_0^1 2x\,dx=1$. The density grows, so large
+losses are more likely than small ones.
+
+\begin{cue}
+	Slide 10, one part per click.
+\end{cue}
+
+(b) Complement:
+$P(L>0.5)=1-F(0.5)=1-0.5^2=0.75$.
+
+(c) No integral needed: $P(0.2<L\le0.6)=F(0.6)-F(0.2)=0.36-0.04=0.32$.
+
+(d) \ask Which equation gives the median? \emph{($F(m)=\tfrac12$.)}
+So $m^2=\tfrac12$, $m=\sqrt{0.5}\approx0.707$: half of the defaults lose
+more than 70.7\% of the loan.
+
+\begin{cue}
+	Common mistakes: (b) as $1-0.5=0.5$, as if $L$ were uniform; (c) as
+	$F(0.6-0.2)=F(0.4)=0.16$. An interval is the \emph{difference} of $F$
+	at the endpoints.
+\end{cue}
+
+\begin{bg}{loss given default}
+	\emph{Loss given default (LGD)}: the share of the exposure a lender
+	loses when the borrower defaults, after collateral and recoveries.
+	$\text{LGD}=1-\text{recovery rate}$. Typical values: around
+	$0.2$--$0.45$ for secured or senior loans, $0.6$--$0.8$ for unsecured or
+	subordinated debt. Expected loss $=\text{PD}\times\text{LGD}\times
+		\text{EAD}$ (exposure at default); under the Basel rules banks
+	estimate all three. LGD is a random variable between 0 and 1, so it is
+	modeled with a density on $[0,1]$ (in practice often a beta
+	distribution; $F(x)=x^2$ here is a simple special case).
+
+	\terms loss given default (LGD); recovery rate; exposure at default
+	(EAD); expected loss.
+
+	\sq{Why would large losses be more likely?}
+	\ans For unsecured loans, recoveries are often small: the bank gets
+	back little. Then LGD piles up near 1.
+\end{bg}
+
+\subsection{Two examples: uniform and exponential (5 min)}\slide{11}
+
+\say Two distributions we will use again and again.
+
+\emph{Uniform on $[\alpha,\beta]$}: the density is the constant
+$1/(\beta-\alpha)$ on the interval, zero outside. Probability is length
+divided by $\beta-\alpha$. Tiny example: uniform on $[0,10]$,
+$P(2\le X\le5)=3/10$.
+
+\emph{Exponential with rate $\lambda>0$}: $f(x)=\lambda e^{-\lambda x}$ for
+$x\ge0$. Then $F(x)=1-e^{-\lambda x}$, and the tail is
+\[ P(X>x)=e^{-\lambda x}. \]
+It models waiting times: the next order, a default. Tiny example:
+$\lambda=1$, $P(X>2)=e^{-2}\approx0.135$.
+
+\subsection{Exercise~\exref{order-arrivals} --- Waiting for the next order, finance (10 min)}\slide{12--13}
+
+\scriptexercise{order-arrivals}
+
+\say This is an exponential with rate $\lambda=2$. Try (a)--(c), three
+minutes.
+
+(a) Click. $f\ge0$, and
+$\int_0^\infty 2e^{-2x}\,dx=\big[-e^{-2x}\big]_0^\infty=0-(-1)=1$.
+Click. For $x\ge0$, $F(x)=1-e^{-2x}$. Click. The tail is $P(X>x)=e^{-2x}$.
+
+\begin{cue}
+	Slide 13, one part per click.
+\end{cue}
+
+(b) $P(X>1)=e^{-2}\approx0.135$.
+
+(c) $X$ is continuous, so $P(X<0.5)=F(0.5)=1-e^{-1}\approx0.632$.
+
+(d) \ask Which conditional probability is this? \emph{($P(X>1.5\mid
+	X>0.5)$.)} ``More than $1.5$'' already contains ``more than $0.5$'', so
+\[ P(X>1.5\mid X>0.5)=\frac{P(X>1.5)}{P(X>0.5)}=\frac{e^{-3}}{e^{-1}}
+	=e^{-2}\approx0.135. \]
+Click. \say The same as (b)! Having waited half a minute does not change
+the chance of waiting one more minute. The exponential distribution has
+no memory.
+
+\begin{cue}
+	Common mistake in (d): computing $P(X>1.5)=e^{-3}$ and forgetting the
+	condition.
+\end{cue}
+
+\begin{bg}{order arrivals and memorylessness}
+	In market microstructure, orders arriving at an exchange are often
+	modeled as a \emph{Poisson process}: the waiting times between orders
+	are independent and exponential, with rate $\lambda$ orders per unit of
+	time (here 2 per minute).
+	Memorylessness says that the market ``does not remember'' how long it
+	has been quiet. Real order flow comes in bursts (clustering), so the
+	exponential model is a first approximation; models such as Hawkes
+	processes add self-excitation.
+
+	\terms order flow; arrival rate; Poisson process; memoryless.
+
+	\sq{Is memorylessness realistic for defaults?}
+	\ans For short horizons it is a common working assumption (constant
+	hazard rate in credit models); over longer horizons the rate changes
+	with the economy.
+\end{bg}
+
+\subsection{The distribution of a function of a random variable (6 min)}\slide{14}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 51. If you start it after
+	about minute 56, give only the two numbers in part (c) of
+	Exercise~\exref{square-of-uniform}.
+\end{cue}
+
+\say We know the distribution of $X$. What is the distribution of
+$Y=g(X)$, for example $X^2$, or the value $1000(1+X)$ of an investment
+with return $X$? The method: always go through the distribution
+function.
+
+\board
+\begin{enumerate}[nosep]
+	\item $F_Y(y)=P(Y\le y)=P(g(X)\le y)$;
+	\item rewrite $g(X)\le y$ as an event about $X$, and use the
+	      distribution of $X$;
+	\item if you need the density: $f_Y(y)=F_Y'(y)$.
+\end{enumerate}
+
+Example from the slide: $X$ uniform on $[0,1]$, $Y=2X+3$. For
+$3\le y\le5$:
+\[ F_Y(y)=P(2X+3\le y)=P\Big(X\le\frac{y-3}{2}\Big)=\frac{y-3}{2}, \]
+so $f_Y(y)=\tfrac12$: $Y$ is uniform on $[3,5]$. A linear function keeps
+the shape; other functions change it, as we see now.
+
+\subsection{Exercise~\exref{square-of-uniform} --- The square of a uniform random variable (10 min)}\slide{15--16}
+
+\scriptexercise{square-of-uniform}
+
+\say Try (a) and (b), three minutes. Start with $P(X^2\le y)$.
+
+(a) Click. $Y$ is between 0 and 1. For $0\le y\le1$, since $X\ge0$,
+\[ F_Y(y)=P(X^2\le y)=P\big(X\le\sqrt y\big)=\sqrt y, \]
+and $F_Y(y)=0$ for $y<0$, $F_Y(y)=1$ for $y>1$.
+
+(b) Click. Differentiate: $f_Y(y)=\dfrac{1}{2\sqrt y}$ for $0<y\le1$, zero
+otherwise.
+
+\begin{cue}
+	Slide 16.
+\end{cue}
+
+(c) $P(Y\le0.25)=\sqrt{0.25}=0.5$, and $P(Y>0.81)=1-\sqrt{0.81}=0.1$.
+Check: $Y\le0.25$ means $X\le0.5$; $Y>0.81$ means $X>0.9$.
+
+(d) \ask Is $Y$ uniform? \emph{(No: the density $1/(2\sqrt y)$ is not
+	constant.)} Click. Squaring pushes numbers in $(0,1)$ toward 0, for
+example $0.5^2=0.25$, so small values of $Y$ are more likely.
+
+\begin{cue}
+	Common mistake: $f_Y(y)=f_X(\sqrt y)=1$, plugging into the density of
+	$X$; that would make $Y$ uniform. Always go through $F_Y$.
+\end{cue}
+
+\subsection{Summary (3 min)}\slide{17}
+
+\say Today's first session in five lines: probability is the area under
+the density; $F(x)=P(X\le x)$ and $f=F'$; uniform means length over total
+length; the exponential has the tail $e^{-\lambda x}$ and no memory; and
+for $Y=g(X)$, first $F_Y$, then differentiate. After the break: two random
+variables at the same time.
+
+\begin{cue}
+	Use the reserve for questions, or let them start a self-study exercise
+	on densities or on $Y=g(X)$ and walk around.
+\end{cue}
+
+%======================================================================
+\section{Session 2: Joint distributions and independent random variables}
+%======================================================================
+
+\subsection{Session 2 title and recap of Session 1 (4 min)}\slide{18--19}
+
+\begin{cue}
+	Slide 18 (title), then slide 19.
+\end{cue}
+
+\say Welcome back. Before the break: densities, $F$, uniform and
+exponential, and $Y=g(X)$. Now two random variables at the same time: how
+do two stocks, two loans, two insurance claims behave \emph{together}?
+
+\subsection{Joint distribution: the discrete case (6 min)}\slide{20}
+
+\say If $X$ and $Y$ are discrete, their joint pmf is
+\[ p(x,y)=P(X=x,\,Y=y). \]
+It is a table: one cell for each pair of values, and all cells add up to
+1.
+
+\board Copy the small table of the slide.
+
+\say The distribution of $X$ alone, the \emph{marginal} pmf $p_X$, is the
+row sum: $p_X(x)=\sum_y p(x,y)$. The marginal of $Y$ is the column sum. We
+write the sums in the margins of the table: hence the name.
+
+\ask In the table, what is $P(X=0)$? \emph{($0.3+0.2=0.5$.)}
+
+\say Finally, the joint distribution function, for any $X$, $Y$:
+$F(a,b)=P(X\le a,\,Y\le b)$. Here $F(0,1)=0.3+0.2=0.5$: the cells with
+$X\le0$ and $Y\le1$.
+
+\subsection{Exercise~\exref{two-stocks} --- Two stocks on the same day, finance (10 min)}\slide{21--22}
+
+\scriptexercise{two-stocks}
+
+\begin{center}
+	\small
+	\begin{tabular}{c|ccc}
+		       & $y=-1$ & $y=0$  & $y=1$  \\\hline
+		$x=-1$ & $0.20$ & $0.10$ & $0.10$ \\
+		$x=1$  & $0.05$ & $0.15$ & $0.40$
+	\end{tabular}
+\end{center}
+
+\say Try (a)--(c), three minutes.
+
+(a) Click. Click. Row sums: $p_X(-1)=0.4$, $p_X(1)=0.6$. Click. Column sums:
+$p_Y(-1)=0.25$, $p_Y(0)=0.25$, $p_Y(1)=0.5$.
+
+\begin{cue}
+	Slide 22, one part per click.
+\end{cue}
+
+(b) \ask Which cells have $X=Y$? \emph{(Both fall, $(-1,-1)$, and both
+	rise, $(1,1)$.)} So $P(X=Y)=0.20+0.40=0.60$.
+
+(c) $X\le0$ means $X=-1$; $Y\le0$ means $Y=-1$ or $0$:
+$F(0,0)=0.20+0.10=0.30$.
+
+(d) Conditional probability: the cell divided by the marginal,
+\[ P(Y=1\mid X=1)=\frac{p(1,1)}{p_X(1)}=\frac{0.40}{0.60}=\frac23
+	\approx0.667. \]
+\say Compare with $P(Y=1)=0.5$. Knowing that A rises makes it more likely
+that B rises too.
+
+\begin{cue}
+	Common mistake in (d): answering $p(1,1)=0.40$, without dividing by
+	$p_X(1)=0.60$. In (c), $Y\le0$ includes $Y=0$.
+\end{cue}
+
+\begin{bg}{co-movement of stocks}
+	Two stocks of the same market are exposed to common factors: the
+	overall market, interest rates, the sector. So they tend to rise and
+	fall on the same days. This co-movement is what correlation measures,
+	and it is the reason diversification has limits: if all assets fall
+	together, holding many of them does not help much. Here the up--up and
+	down--down cells carry $0.60$ of the probability.
+
+	\terms co-movement; common factor; market (systematic) risk;
+	diversification.
+
+	\sq{Can we read the co-movement from the marginals?}
+	\ans No. The marginals say how each stock behaves alone; only the joint
+	table says how they move together. Exercise~\exref{two-stocks-independence}
+	shows this.
+\end{bg}
+
+\subsection{Joint distribution: the continuous case (6 min)}\slide{23}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 20. If you start it after
+	about minute 25, skip part (d) of Exercise~\exref{two-default-times};
+	after about minute 30, also do part (d) of
+	Exercise~\exref{joint-density-square} in one sentence.
+\end{cue}
+
+\say For two continuous random variables, a joint density $f(x,y)\ge0$
+plays the role of the table. The probability of a region $A$ in the plane
+is the double integral
+\[ P\big((X,Y)\in A\big)=\iint_A f(x,y)\,dx\,dy, \]
+the volume above $A$ under the surface, and the total is 1.
+
+\say Marginal densities: integrate the other variable out,
+\[ f_X(x)=\int_{-\infty}^{\infty}f(x,y)\,dy,\qquad
+	f_Y(y)=\int_{-\infty}^{\infty}f(x,y)\,dx. \]
+It is the same as the row sum in the table, with an integral in place of
+the sum. And
+\[ F(a,b)=\int_{-\infty}^a\int_{-\infty}^b f(x,y)\,dy\,dx. \]
+
+Tiny example: $f(x,y)=1$ on the unit square. Then
+$P(X\le\tfrac12,\,Y\le\tfrac12)$ is the area of the small square,
+$\tfrac14$.
+
+\say For a double integral, do the inner integral first, with the other
+variable held fixed.
+
+\subsection{Exercise~\exref{joint-density-square} --- A joint density on the unit square (12 min)}\slide{24--25}
+
+\scriptexercise{joint-density-square}
+
+\say Try (a) and (b), four minutes. Inner integral first, over $y$, with
+$x$ fixed.
+
+(a) Click. Inner: $\int_0^1(x+y)\,dy=x+\tfrac12$. Outer:
+$\int_0^1(x+\tfrac12)\,dx=\tfrac12+\tfrac12=1$.
+
+(b) Click. The same over the small square $[0,\tfrac12]\times[0,\tfrac12]$:
+inner $\tfrac x2+\tfrac18$, outer
+\[ \int_0^{1/2}\Big(\frac x2+\frac18\Big)dx=\frac1{16}+\frac1{16}=\frac18. \]
+
+\begin{cue}
+	Slide 25.
+\end{cue}
+
+(c) \ask Haven't we done this already? \emph{(Yes: the inner integral in
+	(a).)} $f_X(x)=x+\tfrac12$ for $0\le x\le1$, zero otherwise.
+
+(d) Click. \ask Do we need a double integral over the triangle? \emph{(No.)}
+Swapping $x$ and $y$ does not change $f$, so $P(X>Y)=P(Y>X)$; and
+$P(X=Y)=0$, a line has no area. The two add up to 1, so
+$P(X>Y)=\tfrac12$.
+
+\begin{cue}
+	Common mistake in (b): taking the area $\tfrac14$ of the small square;
+	that works only for a constant density. If someone integrates over the
+	triangle in (d) ($y$ from $0$ to $x$), let them: it also gives
+	$\tfrac12$.
+\end{cue}
+
+\subsection{Independent random variables (6 min)}\slide{26}
+
+\begin{cue}
+	Clock check: this slide is planned for minute 38. If you start it after
+	about minute 43, give part (c) of
+	Exercise~\exref{two-stocks-independence} as one number and one
+	sentence, and skip part (d) of Exercise~\exref{two-default-times} if
+	you have not decided so yet.
+\end{cue}
+
+\say $X$ and $Y$ are independent if every event about $X$ is independent
+of every event about $Y$:
+\[ P(X\in A,\,Y\in B)=P(X\in A)\,P(Y\in B). \]
+Equivalently, $F(a,b)=F_X(a)F_Y(b)$ for all $a,b$.
+
+In practice: discrete, $p(x,y)=p_X(x)p_Y(y)$ in \emph{every} cell; one
+cell that fails, and they are not independent. Continuous,
+$f(x,y)=f_X(x)f_Y(y)$; on a rectangle, $f$ splits into a function of $x$
+times a function of $y$.
+
+Tiny example: $f(x,y)=4xy$ on the unit square is $2x\cdot2y$: independent.
+$f(x,y)=x+y$ of the last exercise does not split: not independent.
+
+\say In words: knowing the value of $X$ does not change the distribution
+of $Y$.
+
+\subsection{Exercise~\exref{two-stocks-independence} --- Do the two stocks move independently?, finance (8 min)}\slide{27--28}
+
+\scriptexercise{two-stocks-independence}
+
+\say The same two stocks as before. Try (a), two minutes: compare one cell
+with the product of its margins.
+
+(a) Click. $p(-1,-1)=0.20$, but $p_X(-1)p_Y(-1)=0.4\cdot0.25=0.10$. Not
+independent. Click. \say One bad cell is enough for ``no''; for ``yes'' all
+cells must match. The cell $(-1,0)$ happens to match, $0.10=0.4\cdot0.25$,
+and proves nothing.
+
+\begin{cue}
+	Slide 28.
+\end{cue}
+
+(b) \ask How do we fill the table of independent stocks? \emph{(Each cell
+	is row sum times column sum.)} Click. For example $0.4\cdot0.5=0.20$ and
+$0.6\cdot0.25=0.15$.
+
+(c) Click. $P(X=Y)=0.10+0.30=0.40$, against $0.60$ for the real stocks.
+Click. \say The real stocks move in the same direction more often than
+independent ones would: they tend to move together.
+
+\begin{bg}{correlation and diversification}
+	The table of (b) is what the stocks would look like with the same
+	individual behavior but no common driver. The gap between $0.60$ and
+	$0.40$ is the dependence. In portfolio theory, dependence (measured by
+	correlation) decides how much risk diversification removes: with
+	independent assets, risk shrinks as more are added; with assets that
+	move together, a part of the risk always remains.
+
+	\terms independence; correlation; diversification.
+
+	\sq{Are stock returns ever independent?}
+	\ans Almost never exactly: most stocks share exposure to the market.
+	Independence is a modeling simplification.
+\end{bg}
+
+\subsection{Exercise~\exref{two-default-times} --- Two borrowers, independent defaults, finance (10 min)}\slide{29--30}
+
+\scriptexercise{two-default-times}
+
+\say Try (a)--(c), three minutes. Remember the tail of the exponential.
+
+(a) Click. $P(T>t)=e^{-\lambda t}$. Click. So
+$P(T_A>10)=e^{-0.2}\approx0.819$ and $P(T_B>10)=e^{-0.3}\approx0.741$.
+
+(b) Click. Independent, so the probabilities multiply:
+\[ P(T_A>10,\,T_B>10)=e^{-0.2}e^{-0.3}=e^{-0.5}\approx0.607. \]
+
+\begin{cue}
+	Slide 30.
+\end{cue}
+
+(c) \ask What is the complement of ``at least one defaults''? \emph{(Both
+	survive.)} So $1-e^{-0.5}\approx0.393$.
+
+(d) Click. $P(T_A\le10)\approx0.181$, $P(T_B\le10)\approx0.259$. Click. By
+independence the product, $\approx0.047$.
+
+Click. \say In a crisis, defaults come together, so independence underestimates
+(d).
+
+\begin{cue}
+	Common mistake in (c): $P(T_A\le10)+P(T_B\le10)\approx0.440$, which
+	counts ``both default'' twice.
+\end{cue}
+
+\begin{bg}{default times and default correlation}
+	In reduced-form credit models the default time of a company is
+	exponential with a \emph{hazard rate} (intensity) $\lambda$: the rate
+	$0.02$ means roughly a 2\% chance of default per year. Survival
+	probability is $e^{-\lambda t}$. The probability that \emph{both}
+	default is what matters for a lender with exposure to both, and for
+	products such as first-to-default baskets and CDO tranches. Assuming
+	independence understates joint defaults; in 2007--2008 this was one
+	reason why such products lost far more than models predicted.
+
+	\terms hazard rate; survival probability; default correlation;
+	first-to-default basket.
+
+	\sq{How do practitioners model dependent defaults?}
+	\ans With common factors or copulas: the marginals stay exponential,
+	but the joint distribution makes defaults cluster.
+\end{bg}
+
+\subsection{Summary (3 min)}\slide{31}
+
+\say Session 2 in a few lines: a discrete joint distribution is a table,
+and the marginals are its row and column sums; a continuous one is a joint
+density, probabilities are double integrals, and the marginals come from
+integrating the other variable out; $F(a,b)=P(X\le a,\,Y\le b)$; and
+independent means the joint pmf or density is the product of the
+marginals, so probabilities of ``and'' multiply. The marginals alone do
+not tell how $X$ and $Y$ move together.
+
+\say Every exercise of today
+is in the study guide on the course website, with a step-by-step
+solution, and the Exercises page there has more problems on every topic
+for self-study. Thank you, and see you next week.
+
+\begin{cue}
+	Use the reserve for questions, or let them start a self-study exercise
+	on independence and walk around.
+\end{cue}
+
+\end{document}

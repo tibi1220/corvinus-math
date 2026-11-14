@@ -1,0 +1,107 @@
+% ---
+% title: A density with a constant
+% tags: continuous, density
+% ---
+
+\begin{problem}
+	A continuous random variable $X$ has density
+	\[
+		f(x)=\begin{cases}
+			c\,x^2 & 0\le x\le 3, \\
+			0      & \text{otherwise},
+		\end{cases}
+	\]
+	where $c$ is a constant.
+	(a) Find $c$.
+	(b) Find $P(X>2)$.
+	(c) Find $P(1<X<2)$.
+	(d) Is the value $f(x)$ a probability? Explain, using the value $f(3)$.
+\end{problem}
+
+\begin{solution}
+	\idea A density must be nonnegative and the total area under it must be
+	$1$. This one condition fixes $c$. After that, every probability is an
+	area under the density, that is, an integral of $f$ over the interval.
+
+	\step{(a)} The total probability is $1$, so the area under $f$ over the
+	whole line is $1$. Outside $[0,3]$ the density is $0$, so only $[0,3]$
+	contributes:
+	\[
+		1=\int_{-\infty}^{\infty}f(x)\,dx=\int_0^3 c\,x^2\,dx .
+	\]
+	An antiderivative of $x^2$ is $\frac{x^3}{3}$. Put in the bounds:
+	\[
+		\int_0^3 c\,x^2\,dx=c\left[\frac{x^3}{3}\right]_0^3
+		=c\left(\frac{27}{3}-\frac{0}{3}\right)=9c .
+	\]
+	So $9c=1$, and $c=\frac19$. The density is $f(x)=\frac{x^2}{9}$ on
+	$[0,3]$. It is nonnegative there, as a density must be.
+
+	\step{(b)} $P(X>2)$ is the area under $f$ to the right of $2$. The density
+	is $0$ beyond $3$, so the area runs from $2$ to $3$. An antiderivative of
+	$\frac{x^2}{9}$ is $\frac{x^3}{27}$. Put in the bounds:
+	\[
+		P(X>2)=\int_2^3\frac{x^2}{9}\,dx=\left[\frac{x^3}{27}\right]_2^3
+		=\frac{27}{27}-\frac{8}{27}=\frac{19}{27}\approx 0.704 .
+	\]
+	The picture shows this area shaded.
+	\begin{center}
+		\begin{tikzpicture}[x=1.8cm,y=3cm,>=stealth]
+			\fill[teal!30] (2,0) -- plot[domain=2:3,samples=50] (\x,{\x*\x/9}) -- (3,0) -- cycle;
+			\draw[->] (-0.4,0)--(3.6,0) node[right] {$x$};
+			\draw[->] (0,-0.05)--(0,1.25) node[above] {$f(x)$};
+			\foreach \x in {1,2,3} \draw (\x,0.02)--(\x,-0.02) node[below] {$\x$};
+			\node[below left] at (0,0) {$0$};
+			\draw (0.03,1)--(-0.03,1) node[left] {$1$};
+			\draw[gray!60,dashed] (0,1)--(3,1);
+			\draw[navy,very thick] (-0.4,0)--(0,0);
+			\draw[navy,very thick] plot[domain=0:3,samples=50] (\x,{\x*\x/9});
+			\draw[navy,very thick] (3,0)--(3.5,0);
+			\draw[navy,densely dotted] (3,0)--(3,1);
+			\fill[navy] (3,1) circle (1.6pt);
+			\node[teal!60!black] at (2.62,0.22) {$\dfrac{19}{27}$};
+		\end{tikzpicture}
+	\end{center}
+	Most of the probability sits near $3$, where the density is high.
+
+	\step{(c)} $P(1<X<2)$ is the area under $f$ between $1$ and $2$. With the
+	same antiderivative:
+	\[
+		P(1<X<2)=\int_1^2\frac{x^2}{9}\,dx=\left[\frac{x^3}{27}\right]_1^2
+		=\frac{8}{27}-\frac{1}{27}=\frac{7}{27}\approx 0.259 .
+	\]
+	For a continuous random variable a single point has probability $0$, so it
+	does not matter whether the endpoints are included:
+	$P(1\le X\le 2)=P(1<X<2)$ as well.
+
+	\step{(d)} No. Here $f(3)=\frac{3^2}{9}=1$, but this does not mean that
+	$X=3$ is certain: $P(X=3)=0$, as for every single point. The value $f(x)$
+	is a height, not an area. It tells how densely the probability is packed
+	near $x$: for a short interval of length $h$ around $x$,
+	\[
+		P(x<X\le x+h)\approx f(x)\,h .
+	\]
+	Only areas under $f$ are probabilities. A density may even be larger than
+	$1$. For example, if $X$ had density $c\,x^2$ on the shorter interval
+	$[0,1]$, the same computation would give $c\cdot\frac13=1$, so $c=3$ and
+	$f(1)=3>1$. The total area is still $1$, because the interval is short.
+
+	\begin{answer}
+		(a) $c=\frac19$ \quad
+		(b) $P(X>2)=\frac{19}{27}\approx0.704$ \quad
+		(c) $P(1<X<2)=\frac{7}{27}\approx0.259$ \quad
+		(d) no: $f(3)=1$ is a height, not a probability; only areas under $f$
+		are probabilities, and a density can exceed $1$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} choosing $c$ so that the largest value of $f$
+		is $1$ (here this happens to give $c=\frac19$ too, by coincidence).
+		The correct condition is that the \emph{area} under $f$ is $1$. Check
+		with the interval $[0,1]$: there the rule ``largest value $1$'' would
+		give $c=1$ and total area $\frac13$, which is wrong.
+
+		\smallskip
+		\textbf{Check:} $P(X\le1)=\frac1{27}$, so
+		$P(X\le1)+P(1<X<2)+P(X\ge2)=\frac{1+7+19}{27}=1$.
+	\end{remark}
+\end{solution}

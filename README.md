@@ -38,7 +38,7 @@ website and into downloadable PDFs, so the same source serves both.
   PDFs; TikZ figures are rendered to SVG.
 - **Light and dark theme**, no JavaScript needed to read the content.
 
-Currently covered: **Mathematics for Finance** (MSc), weeks 8 and 9.
+Currently covered: **Mathematics for Finance** (MSc), weeks 8 to 10.
 
 ## Writing content
 
