@@ -303,6 +303,121 @@
     \node[right] at (2.85,-2.75) {$=p:q$};
   \end{tikzpicture}}
 
+% The sum S of two dice: a bar for every sum s, one cell for every pair of
+% faces with that sum (first die white, second navy), as in the classic
+% picture of the two-dice distribution. pic die={face}{1 or 2}.
+\tikzset{
+  pics/die/.style 2 args={code={%
+    \ifnum#2=1 \def\diefill{white}\def\diepip{black}%
+    \else \def\diefill{navy}\def\diepip{white}\fi
+    \filldraw[draw=black!70,fill=\diefill,line width=.3pt,
+      rounded corners=.6mm] (-1.6mm,-1.6mm) rectangle (1.6mm,1.6mm);
+    \ifodd#1 \fill[\diepip] (0,0) circle (.34mm);\fi
+    \ifnum#1>1 \fill[\diepip] (-.85mm,.85mm) circle (.34mm)
+      (.85mm,-.85mm) circle (.34mm);\fi
+    \ifnum#1>3 \fill[\diepip] (.85mm,.85mm) circle (.34mm)
+      (-.85mm,-.85mm) circle (.34mm);\fi
+    \ifnum#1=6 \fill[\diepip] (-.85mm,0) circle (.34mm)
+      (.85mm,0) circle (.34mm);\fi}},
+}
+\newcommand{\dicebars}{%
+  \begin{tikzpicture}[x=.64cm,y=.82cm]
+    \foreach \k in {1,...,6} {
+        \draw[gray!40,very thin] (1.4,\k)--(12.6,\k);
+        \node[left,font=\tiny] at (1.4,\k) {$\k/36$};
+      }
+    \draw[->] (1.4,0)--(12.8,0) node[right,font=\scriptsize] {$s$};
+    \draw[->] (1.4,0)--(1.4,7.3) node[above,font=\scriptsize] {$p(s)$};
+    \foreach \s in {2,...,12} {
+        \pgfmathtruncatemacro\lo{max(1,\s-6)}
+        \pgfmathtruncatemacro\hi{min(6,\s-1)}
+        \pgfmathtruncatemacro\n{\hi-\lo+1}
+        \filldraw[fill=teal!20,draw=teal] (\s-.4,0) rectangle (\s+.4,\n);
+        \foreach \a in {\lo,...,\hi} {
+            \pgfmathtruncatemacro\b{\s-\a}
+            \pgfmathtruncatemacro\c{\a-\lo}
+            \pic at (\s,\c+.72) {die={\a}{1}};
+            \pic at (\s,\c+.28) {die={\b}{2}};
+          }
+        \node[below,font=\scriptsize] at (\s,0) {$\s$};
+      }
+    \draw[gold,very thick,dashed] (7,6)--(7,7.1);
+    \draw[gold,very thick] (7,-.12)--(7,.12);
+    \node[above,font=\scriptsize] at (7,7.1) {$\E[S]=7$};
+    \draw[gold,thick,<->] (4.585,6.5)--(9.415,6.5);
+    \node[right,font=\scriptsize] at (9.415,6.5) {$\pm\SD(S)$};
+  \end{tikzpicture}}
+
+% The distribution function of the sum of two dice: F(s) = (number of pairs
+% with sum at most s)/36, a step function; the arrow marks
+% P(4<S<=9) = F(9) - F(4).
+\newcommand{\dicecdf}{%
+  \begin{tikzpicture}[x=.6cm,y=5.4cm,
+      closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+        minimum size=4pt},
+      open/.style={circle,fill=white,draw=teal,line width=.7pt,
+        inner sep=0pt,minimum size=4pt}]
+    \foreach \k in {6,12,...,30} {
+        \draw[gray!40,very thin] (1,\k/36)--(13,\k/36);
+        \node[left,font=\tiny] at (1,\k/36) {$\k/36$};
+      }
+    \draw[gray!40,very thin] (1,1)--(13,1);
+    \node[left,font=\tiny] at (1,1) {$1$};
+    \draw[->] (1,0)--(13.3,0) node[right,font=\scriptsize] {$s$};
+    \draw[->] (1,0)--(1,1.12) node[above,font=\scriptsize] {$F(s)$};
+    \foreach \x in {2,...,12}
+      \node[below,font=\scriptsize] at (\x,0) {$\x$};
+    \draw[very thick,teal] (1,0)--(2,0);
+    \draw[teal!60,densely dashed] (2,0/36)--(2,1/36);
+    \draw[very thick,teal] (2,1/36)--(3,1/36);
+    \draw[teal!60,densely dashed] (3,1/36)--(3,3/36);
+    \draw[very thick,teal] (3,3/36)--(4,3/36);
+    \draw[teal!60,densely dashed] (4,3/36)--(4,6/36);
+    \draw[very thick,teal] (4,6/36)--(5,6/36);
+    \draw[teal!60,densely dashed] (5,6/36)--(5,10/36);
+    \draw[very thick,teal] (5,10/36)--(6,10/36);
+    \draw[teal!60,densely dashed] (6,10/36)--(6,15/36);
+    \draw[very thick,teal] (6,15/36)--(7,15/36);
+    \draw[teal!60,densely dashed] (7,15/36)--(7,21/36);
+    \draw[very thick,teal] (7,21/36)--(8,21/36);
+    \draw[teal!60,densely dashed] (8,21/36)--(8,26/36);
+    \draw[very thick,teal] (8,26/36)--(9,26/36);
+    \draw[teal!60,densely dashed] (9,26/36)--(9,30/36);
+    \draw[very thick,teal] (9,30/36)--(10,30/36);
+    \draw[teal!60,densely dashed] (10,30/36)--(10,33/36);
+    \draw[very thick,teal] (10,33/36)--(11,33/36);
+    \draw[teal!60,densely dashed] (11,33/36)--(11,35/36);
+    \draw[very thick,teal] (11,35/36)--(12,35/36);
+    \draw[teal!60,densely dashed] (12,35/36)--(12,36/36);
+    \draw[very thick,teal] (12,36/36)--(12.9,36/36);
+    \node[open] at (2,0/36) {};
+    \node[open] at (3,1/36) {};
+    \node[open] at (4,3/36) {};
+    \node[open] at (5,6/36) {};
+    \node[open] at (6,10/36) {};
+    \node[open] at (7,15/36) {};
+    \node[open] at (8,21/36) {};
+    \node[open] at (9,26/36) {};
+    \node[open] at (10,30/36) {};
+    \node[open] at (11,33/36) {};
+    \node[open] at (12,35/36) {};
+    \node[closed] at (2,1/36) {};
+    \node[closed] at (3,3/36) {};
+    \node[closed] at (4,6/36) {};
+    \node[closed] at (5,10/36) {};
+    \node[closed] at (6,15/36) {};
+    \node[closed] at (7,21/36) {};
+    \node[closed] at (8,26/36) {};
+    \node[closed] at (9,30/36) {};
+    \node[closed] at (10,33/36) {};
+    \node[closed] at (11,35/36) {};
+    \node[closed] at (12,36/36) {};
+    \draw[gold,very thick,<->] (10.45,6/36)--(10.45,30/36);
+    \draw[gold,densely dotted] (4,6/36)--(10.45,6/36) (9,30/36)--(10.45,30/36);
+    \node[right,font=\scriptsize,align=left] at (10.5,18/36)
+      {$F(9)-F(4)$\\$=24/36$};
+  \end{tikzpicture}}
+
 % The exercises (one file each in exercises/) and \exerciseframe
 \input{exercises/macros}
 
@@ -1108,6 +1223,53 @@
   In finance: $\E[X]$ is the expected return or payoff, $\SD(X)$ measures
   the \emph{risk}.
 \end{frame}
+
+\begin{frame}{Example: the sum of two dice}
+  \small
+  \begin{columns}[c]
+    \begin{column}{.56\textwidth}
+      \centering
+      \dicebars
+    \end{column}
+    \begin{column}{.42\textwidth}
+      $S$ = the sum of two fair dice. The $36$ pairs are equally likely, so
+      $p(s)$ = (number of pairs with sum $s$)$/36$.
+      \[ \E[S]=\sum_s s\,p(s)=\frac{252}{36}=7, \]
+      the center of the symmetric chart.
+      \[ \E[S^2]=\sum_s s^2\,p(s)=\frac{1974}{36}, \]
+      \[ \Var(S)=\frac{1974}{36}-7^2=\frac{35}{6}\approx5.83, \]
+      $\SD(S)=\sqrt{35/6}\approx2.42$: the sum is typically $7$, give or
+      take about $2.4$.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Example: the distribution function of the two dice}
+  \small
+  \begin{columns}[c]
+    \begin{column}{.58\textwidth}
+      \centering
+      \dicecdf
+    \end{column}
+    \begin{column}{.4\textwidth}
+      $F(s)=P(S\le s)$: add up the bars of $p$ up to $s$,
+      \[ F(s)=\frac{1}{36},\ \frac{3}{36},\ \frac{6}{36},\ \frac{10}{36},
+        \ \dots,\ \frac{35}{36},\ 1 \]
+      for $s=2,3,4,5,\dots,11,12$; constant in between, $0$ below $2$.
+
+      \medskip
+      \textbf{Reading probabilities off $F$:}
+      \[ \begin{aligned}
+          P(4<S\le9) & =F(9)-F(4)                          \\
+                     & =\frac{30}{36}-\frac{6}{36}=\frac{2}{3},
+        \end{aligned} \]
+      the sums $5,\dots,9$ (the arrow);
+      \[ P(S>9)=1-F(9)=\frac{6}{36}=\frac16. \]
+    \end{column}
+  \end{columns}
+\end{frame}
+
+
 
 \exerciseframe{call-option}
 
