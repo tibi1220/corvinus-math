@@ -151,6 +151,11 @@
         \end { \__ex_block: }
       }
 
+    % The steps (\pause, \uncover, ...) of an exercise are not shown one by
+    % one: the first frame gives two pages, its first slide (the statement,
+    % no solution) and its last state (the full solution); a further frame
+    % (cont.) only its last state. Slide 99 is past every step, so it shows
+    % everything (a frame has only the slides it uses, so <1,99> is two).
     \tl_new:N \l__ex_frames_tl
     \NewDocumentCommand \exerciseframe { O{t} m }
       {
@@ -158,7 +163,9 @@
         \tl_clear:N \l__ex_frames_tl
         \seq_map_indexed_inline:Nn \g__ex_slides_seq
           {
-            \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}[#1] }
+            \int_compare:nNnTF {##1} = { 1 }
+              { \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}<1,99>[#1] } }
+              { \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}<99>[#1] } }
             \tl_put_right:Ne \l__ex_frames_tl
               {
                 {
