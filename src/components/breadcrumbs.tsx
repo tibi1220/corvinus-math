@@ -10,42 +10,92 @@ const subscribe = () => () => {};
 const headerSlot = () => document.getElementById('header-breadcrumbs');
 const serverSlot = () => null;
 
-function BreadcrumbTrail({
-  items,
-  compact = false,
-}: {
-  items: Crumb[];
-  compact?: boolean;
-}) {
+function BreadcrumbTrail({ items }: { items: Crumb[] }) {
   return (
     <nav
       aria-label='Breadcrumb'
-      className={`${compact ? 'toc-scroll overflow-x-auto py-1' : ''} text-sm text-zinc-500 dark:text-zinc-400`}
+      className='text-sm text-zinc-500 dark:text-zinc-400'
     >
-      <ol
-        className={`flex items-center gap-x-2 gap-y-1 ${compact ? 'w-max whitespace-nowrap' : 'flex-wrap'}`}
-      >
+      <ol className='flex flex-wrap items-center gap-x-2 gap-y-1'>
         {items.map((item, i) => (
           <li
             key={i}
             className='flex items-center gap-2'
           >
             {i > 0 && <span aria-hidden>/</span>}
-            {item.href ? (
-              <Link
-                href={item.href}
-                className='hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline'
-              >
-                {item.label}
-              </Link>
-            ) : (
+            <CrumbLabel item={item} />
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+function CrumbLabel({
+  item,
+  className = '',
+}: {
+  item: Crumb;
+  className?: string;
+}) {
+  return item.href ? (
+    <Link
+      href={item.href}
+      className={`${className} hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline`}
+    >
+      {item.label}
+    </Link>
+  ) : (
+    <span
+      className={`${className} text-zinc-900 dark:text-zinc-100`}
+      aria-current='page'
+    >
+      {item.label}
+    </span>
+  );
+}
+
+// The trail in the header, once the page's own trail has scrolled away. It
+// shows the whole path and never scrolls sideways (no swiping or
+// rubber-banding on phones). If the path does not fit, labels are cut with an
+// ellipsis, in order of importance: first the crumbs in the middle (the
+// course), then Home and the parent, the current page last. The flex-shrink
+// factors are 10^4 apart, so a crumb loses (practically) nothing until the
+// ones before it in that order are as short as they can get; a minimum width
+// keeps at least a letter of every ancestor.
+function shrinkClass(i: number, last: number) {
+  if (i === last) return 'min-w-0 shrink';
+  if (i === 0) return 'min-w-[1.75em] shrink-[10000]';
+  if (i === last - 1) return 'min-w-[2.75em] shrink-[10000]';
+  return 'min-w-[2.75em] shrink-[100000000]';
+}
+
+function HeaderTrail({ items }: { items: Crumb[] }) {
+  const last = items.length - 1;
+  return (
+    <nav
+      aria-label='Breadcrumb'
+      className='header-trail min-w-0 text-sm text-zinc-500 dark:text-zinc-400'
+    >
+      <ol className='flex min-w-0 items-center gap-1.5 whitespace-nowrap'>
+        {items.map((item, i) => (
+          <li
+            key={i}
+            title={item.label}
+            className={`flex items-center gap-1.5 ${shrinkClass(i, last)}`}
+          >
+            {i > 0 && (
               <span
-                className='text-zinc-900 dark:text-zinc-100'
-                aria-current='page'
+                aria-hidden
+                className='shrink-0'
               >
-                {item.label}
+                /
               </span>
             )}
+            <CrumbLabel
+              item={item}
+              className='min-w-0 truncate'
+            />
           </li>
         ))}
       </ol>
@@ -70,14 +120,6 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
     return () => observer.disconnect();
   }, [slot]);
 
-  useEffect(() => {
-    if (!sticky || !slot) return;
-    // On narrow screens show the current page; ancestors remain reachable
-    // by swiping the trail or tabbing through its links.
-    const trail = slot.querySelector('nav');
-    if (trail) trail.scrollLeft = trail.scrollWidth;
-  }, [sticky, slot, items]);
-
   return (
     <>
       <div
@@ -88,15 +130,7 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
       >
         <BreadcrumbTrail items={items} />
       </div>
-      {sticky &&
-        slot &&
-        createPortal(
-          <BreadcrumbTrail
-            items={items}
-            compact
-          />,
-          slot,
-        )}
+      {sticky && slot && createPortal(<HeaderTrail items={items} />, slot)}
     </>
   );
 }
