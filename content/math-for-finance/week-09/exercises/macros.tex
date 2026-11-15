@@ -199,11 +199,16 @@
       }
 
     % The script gives the full statement, with the finance context: the
-    % lecturer reads it out, so the background of the example is at hand.
+    % lecturer reads it out, so the background of the example is at hand. The
+    % print version of the script (\scriptprint) leaves the context out.
     \NewDocumentCommand \scriptexercise { m }
       {
         \__ex_load:n {#1}
-        \__ex_statement_box:n { problem }
+        \group_begin:
+          \cs_if_exist:NT \scriptprint
+            { \bool_set_false:N \l__ex_context_bool }
+          \__ex_statement_box:n { problem }
+        \group_end:
       }
 
     % The website (lwarp): statement and solution of each exercise, between

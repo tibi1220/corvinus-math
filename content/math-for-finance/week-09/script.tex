@@ -9,8 +9,9 @@
 %
 % The print version (script-print.tex defines \scriptprint) is shorter: no
 % header and footer, no background boxes (bg), no copies of the slide text
-% (onslide), no common mistakes (mistake), and no introduction, plan or
-% summaries (printskip). The important figures of the slides (slidefig) are
+% (onslide), no common mistakes (mistake), no finance context in the
+% exercise statements, and no introduction, plan, summaries or visual proofs
+% of Bayes' formula (printskip). The important figures of the slides (slidefig) are
 % in both versions.
 
 \documentclass[11pt,a4paper,parskip=half]{scrartcl}
@@ -68,13 +69,24 @@
 \newcommand{\say}{\textbf{\color{teal}Say:}\ }
 \newcommand{\board}{\textbf{\color{gold}Board:}\ }
 \newcommand{\ask}{\textbf{\color{navy}Ask the class:}\ }
-\newcommand{\slide}[1]{\marginpar{\raggedright\footnotesize\color{gray}slide #1}}
+% In the margin: the slide (frame) number and, optionally, the planned minutes
+% of the session, e.g. \slide[19--24]{8}
+\NewDocumentCommand{\slide}{om}{\marginpar{\raggedright\footnotesize\color{gray}%
+  slide #2\IfValueT{#1}{\\min #1}}}
 % What the slide shows (figures and formulas), for reading without the deck
 \NewDocumentEnvironment{onslide}{}
   {\par\textbf{\color{gray}On the slide:}\ }{\par}
 % An important figure of the slide: in both versions
 \NewDocumentEnvironment{slidefig}{}
   {\par\textbf{\color{gray}On the slide:}\ }{\par}
+% A clock check: when to decide whether to skip a part (full script only; the
+% print version has the planned minutes in the margin instead)
+\newtcolorbox{clockcheck}{enhanced,breakable,colback=gold!8,colframe=gold,
+  boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small\itshape}
+% A note on the slides themselves (clicks, pages, what is shown): full script
+% only
+\newtcolorbox{slidecue}{enhanced,breakable,colback=gold!8,colframe=gold,
+  boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small\itshape}
 % A common mistake (a short note for you)
 \newtcolorbox{mistake}{enhanced,breakable,colback=gold!8,colframe=gold,
   boxrule=.4pt,left=4pt,right=4pt,top=2pt,bottom=2pt,fontupper=\small\itshape,
@@ -88,6 +100,19 @@
   \RenewDocumentEnvironment{onslide}{+b}{}{}
   \RenewDocumentEnvironment{mistake}{+b}{}{}
   \RenewDocumentEnvironment{printskip}{+b}{}{}
+  \RenewDocumentEnvironment{clockcheck}{+b}{}{}
+  \RenewDocumentEnvironment{slidecue}{+b}{}{}
+\fi
+% Print version: to save ink, the remaining boxes are set off like a quote, by
+% a bar on the left (the quote style of the exercise PDFs, exercises/macros.tex)
+% instead of a filled frame: the statements (navy, or teal for a finance
+% exercise, with the title in bold) and the notes for you (gold).
+\ifdefined\scriptprint
+  \renewtcolorbox{task}[1]{quote=navy,attach title to upper,
+    fonttitle=\bfseries\color{navy},after title={\par},title={#1}}
+  \renewtcolorbox{fin}[1]{quote=teal,attach title to upper,
+    fonttitle=\bfseries\color{teal},after title={\par},title={#1}}
+  \renewtcolorbox{cue}{quote=gold,fontupper=\small\itshape}
 \fi
 
 % The Venn diagram of Exercises two-exams and exams-conditional, with the
@@ -683,7 +708,7 @@
 		explain the finance behind the examples; they are \emph{not} meant to
 		be read out. The script follows the deck frame by frame; the slide
 		numbers in the margin are the frame numbers in the footline of the
-		deck. The students have seen most of this before, so the pace is fast:
+		deck, and below them are the planned minutes of the session. The students have seen most of this before, so the pace is fast:
 		every theory frame is a short recap, then one exercise. The students
 		try it in pairs; then you show the full solution and go through it. The
 		script gives you more words than you need in class: say the key
@@ -822,7 +847,8 @@ leaves a reserve for questions and for students working alone.
 \end{cue}
 \end{printskip}
 
-\tableofcontents
+% No table of contents in the print version
+\ifdefined\scriptprint\else\tableofcontents\fi
 
 %======================================================================
 \section{Lecture: Counting, events, probability}
@@ -831,13 +857,13 @@ leaves a reserve for questions and for students working alone.
 
 
 \begin{printskip}
-	\subsection{Welcome, plan (3 min)}\slide{1--3}
+	\subsection{Welcome, plan (3 min)}\slide[0--3]{1--3}
 
-	\begin{cue}
+	\begin{slidecue}
 		Slide 1 (title) while they settle down, then slide 2 (Plan for
 		today). Slide 3 is the title of the lecture: say a sentence and move
 		on.
-	\end{cue}
+	\end{slidecue}
 
 	Good morning, everyone, and welcome back.
 
@@ -868,7 +894,7 @@ leaves a reserve for questions and for students working alone.
 \end{printskip}
 
 \needspace{0.35\textheight}
-\subsection{Basic principle of counting (3 min)}\slide{4}
+\subsection{Basic principle of counting (3 min)}\slide[3--6]{4}
 
 \begin{onslide}
 	the principle in a box: $m$ ways, then $n$ ways for each of them
@@ -932,7 +958,7 @@ second draw cannot repeat the first), but their \emph{number} must be the
 same. That is how we get $n(n-1)$ on the next slide.
 
 \needspace{0.35\textheight}
-\subsection{Two questions to ask every time (5 min)}\slide{5}
+\subsection{Two questions to ask every time (5 min)}\slide[6--11]{5}
 
 \begin{onslide}
 	choosing $k$ elements from $n$: \textbf{1.}~Does the order matter?
@@ -990,9 +1016,9 @@ Let us derive the cells quickly; each one is the basic principle.
 	      we see why on slide 8, with stars and bars.
 \end{itemize}
 
-\begin{cue}
+\begin{slidecue}
 	Click: the examples appear in the cells.
-\end{cue}
+\end{slidecue}
 
 (Click.) Take $\Om=\{a,b,c,d,e\}$ and choose $k=2$. Ordered, no repetition:
 $5\cdot4=20$ pairs, \texttt{ab}, \texttt{ba}, \dots, \texttt{ed}. Unordered:
@@ -1015,7 +1041,7 @@ $5+20/2=15$.)}
 \board Keep the table on the board for the whole lecture: you point at the
 bottom-right cell again on slide 8.
 
-\subsection{Multinomial coefficient (3 min)}\slide{6}
+\subsection{Multinomial coefficient (3 min)}\slide[11--14]{6}
 
 \begin{onslide}
 	the number of ways to divide $n$ distinct objects into $r$ labeled
@@ -1051,7 +1077,7 @@ $\frac{4!}{2!\,2!}=6$. The words are \texttt{1122}, \texttt{1212},
 \ask With $r=2$ groups, what is $\binom{n}{k,\,n-k}$? \emph{(It is
 $\binom nk$: choosing the first group fixes the second.)}
 
-\subsection{Exercise~\exref{rating-bonds} --- Rating bonds, finance (5 min)}\slide{7}
+\subsection{Exercise~\exref{rating-bonds} --- Rating bonds, finance (5 min)}\slide[14--19]{7}
 
 \scriptexercise{rating-bonds}
 
@@ -1062,9 +1088,9 @@ what are the groups?
 classes, of sizes 4, 3 and 3; they are labeled: A, B and C are different
 grades.)}
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution.
-\end{cue}
+\end{slidecue}
 
 The 10 bonds are different objects, and we divide them into three labeled
 groups of sizes 4, 3 and 3:
@@ -1116,13 +1142,13 @@ The group sizes are not fixed, so it is not a multinomial problem.)}
 	conflict of interest.
 \end{bg}
 
-\subsection{Stars and bars (5 min)}\slide{8}
+\subsection{Stars and bars (5 min)}\slide[19--24]{8}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} Planned minute: 19. If you are more than about
 	5 minutes late, on slide 10 show only Pascal's rule and skip the readings
 	of the triangle (about 2 min).
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	the question: in how many ways can $n$ identical objects be put into
@@ -1184,7 +1210,7 @@ For $\{a,b,c,d,e\}$ and $k=2$: $\binom62=15$, as in the table.
 	back in Session 1.
 \end{cue}
 
-\subsection{Binomial and multinomial theorems (3 min)}\slide{9}
+\subsection{Binomial and multinomial theorems (3 min)}\slide[24--27]{9}
 
 \begin{onslide}
 	expanding a power of a sum:
@@ -1227,7 +1253,7 @@ $\sum_k\binom nk=2^n$. A set with $n$ elements has $2^n$ subsets, since
 every element is in or out.
 
 \needspace{0.35\textheight}
-\subsection{Pascal's triangle (4 min)}\slide{10}
+\subsection{Pascal's triangle (4 min)}\slide[27--31]{10}
 
 \begin{onslide}
 	on the left, the triangle, rows $n=0$ to $6$ (row $n$, position
@@ -1283,9 +1309,9 @@ proof in Exercise~\exref{pascals-rule}.
 \ask Who can tell me the next row, $n=7$? \emph{(1, 7, 21, 35, 35, 21, 7, 1
 --- each entry the sum of the two above it.)}
 
-\begin{cue}
+\begin{slidecue}
 	If you decided at slide 8 to skip: stop here and go to slide 11.
-\end{cue}
+\end{slidecue}
 
 \say Ways to read row $n$:
 \begin{itemize}
@@ -1323,7 +1349,7 @@ proof in Exercise~\exref{pascals-rule}.
 \end{bg}
 
 \needspace{0.35\textheight}
-\subsection{Sample space and events (3 min)}\slide{11}
+\subsection{Sample space and events (3 min)}\slide[31--34]{11}
 
 \begin{onslide}
 	the definitions: the \emph{sample space} $\Om$ is the set of all
@@ -1383,7 +1409,7 @@ the left circle.
 six: it is $E^cF=F\setminus E$, the right circle without the lens.)}
 
 \needspace{0.35\textheight}
-\subsection{De Morgan's laws (4 min)}\slide{12--13}
+\subsection{De Morgan's laws (4 min)}\slide[34--38]{12--13}
 
 \begin{onslide}
 	De Morgan's laws, $(E\cup F)^c=E^c\cap F^c$ and $(E\cap F)^c=E^c\cup
@@ -1437,12 +1463,12 @@ is $E\cap F$. So the union is $(E\cap F)^c$.
 \ask Give me an everyday example of the second law. \emph{(``It is not true
 that I passed both exams'' = ``I failed at least one of them''.)}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} Slide 13, planned minute: 37. If you are more than
 	about 5 minutes late, in Exercise~\exref{credit-basket} (slide 16) give
 	parts (c) and (d) as answers only: 3 and 4 outcomes, one sentence each
 	(about 3 min saved).
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	(slide 13) the general form for $n$ events:
@@ -1459,7 +1485,7 @@ is ``none of them''; ``not all of them'' is ``at least one fails''.
 \say In a minute we use exactly this: $P(A^cB^c)=1-P(A\cup B)$. ``Neither
 $A$ nor $B$'' is the complement of ``at least one''.
 
-\subsection{Exercise~\exref{sample-space} --- Writing down the sample space (5 min)}\slide{14}
+\subsection{Exercise~\exref{sample-space} --- Writing down the sample space (5 min)}\slide[38--43]{14}
 
 \scriptexercise{sample-space}
 
@@ -1469,9 +1495,9 @@ outcome.
 \ask How do we record one outcome? \emph{(As an ordered pair, (first draw,
 second draw), e.g.\ $rg$ = red first, green second.)}
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution.
-\end{cue}
+\end{slidecue}
 
 With replacement: 3 choices, then again 3 choices:
 \[ \Om=\{rr,rg,rb,gr,gg,gb,br,bg,bb\},\qquad |\Om|=3\cdot3=9. \]
@@ -1491,16 +1517,16 @@ repetition'', $3\cdot2$. Writing down $\Om$ and counting go together.
 	equally likely; with the merged ones they are not.
 \end{mistake}
 
-\subsection{Exercise~\exref{stock-path-events} --- Events of a stock path, finance (6 min)}\slide{15}
+\subsection{Exercise~\exref{stock-path-events} --- Events of a stock path, finance (6 min)}\slide[43--49]{15}
 
 \scriptexercise{stock-path-events}
 
 \say Try it in pairs, three minutes. A hint: track the position, the number
 of ups minus the number of downs, after each day.
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution, and go through it part by part; ask first.
-\end{cue}
+\end{slidecue}
 
 \ask Which paths end above the start? \emph{(Those with at least 2 U's.)}
 
@@ -1548,7 +1574,7 @@ below the start on the way.
 	below the barrier does not want to pay for the scenarios where it does.
 \end{bg}
 
-\subsection{Exercise~\exref{credit-basket} --- A credit basket, finance (7 min)}\slide{16}
+\subsection{Exercise~\exref{credit-basket} --- A credit basket, finance (7 min)}\slide[49--56]{16}
 
 \scriptexercise{credit-basket}
 
@@ -1557,11 +1583,11 @@ operations: ``or'' is $\cup$, ``and'' is $\cap$, ``not'' is the complement.
 An outcome is a string of three digits, like $101$: bonds 1 and 3 default,
 bond 2 does not.
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution, and go through it part by part; ask first. If you
 	decided at slide 13 to skip: give (c) and (d) as answers only, ``exactly
 	one default: 3 outcomes; at least two: 4 outcomes'', and go to the check.
-\end{cue}
+\end{slidecue}
 
 (a) \ask Which outcomes are \emph{not} in ``at least one default''?
 \emph{(Only $000$.)} At least one default is $D_1\cup D_2\cup D_3$; this is
@@ -1641,7 +1667,7 @@ Every outcome has 0, 1, or at least 2 defaults, and these do not overlap.
 	more default.
 \end{bg}
 
-\subsection{Exercise~\exref{bank-products} --- Bank products, finance (8 min)}\slide{17}
+\subsection{Exercise~\exref{bank-products} --- Bank products, finance (8 min)}\slide[56--64]{17}
 
 \scriptexercise{bank-products}
 
@@ -1658,9 +1684,9 @@ subtract them; but then the center has been added three times and
 subtracted three times, so we add it back once. For two sets it is simply
 $|E\cup F|=|E|+|F|-|EF|$.
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution, and go through it part by part; ask first.
-\end{cue}
+\end{slidecue}
 
 (a) With our numbers:
 \[ |C\cup K\cup M|=820+350+240-300-200-90+70=890, \]
@@ -1754,7 +1780,7 @@ $P(CK^c)=0.52$. That is the next slide.
 \end{bg}
 
 \needspace{0.35\textheight}
-\subsection{From counting to probability (4 min)}\slide{18}
+\subsection{From counting to probability (4 min)}\slide[64--68]{18}
 
 \begin{onslide}
 	the axioms: (1) $0\le P(E)\le1$; (2) $P(\Om)=1$; (3) if $E_1,E_2,\dots$
@@ -1817,7 +1843,7 @@ current account but no credit card? \emph{($P(CK^c)=P(C)-P(CK)=0.82-0.30
 \say The Venn diagram of two events has four regions that do not overlap;
 their probabilities add up to 1. That is the tool for the next exercise.
 
-\subsection{Exercise~\exref{two-exams} --- Two exams (8 min)}\slide{19--20}
+\subsection{Exercise~\exref{two-exams} --- Two exams (8 min)}\slide[68--76]{19--20}
 
 \scriptexercise{two-exams}
 
@@ -1828,10 +1854,10 @@ overlap.
 overlap, $0.54$: it is the only region we know directly; the other numbers
 include it.)}
 
-\begin{cue}
+\begin{slidecue}
 	Show the solution (slide 19): the events, and the diagram filled from the
 	inside out.
-\end{cue}
+\end{slidecue}
 
 $A$ is ``passed Math'', $B$ ``passed Micro'': $P(A)=0.72$, $P(B)=0.64$,
 $P(AB)=0.54$. We fill the diagram from the inside out:
@@ -1856,10 +1882,10 @@ included; writing it into the left part would count the overlap twice.
 \board The diagram with the four numbers; keep it for
 Exercise~\exref{exams-conditional} in Session 1.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 20: the answers, read from the diagram and checked with the rules.
 	Ask first for each part.
-\end{cue}
+\end{slidecue}
 
 (a) \ask Which regions make up ``at least one''? \emph{(The three inside the
 circles.)} At least one: the three inner regions, $0.18+0.54+0.10=0.82$;
@@ -1894,15 +1920,15 @@ $0.18+0.10=0.28$. Or: at least one, minus both, $0.82-0.54=0.28$.
 \section{Session 1: Probability, Bayes' formula, independence}
 %======================================================================
 
-\subsection{Session 1 title, equally likely outcomes (3 min)}\slide{21--22}
+\subsection{Session 1 title, equally likely outcomes (3 min)}\slide[0--3]{21--22}
 
 \begin{printskip}
-	\begin{cue}
+	\begin{slidecue}
 		Slide 21 (Session 1 title) while they settle down after the break,
 		then slide 22. Keep the Venn diagram of Exercise~\exref{two-exams}
 		on the board (or draw it again): it is used in
 		Exercise~\exref{exams-conditional}.
-	\end{cue}
+	\end{slidecue}
 
 	Welcome back, everyone.
 
@@ -1949,7 +1975,7 @@ has $5\cdot5=25$ outcomes, so the answer is $1-25/36=11/36$.
 unordered ones are not: ``a 1 and a 2'' can happen in two ways, ``two
 1s'' in only one.)}
 
-\subsection{Conditional probability (4 min)}\slide{23}
+\subsection{Conditional probability (4 min)}\slide[3--7]{23}
 
 \begin{onslide}
 	two blocks. Definition: if $P(F)>0$, the probability of $E$
@@ -2014,7 +2040,7 @@ the three outcomes is a 6.
 \ask And the chance it is a 5, given that it is even? \emph{(0: the 5 is
 outside the new sample space.)}
 
-\subsection{Exercise~\exref{exams-conditional} --- Two exams, conditionally (8 min)}\slide{24--25}
+\subsection{Exercise~\exref{exams-conditional} --- Two exams, conditionally (8 min)}\slide[7--15]{24--25}
 
 \scriptexercise{exams-conditional}
 
@@ -2023,11 +2049,11 @@ on the board: $0.18$ for Math only, $0.54$ for both, $0.10$ for Micro only,
 $0.18$ for neither. Try (a) and (b), three minutes. For each part ask:
 what do I know? That is the denominator.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 24 has two pages: the statement, then the full solution of (a) and
 	(b). Slide 25 has (c), (d) and the conclusion. Ask first, then show the
 	solution and go through it part by part.
-\end{cue}
+\end{slidecue}
 
 \needspace{0.25\textheight}
 \begin{slidefig}
@@ -2061,9 +2087,9 @@ $1-P(B\mid A)=1-0.54/0.72=1-0.75=0.25$.
 	probability of what we know, never of the event we ask about.
 \end{mistake}
 
-\begin{cue}
+\begin{slidecue}
 	Slide 25.
-\end{cue}
+\end{slidecue}
 
 (c) \ask Now we know: passed at least one exam. New sample space? \emph{(The
 union, the three inner regions, $0.82$.)} New sample space $A\cup B$,
@@ -2081,13 +2107,13 @@ only, $B^c(A\cup B)=AB^c$, with probability $0.18$.
 \say Knowing more changes the probability: $0.72$ without information,
 $0.844$ given Micro, $0.878$ given at least one exam.
 
-\subsection{Why do we need Bayes' formula? (4 min)}\slide{26}
+\subsection{Why do we need Bayes' formula? (4 min)}\slide[15--19]{26}
 
-\begin{cue}
+\begin{slidecue}
 	Three steps on this slide, two clicks: the motivation, then (click) the
 	example ``Skill or luck?'', then (click) what we know and what we want.
 	Collect gut feelings before you move on; the answer comes on slide 28.
-\end{cue}
+\end{slidecue}
 
 \begin{onslide}
 	``Data usually come in the `wrong' direction.'' Three bullets: from
@@ -2153,7 +2179,7 @@ manager is skilled? Shout out a number. \emph{(Write a few guesses on the
 board. Many say well above 50\%. Do not comment yet: the answer comes in
 two slides.)}
 
-\subsection{Total probability and Bayes' formula (4 min)}\slide{27}
+\subsection{Total probability and Bayes' formula (4 min)}\slide[19--23]{27}
 
 \begin{onslide}
 	two blocks. Bayes' formula, with the posterior marked in teal and the
@@ -2221,12 +2247,12 @@ make the denominator? \emph{(Numerator: skilled, then three good years.
 Denominator: both paths that end in three good years, skilled and
 unskilled.)}
 
-\subsection{Skill or luck? The answer (3 min)}\slide{28}
+\subsection{Skill or luck? The answer (3 min)}\slide[23--26]{28}
 
-\begin{cue}
+\begin{slidecue}
 	This slide shows everything at once, like the solution of an exercise.
 	Go through it top to bottom, then compare with the guesses on the board.
-\end{cue}
+\end{slidecue}
 
 \begin{onslide}
 	total probability (the paths that end in $E$):
@@ -2294,15 +2320,17 @@ $100$ are skilled and about $34$ of them have three good years; $900$ are
 unskilled, and about $112$ of them have three good years by luck. So
 about $146$ ``stars'', and only $34$ of them are skilled.
 
-\subsection{Why Bayes' formula works: a picture (3 min)}\slide{29}
+% The visual proof of Bayes' formula: only in the full script
+\begin{printskip}
+\subsection{Why Bayes' formula works: a picture (3 min)}\slide[26--29]{29}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 26. If you are
 	more than about 5 minutes late here, shorten the picture proofs
 	(slides 29, 34 and 36) to their last row: what cancels, and what is
 	left. The last row of this slide comes with a click. Point at the shapes
 	at each step.
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	next to the picture, two lines: probability of an event $=$ its share
@@ -2378,8 +2406,9 @@ $P(E)$.
 tiny, even a large share of it inside the circle is a small piece of the
 circle: $P(E\mid F)$ can be large while $P(F\mid E)$ stays small. That is
 what happened to the fund managers.
+\end{printskip}
 
-\subsection{Exercise~\exref{early-warning} --- An early-warning model, finance (10 min)}\slide{30--31}
+\subsection{Exercise~\exref{early-warning} --- An early-warning model, finance (10 min)}\slide[29--39]{30--31}
 
 \scriptexercise{early-warning}
 
@@ -2388,11 +2417,11 @@ default? \emph{(Write a few guesses on the board; many say about 90\%.)}
 
 \say Try it in pairs, four minutes: name the events, draw the tree.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 30 has two pages: the statement, then the full solution of (a)
 	and (b) with the tree. Slide 31 has the same with counts, (c), and the
 	conclusion.
-\end{cue}
+\end{slidecue}
 
 $D$: defaults; $A$: flagged, $A$ as in alarm. The data go on the tree:
 $P(D)=0.02$, $P(A\mid D)=0.9$, $P(A\mid D^c)=0.05$.
@@ -2439,11 +2468,13 @@ Two paths end in a flag. So $6.7\%$ of the borrowers are flagged.
 	\approx0.269. \]
 \say Only 27\%. Compare with your guesses.
 
+\begin{printskip}
 In the picture of slide 29: the diamond $D$ is tiny, $2\%$ of the box,
 and $90\%$ of it lies inside the flag circle. But the circle also takes
 $5\%$ of the huge rest of the box, and that part, $0.049$, is bigger than
 the red overlap, $0.018$. So the overlap is only about a quarter of the
 circle. The same story as the fund managers.
+\end{printskip}
 
 \begin{mistake}
 	Answering (b) with $0.9$. That is $P(A\mid D)$, not $P(D\mid A)$. Ask:
@@ -2517,15 +2548,15 @@ alarms.
 	holds 90\% of the future defaults.
 \end{bg}
 
-\subsection{Why odds? (2 min)}\slide{32}
+\subsection{Why odds? (2 min)}\slide[39--41]{32}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 39. If you are
 	more than about 5 minutes late, skip part (c) of
 	Exercise~\exref{default-by-rating} (slide 39): say only ``given no
 	default, class C has probability about $0.19$, almost the prior
 	$0.2$'', then the lesson.
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	two bullets: odds are how bettors, bookmakers and many traders talk,
@@ -2569,7 +2600,7 @@ prior and a new $P(E)$. With odds, we multiply by one number: a good year
 is $0.7/0.5=1.4$ times as likely for a skilled manager. (This works
 because the years are independent given skill and given no skill.) We do the multiplication in two slides.
 
-\subsection{Odds (2 min)}\slide{33}
+\subsection{Odds (2 min)}\slide[41--43]{33}
 
 \begin{onslide}
 	a block, \emph{Odds of an event}:
@@ -2608,12 +2639,12 @@ Odds run from 0 to infinity; probability from 0 to 1. For small
 probabilities the two are almost the same: $P=0.02$ gives odds
 $0.02/0.98\approx0.0204$.
 
-\subsection{Bayes' formula in odds form (4 min)}\slide{34}
+\subsection{Bayes' formula in odds form (4 min)}\slide[43--47]{34}
 
-\begin{cue}
+\begin{slidecue}
 	Three steps, two clicks: the formula; (click) the picture, explain what
 	cancels; (click) the fund manager in odds.
-\end{cue}
+\end{slidecue}
 
 \begin{onslide}
 	a block, \emph{Bayes' formula in odds form}:
@@ -2642,6 +2673,8 @@ Divide the first by the second: the awkward denominator $P(E)$ cancels.
 That is the whole proof, and it is why the odds form is so quick: no
 total probability needed.
 
+% The picture of the odds form: only in the full script
+\begin{printskip}
 \needspace{0.3\textheight}
 \begin{slidefig}
 	(click) the picture of slide 29, small, next to the odds form written
@@ -2669,6 +2702,7 @@ diamond'', $P(FE)/P(F^cE)$.
 \say Divide both by $P(E)$: that is $P(F\mid E)/P(F^c\mid E)$, the new
 odds. Inside the circle $E$, the new odds compare the red piece with the
 rest of the circle.
+\end{printskip}
 
 \begin{onslide}
 	(click) \textbf{Skill or luck:} prior odds $0.1/0.9=1/9$; likelihood
@@ -2698,15 +2732,15 @@ strong competitor.
 $\tfrac19\cdot1.4^n>1$, so $1.4^n>9$; $1.4^6\approx7.5$,
 $1.4^7\approx10.5$: seven years.)}
 
-\subsection{The generalized Bayes formula (3 min)}\slide{35}
+\subsection{The generalized Bayes formula (3 min)}\slide[47--50]{35}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 47. If you are
 	more than about 5 minutes late, also skip part (d) of
 	Exercise~\exref{bond-defaults} (slide 43): give
 	$1-0.95^{10}\approx0.401$ in one sentence, then the table and the
 	lesson.
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	$F_1,\dots,F_n$ is a \textbf{partition} of $\Om$: mutually exclusive
@@ -2762,7 +2796,9 @@ the paths to get $P(E)$. Bayes is one path divided by all of them.
 The posteriors $P(F_1\mid E),\dots,P(F_n\mid E)$ add up to 1: given $E$,
 exactly one of the $F_i$ still occurs. A free check.
 
-\subsection{Why the generalized formula works: a picture (3 min)}\slide{36}
+% The visual proof of the generalized formula: only in the full script
+\begin{printskip}
+\subsection{Why the generalized formula works: a picture (3 min)}\slide[50--53]{36}
 
 \begin{cue}
 	One click: first the picture and the total-probability row, then
@@ -2812,8 +2848,9 @@ exactly $P(F_2\mid E)$: once we know $E$, the circle is the new box.
 \say In one sentence: Bayes asks what share of the circle $E$ lies in the
 strip $F_j$. The three shares add up to the whole circle, so the
 posteriors add up to 1.
+\end{printskip}
 
-\subsection{Exercise~\exref{default-by-rating} --- Defaults by rating class, finance (10 min)}\slide{37--39}
+\subsection{Exercise~\exref{default-by-rating} --- Defaults by rating class, finance (10 min)}\slide[53--63]{37--39}
 
 \scriptexercise{default-by-rating}
 
@@ -2823,10 +2860,10 @@ posteriors add up to 1.
 gives the most? \emph{(Most say A, because it is half of the portfolio,
 or C, because it is the riskiest. Leave it open.)}
 
-\begin{cue}
+\begin{slidecue}
 	Slide 37 has two pages: the statement, then the events, the data and the
 	tree. Slide 38 has (a) and (b), slide 39 (c) and the lesson.
-\end{cue}
+\end{slidecue}
 
 $A$, $B$, $C$: the loan is rated A, B or C. $D$: the loan defaults. $A$,
 $B$, $C$ split $\Om$: every loan is in exactly one class, a partition.
@@ -2868,9 +2905,9 @@ conditional: ``if it is rated C, then $8\%$''.
 Path: multiply along it, for example $0.5\cdot0.01=0.005$. The paths that
 end in $D$ give $0.005$, $0.009$, $0.016$.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 38.
-\end{cue}
+\end{slidecue}
 
 (a) A path is a product, for example $P(DA)=P(D\mid A)P(A)=0.005$. The
 paths ending in $D$ are mutually exclusive, so we add them:
@@ -2891,8 +2928,11 @@ $P(D)$:
 Check: $0.167+0.3+0.533=1$. A defaulted loan is in exactly one of the
 classes. In the tree, class C is the smallest branch, $0.2$, but its
 default rate is the highest, $0.08$, and so its path to default is the
-largest, $0.016$. In the strip picture of slide 36: the strip C is narrow,
-but most of the circle ``default'' lies in it.
+largest, $0.016$.
+\begin{printskip}
+	In the strip picture of slide 36: the strip C is narrow, but most of the
+	circle ``default'' lies in it.
+\end{printskip}
 
 \begin{mistake}
 	$P(C\mid D)=0.08$. Write both on the board: $P(D\mid C)=0.08$ is the
@@ -2900,9 +2940,9 @@ but most of the circle ``default'' lies in it.
 	loans among the defaults.
 \end{mistake}
 
-\begin{cue}
+\begin{slidecue}
 	Slide 39.
-\end{cue}
+\end{slidecue}
 
 (c) Same idea, with the paths ending in $D^c$. \ask What is the
 denominator now? \emph{($P(D^c)$.)} $P(D^c)=1-0.03=0.97$. The path
@@ -2931,7 +2971,7 @@ average only one sixth of the defaults. Compare with your guesses.
 	the cost of capital, C loans can be profitable.
 \end{bg}
 
-\subsection{Independent events (4 min)}\slide{40}
+\subsection{Independent events (4 min)}\slide[63--67]{40}
 
 Transition: in every exercise so far, information changed the
 probability. Sometimes it does not. That is independence.
@@ -2981,17 +3021,17 @@ Exercise~\exref{exams-conditional} independent? \emph{(No:
 $P(A)P(B)=0.72\cdot0.64\approx0.461\ne0.54=P(AB)$; and
 $P(A\mid B)\approx0.844\ne0.72$.)}
 
-\subsection{Exercise~\exref{bond-defaults} --- Bond defaults: independent or not?, finance (9 min)}\slide{41--43}
+\subsection{Exercise~\exref{bond-defaults} --- Bond defaults: independent or not?, finance (9 min)}\slide[67--76]{41--43}
 
 \scriptexercise{bond-defaults}
 
 \say Try (a) and (b), three minutes. The key number is always the
 probability that both default.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 41 has two pages: the statement, then the full solution of (a).
 	Slide 42 has (b) and (c), slide 43 (d), the table and the lesson.
-\end{cue}
+\end{slidecue}
 
 At least one is $D_1\cup D_2$, both is $D_1D_2$. The key number is always
 $P(D_1D_2)$: once we have it, the union rule gives the rest.
@@ -3003,9 +3043,9 @@ Independent: the probability of both is the product,
 Check: ``no default'' is $D_1^cD_2^c$, and complements of independent
 events are independent too, so $1-0.95^2=1-0.9025=0.0975$.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 42.
-\end{cue}
+\end{slidecue}
 
 (b) Same economy: $P(D_1D_2)=0.02$ is given. That is 8 times $0.0025$: we
 cannot multiply the two marginal probabilities here, since
@@ -3029,9 +3069,9 @@ defaulted, bond 2 defaults with probability $0.4$ instead of $0.05$:
 positive dependence. The default of one company is bad news about the
 economy they share.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 43.
-\end{cue}
+\end{slidecue}
 
 (d) \ask How do we get ``at least one'' for 10 bonds? \emph{(Complement:
 all 10 survive.)} Each bond survives with probability $0.95$;
@@ -3074,7 +3114,7 @@ against $0.0025$. When defaults come together, they come in clusters.
 
 
 \begin{printskip}
-	\subsection{Summary (3 min)}\slide{44}
+	\subsection{Summary (3 min)}\slide[76--79]{44}
 
 	\begin{onslide}
 		\begin{itemize}[nosep]
@@ -3124,12 +3164,12 @@ against $0.0025$. When defaults come together, they come in clusters.
 
 
 \begin{printskip}
-	\subsection{Session 2 title and recap of Session 1 (3 min)}\slide{45--46}
+	\subsection{Session 2 title and recap of Session 1 (3 min)}\slide[0--3]{45--46}
 
-	\begin{cue}
+	\begin{slidecue}
 		Slide 45, the title, while they settle down after the break; then
 		slide 46, the recap.
-	\end{cue}
+	\end{slidecue}
 
 	\begin{onslide}
 		the recap:
@@ -3154,7 +3194,7 @@ against $0.0025$. When defaults come together, they come in clusters.
 \end{printskip}
 
 \needspace{0.4\textheight}
-\subsection{Discrete random variables (4 min)}\slide{47}
+\subsection{Discrete random variables (4 min)}\slide[3--7]{47}
 
 \begin{onslide}
 	the definitions: a \emph{random variable} $X$ assigns a number to every
@@ -3238,14 +3278,14 @@ value 2 out.)}
 \end{mistake}
 
 \needspace{0.25\textheight}
-\subsection{Expected value, variance, standard deviation (4 min)}\slide{48}
+\subsection{Expected value, variance, standard deviation (4 min)}\slide[7--11]{48}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 7 of Session 2
 	(minute 11 when you leave it). If you start it more than about 5 minutes
 	late, on slide 50 read off only $P(4<S\le9)=F(9)-F(4)=2/3$ and skip the
 	rest of that slide.
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	\[ \E[X]=\sum_x x\,p(x),\qquad \E[g(X)]=\sum_x g(x)\,p(x),\qquad
@@ -3289,7 +3329,7 @@ measures the risk.
 \end{mistake}
 
 \needspace{0.45\textheight}
-\subsection{Example: the sum of two dice (4 min)}\slide{49}
+\subsection{Example: the sum of two dice (4 min)}\slide[11--15]{49}
 
 \begin{slidefig}
 	the pmf of the sum $S$ of two fair dice. One bar for every sum
@@ -3354,7 +3394,7 @@ $24/36=2/3$.)} We will read the same number off the distribution function
 on the next slide.
 
 \needspace{0.45\textheight}
-\subsection{Example: the distribution function of the two dice (3 min)}\slide{50}
+\subsection{Example: the distribution function of the two dice (3 min)}\slide[15--18]{50}
 
 \begin{slidefig}
 	the distribution function $F(s)=P(S\le s)$ of the sum of two dice: a
@@ -3404,7 +3444,7 @@ now 4 is included, so we subtract only up to 3.)}
 \end{mistake}
 
 \needspace{0.25\textheight}
-\subsection{Exercise~\exref{call-option} --- The payoff of a call option, finance (9 min)}\slide{51--52}
+\subsection{Exercise~\exref{call-option} --- The payoff of a call option, finance (9 min)}\slide[18--27]{51--52}
 
 \scriptexercise{call-option}
 
@@ -3415,10 +3455,10 @@ right, and you get 0. So $C=\max(S-110,0)$: the payoff before subtracting
 the option premium, the price paid for the option. Try it in pairs, three
 minutes: (a) first, then (b).
 
-\begin{cue}
+\begin{slidecue}
 	Slide 51 shows the statement, then the solution of (a) on its second
 	page; slide 52 has (b) and (c). Ask first, then show.
-\end{cue}
+\end{slidecue}
 
 (a) \ask How do we get $\E[S]$? \emph{(Multiply each price by its
 probability and add.)} Show the solution.
@@ -3486,7 +3526,7 @@ gains.
 \end{bg}
 
 \needspace{0.4\textheight}
-\subsection{Bernoulli distribution (2 min)}\slide{53}
+\subsection{Bernoulli distribution (2 min)}\slide[27--29]{53}
 
 Transition: now the named distributions. Each one comes with a story;
 if the story fits the problem, the formulas are ready to use. The
@@ -3532,7 +3572,7 @@ $p(1-p)=1/4$. At $p=0$ or $p=1$ there is no uncertainty, and the variance
 is 0.)}
 
 \needspace{0.4\textheight}
-\subsection{Binomial distribution (3 min)}\slide{54}
+\subsection{Binomial distribution (3 min)}\slide[29--32]{54}
 
 \begin{onslide}
 	the binomial distribution with parameters $(n,p)$: $X$ is the number of
@@ -3582,7 +3622,7 @@ probability $1/8$. And $\E[X]=3\cdot0.5=1.5$.
 \emph{(A fixed number of trials; independent; the same $p$ every time.)}
 
 \needspace{0.25\textheight}
-\subsection{Exercise~\exref{loan-defaults} --- Defaults in a small loan portfolio, finance (7 min)}\slide{55}
+\subsection{Exercise~\exref{loan-defaults} --- Defaults in a small loan portfolio, finance (7 min)}\slide[32--39]{55}
 
 \scriptexercise{loan-defaults}
 
@@ -3672,15 +3712,15 @@ rarely more. The dashed line at 0.5 sits between the two tall bars.
 \end{bg}
 
 \needspace{0.4\textheight}
-\subsection{Poisson distribution (3 min)}\slide{56}
+\subsection{Poisson distribution (3 min)}\slide[39--42]{56}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 39 of Session 2.
 	If you start it more than about 5 minutes late, do part (e) of
 	Exercise~\exref{first-sale} (slide 60) in one sentence: ``after five
 	failed calls the waiting starts afresh, $P(X>8\mid X>5)=P(X>3)=0.512$;
 	this is the memoryless property.''
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	the Poisson distribution with parameter $\lambda>0$:
@@ -3731,7 +3771,7 @@ $e^{-2}\approx0.135$; exactly one: $2e^{-2}\approx0.271$.
 \end{mistake}
 
 \needspace{0.25\textheight}
-\subsection{Exercise~\exref{claims-per-day} --- Insurance claims in a day, finance (6 min)}\slide{57}
+\subsection{Exercise~\exref{claims-per-day} --- Insurance claims in a day, finance (6 min)}\slide[42--48]{57}
 
 \scriptexercise{claims-per-day}
 
@@ -3799,14 +3839,14 @@ brings 3 claims, give or take about 2.
 \end{bg}
 
 \needspace{0.4\textheight}
-\subsection{Geometric distribution (3 min)}\slide{58}
+\subsection{Geometric distribution (3 min)}\slide[48--51]{58}
 
-\begin{cue}
+\begin{clockcheck}
 	\textbf{Clock check.} This slide is planned for minute 48 of Session 2.
 	If you start it more than about 5 minutes late, in part (d) of
 	Exercise~\exref{audit-sample} (slide 62) give only
 	$P(X=2)=3360/15504\approx0.2167$.
-\end{cue}
+\end{clockcheck}
 
 \begin{onslide}
 	the geometric distribution with parameter $0<p\le1$: $X$ is the number of the
@@ -3856,16 +3896,16 @@ a third of the time it takes longer than the average.
 \end{mistake}
 
 \needspace{0.25\textheight}
-\subsection{Exercise~\exref{first-sale} --- Calling clients until the first sale, finance (8 min)}\slide{59--60}
+\subsection{Exercise~\exref{first-sale} --- Calling clients until the first sale, finance (8 min)}\slide[51--59]{59--60}
 
 \scriptexercise{first-sale}
 
 \say Try (a)--(d) in pairs, three minutes.
 
-\begin{cue}
+\begin{slidecue}
 	Slide 59: the statement, then (a)--(c) with a chart; slide 60: (d) and
 	(e). Ask first, then show.
-\end{cue}
+\end{slidecue}
 
 (a) \ask Binomial or geometric? \emph{(Geometric: the number of calls is
 not fixed; we wait for the first sale.)} Show the solution. Independent
@@ -3945,7 +3985,7 @@ failed calls the waiting starts afresh; past failures do not make a sale
 \end{bg}
 
 \needspace{0.4\textheight}
-\subsection{Hypergeometric distribution (3 min)}\slide{61}
+\subsection{Hypergeometric distribution (3 min)}\slide[59--62]{61}
 
 \begin{onslide}
 	the hypergeometric distribution: from $N$ items, $m$ of which are
@@ -3988,7 +4028,7 @@ Tiny example: an urn with 5 balls, 2 of them red; pick 2. Exactly one red:
 $\binom21\binom31/\binom52=6/10=0.6$.
 
 \needspace{0.25\textheight}
-\subsection{Exercise~\exref{audit-sample} --- An auditor's sample, finance (6 min)}\slide{62}
+\subsection{Exercise~\exref{audit-sample} --- An auditor's sample, finance (6 min)}\slide[62--68]{62}
 
 \scriptexercise{audit-sample}
 
@@ -4073,7 +4113,7 @@ wrong, more than one sample in four shows no error at all.
 
 
 \begin{printskip}
-	\subsection{Summary (3 min)}\slide{63}
+	\subsection{Summary (3 min)}\slide[68--71]{63}
 
 	\needspace{0.22\textheight}
 	\begin{onslide}

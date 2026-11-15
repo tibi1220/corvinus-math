@@ -130,15 +130,16 @@ pnpm install
 pnpm dev        # http://localhost:3000
 ```
 
-| Command           | What it does                                                                                                                    |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm sync`       | Import a new week's sources from the old working folder (never overwrites)                                                      |
-| `pnpm dev`        | Content watcher and development server, with the private features (see The private build)                                       |
-| `pnpm dev:public` | The same, without the private features: the site as the public sees it                                                          |
-| `pnpm content`    | Compile the content only (`--force` ignores the cache, `--verbose` logs every step; `PRIVATE_SITE=1` adds the private features) |
-| `pnpm build`      | Compile the public content (`--production`: refuses `PRIVATE_SITE=1`), then build the static site into `out/`                   |
-| `pnpm lint`       | ESLint                                                                                                                          |
-| `pnpm format`     | Prettier                                                                                                                        |
+| Command            | What it does                                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm sync`        | Import a new week's sources from the old working folder (never overwrites)                                                      |
+| `pnpm dev`         | Content watcher and development server, with the private features (see The private build)                                       |
+| `pnpm dev:private` | The same as `pnpm dev`: with the private features                                                                               |
+| `pnpm dev:public`  | The same, without the private features: the site as the public sees it                                                          |
+| `pnpm content`     | Compile the content only (`--force` ignores the cache, `--verbose` logs every step; `PRIVATE_SITE=1` adds the private features) |
+| `pnpm build`       | Compile the public content (`--production`: refuses `PRIVATE_SITE=1`), then build the static site into `out/`                   |
+| `pnpm lint`        | ESLint                                                                                                                          |
+| `pnpm format`      | Prettier                                                                                                                        |
 
 ### How the pipeline works
 

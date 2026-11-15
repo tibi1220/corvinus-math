@@ -11,13 +11,14 @@ import path from 'node:path';
 const ROOT = path.resolve(import.meta.dirname, '..');
 
 // The development server shows what only the private build has (the
-// lecturer's scripts and audio, the course-wide Exercises page; see
-// privateSite in src/lib/catalog.ts). pnpm dev:public (PRIVATE_SITE=0) shows
-// the site as the public sees it. Both children inherit this.
+// lecturer's scripts and audio, the weeks not yet for the students, the
+// course-wide Exercises page; see privateSite in src/lib/catalog.ts): pnpm dev
+// or pnpm dev:private. pnpm dev:public (PRIVATE_SITE=0) shows the site as the
+// public sees it. Both children inherit this.
 if (process.env.PRIVATE_SITE !== '0') process.env.PRIVATE_SITE = '1';
 console.log(
   process.env.PRIVATE_SITE === '1'
-    ? 'Private features on (pnpm dev:public turns them off).'
+    ? 'Private features on (pnpm dev:public shows the public site).'
     : 'Private features off: the site as the public sees it.',
 );
 
