@@ -94,6 +94,9 @@
 % Parts left out of the print version: the introduction, the plan of the
 % day, the summaries
 \NewDocumentEnvironment{printskip}{}{}{}
+% The key formulas of a slide next to its figure: print version only (the full
+% version has them in the onslide copy of the slide)
+\NewDocumentEnvironment{printeq}{+b}{}{}
 % Print version: the copies of the slide text, the common mistakes and the
 % parts above are dropped
 \ifdefined\scriptprint
@@ -102,6 +105,7 @@
   \RenewDocumentEnvironment{printskip}{+b}{}{}
   \RenewDocumentEnvironment{clockcheck}{+b}{}{}
   \RenewDocumentEnvironment{slidecue}{+b}{}{}
+  \RenewDocumentEnvironment{printeq}{}{}{}
 \fi
 % Print version: to save ink, the remaining boxes are set off like a quote, by
 % a bar on the left (the quote style of the exercise PDFs, exercises/macros.tex)
@@ -933,6 +937,10 @@ leaves a reserve for questions and for students working alone.
 			{\textcolor{teal}{$m\cdot n$}\\leaves};
 		\end{tikzpicture}
 	\end{center}
+	\begin{printeq}
+	\[ m \text{ ways, then } n \text{ ways for each}\ \Longrightarrow\ m\cdot n
+		\text{ ways};\qquad r \text{ stages: } n_1n_2\cdots n_r. \]
+	\end{printeq}
 \end{slidefig}
 
 \say The \emph{basic principle of counting}: if something can be done in
@@ -1053,6 +1061,14 @@ bottom-right cell again on slide 8.
 	\dots
 \end{onslide}
 
+\begin{printeq}
+\begin{slidefig}
+	the multinomial coefficient ($n_1+\dots+n_r=n$):
+	\[ \binom{n}{n_1,\dots,n_r}=\frac{n!}{n_1!\cdots n_r!}
+		=\binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+\end{slidefig}
+\end{printeq}
+
 \say Now a question that looks different: in how many ways can we divide
 $n$ distinct objects into $r$ labeled groups of given sizes
 $n_1,\dots,n_r$?
@@ -1165,6 +1181,14 @@ The group sizes are not fixed, so it is not a multinomial problem.)}
 	table, $\binom{n+k-1}{k}$.
 \end{onslide}
 
+\begin{printeq}
+\begin{slidefig}
+	$n$ identical objects into $r$ distinct boxes:
+	\[ \binom{n+r-1}{r-1}\text{ ways};\qquad
+		\text{every box nonempty } (n\ge r):\ \binom{n-1}{r-1}\text{ ways}. \]
+\end{slidefig}
+\end{printeq}
+
 \say One entry of our table is still unexplained: unordered, with
 repetition. Here is the question behind it: in how many ways can we put $n$
 \emph{identical} objects into $r$ distinct boxes?
@@ -1221,6 +1245,15 @@ For $\{a,b,c,d,e\}$ and $k=2$: $\binom62=15$, as in the table.
 	triangle; the multinomial coefficients count the ways to pick $x_1$ from
 	$n_1$ of the $n$ factors, $x_2$ from $n_2$ of them, \dots
 \end{onslide}
+
+\begin{printeq}
+\begin{slidefig}
+	the two theorems:
+	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
+		(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+		x_1^{n_1}\cdots x_r^{n_r}. \]
+\end{slidefig}
+\end{printeq}
 
 \say Why is the coefficient of $a^kb^{n-k}$ equal to $\binom nk$? When you
 multiply out $(a+b)(a+b)\cdots(a+b)$, you choose $a$ or $b$ from every
@@ -1290,6 +1323,10 @@ every element is in or out.
 			\node[teal] at (p5-2) {\small 10};
 		\end{tikzpicture}
 	\end{center}
+	\begin{printeq}
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1},\qquad
+		\sum_{k=0}^n\binom nk=2^n,\qquad \binom nk=\binom n{n-k}. \]
+	\end{printeq}
 \end{slidefig}
 
 \say Write the numbers $\binom nk$ in rows: row $n$ contains
@@ -1444,6 +1481,9 @@ six: it is $E^cF=F\setminus E$, the right circle without the lens.)}
 			\scriptsize $E^c\cup F^c$: all but the lens $=(E\cap F)^c$
 		\end{tabular}
 	\end{center}
+	\begin{printeq}
+	\[ (E\cup F)^c=E^c\cap F^c,\qquad (E\cap F)^c=E^c\cup F^c. \]
+	\end{printeq}
 \end{slidefig}
 
 \board
@@ -1810,6 +1850,11 @@ $P(CK^c)=0.52$. That is the next slide.
 		\footnotesize the four regions are mutually exclusive; their
 		probabilities add up to 1
 	\end{center}
+	\begin{printeq}
+	\[ P(E^c)=1-P(E),\qquad P(EF^c)=P(E)-P(EF),\qquad
+		P(E\cup F)=P(E)+P(F)-P(EF), \]
+	\[ P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(EF)-P(EG)-P(FG)+P(EFG). \]
+	\end{printeq}
 \end{slidefig}
 
 \say A probability $P$ gives every event a number, and it behaves like the
@@ -2009,6 +2054,10 @@ unordered ones are not: ``a 1 and a 2'' can happen in two ways, ``two
 		\end{tikzpicture}\\[1mm]
 		\footnotesize $P(E\mid F)$: the share of $EF$ within $F$
 	\end{center}
+	\begin{printeq}
+	\[ P(E\mid F)=\frac{P(EF)}{P(F)}\quad\text{if } P(F)>0,\qquad
+		P(EF)=P(F)\,P(E\mid F). \]
+	\end{printeq}
 \end{slidefig}
 
 \say If $P(F)>0$, the probability of $E$ given $F$ is
@@ -2216,6 +2265,12 @@ two slides.)}
 		\end{tikzpicture}\\[1mm]
 		\footnotesize multiply along a path; add the paths that end in $E$
 	\end{center}
+	\begin{printeq}
+	\[ \underbrace{\textcolor{teal}{P(F\mid E)}}_{\text{posterior}}
+		=\frac{P(E\mid F)\,\overbrace{\textcolor{gold}{P(F)}}^{\text{prior}}}{P(E)}
+		\quad\text{if } P(E)>0, \]
+	\[ P(E)=P(EF)+P(EF^c)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
+	\end{printeq}
 \end{slidefig}
 
 \say Bayes' formula, if $P(E)>0$:
@@ -2291,6 +2346,11 @@ unskilled.)}
 			\node[lab,right] at (3.25,-2.25) {$0.7875$};
 		\end{tikzpicture}
 	\end{center}
+	\begin{printeq}
+	\[ P(E)=0.0343+0.1125=0.1468,\qquad
+		\textcolor{teal}{P(S\mid E)}=\frac{0.343\cdot\textcolor{gold}{0.1}}{0.1468}
+		\approx\textcolor{teal}{0.234}. \]
+	\end{printeq}
 \end{slidefig}
 
 Point at the tree. First split: skilled, $0.1$, or not, $0.9$. Then: three
@@ -2619,6 +2679,10 @@ because the years are independent given skill and given no skill.) We do the mul
 		\oddspies\\[2mm]
 		\footnotesize $p=P(F)$, \ $q=P(F^c)=1-p$
 	\end{center}
+	\begin{printeq}
+	\[ \text{odds of } F=\frac{P(F)}{P(F^c)}=\frac{P(F)}{1-P(F)},\qquad
+		P(F)=\frac{\text{odds}}{1+\text{odds}}. \]
+	\end{printeq}
 \end{slidefig}
 
 \say The odds of $F$ are $P(F)/P(F^c)$: how much more likely $F$ is than
@@ -2654,6 +2718,15 @@ $0.02/0.98\approx0.0204$.
 	``Evidence that is more likely if $F$ is true (likelihood ratio $>1$)
 	raises the odds of $F$.''
 \end{onslide}
+
+\begin{printeq}
+\begin{slidefig}
+	Bayes' formula in odds form:
+	\[ \underbrace{\textcolor{teal}{\frac{P(F\mid E)}{P(F^c\mid E)}}}_{\text{posterior (new) odds}}
+		=\underbrace{\textcolor{gold}{\frac{P(F)}{P(F^c)}}}_{\text{prior (old) odds}}\cdot
+		\underbrace{\frac{P(E\mid F)}{P(E\mid F^c)}}_{\text{likelihood ratio}} \]
+\end{slidefig}
+\end{printeq}
 
 \say Bayes' formula in odds form: the new odds equal the old odds times
 the likelihood ratio. The new odds are also called the \emph{posterior
@@ -2774,6 +2847,10 @@ $1.4^7\approx10.5$: seven years.)}
 		\end{tikzpicture}\\[1mm]
 		\footnotesize one path to $E$ for each $F_i$
 	\end{center}
+	\begin{printeq}
+	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)},\qquad
+		P(E)=\sum_{i=1}^n P(EF_i)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
+	\end{printeq}
 \end{slidefig}
 
 \say Now more than two hypotheses. $F_1,\dots,F_n$ is a partition of
@@ -2988,6 +3065,14 @@ probability. Sometimes it does not. That is independence.
 	\emph{never} independent; $n$ independent trials, each a success with
 	probability $p$: $P(\text{at least one success})=1-(1-p)^n$.
 \end{onslide}
+
+\begin{printeq}
+\begin{slidefig}
+	independence:
+	\[ P(EF)=P(E)\,P(F);\qquad\text{if } P(F)>0:\ P(E\mid F)=P(E); \]
+	\[ n \text{ independent trials: } P(\text{at least one success})=1-(1-p)^n. \]
+\end{slidefig}
+\end{printeq}
 
 \say $E$ and $F$ are independent if $P(EF)=P(E)P(F)$. If $P(F)>0$, this
 means $P(E\mid F)=P(E)$: knowing $F$ does not change the chances of $E$.
@@ -3236,6 +3321,10 @@ against $0.0025$. When defaults come together, they come in clusters.
 			\node[closed] at (\x,\y) {};
 		\end{tikzpicture}
 	\end{center}
+	\begin{printeq}
+	\[ p(x)=P(X=x),\qquad F(x)=P(X\le x)=\sum_{y\le x}p(y),\qquad
+		P(a<X\le b)=F(b)-F(a). \]
+	\end{printeq}
 \end{slidefig}
 
 \say A random variable $X$ assigns a number to every outcome. It is
@@ -3297,6 +3386,16 @@ value 2 out.)}
 	return or payoff, $\SD(X)$ measures the \emph{risk}.
 \end{onslide}
 
+\begin{printeq}
+\begin{slidefig}
+	the definitions ($\mu=\E[X]$):
+	\[ \E[X]=\sum_x x\,p(x),\qquad \E[g(X)]=\sum_x g(x)\,p(x),\qquad
+		\E[aX+b]=a\,\E[X]+b, \]
+	\[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\big(\E[X]\big)^2,\qquad
+		\SD(X)=\sqrt{\Var(X)},\qquad \Var(aX+b)=a^2\Var(X). \]
+\end{slidefig}
+\end{printeq}
+
 \say $\E[X]=\sum_x x\,p(x)$: the average of the values, weighted by their
 probabilities. If you repeat the experiment many times, the average of the
 observed values settles near $\E[X]$. For a function,
@@ -3340,6 +3439,11 @@ measures the risk.
 	\begin{center}
 		\dicebars
 	\end{center}
+	\begin{printeq}
+	\[ \E[S]=\frac{252}{36}=7,\qquad
+		\Var(S)=\frac{1974}{36}-7^2=\frac{35}{6}\approx5.83,\qquad
+		\SD(S)\approx2.42. \]
+	\end{printeq}
 \end{slidefig}
 
 \begin{onslide}
@@ -3403,6 +3507,10 @@ on the next slide.
 	\begin{center}
 		\dicecdf
 	\end{center}
+	\begin{printeq}
+	\[ P(4<S\le9)=F(9)-F(4)=\frac{30}{36}-\frac{6}{36}=\frac23,\qquad
+		P(S>9)=1-F(9)=\frac16. \]
+	\end{printeq}
 \end{slidefig}
 
 \begin{onslide}
@@ -3552,6 +3660,10 @@ simplest story first.
 	\begin{center}
 		\figbernoulli
 	\end{center}
+	\begin{printeq}
+	\[ P(X=1)=p,\quad P(X=0)=1-p,\qquad \E[X]=p,\quad \Var(X)=p(1-p),\quad
+		\SD(X)=\sqrt{p(1-p)}. \]
+	\end{printeq}
 \end{slidefig}
 
 \say A Bernoulli variable is a yes-or-no question turned into a number:
@@ -3596,6 +3708,10 @@ is 0.)}
 	\begin{center}
 		\figbinomial
 	\end{center}
+	\begin{printeq}
+	\[ P(X=i)=\binom{n}{i}p^i(1-p)^{n-i}\ \ (i=0,\dots,n), \]
+	\[ \E[X]=np,\qquad \Var(X)=np(1-p),\qquad \SD(X)=\sqrt{np(1-p)}. \]
+	\end{printeq}
 \end{slidefig}
 
 \say The binomial story: $n$ independent trials, each a success with the
@@ -3740,6 +3856,10 @@ rarely more. The dashed line at 0.5 sits between the two tall bars.
 	\begin{center}
 		\figpoisson
 	\end{center}
+	\begin{printeq}
+	\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!}\ (i=0,1,\dots),\qquad
+		\E[X]=\lambda,\quad \Var(X)=\lambda,\quad \SD(X)=\sqrt\lambda. \]
+	\end{printeq}
 \end{slidefig}
 
 \say The Poisson story: the number of events in a fixed period, when the
@@ -3868,6 +3988,11 @@ brings 3 claims, give or take about 2.
 	\begin{center}
 		\figgeometric
 	\end{center}
+	\begin{printeq}
+	\[ P(X=n)=(1-p)^{n-1}p\ (n=1,2,\dots),\qquad \E[X]=\frac1p,\quad
+		\Var(X)=\frac{1-p}{p^2},\quad \SD(X)=\frac{\sqrt{1-p}}{p}, \]
+	\[ P(X>n)=(1-p)^n,\qquad P(X>n+k\mid X>n)=P(X>k). \]
+	\end{printeq}
 \end{slidefig}
 
 \say The geometric story: independent trials with success probability
@@ -4006,6 +4131,10 @@ failed calls the waiting starts afresh; past failures do not make a sale
 	\begin{center}
 		\fighyper
 	\end{center}
+	\begin{printeq}
+	\[ P(X=i)=\frac{\binom{m}{i}\binom{N-m}{n-i}}{\binom{N}{n}},\qquad
+		\E[X]=\frac{nm}{N}. \]
+	\end{printeq}
 \end{slidefig}
 
 \say The hypergeometric story: from $N$ items, $m$ of which are special, we
