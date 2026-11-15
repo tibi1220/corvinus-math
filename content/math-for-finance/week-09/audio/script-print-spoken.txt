@@ -160,7 +160,7 @@ It is not true that I passed both exams equals I failed at least one of them.
 [[slnc 500]]
 The same laws hold for any number of events: the complement of a union is the intersection of the complements, and the complement of an intersection is the union of the complements. Not at least one of them is none of them; not all of them is at least one fails.
 [[slnc 500]]
-In a minute we use exactly this: P of Eh complement B complement equals 1 minus P of Eh union B. Neither A nor B is the complement of at least one.
+In a minute we use exactly this: P of Eh complement B complement equals 1 minus P of Eh union B. Neither Eh nor B is the complement of at least one.
 [[slnc 1200]]
 
 Exercise 8.29. Writing down the sample space.
@@ -182,7 +182,7 @@ Look at the table of slide 5: with replacement it is ordered, with repetition, n
 
 Exercise 8.32. Events of a stock path.
 [[slnc 600]]
-A stock moves up or down by one unit on each of 3 days: Omega is U U U, U U D, U D U, U D D, D U U, D U D, D D U, D D D. Let A be the stock ends above the start, B be up on day 1, and C be never below the start. List Eh, B and C, and find Eh B, Eh complement B, and Eh B complement. Which inclusion holds between Eh and C?
+A stock moves up or down by one unit on each of 3 days: Omega is U U U, U U D, U D U, U D D, D U U, D U D, D D U, D D D. Let Eh be the stock ends above the start, B be up on day 1, and C be never below the start. List Eh, B and C, and find Eh B, Eh complement B, and Eh B complement. Which inclusion holds between Eh and C?
 [[slnc 800]]
 Try it in pairs, three minutes. A hint: track the position, the number of ups minus the number of downs, after each day.
 [[slnc 500]]
@@ -198,7 +198,7 @@ After 3 steps the position is odd, so never below forces it to end at plus 1 or 
 [[slnc 500]]
 The combinations: Eh B is U U U, U U D, U D U, which is C. Eh complement B is just U D D: up first, but ends below. Eh B complement is just D U U: down first, but ends above.
 [[slnc 500]]
-A depends only on where the stock ends; C depends on the whole path. D U U is in Eh but not in C: it ends above the start, but it was below the start on the way.
+Eh depends only on where the stock ends; C depends on the whole path. D U U is in Eh but not in C: it ends above the start, but it was below the start on the way.
 [[slnc 1200]]
 
 Exercise 8.34. A credit basket.
@@ -362,7 +362,7 @@ Ask the class: now we know: passed at least one exam. New sample space?
 [[slnc 800]]
 The union, the three inner regions, 0.82.
 [[slnc 400]]
-The new sample space is Eh union B, 0.82, both circles shaded. Whoever passed Math passed at least one exam, so Eh lies inside Eh union B, and A intersected with Eh union B is just Eh: the numerator is all of Eh. P of Eh given Eh union B equals P of Eh over P of Eh union B, which is 0.72 over 0.82, which is 36 over 41, approximately 0.878.
+The new sample space is Eh union B, 0.82, both circles shaded. Whoever passed Math passed at least one exam, so Eh lies inside Eh union B, and Eh intersected with Eh union B is just Eh: the numerator is all of Eh. P of Eh given Eh union B equals P of Eh over P of Eh union B, which is 0.72 over 0.82, which is 36 over 41, approximately 0.878.
 [[slnc 500]]
 Part d. Failed Micro and passed at least one: that can only be Math only, with probability 0.18. P of B complement given Eh union B equals 0.18 over 0.82, which is 9 over 41, approximately 0.220.
 [[slnc 500]]
@@ -415,7 +415,7 @@ Lesson: three good years raise the chance of skill from 10 percent, the prior, t
 [[slnc 500]]
 Why so low? Look at the two highlighted numbers. The lucky path, 0.1125, is more than three times the skilled path, 0.0343. Skill makes three good years almost three times as likely, 0.343 against 0.125, but unskilled managers are nine times as many. The large group wins.
 [[slnc 400]]
-With counts, if someone does not trust the formula: of 1000 managers, 100 are skilled, and about 34 of them have three good years; 900 are unskilled, and about 112 of them have three good years by luck. So about 146 stars, and only 34 of them are skilled.
+With counts, if someone does not trust the formula: of 1000 managers, 100 are skilled, and about 34 of them have three good years; 900 are unskilled, and about 113 of them have three good years by luck. So about 147 stars, and only 34 of them are skilled.
 [[slnc 1200]]
 
 Exercise 9.9. An early-warning model, a finance example.
@@ -627,7 +627,7 @@ Expected value, variance, standard deviation.
 [[slnc 600]]
 The expected value of X is the sum of x times p of x: the average of the values, weighted by their probabilities. If you repeat the experiment many times, the average of the observed values settles near the expected value. For a function, the expected value of g of X is the sum of g of x times p of x: apply g to each value, keep the probabilities. And the expected value of eh X plus b equals eh times the expected value of X, plus b: a change of units passes straight through, for example from euros to thousands of euros, or adding a fixed fee.
 [[slnc 500]]
-With mu equal to the expected value of X, the variance is the expected value of the square of X minus mu: the average squared distance from the mean. To compute it, use the shortcut: the expected value of X squared minus the square of the expected value of X, and take the square root for the standard deviation. The standard deviation is back in the units of X, so it is the number we interpret: a typical distance from the mean. And the variance of eh X plus b equals eh squared times the variance of X: adding a constant does not change the spread, and multiplying by a multiplies the standard deviation by the absolute value of eh.
+With mu equal to the expected value of X, the variance is the expected value of the square of X minus mu: the average squared distance from the mean. To compute it, use the shortcut: the expected value of X squared minus the square of the expected value of X, and take the square root for the standard deviation. The standard deviation is back in the units of X, so it is the number we interpret: a typical distance from the mean. And the variance of eh X plus b equals eh squared times the variance of X: adding a constant does not change the spread, and multiplying by eh multiplies the standard deviation by the absolute value of eh.
 [[slnc 500]]
 Why the shortcut? Expand the square: the expected value of the square of X minus mu is the expected value of X squared, minus 2 mu times the expected value of X, plus mu squared, which is the expected value of X squared minus mu squared.
 [[slnc 400]]
@@ -814,7 +814,7 @@ Part d. The expected value and the variance of X are both 3, and the standard de
 
 Geometric distribution.
 [[slnc 600]]
-The geometric story: independent trials with success probability p; X is the number of the trial on which the first success happens. Then P of X equals n equals the quantity 1 minus p, to the power n minus 1, times p, with mean 1 over p and variance 1 minus p, over p squared. Why this formula? Look at the row on the slide: the first success on trial 4 means three failures, then one success, and by independence we multiply: 1 minus p cubed, times p. In general, n minus 1 failures, then a success.
+The geometric story: independent trials with success probability p; X is the number of the trial on which the first success happens. Then P of X equals n equals the quantity 1 minus p, to the power n minus 1, times p, with mean 1 over p and variance 1 minus p, over p squared. Why this formula? Look at the row on the slide: the first success on trial 4 means three failures, then one success, and by independence we multiply: the quantity 1 minus p, cubed, times p. In general, n minus 1 failures, then a success.
 [[slnc 500]]
 Ask the class: where is the highest bar, and why?
 [[slnc 800]]

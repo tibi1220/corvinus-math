@@ -815,11 +815,11 @@ leaves a reserve for questions and for students working alone.
 
 	\textbf{Lecture:}
 	\begin{enumerate}
+		\item The readings of Pascal's triangle (slide 10, about 2 min):
+		      show only Pascal's rule. Decide at slide 8.
 		\item Parts (c) and (d) of Exercise~\exref{credit-basket} (slide 16,
 		      about 3 min): give the two answers, $3$ and $4$ outcomes, in one
 		      sentence each. Decide at slide 13.
-		\item The readings of Pascal's triangle (slide 10, about 2 min):
-		      show only Pascal's rule. Decide at slide 8.
 	\end{enumerate}
 
 	\textbf{Session 1:}
@@ -872,14 +872,14 @@ leaves a reserve for questions and for students working alone.
 	Good morning, everyone, and welcome back.
 
 	\say Today we have three sessions of 90 minutes, with short breaks in
-	between. In the lecture we revise counting and the language of events from
+	between. In the lecture we review counting and the language of events from
 	last week, and then we take the step to probability. In Session 1:
 	equally likely outcomes, conditional probability, Bayes' formula and odds,
 	and independent events. In Session 2: random variables, expected value and
 	standard deviation, and five named distributions: Bernoulli, binomial,
 	Poisson, geometric and hypergeometric.
 
-	\say The first part of the lecture is revision of Week 8: counting, the
+	\say The first part of the lecture is a review of Week 8: counting, the
 	sample space, events and De Morgan's laws. That is why the first
 	exercises have numbers starting with 8: they are the Week 8 exercises,
 	and their full solutions are in the Week 8 materials. The Week 9 exercises
@@ -971,7 +971,7 @@ same. That is how we get $n(n-1)$ on the next slide.
 \begin{onslide}
 	choosing $k$ elements from $n$: \textbf{1.}~Does the order matter?
 	\textbf{2.}~Can an element be used more than once? Below, the table of the
-	four formulas; on the second click, the examples for
+	four formulas; on the click, the examples for
 	$\Om=\{a,b,c,d,e\}$ ($n=5$), $k=2$ appear in the cells (in the unordered
 	column, \texttt{ab} means the set $\{a,b\}$).
 \end{onslide}
@@ -979,7 +979,7 @@ same. That is how we get $n(n-1)$ on the next slide.
 \needspace{0.3\textheight}
 \begin{slidefig}
 	the four ways to choose $k$ elements from $n$, with the examples for
-	$\Om=\{a,b,c,d,e\}$, $k=2$ (second click).
+	$\Om=\{a,b,c,d,e\}$, $k=2$ (after the click).
 	\begin{center}
 		\renewcommand{\arraystretch}{1.2}
 		\begin{tabular}{@{}lcc@{}}
@@ -1372,8 +1372,10 @@ proof in Exercise~\exref{pascals-rule}.
 	$\binom nk q^k(1-q)^{n-k}$ --- the \emph{binomial distribution} of
 	Session 2. With $q=1/2$ the weights are simply row $n$ divided by $2^n$.
 	Practitioners build trees with hundreds of steps; the triangle is never
-	written out, but the same ``add the two parents'' recursion is how the
-	tree is evaluated numerically (\emph{backward induction}).
+	written out, but each node is computed from its two neighbors in the next
+	step, a recursion just like Pascal's rule (\emph{backward induction}: the
+	value of a node is the discounted $q$-weighted average of its two
+	successors).
 
 	\terms path multiplicity; binomial distribution; risk-neutral weight;
 	backward induction.
@@ -1602,7 +1604,7 @@ below the start on the way.
 	is the starting price, the option is alive at maturity exactly on event
 	$C$. Because it can be knocked out, it is cheaper than the plain call ---
 	you give up the scenarios in $A\setminus C=\{DUU\}$ (ends above, but
-	touched the barrier). Engineering analogy: a circuit breaker --- it does
+	fell below the barrier on the way). Engineering analogy: a circuit breaker --- it does
 	not matter where the current ends up, only whether it ever exceeded the
 	limit.
 
@@ -2377,8 +2379,8 @@ but unskilled managers are nine times as many. The large group wins.
 
 With counts, if someone does not trust the formula: of $1000$ managers,
 $100$ are skilled and about $34$ of them have three good years; $900$ are
-unskilled, and about $112$ of them have three good years by luck. So
-about $146$ ``stars'', and only $34$ of them are skilled.
+unskilled, and about $113$ of them have three good years by luck. So
+about $147$ ``stars'', and only $34$ of them are skilled.
 
 % The visual proof of Bayes' formula: only in the full script
 \begin{printskip}
