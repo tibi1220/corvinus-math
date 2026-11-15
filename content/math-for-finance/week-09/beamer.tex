@@ -1063,21 +1063,27 @@
     \end{column}
     \begin{column}{.46\textwidth}
       \centering
-      \begin{tikzpicture}[xscale=.85,yscale=2.1]
-        \draw[->] (-.3,0)--(4.6,0) node[right,font=\tiny]{$x$};
-        \draw[->] (0,-.05)--(0,1.2) node[above,font=\tiny]{$F(x)$};
-        \foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1}
-          \draw (-.05,\y)--(.05,\y) node[left=2pt,font=\tiny,fill=white,inner sep=.5pt] {$\l$};
+      \begin{tikzpicture}[x=.95cm,y=2.8cm,
+          closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+            minimum size=4.5pt},
+          open/.style={circle,fill=white,draw=teal,line width=.8pt,
+            inner sep=0pt,minimum size=4.5pt}]
+        \draw[->] (-.4,0)--(4.8,0) node[right,font=\scriptsize] {$x$};
+        \draw[->] (0,-.04)--(0,1.18) node[above,font=\scriptsize] {$F(x)$};
+        \foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1} {
+            \draw[gray!60,very thin] (0,\y)--(4.6,\y);
+            \node[left,font=\scriptsize] at (0,\y) {$\l$};
+          }
+        \foreach \x in {1,2,3,4}
+          \node[below,font=\scriptsize] at (\x,0) {$\x$};
         \foreach \x/\a/\b in {1/0/.25,2/.25/.75,3/.75/.875,4/.875/1}
-          \draw[gray,densely dotted] (\x,\a)--(\x,\b);
-        \draw[thick,teal] (-.3,0)--(1,0);
-        \draw[thick,teal] (1,.25)--(2,.25) (2,.75)--(3,.75)
-          (3,.875)--(4,.875) (4,1)--(4.5,1);
-        \foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
-          \fill[teal] (\x,\y) circle (1.6pt);
+          \draw[teal!60,densely dashed] (\x,\a)--(\x,\b);
+        \draw[very thick,teal] (-.4,0)--(1,0) (1,.25)--(2,.25)
+          (2,.75)--(3,.75) (3,.875)--(4,.875) (4,1)--(4.6,1);
         \foreach \x/\y in {1/0,2/.25,3/.75,4/.875}
-          \draw[teal,fill=white] (\x,\y) circle (1.6pt);
-        \foreach \x in {1,2,3,4} \node[below,font=\tiny] at (\x,0) {\x};
+          \node[open] at (\x,\y) {};
+        \foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
+          \node[closed] at (\x,\y) {};
       \end{tikzpicture}\\[1mm]
       \footnotesize $p(1)=\frac14$, $p(2)=\frac12$, $p(3)=p(4)=\frac18$
     \end{column}
