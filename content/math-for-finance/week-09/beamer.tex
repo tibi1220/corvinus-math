@@ -561,19 +561,47 @@
 
 \exerciseframe{exams-conditional}
 
+\begin{frame}{Why do we need Bayes' formula?}
+  \small
+  Data usually come in the ``wrong'' direction.
+  \begin{itemize}
+    \item From history, or from testing a model, we know how the
+          \textbf{evidence} $E$ behaves under each \textbf{hypothesis}:
+          $P(E\mid F)$ and $P(E\mid F^c)$.
+    \item A decision needs the reverse: how likely the hypothesis is
+          \emph{now that we have seen the evidence}, $P(F\mid E)$.
+    \item In general $P(E\mid F)\neq P(F\mid E)$. Bayes' formula turns the
+          condition around: it updates what we believed before the evidence,
+          $P(F)$, into what we should believe after it, $P(F\mid E)$.
+  \end{itemize}
+  \pause
+  \begin{exampleblock}{Skill or luck?}
+    $10\%$ of fund managers are skilled. A skilled manager beats the market
+    three years in a row with probability $0.343$ ($=0.7^3$), an unskilled
+    one with probability $0.125$ ($=0.5^3$, pure luck). Your manager has
+    just beaten the market three years in a row. How likely is it that they
+    are skilled?
+  \end{exampleblock}
+  \pause
+  $S$ = skilled, $E$ = beats the market three years in a row.
+  \textbf{We know} $P(E\mid S)=0.343$, $P(E\mid S^c)=0.125$, $P(S)=0.1$;
+  \textbf{we want} $P(S\mid E)$. Three wins in a row: surely skilled?
+\end{frame}
+
 \begin{frame}{Total probability and Bayes' formula}
   \small
   \begin{columns}[T]
     \begin{column}{.56\textwidth}
       \begin{block}{Bayes' formula}
-        \[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)} \]
+        \[ \underbrace{\color{teal}P(F\mid E)}_{\text{posterior}}
+          =\frac{P(E\mid F)\,\overbrace{\color{gold}P(F)}^{\text{prior}}}{P(E)} \]
+        {\color{gold}Prior}: how likely $F$ is before we see $E$.
+        {\color{teal}Posterior}: how likely $F$ is after we have seen $E$.
       \end{block}
       \begin{block}{Law of total probability}
         The denominator: $E$ happens with $F$ or with $F^c$,
         \[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
       \end{block}
-      We know $P(E\mid F)$, but we need $P(F\mid E)$: Bayes' formula turns
-      the condition around.
     \end{column}
     \begin{column}{.42\textwidth}
       \centering
@@ -596,6 +624,51 @@
       add the paths that end in $E$
     \end{column}
   \end{columns}
+\end{frame}
+
+\begin{frame}{Skill or luck? The answer}
+  \small
+  \begin{columns}[T]
+    \begin{column}{.56\textwidth}
+      \uncover<2->{Total probability (the paths that end in $E$):
+        \[ \begin{aligned} P(E)&=0.343\cdot0.1+0.125\cdot0.9\\
+            &=0.0343+0.1125=0.1468. \end{aligned} \]}
+      \uncover<3->{Bayes' formula:
+        \[ \underbrace{\color{teal}P(S\mid E)}_{\text{posterior}}
+          =\frac{P(E\mid S)\,\overbrace{\color{gold}P(S)}^{\text{prior}}}{P(E)}
+          =\frac{0.343\cdot{\color{gold}0.1}}{0.1468}
+          \approx{\color{teal}0.234}. \]}
+    \end{column}
+    \begin{column}{.42\textwidth}
+      \centering
+      \begin{tikzpicture}[x=1cm,y=.62cm,
+          lab/.style={font=\scriptsize,inner sep=1pt}]
+        \node (r) at (0,0) {$\bullet$};
+        \node (s) at (1.3,1.5) {$S$};
+        \node (u) at (1.3,-1.5) {$S^c$};
+        \draw (r) -- node[lab,above left] {$0.1$} (s);
+        \draw (r) -- node[lab,below left] {$0.9$} (u);
+        \node (se) at (3.0,2.25) {$E$};
+        \node (sn) at (3.0,.75) {$E^c$};
+        \node (ue) at (3.0,-.75) {$E$};
+        \node (un) at (3.0,-2.25) {$E^c$};
+        \draw (s) -- node[lab,above left] {$0.343$} (se);
+        \draw (s) -- node[lab,below left] {$0.657$} (sn);
+        \draw (u) -- node[lab,above left] {$0.125$} (ue);
+        \draw (u) -- node[lab,below left] {$0.875$} (un);
+        \node[lab,right,text=teal] at (3.25,2.25) {$\mathbf{0.0343}$};
+        \node[lab,right] at (3.25,.75) {$0.0657$};
+        \node[lab,right,text=teal] at (3.25,-.75) {$\mathbf{0.1125}$};
+        \node[lab,right] at (3.25,-2.25) {$0.7875$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \uncover<4->{%
+    \begin{alertblock}{Lesson}
+      Three good years raise the chance of skill from {\color{gold}$10\%$}
+      (prior) to only {\color{teal}$23\%$} (posterior): three in four such
+      ``star'' managers were just lucky.
+    \end{alertblock}}
 \end{frame}
 
 \begin{frame}{Why Bayes' formula works: a picture}
