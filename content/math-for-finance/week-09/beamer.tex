@@ -512,19 +512,7 @@
     \filldraw[fill=teal!22,draw=teal] (4.620,0) rectangle (4.980,0.005);
     \node[below,font=\tiny] at (4.800,0) {$10$};
     \draw (-0.290,0)--(5.090,0);
-    \fill[navy] (0.000,0.271) circle (1.3pt);
-    \fill[navy] (0.480,0.904) circle (1.3pt);
-    \fill[navy] (0.960,1.457) circle (1.3pt);
-    \fill[navy] (1.440,1.511) circle (1.3pt);
-    \fill[navy] (1.920,1.133) circle (1.3pt);
-    \fill[navy] (2.400,0.655) circle (1.3pt);
-    \fill[navy] (2.880,0.303) circle (1.3pt);
-    \fill[navy] (3.360,0.115) circle (1.3pt);
-    \fill[navy] (3.840,0.037) circle (1.3pt);
-    \fill[navy] (4.320,0.010) circle (1.3pt);
-    \fill[navy] (4.800,0.002) circle (1.3pt);
-    \node[font=\tiny,anchor=east] at (4.95,1.5) {bars: Poisson, $\lambda=3$};
-    \node[font=\tiny,anchor=east] at (4.95,1.28) {\textcolor{navy}{$\bullet$} binomial, $n=30$, $p=0.1$};
+    \node[font=\tiny,anchor=east] at (4.95,1.5) {$P(X=i)$, \ $\lambda=3$};
   \end{tikzpicture}}
 \newcommand{\figgeometric}{%
   \begin{tikzpicture}
@@ -1521,10 +1509,6 @@
               day, defaults a year, errors on a page.
         \item $\lambda$ is the average number of events in the period.
       \end{itemize}
-      \begin{block}{Poisson approximation of the binomial}
-        For large $n$ and small $p$, the binomial $(n,p)$ distribution is
-        close to the Poisson with $\lambda=np$.
-      \end{block}
     \end{column}
     \begin{column}{.48\textwidth}
       \centering
