@@ -7,10 +7,11 @@
   color-scheme: dark;
 }
 
-/* Keep linked headings below the persistent navigation. */
+/* Keep linked headings below the persistent navigation. No sideways
+   rubber-banding; vertical overscroll stays on, so pull to refresh works. */
 html {
   scroll-padding-top: 5rem;
-  overscroll-behavior: none;
+  overscroll-behavior-x: none;
 }
 
 /* Wide tables scroll locally instead of widening cards or being clipped by
