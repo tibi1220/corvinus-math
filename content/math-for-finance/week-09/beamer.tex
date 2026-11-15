@@ -600,7 +600,10 @@
       \end{block}
       \begin{block}{Law of total probability}
         The denominator: $E$ happens with $F$ or with $F^c$,
-        \[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
+        \[ \begin{aligned}
+            P(E) & =P(EF)+P(EF^c)                              \\
+                 & =P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c).
+          \end{aligned} \]
       \end{block}
     \end{column}
     \begin{column}{.42\textwidth}
@@ -719,7 +722,7 @@
       \end{block}
       \begin{block}{Total probability}
         The denominator: add the paths that end in $E$,
-        \[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
+        \[ P(E)=\sum_{i=1}^n P(EF_i)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
       \end{block}
     \end{column}
     \begin{column}{.38\textwidth}
