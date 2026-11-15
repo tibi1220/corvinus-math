@@ -31,20 +31,53 @@
 	\small
 	\exstatement
 	\pause
-	\sol (a) $n=5$ of $N=20$ \alert{without replacement}, $m=4$ erroneous:
-	\alert{hypergeometric}, not binomial (draws not independent).
-	\[ P(X=i)=\frac{\binom{4}{i}\binom{16}{5-i}}{\binom{20}{5}},
-		\qquad \binom{20}{5}=15504. \]
-	\pause
-	(b) $\displaystyle P(X=0)=\frac{\binom40\binom{16}{5}}{\binom{20}{5}}
-		=\frac{4368}{15504}\approx0.2817.$
-	\pause
-	\quad (c) Complement: $P(X\ge1)=1-P(X=0)\approx0.7183$.\\
-	\pause
-	(d) $\displaystyle P(X=2)=\frac{\binom42\binom{16}{3}}{\binom{20}{5}}
-		=\frac{6\cdot560}{15504}=\frac{3360}{15504}\approx0.2167.$
-	\pause
-	\quad (e) $\displaystyle \E[X]=\frac{nm}{N}=\frac{5\cdot4}{20}=1.$
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			\sol (a) $n=5$ of $N=20$ \alert{without replacement}, $m=4$
+			erroneous: \alert{hypergeometric}, not binomial (draws not
+			independent):
+			$P(X=i)=\binom{4}{i}\binom{16}{5-i}\big/\binom{20}{5}$, with
+			$\binom{20}{5}=15504$.\\[1mm]
+			\pause
+			(b) $P(X=0)=\binom{16}{5}\big/\binom{20}{5}=4368/15504\approx0.2817$.\\[1mm]
+			\pause
+			(c) Complement: $P(X\ge1)=1-P(X=0)\approx0.7183$.\\[1mm]
+			\pause
+			(d) $P(X=2)=\binom42\binom{16}{3}\big/\binom{20}{5}
+				=6\cdot560/15504\approx0.2167$.\\[1mm]
+			\pause
+			(e) $\E[X]=nm/N=5\cdot4/20=1$.
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\begin{tikzpicture}[x=.62cm,y=4.6cm]
+			\draw[gray!40,very thin] (-0.6,0.1)--(4.6,0.1);
+			\node[left,font=\tiny] at (-0.6,0.1) {$0.1$};
+			\draw[gray!40,very thin] (-0.6,0.2)--(4.6,0.2);
+			\node[left,font=\tiny] at (-0.6,0.2) {$0.2$};
+			\draw[gray!40,very thin] (-0.6,0.3)--(4.6,0.3);
+			\node[left,font=\tiny] at (-0.6,0.3) {$0.3$};
+			\draw[gray!40,very thin] (-0.6,0.4)--(4.6,0.4);
+			\node[left,font=\tiny] at (-0.6,0.4) {$0.4$};
+			\draw[->] (-0.6,0)--(4.8999999999999995,0) node[right,font=\scriptsize] {$i$};
+			\draw[->] (-0.6,0)--(-0.6,0.58) node[above,font=\scriptsize] {$P(X=i)$};
+			\filldraw[fill=gold!55,draw=gold] (0-.38,0) rectangle (0+.38,0.2817);
+			\node[below,font=\tiny] at (0,0) {$0$};
+			\node[above,font=\tiny] at (0,0.2817) {(b)};
+			\filldraw[fill=teal!22,draw=teal] (1-.38,0) rectangle (1+.38,0.4696);
+			\node[below,font=\tiny] at (1,0) {$1$};
+			\filldraw[fill=gold!55,draw=gold] (2-.38,0) rectangle (2+.38,0.2167);
+			\node[below,font=\tiny] at (2,0) {$2$};
+			\node[above,font=\tiny] at (2,0.2167) {(d)};
+			\filldraw[fill=teal!22,draw=teal] (3-.38,0) rectangle (3+.38,0.031);
+			\node[below,font=\tiny] at (3,0) {$3$};
+			\filldraw[fill=teal!22,draw=teal] (4-.38,0) rectangle (4+.38,0.001);
+			\node[below,font=\tiny] at (4,0) {$4$};
+			\draw[navy,thick,dashed] (1,0)--(1,.54);
+			\node[right,font=\tiny,text=navy] at (1,.54) {$\E[X]=1$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
 \end{slides}
 
 \begin{solution}

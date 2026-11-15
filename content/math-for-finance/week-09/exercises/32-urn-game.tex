@@ -65,27 +65,51 @@
 		\end{column}
 		\begin{column}{.56\textwidth}
 			\centering
-			\begin{tikzpicture}[xscale=.62,yscale=3.4]
-				\draw[->] (-3.4,0) -- (5.4,0) node[right] {\scriptsize $x$};
-				\draw[->] (0,-.05) -- (0,1.15) node[above] {\scriptsize $F(x)$};
-				\foreach \x in {-3,-2,-1,1,2,3,4,5}
-				\draw (\x,.02) -- (\x,-.02) node[below] {\tiny $\x$};
-				\draw (.06,1) -- (-.06,1) node[left] {\tiny $1$};
-				\draw[navy,thick] (-3.4,0) -- (-2,0);
-				\foreach \a/\b/\v/\t in {-2/-1/28/{28},-1/0/44/{44},0/1/45/{45},
-						1/2/77/{77},2/4/85/{85}}
-					{
-						\draw[navy,thick] (\a,\v/91) -- (\b,\v/91);
-						\fill[navy] (\a,\v/91) circle (.07 and .013);
-						\draw[navy,fill=white] (\b,\v/91) circle (.07 and .013);
-					}
-				\draw[navy,thick] (4,1) -- (5.4,1);
-				\fill[navy] (4,1) circle (.07 and .013);
-				\node[above,teal] at (-1.5,28/91) {\tiny $\frac{28}{91}$};
-				\node[above,teal] at (-.5,44/91+.04) {\tiny $\frac{44}{91}$};
-				\node[above,teal] at (.55,45/91) {\tiny $\frac{45}{91}$};
-				\node[above,teal] at (1.5,77/91) {\tiny $\frac{77}{91}$};
-				\node[above,teal] at (3,85/91) {\tiny $\frac{85}{91}$};
+			\begin{tikzpicture}[x=.62cm,y=3.4cm,
+			  closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,minimum size=4pt},
+			  open/.style={circle,fill=white,draw=teal,line width=.7pt,inner sep=0pt,minimum size=4pt}]
+			\draw[->] (-3.4,0)--(5.7,0) node[right,font=\scriptsize] {$x$};
+			\draw[->] (0,0)--(0,1.15) node[above,font=\scriptsize] {$F(x)$};
+			\draw (-3,.02)--(-3,-.02) node[below,font=\tiny] {$-3$};
+			\draw (-2,.02)--(-2,-.02) node[below,font=\tiny] {$-2$};
+			\draw (-1,.02)--(-1,-.02) node[below,font=\tiny] {$-1$};
+			\draw (1,.02)--(1,-.02) node[below,font=\tiny] {$1$};
+			\draw (2,.02)--(2,-.02) node[below,font=\tiny] {$2$};
+			\draw (3,.02)--(3,-.02) node[below,font=\tiny] {$3$};
+			\draw (4,.02)--(4,-.02) node[below,font=\tiny] {$4$};
+			\draw (5,.02)--(5,-.02) node[below,font=\tiny] {$5$};
+			\draw[gray!40,very thin] (-3.4,1)--(5.4,1);
+			\node[left,font=\tiny] at (-3.4,1) {$1$};
+			\draw[very thick,teal] (-3.4,0)--(-2,0);
+			\draw[teal!60,densely dashed] (-2,0)--(-2,0.3077);
+			\draw[very thick,teal] (-2,0.3077)--(-1,0.3077);
+			\draw[teal!60,densely dashed] (-1,0.3077)--(-1,0.4835);
+			\draw[very thick,teal] (-1,0.4835)--(0,0.4835);
+			\draw[teal!60,densely dashed] (0,0.4835)--(0,0.4945);
+			\draw[very thick,teal] (0,0.4945)--(1,0.4945);
+			\draw[teal!60,densely dashed] (1,0.4945)--(1,0.8462);
+			\draw[very thick,teal] (1,0.8462)--(2,0.8462);
+			\draw[teal!60,densely dashed] (2,0.8462)--(2,0.9341);
+			\draw[very thick,teal] (2,0.9341)--(4,0.9341);
+			\draw[teal!60,densely dashed] (4,0.9341)--(4,1);
+			\draw[very thick,teal] (4,1)--(5.4,1);
+			\node[open] at (-2,0) {};
+			\node[closed] at (-2,0.3077) {};
+			\node[open] at (-1,0.3077) {};
+			\node[closed] at (-1,0.4835) {};
+			\node[open] at (0,0.4835) {};
+			\node[closed] at (0,0.4945) {};
+			\node[open] at (1,0.4945) {};
+			\node[closed] at (1,0.8462) {};
+			\node[open] at (2,0.8462) {};
+			\node[closed] at (2,0.9341) {};
+			\node[open] at (4,0.9341) {};
+			\node[closed] at (4,1) {};
+			\node[above,font=\tiny] at (-1.5,28/91+0) {$\frac{28}{91}$};
+			\node[above,font=\tiny] at (-0.5,44/91+0.04) {$\frac{44}{91}$};
+			\node[above,font=\tiny] at (0.55,45/91+0) {$\frac{45}{91}$};
+			\node[above,font=\tiny] at (1.5,77/91+0) {$\frac{77}{91}$};
+			\node[above,font=\tiny] at (3,85/91+0) {$\frac{85}{91}$};
 			\end{tikzpicture}
 		\end{column}
 	\end{columns}
@@ -175,26 +199,51 @@
 	because $X\le-2$ includes $X=-2$. This is why a distribution function is
 	right-continuous.
 	\begin{center}
-		\begin{tikzpicture}[xscale=.8,yscale=3.4]
-			\draw[->] (-3.4,0) -- (5.4,0) node[right] {\small $x$};
-			\draw[->] (0,-.05) -- (0,1.15) node[above] {\small $F(x)$};
-			\foreach \x in {-3,-2,-1,1,2,3,4,5}
-			\draw (\x,.02) -- (\x,-.02) node[below] {\scriptsize $\x$};
-			\draw (.06,1) -- (-.06,1) node[left] {\scriptsize $1$};
-			\draw[navy,thick] (-3.4,0) -- (-2,0);
-			\foreach \a/\b/\v in {-2/-1/28,-1/0/44,0/1/45,1/2/77,2/4/85}
-				{
-					\draw[navy,thick] (\a,\v/91) -- (\b,\v/91);
-					\fill[navy] (\a,\v/91) circle (.06 and .014);
-					\draw[navy,fill=white] (\b,\v/91) circle (.06 and .014);
-				}
-			\draw[navy,thick] (4,1) -- (5.4,1);
-			\fill[navy] (4,1) circle (.06 and .014);
-			\node[above,teal] at (-1.5,28/91) {\scriptsize $\frac{28}{91}$};
-			\node[above,teal] at (-.5,44/91+.04) {\scriptsize $\frac{44}{91}$};
-			\node[above,teal] at (.55,45/91) {\scriptsize $\frac{45}{91}$};
-			\node[above,teal] at (1.5,77/91) {\scriptsize $\frac{77}{91}$};
-			\node[above,teal] at (3,85/91) {\scriptsize $\frac{85}{91}$};
+		\begin{tikzpicture}[x=.8cm,y=3.4cm,
+		  closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,minimum size=4pt},
+		  open/.style={circle,fill=white,draw=teal,line width=.7pt,inner sep=0pt,minimum size=4pt}]
+		\draw[->] (-3.4,0)--(5.7,0) node[right,font=\small] {$x$};
+		\draw[->] (0,0)--(0,1.15) node[above,font=\small] {$F(x)$};
+		\draw (-3,.02)--(-3,-.02) node[below,font=\scriptsize] {$-3$};
+		\draw (-2,.02)--(-2,-.02) node[below,font=\scriptsize] {$-2$};
+		\draw (-1,.02)--(-1,-.02) node[below,font=\scriptsize] {$-1$};
+		\draw (1,.02)--(1,-.02) node[below,font=\scriptsize] {$1$};
+		\draw (2,.02)--(2,-.02) node[below,font=\scriptsize] {$2$};
+		\draw (3,.02)--(3,-.02) node[below,font=\scriptsize] {$3$};
+		\draw (4,.02)--(4,-.02) node[below,font=\scriptsize] {$4$};
+		\draw (5,.02)--(5,-.02) node[below,font=\scriptsize] {$5$};
+		\draw[gray!40,very thin] (-3.4,1)--(5.4,1);
+		\node[left,font=\scriptsize] at (-3.4,1) {$1$};
+		\draw[very thick,teal] (-3.4,0)--(-2,0);
+		\draw[teal!60,densely dashed] (-2,0)--(-2,0.3077);
+		\draw[very thick,teal] (-2,0.3077)--(-1,0.3077);
+		\draw[teal!60,densely dashed] (-1,0.3077)--(-1,0.4835);
+		\draw[very thick,teal] (-1,0.4835)--(0,0.4835);
+		\draw[teal!60,densely dashed] (0,0.4835)--(0,0.4945);
+		\draw[very thick,teal] (0,0.4945)--(1,0.4945);
+		\draw[teal!60,densely dashed] (1,0.4945)--(1,0.8462);
+		\draw[very thick,teal] (1,0.8462)--(2,0.8462);
+		\draw[teal!60,densely dashed] (2,0.8462)--(2,0.9341);
+		\draw[very thick,teal] (2,0.9341)--(4,0.9341);
+		\draw[teal!60,densely dashed] (4,0.9341)--(4,1);
+		\draw[very thick,teal] (4,1)--(5.4,1);
+		\node[open] at (-2,0) {};
+		\node[closed] at (-2,0.3077) {};
+		\node[open] at (-1,0.3077) {};
+		\node[closed] at (-1,0.4835) {};
+		\node[open] at (0,0.4835) {};
+		\node[closed] at (0,0.4945) {};
+		\node[open] at (1,0.4945) {};
+		\node[closed] at (1,0.8462) {};
+		\node[open] at (2,0.8462) {};
+		\node[closed] at (2,0.9341) {};
+		\node[open] at (4,0.9341) {};
+		\node[closed] at (4,1) {};
+		\node[above,font=\scriptsize] at (-1.5,28/91+0) {$\frac{28}{91}$};
+		\node[above,font=\scriptsize] at (-0.5,44/91+0.04) {$\frac{44}{91}$};
+		\node[above,font=\scriptsize] at (0.55,45/91+0) {$\frac{45}{91}$};
+		\node[above,font=\scriptsize] at (1.5,77/91+0) {$\frac{77}{91}$};
+		\node[above,font=\scriptsize] at (3,85/91+0) {$\frac{85}{91}$};
 		\end{tikzpicture}
 	\end{center}
 

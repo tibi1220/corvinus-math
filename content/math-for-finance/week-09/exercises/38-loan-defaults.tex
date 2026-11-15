@@ -25,20 +25,51 @@
 	\small
 	\exstatement
 	\pause
-	\sol (a) $10$ independent trials (loans), each a ``success'' (default)
-	with the same probability $0.05$: $X$ is \alert{binomial with $(n,p)=(10,\,0.05)$},
-	\[ P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i},\qquad i=0,1,\dots,10. \]
-	\pause
-	\vspace{-3mm}
-	\[ \text{(b) } P(X=0)=0.95^{10}\approx\alert{0.5987},\qquad
-		\text{(c) } P(X=1)=10\cdot0.05\cdot0.95^{9}\approx\alert{0.3151}. \]
-	\pause
-	(d) Complement: $\{X\ge2\}^c=\{X=0\}\cup\{X=1\}$ (2 terms instead of 9):
-	\[ P(X\ge2)=1-P(X=0)-P(X=1)\approx\alert{0.0861}. \]
-	\pause
-	\vspace{-3mm}
-	\[ \text{(e) } \E[X]=np=\alert{0.5},\qquad \Var(X)=np(1-p)=0.475,\qquad
-		\SD(X)=\sqrt{0.475}\approx\alert{0.689}. \]
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			\sol (a) $10$ independent loans, each defaults with the same
+			probability $0.05$: \alert{binomial with $(n,p)=(10,\,0.05)$},
+			$P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i}$.\\
+			\pause
+			(b) $P(X=0)=0.95^{10}\approx\alert{0.5987}$\\
+			(c) $P(X=1)=10\cdot0.05\cdot0.95^{9}\approx\alert{0.3151}$\\
+			\pause
+			(d) Complement of $\{X=0\}\cup\{X=1\}$ (2 terms instead of 9):
+			$P(X\ge2)=1-P(X=0)-P(X=1)\approx\alert{0.0861}$\\
+			\pause
+			(e) $\E[X]=np=\alert{0.5}$, \
+			$\SD(X)=\sqrt{np(1-p)}=\sqrt{0.475}\approx\alert{0.689}$
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\begin{tikzpicture}[x=.55cm,y=3.4cm]
+			\draw[gray!40,very thin] (-0.6,0.2)--(5.6,0.2);
+			\node[left,font=\tiny] at (-0.6,0.2) {$0.2$};
+			\draw[gray!40,very thin] (-0.6,0.4)--(5.6,0.4);
+			\node[left,font=\tiny] at (-0.6,0.4) {$0.4$};
+			\draw[gray!40,very thin] (-0.6,0.6)--(5.6,0.6);
+			\node[left,font=\tiny] at (-0.6,0.6) {$0.6$};
+			\draw[->] (-0.6,0)--(5.8999999999999995,0) node[right,font=\scriptsize] {$i$};
+			\draw[->] (-0.6,0)--(-0.6,0.75) node[above,font=\scriptsize] {$P(X=i)$};
+			\filldraw[fill=gold!55,draw=gold] (0-.38,0) rectangle (0+.38,0.5987);
+			\node[below,font=\tiny] at (0,0) {$0$};
+			\node[above,font=\tiny] at (0,0.5987) {(b)};
+			\filldraw[fill=gold!55,draw=gold] (1-.38,0) rectangle (1+.38,0.3151);
+			\node[below,font=\tiny] at (1,0) {$1$};
+			\node[above,font=\tiny] at (1,0.3151) {(c)};
+			\filldraw[fill=teal!22,draw=teal] (2-.38,0) rectangle (2+.38,0.0746);
+			\node[below,font=\tiny] at (2,0) {$2$};
+			\filldraw[fill=teal!22,draw=teal] (3-.38,0) rectangle (3+.38,0.0105);
+			\node[below,font=\tiny] at (3,0) {$3$};
+			\filldraw[fill=teal!22,draw=teal] (4-.38,0) rectangle (4+.38,0.001);
+			\node[below,font=\tiny] at (4,0) {$4$};
+			\node[below,font=\tiny] at (5,0) {$5$};
+			\draw[navy,thick,decorate,decoration={brace,amplitude=3pt}] (1.62,.13)--(5.4,.13) node[midway,above=3pt,font=\tiny] {(d) $X\ge2$: $0.086$};
+			\draw[navy,thick,dashed] (0.5,0)--(0.5,.7);
+			\node[right,font=\tiny,text=navy] at (0.5,.7) {$\E[X]=0.5$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
 \end{slides}
 
 \begin{solution}

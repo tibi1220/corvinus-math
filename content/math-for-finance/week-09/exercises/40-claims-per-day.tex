@@ -38,17 +38,23 @@
 		\end{column}
 		\begin{column}{.38\textwidth}
 			\centering
-			\begin{tikzpicture}[xscale=.42,yscale=9]
-				\draw[->] (-.6,0) -- (8.8,0) node[right] {\scriptsize $i$};
-				\foreach \i/\p in {0/0.0498,1/0.1494,2/0.2240,3/0.2240,
-						4/0.1680,5/0.1008,6/0.0504,7/0.0216,8/0.0081}
-					{
-						\fill[navy!60] (\i-.35,0) rectangle (\i+.35,\p);
-						\node[below] at (\i,0) {\tiny $\i$};
+			\begin{tikzpicture}[x=.43cm,y=11cm]
+				\foreach \y in {0.05,0.10,0.15,0.20} {
+						\draw[gray!40,very thin] (-.6,\y)--(9.6,\y);
+						\node[left,font=\tiny] at (-.6,\y) {$\y$};
 					}
-				\fill[gold] (2-.35,0) rectangle (2+.35,0.2240);
-				\draw (-.6,.2240) -- (-.4,.2240) node[left,xshift=-1mm] {\tiny $0.224$};
-				\node[above] at (4,.25) {\scriptsize pmf of $X$};
+				\draw[->] (-.6,0)--(9.9,0) node[right,font=\scriptsize] {$i$};
+				\draw[->] (-.6,0)--(-.6,.27) node[above,font=\scriptsize] {$P(X=i)$};
+				\foreach \i/\p in {0/0.0498,1/0.1494,2/0.2240,3/0.2240,
+						4/0.1680,5/0.1008,6/0.0504,7/0.0216,8/0.0081,9/0.0027}
+					{
+						\filldraw[fill=teal!22,draw=teal] (\i-.38,0) rectangle (\i+.38,\p);
+						\node[below,font=\tiny] at (\i,0) {$\i$};
+					}
+				\filldraw[fill=gold!55,draw=gold] (2-.38,0) rectangle (2+.38,0.2240);
+				\node[above,font=\tiny] at (2,0.2240) {(b)};
+				\draw[navy,thick,dashed] (3,0)--(3,.255);
+				\node[right,font=\tiny,text=navy] at (3,.255) {$\E[X]=\lambda=3$};
 			\end{tikzpicture}
 		\end{column}
 	\end{columns}

@@ -35,13 +35,60 @@
 	\small
 	\exstatement
 	\pause
-	\sol (a) Independent trials, same success probability, we wait for the
-	\alert{first} success: $X$ is \alert{geometric} with $p=0.2$,
-	\[ P(X=n)=0.8^{\,n-1}\cdot0.2,\qquad n=1,2,\dots \]
-	\pause
-	(b) $P(X=3)=0.8^2\cdot0.2=0.128$ \ (two failures, then a sale).\\[1mm]
-	\pause
-	(c) $P(X>5)=0.8^5\approx0.3277$ \ (the first 5 calls all fail).
+	\begin{columns}[T]
+		\begin{column}{.58\textwidth}
+			\sol (a) Independent trials, same success probability, we wait for
+			the \alert{first} success: $X$ is \alert{geometric} with $p=0.2$,
+			\[ P(X=n)=0.8^{\,n-1}\cdot0.2,\qquad n=1,2,\dots \]
+			\pause
+			(b) $P(X=3)=0.8^2\cdot0.2=0.128$ \ (two failures, then a
+			sale).\\[1mm]
+			\pause
+			(c) $P(X>5)=0.8^5\approx0.3277$ \ (the first 5 calls all fail).
+		\end{column}
+		\begin{column}{.4\textwidth}
+			\centering
+			\begin{tikzpicture}[x=.385cm,y=11cm]
+			\draw[gray!40,very thin] (0.4,0.05)--(12.6,0.05);
+			\node[left,font=\tiny] at (0.4,0.05) {$0.05$};
+			\draw[gray!40,very thin] (0.4,0.1)--(12.6,0.1);
+			\node[left,font=\tiny] at (0.4,0.1) {$0.1$};
+			\draw[gray!40,very thin] (0.4,0.15)--(12.6,0.15);
+			\node[left,font=\tiny] at (0.4,0.15) {$0.15$};
+			\draw[gray!40,very thin] (0.4,0.2)--(12.6,0.2);
+			\node[left,font=\tiny] at (0.4,0.2) {$0.2$};
+			\draw[->] (0.4,0)--(12.9,0) node[right,font=\scriptsize] {$n$};
+			\draw[->] (0.4,0)--(0.4,0.25) node[above,font=\scriptsize] {$P(X=n)$};
+			\filldraw[fill=teal!22,draw=teal] (1-.38,0) rectangle (1+.38,0.2);
+			\node[below,font=\tiny] at (1,0) {$1$};
+			\filldraw[fill=teal!22,draw=teal] (2-.38,0) rectangle (2+.38,0.16);
+			\node[below,font=\tiny] at (2,0) {$2$};
+			\filldraw[fill=gold!55,draw=gold] (3-.38,0) rectangle (3+.38,0.128);
+			\node[below,font=\tiny] at (3,0) {$3$};
+			
+			\filldraw[fill=teal!22,draw=teal] (4-.38,0) rectangle (4+.38,0.1024);
+			\node[below,font=\tiny] at (4,0) {$4$};
+			\filldraw[fill=teal!22,draw=teal] (5-.38,0) rectangle (5+.38,0.0819);
+			\node[below,font=\tiny] at (5,0) {$5$};
+			\filldraw[fill=navy!30,draw=navy] (6-.38,0) rectangle (6+.38,0.0655);
+			\node[below,font=\tiny] at (6,0) {$6$};
+			\filldraw[fill=navy!30,draw=navy] (7-.38,0) rectangle (7+.38,0.0524);
+			\node[below,font=\tiny] at (7,0) {$7$};
+			\filldraw[fill=navy!30,draw=navy] (8-.38,0) rectangle (8+.38,0.0419);
+			\node[below,font=\tiny] at (8,0) {$8$};
+			\filldraw[fill=navy!30,draw=navy] (9-.38,0) rectangle (9+.38,0.0336);
+			\node[below,font=\tiny] at (9,0) {$9$};
+			\filldraw[fill=navy!30,draw=navy] (10-.38,0) rectangle (10+.38,0.0268);
+			\node[below,font=\tiny] at (10,0) {$10$};
+			\filldraw[fill=navy!30,draw=navy] (11-.38,0) rectangle (11+.38,0.0215);
+			\node[below,font=\tiny] at (11,0) {$11$};
+			\filldraw[fill=navy!30,draw=navy] (12-.38,0) rectangle (12+.38,0.0172);
+			\node[below,font=\tiny] at (12,0) {$12$};
+			\node[font=\tiny,anchor=west] at (4.5,.2) {\textcolor{gold}{$\blacksquare$} (b) $X=3$: $0.128$};
+				\node[font=\tiny,anchor=west] at (4.5,.165) {\textcolor{navy!60}{$\blacksquare$} (c) $X>5$: $0.328$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
 \end{slides}
 
 \begin{slides}
