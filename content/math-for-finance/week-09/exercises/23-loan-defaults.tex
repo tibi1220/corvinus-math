@@ -86,11 +86,12 @@
 	parameters $(n,p)$. So $X$ is binomial with parameters $(10,\,0.05)$:
 	\[ P(X=i)=\binom{10}{i}\,0.05^i\,0.95^{10-i},\qquad i=0,1,\dots,10. \]
 
-	\step{(b)} No default means all $10$ loans are repaid. Put $i=0$ in the
+	\step{(b)} No default means all $10$ loans survive the year without
+	default. Put $i=0$ in the
 	formula; $\binom{10}{0}=1$ and $0.05^0=1$:
 	\[ P(X=0)=0.95^{10}\approx0.5987. \]
-	This also follows directly from independence: each loan is repaid with
-	probability $0.95$, and we multiply these ten probabilities.
+	This also follows directly from independence: each loan avoids default
+	during the year with probability $0.95$, and we multiply these ten probabilities.
 
 	\step{(c)} Put $i=1$. The factor $\binom{10}{1}=10$ counts which of the
 	$10$ loans is the one that defaults:

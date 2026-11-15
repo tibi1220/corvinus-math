@@ -259,13 +259,13 @@
         \fill[bvblue] (#2,-.16) rectangle (#3,.16);
       \end{scope}
       \draw[bvline,rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
-      \draw[bvline] (-.0875,-.16)--(-.0875,.16) (.05,-.16)--(.05,.16);}},
+      \draw[bvline] (-.094,-.16)--(-.094,.16) (.094,-.16)--(.094,.16);}},
     pics/gbE#1/.style={code={%
       \fill[white] (0,0) circle (.2);
       \begin{scope}
         \clip (0,0) circle (.2);
         \fill[bvrose] (#4,-.2) rectangle (#5,.2);
-        \draw[bvline] (-.092,-.2)--(-.092,.2) (.077,-.2)--(.077,.2);
+        \draw[bvline] (-.103,-.2)--(-.103,.2) (.103,-.2)--(.103,.2);
       \end{scope}
       \draw[bvclip] (0,0) circle (.2);}},
   }}
@@ -1134,7 +1134,7 @@ The group sizes are not fixed, so it is not a multinomial problem.)}
 	such row is a division; the row has 7 places and is fixed by the places
 	of the 2 bars: $\binom72=21$ divisions. Second click, the box:
 	$n$ identical objects into $r$ distinct boxes, $n$ stars and $r-1$ bars,
-	$\binom{n+r-1}{r-1}$ ways; every box nonempty: $\binom{n-1}{r-1}$ ways.
+	$\binom{n+r-1}{r-1}$ ways; every box nonempty ($n\ge r$): $\binom{n-1}{r-1}$ ways.
 	At the bottom: this is the ``unordered, with repetition'' entry of the
 	table, $\binom{n+k-1}{k}$.
 \end{onslide}
@@ -1164,7 +1164,7 @@ places of the 2 bars: $\binom72=21$ divisions.
 (Click.) \say In general: $n$ identical objects, $r$ boxes, so $n$ stars
 and $r-1$ bars:
 \[ \binom{n+r-1}{r-1}. \]
-If every box must be nonempty, put one object in each box first and
+If every box must be nonempty (so $n\ge r$), put one object in each box first and
 distribute the remaining $n-r$ freely:
 \[ \binom{(n-r)+r-1}{r-1}=\binom{n-1}{r-1}. \]
 For the coins: if every child gets at least one coin, $\binom42=6$ ways.
@@ -1720,9 +1720,9 @@ In the diagram these are the two regions of $C$ outside $K$: $390+130$.
 circles must add up to 890: $390+30+20+230+130+20+70=890$.)}
 
 \begin{cue}
-	The last line of the slide says ``Next week: divide by 1000 and these
-	become probabilities''. Say ``now'' instead of ``next week'': the next
-	slide does it.
+	The last line of the slide says ``In Week 9: divide by 1000 and these
+	become probabilities''. This is Week 9, so say ``now'': the next slide
+	does it.
 \end{cue}
 
 \say Now divide every number by 1000, and you have probabilities for a
@@ -2159,7 +2159,8 @@ two slides.)}
 	two blocks. Bayes' formula, with the posterior marked in teal and the
 	prior in gold:
 	\[ \underbrace{\textcolor{teal}{P(F\mid E)}}_{\text{posterior}}
-		=\frac{P(E\mid F)\,\overbrace{\textcolor{gold}{P(F)}}^{\text{prior}}}{P(E)}. \]
+		=\frac{P(E\mid F)\,\overbrace{\textcolor{gold}{P(F)}}^{\text{prior}}}{P(E)}
+		\quad\text{if } P(E)>0. \]
 	{\color{gold}Prior}: how likely $F$ is before we see $E$.
 	{\color{teal}Posterior}: how likely $F$ is after we have seen $E$.
 	Law of total probability, ``the denominator: $E$ happens with $F$ or
@@ -2191,7 +2192,7 @@ two slides.)}
 	\end{center}
 \end{slidefig}
 
-\say Bayes' formula:
+\say Bayes' formula, if $P(E)>0$:
 \[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}. \]
 We know $P(E\mid F)$, but we need $P(F\mid E)$: Bayes' formula turns the
 condition around. Where does it come from? The numerator is $P(EF)$ by the
@@ -2280,7 +2281,7 @@ About 15\% of all managers have three good years in a row.
 	=\frac{0.0343}{0.1468}\approx0.234. \]
 
 \say Lesson: three good years raise the chance of skill from 10\%, the
-prior, to only 23\%, the posterior. Three in four such ``star'' managers
+prior, to only 23\%, the posterior. About three in four such ``star'' managers
 were just lucky. Compare with your guesses.
 
 Why so low? Look at the two highlighted numbers. The lucky path,
@@ -2306,7 +2307,7 @@ about $146$ ``stars'', and only $34$ of them are skilled.
 \begin{onslide}
 	next to the picture, two lines: probability of an event $=$ its share
 	of $\Om$ (the gray box); conditional probability $=$ share inside the
-	shape we know happened.
+	shape we know happened. In these pictures, area stands for probability.
 \end{onslide}
 
 \needspace{0.45\textheight}
@@ -2329,7 +2330,8 @@ sample space $\Om$. The blue diamond is the hypothesis $F$, say ``the
 manager is skilled''. The light blue circle is the evidence $E$, ``three
 good years''. Where they overlap, both happen: the red piece is $FE$.
 
-\emph{Step 2: probability is a share.} Point at the row of fractions.
+\emph{Step 2: probability is a share.} In these pictures, area stands for
+probability. Point at the row of fractions.
 $P(F)$ is the share of the box that the diamond covers. Read the little
 fraction as ``diamond over box''. In the same way, $P(E)$ is ``circle over
 box''.
@@ -2427,7 +2429,7 @@ $0.98\cdot0.05=0.049$, $0.98\cdot0.95=0.931$. They add up to 1: a good
 check.
 
 (a) \ask How can a borrower get flagged? \emph{(Two ways: defaulter and
-flagged, or good and flagged.)} Defaulter or not is exclusive, so total
+flagged, or non-defaulting and flagged.)} Defaulter or not is exclusive, so total
 probability:
 \[ P(A)=P(A\mid D)P(D)+P(A\mid D^c)P(D^c)=0.018+0.049=0.067. \]
 Two paths end in a flag. So $6.7\%$ of the borrowers are flagged.
@@ -2465,7 +2467,7 @@ circle. The same story as the fund managers.
 			\node (d) at (1.6,1.5) {\small $200$};
 			\node (g) at (1.6,-1.5) {\small $9800$};
 			\draw (r) -- node[lab,above left] {default} (d);
-			\draw (r) -- node[lab,below left] {good} (g);
+			\draw (r) -- node[lab,below left] {no default} (g);
 			\node[text=teal] (da) at (3.4,2.25) {\small $\mathbf{180}$ flag};
 			\node (dn) at (3.4,.75) {\small $20$ no flag};
 			\node[text=teal] (ga) at (3.4,-.75) {\small $\mathbf{490}$ flag};
@@ -2479,21 +2481,24 @@ circle. The same story as the fund managers.
 \end{slidefig}
 
 Of $10\,000$ borrowers, $200$ default and $9800$ do not. The model flags
-$90\%$ of the defaulters, $180$, and $5\%$ of the good ones, $490$. So
+$90\%$ of the defaulters, $180$, and $5\%$ of the non-defaulting
+borrowers, $490$. So
 $180+490=670$ are flagged, and $180$ of them default:
 \[ P(D\mid A)=\frac{180}{670}\approx0.269. \]
 
-(c) \ask What is the new sample space now? \emph{(The borrowers who are
-not flagged.)} Not flagged: $20+9310=9330$, of whom $20$ default:
+(c) \ask What is the new sample space now? \emph{(The unflagged
+borrowers.)} Unflagged: $20+9310=9330$, of whom $20$ default:
 \[ P(D\mid A^c)=\frac{20}{9330}=\frac{2}{933}\approx0.00214. \]
 With the formula: $P(D\mid A^c)=0.002/0.933$, the same.
 
-\say The base-rate effect: the model is good, it flags $90\%$ of the
-defaulters, yet only about $27\%$ of the flags are true. Defaults are
-rare, so the $5\%$ false flags among the many good borrowers, $490$,
-outnumber the true flags, $180$. Still, the model is useful: a flag raises
+\say The base-rate effect: the model flags $90\%$ of the defaulters,
+yet only about $27\%$ of the flags are true. Defaults are rare, so the
+$5\%$ false flags among the many non-defaulting borrowers, $490$,
+outnumber the true flags, $180$. Still, the flag is informative: it raises
 the default probability from 2\% to 27\%, and no flag lowers it to
-0.2\%.
+0.2\%. Whether the model is useful in practice also depends on what the
+bank does after a flag and on the costs of missed defaults and false
+alarms.
 
 \begin{bg}{early-warning models and the base rate}
 	A bank's \emph{early-warning system} is a scorecard or classifier that
@@ -2501,8 +2506,8 @@ the default probability from 2\% to 27\%, and no flag lowers it to
 	client, restructure, stop new credit). In statistics language
 	$P(A\mid D)=0.9$ is the \emph{sensitivity} (hit rate), $P(A\mid D^c)=0.05$
 	the \emph{false positive rate}, and $P(D\mid A)\approx0.27$ the
-	\emph{precision}. With a low base rate (2\%), precision is low even for a
-	good model, as in medical screening.
+	\emph{precision}. With a low base rate (2\%), precision is low even with
+	a high sensitivity, as in medical screening.
 
 	\terms probability of default (PD); sensitivity; false positive rate;
 	precision; base rate.
@@ -2529,8 +2534,9 @@ the default probability from 2\% to 27\%, and no flag lowers it to
 	\textbf{updating becomes one multiplication}. In Bayes' formula the
 	denominator $P(E)$ needs total probability again for every new piece
 	of evidence; with odds, each new piece of evidence just multiplies the
-	odds by its \emph{likelihood ratio}, so several signals are easy to
-	combine.
+	odds by its \emph{likelihood ratio}, as long as the pieces of evidence
+	are conditionally independent given $F$ and given $F^c$. So several
+	signals are easy to combine.
 \end{onslide}
 
 \say Why another way to write probabilities? First, because people in
@@ -2543,21 +2549,25 @@ each characteristic of the borrower.
 multiplication. In Bayes' formula the denominator $P(E)$ needs total
 probability, the whole tree, again for every new piece of evidence. With
 odds, each new piece of evidence just multiplies the odds by one number,
-its likelihood ratio. So several signals are easy to combine.
+its likelihood ratio, as long as the pieces of evidence are conditionally
+independent given $F$ and given $F^c$. So several signals are easy to
+combine.
 
 \begin{onslide}
 	(click) an example block, \emph{Skill or luck, continued}: after three
 	good years, the manager is skilled with probability $0.234$. Now comes
-	a fourth good year. With probabilities, we redo the whole tree. With
-	odds, we multiply by one number:
+	a fourth good year. With probabilities, we apply Bayes' formula again,
+	with the old posterior as the new prior and a new $P(E)$. With odds, we
+	multiply by one number:
 	$P(\text{good year}\mid S)/P(\text{good year}\mid S^c)=0.7/0.5=1.4$.
 \end{onslide}
 
 Click. Back to our fund manager. After three good years, the probability
 of skill is $0.234$. Now comes a fourth good year. With probabilities, we
-would redo the whole tree with $0.7^4$ and $0.5^4$. With odds, we multiply
-by one number: a good year is $0.7/0.5=1.4$ times as likely for a skilled
-manager. We do the multiplication in two slides.
+apply Bayes' formula again, with the old posterior, $0.234$, as the new
+prior and a new $P(E)$. With odds, we multiply by one number: a good year
+is $0.7/0.5=1.4$ times as likely for a skilled manager. (This works
+because the years are independent given skill and given no skill.) We do the multiplication in two slides.
 
 \subsection{Odds (2 min)}\slide{33}
 
@@ -2664,7 +2674,8 @@ rest of the circle.
 	(click) \textbf{Skill or luck:} prior odds $0.1/0.9=1/9$; likelihood
 	ratio of three good years $0.343/0.125=2.744$; posterior odds
 	$2.744/9\approx0.305$, so $P(S\mid E)=0.305/1.305\approx0.234$, as
-	before. A fourth good year: $0.305\cdot1.4\approx0.427$, so
+	before. A fourth good year (the years are independent given skill and
+	given no skill): $0.305\cdot1.4\approx0.427$, so
 	$P\approx0.427/1.427\approx0.30$.
 \end{onslide}
 
@@ -2675,7 +2686,8 @@ $0.343/0.125=2.744$. New odds:
 	P(S\mid E)=\frac{0.305}{1.305}\approx0.234, \]
 as before, without any tree.
 
-\say A fourth good year: multiply by $1.4$ again,
+\say A fourth good year: the years are independent given skill and given
+no skill, so we multiply by $1.4$ again,
 \[ 0.305\cdot1.4\approx0.427,\qquad P\approx\frac{0.427}{1.427}\approx0.30. \]
 Four good years in a row, and still only a 30\% chance of skill. Each
 good year multiplies the odds by $1.4$, which is not much: luck is a
@@ -2698,8 +2710,8 @@ $1.4^7\approx10.5$: seven years.)}
 
 \begin{onslide}
 	$F_1,\dots,F_n$ is a \textbf{partition} of $\Om$: mutually exclusive
-	events, and exactly one of them occurs. Two blocks:
-	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)},\qquad
+	events, and exactly one of them occurs; all $P(F_i)>0$. Two blocks:
+	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}\quad\text{if } P(E)>0,\qquad
 		P(E)=\sum_{i=1}^n P(EF_i)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i), \]
 	the second one is ``the denominator: add the paths that end in $E$''.
 \end{onslide}
@@ -2731,11 +2743,12 @@ $1.4^7\approx10.5$: seven years.)}
 \end{slidefig}
 
 \say Now more than two hypotheses. $F_1,\dots,F_n$ is a partition of
-$\Om$: mutually exclusive events, and exactly one of them occurs. Think of
+$\Om$: mutually exclusive events, and exactly one of them occurs; we
+assume all $P(F_i)>0$. Think of
 rating classes, or economic scenarios: boom, normal, recession. $F$ and
 $F^c$ is the special case $n=2$.
 
-\say Bayes' formula is the same as before:
+\say Bayes' formula is the same as before, if $P(E)>0$:
 \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}, \]
 and the denominator again comes from total probability. The $F_i$ cut $E$
 into $n$ pieces $EF_1,\dots,EF_n$ that do not overlap, so
@@ -2777,7 +2790,7 @@ exactly one of the $F_i$ still occurs. A free check.
 \end{slidefig}
 
 \say The same idea as the diamond and the circle, with three hypotheses.
-Point at the picture. The partition cuts the box $\Om$ into three strips,
+Again, area stands for probability. Point at the picture. The partition cuts the box $\Om$ into three strips,
 $F_1$, $F_2$, $F_3$: they do not overlap, and together they fill the box.
 The circle $E$ is cut by the strips into three pieces, $EF_1$, $EF_2$,
 $EF_3$.
@@ -2863,7 +2876,8 @@ end in $D$ give $0.005$, $0.009$, $0.016$.
 paths ending in $D$ are mutually exclusive, so we add them:
 \[ P(D)=P(D\mid A)P(A)+P(D\mid B)P(B)+P(D\mid C)P(C), \]
 \[ P(D)=0.5\cdot0.01+0.3\cdot0.03+0.2\cdot0.08=0.005+0.009+0.016=0.03. \]
-A weighted average of the three default rates, $1\%$, $3\%$, $8\%$, with
+So the expected proportion of loans that default is $3\%$. A weighted
+average of the three default rates, $1\%$, $3\%$, $8\%$, with
 the class shares as weights. It is closer to $1\%$ than to $8\%$ because
 half of the loans are A.
 
@@ -2897,9 +2911,9 @@ $C\to D^c$: $P(D^c\mid C)P(C)=0.92\cdot0.2=0.184$.
 Close to the prior $0.2$: almost every loan survives the year, so
 ``no default'' tells us little.
 
-\say Lesson: C is only 20\% of the loans, but it gives more than half,
-53\%, of the defaults; A is half of the loans but gives only one sixth of
-the defaults. Compare with your guesses.
+\say Lesson: C is only 20\% of the loans, but on average it gives more
+than half, 53\%, of the defaults; A is half of the loans but gives on
+average only one sixth of the defaults. Compare with your guesses.
 
 \begin{bg}{internal ratings}
 	Banks give every borrower an internal rating grade and estimate a
@@ -2993,13 +3007,17 @@ events are independent too, so $1-0.95^2=1-0.9025=0.0975$.
 	Slide 42.
 \end{cue}
 
-(b) Same economy: $P(D_1D_2)=0.02$ is given. That is 8 times $0.0025$: no
-product rule here.
+(b) Same economy: $P(D_1D_2)=0.02$ is given. That is 8 times $0.0025$: we
+cannot multiply the two marginal probabilities here, since
+$P(D_1D_2)=P(D_1)P(D_2)$ holds only for independent events. (The
+conditional multiplication rule is still valid: with the value of (c),
+$P(D_1)P(D_2\mid D_1)=0.05\cdot0.4=0.02$.)
 \[ P(D_1\cup D_2)=0.05+0.05-0.02=0.08. \]
 
 \begin{mistake}
-	In (b): multiplying $0.05\cdot0.05$ again. The product rule holds only
-	for independent events.
+	In (b): multiplying $0.05\cdot0.05$ again. We cannot multiply the two
+	marginal probabilities here: $P(D_1D_2)=P(D_1)P(D_2)$ holds only for
+	independent events.
 \end{mistake}
 
 (c) \ask How do we test independence with a conditional probability?
@@ -3144,7 +3162,8 @@ against $0.0025$. When defaults come together, they come in clusters.
 	values. Probability mass function: $p(x)=P(X=x)$, $p(x)\ge0$,
 	$\sum_x p(x)=1$. Distribution function: $F(x)=P(X\le x)=\sum_{y\le x}p(y)$,
 	a step function that jumps by $p(x)$ at every value $x$, is constant in
-	between, and rises from 0 to 1. At the bottom:
+	between; it tends to 0 on the far left and to 1 on the far right. At
+	the bottom:
 	$P(a<X\le b)=F(b)-F(a)$, $P(X>a)=1-F(a)$.
 \end{onslide}
 
@@ -3190,7 +3209,8 @@ probabilities add up to 1 because exactly one of the values comes out.
 \say The distribution function is
 \[ F(x)=P(X\le x)=\sum_{y\le x}p(y). \]
 For a discrete $X$ it is a step function: it jumps by $p(x)$ at every
-value $x$, is constant in between, and rises from 0 to 1.
+value $x$, is constant in between; it tends to 0 on the far left and to
+1 on the far right.
 
 Read the graph from left to right. Below 1, $X$ cannot be that small, so
 $F=0$. At 1 it jumps by $p(1)=\tfrac14$; at 2 by $\tfrac12$, to
@@ -3391,7 +3411,8 @@ now 4 is included, so we subtract only up to 3.)}
 \say A call with strike 110 is the right to buy the stock for 110 in one
 year. If the price is above 110, you buy at 110 and could sell at the
 market price, so you gain the difference; otherwise you do not use the
-right, and you get 0. So $C=\max(S-110,0)$. Try it in pairs, three
+right, and you get 0. So $C=\max(S-110,0)$: the payoff before subtracting
+the option premium, the price paid for the option. Try it in pairs, three
 minutes: (a) first, then (b).
 
 \begin{cue}
@@ -3612,8 +3633,9 @@ the same probability $0.05$: $X$ is binomial with $(n,p)=(10,\,0.05)$,
 	\end{center}
 \end{slidefig}
 
-(b), (c) No default: all ten loans are repaid, and by independence we
-multiply. Exactly one default:
+(b), (c) No default: all ten loans survive the year without default; each
+avoids default during the year with probability $0.95$, and by
+independence we multiply. Exactly one default:
 \[ P(X=0)=0.95^{10}\approx0.5987,\qquad
 	P(X=1)=10\cdot0.05\cdot0.95^{9}\approx0.3151. \]
 \ask Where does the factor 10 in (c) come from? \emph{(Any one of the ten
@@ -3664,7 +3686,8 @@ rarely more. The dashed line at 0.5 sits between the two tall bars.
 	the Poisson distribution with parameter $\lambda>0$:
 	\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots,\qquad
 		\E[X]=\lambda,\qquad \Var(X)=\lambda. \]
-	Two bullet points: the number of \emph{rare events} in a fixed period
+	Two bullet points: the number of \emph{events} in a fixed period, when
+	the events happen independently of each other at a steady average rate
 	(claims a day, defaults a year, errors on a page); $\lambda$ is the
 	average number of events in the period.
 \end{onslide}
@@ -3679,9 +3702,10 @@ rarely more. The dashed line at 0.5 sits between the two tall bars.
 	\end{center}
 \end{slidefig}
 
-\say The Poisson story: the number of rare events in a fixed period:
-claims a day, defaults a year, errors on a page. The events come one by
-one, at random times, independently of each other, as on the time line of
+\say The Poisson story: the number of events in a fixed period, when the
+events happen independently of each other at a steady average rate:
+claims a day, defaults a year, errors on a page. Such events are often
+rare. The events come one by one, at random times, as on the time line of
 the slide. With parameter $\lambda>0$ the pmf is
 \[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots \]
 and $\E[X]=\Var(X)=\lambda$: $\lambda$ is the average number of events in
@@ -3785,7 +3809,7 @@ brings 3 claims, give or take about 2.
 \end{cue}
 
 \begin{onslide}
-	the geometric distribution with parameter $p$: $X$ is the number of the
+	the geometric distribution with parameter $0<p\le1$: $X$ is the number of the
 	trial on which the \emph{first} success happens, in independent trials
 	with success probability $p$:
 	\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots,\qquad
@@ -4014,7 +4038,9 @@ invoices? \emph{(All five come from the sixteen correct ones.)}
 
 (c) Complement: $P(X\ge1)=1-P(X=0)\approx0.7183$.
 
-(d) Two erroneous and three correct invoices; the two choices multiply:
+(d) Two erroneous and three correct invoices. Each choice of two erroneous
+invoices can be combined with every choice of three correct ones, so the
+two counts multiply:
 \[ P(X=2)=\frac{\binom42\binom{16}{3}}{\binom{20}{5}}=\frac{6\cdot560}{15504}
 	=\frac{3360}{15504}\approx0.2167. \]
 
@@ -4071,7 +4097,8 @@ wrong, more than one sample in four shows no error at all.
 	$\Var(X)=\E[X^2]-(\E[X])^2$, $\SD(X)=\sqrt{\Var(X)}$. The table has the
 	five distributions; the key is the story. One trial, success or not:
 	Bernoulli. A fixed number of independent trials: binomial, a sum of
-	Bernoulli variables. Rare events in a period: Poisson. Waiting for the
+	Bernoulli variables. Events in a period, independent of each other, at
+	a steady average rate: Poisson. Waiting for the
 	first success: geometric. Sampling without replacement: hypergeometric.
 	And for ``at least one'' or ``at least two'', use the complement.
 

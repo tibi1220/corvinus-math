@@ -134,7 +134,7 @@ are exercises of Week~8.
 	\textbf{In general.} $n$ identical objects into $r$ distinct boxes: $n$
 	stars and $r-1$ bars,
 	\[ \binom{n+r-1}{r-1}\ \text{ways.} \]
-	If every box must be nonempty, first put one object into each box, then
+	If every box must be nonempty ($n\ge r$), first put one object into each box, then
 	divide the other $n-r$ freely: $\binom{n-1}{r-1}$ ways.
 
 	\textbf{The last entry of the table.} Choosing $k$ times from $n$ kinds,
@@ -501,7 +501,7 @@ are exercises of Week~8.
 	\end{center}
 	\textbf{Bayes' formula.} Having seen $E$, how likely is $F$? By the
 	definition of conditional probability, $P(F\mid E)=P(FE)/P(E)$, and by
-	the multiplication rule $P(FE)=P(E\mid F)\,P(F)$. So
+	the multiplication rule $P(FE)=P(E\mid F)\,P(F)$. So, if $P(E)>0$,
 	\[ \underbrace{\color{teal}P(F\mid E)}_{\text{posterior}}
 		=\frac{P(E\mid F)\,\overbrace{\color{gold}P(F)}^{\text{prior}}}{P(E)}. \]
 	The {\color{gold}\textbf{prior}} $P(F)$ is how likely $F$ is before we
@@ -523,7 +523,7 @@ are exercises of Week~8.
 		\textbf{Why it works: a picture.} Draw the sample space $\Om$ as a gray
 		box, the hypothesis $F$ as a blue diamond and the observation $E$ as a
 		light blue circle. Where they overlap, both happen: the red piece is
-		$FE$.
+		$FE$. In these pictures, area stands for probability.
 		\begin{center}
 			\bayesvenn
 		\end{center}
@@ -592,10 +592,10 @@ are exercises of Week~8.
 		=\frac{P(E\mid S)\,\overbrace{\color{gold}P(S)}^{\text{prior}}}{P(E)}
 		=\frac{0.343\cdot{\color{gold}0.1}}{0.1468}\approx{\color{teal}0.234}. \]
 	Three good years raise the chance of skill from {\color{gold}$10\%$}
-	(prior) to only {\color{teal}$23\%$} (posterior): three in four such
+	(prior) to only {\color{teal}$23\%$} (posterior): about three in four such
 	``star'' managers were just lucky. \textbf{Careful:} $P(E\mid S)$ and
-	$P(S\mid E)$ are different numbers. When $F$ is rare, even a good signal
-	leaves $P(F\mid E)$ small, because most of the paths to $E$ come through
+	$P(S\mid E)$ are different numbers. When $F$ is rare, even an informative signal
+	may leave $P(F\mid E)$ small, because most of the paths to $E$ come through
 	$F^c$.
 \end{key}
 
@@ -613,7 +613,9 @@ are exercises of Week~8.
 	\emph{updating becomes one multiplication.} In Bayes' formula the
 	denominator $P(E)$ needs total probability again for every new piece of
 	evidence. With odds, each new piece of evidence just multiplies the odds
-	by its \emph{likelihood ratio}, so several signals are easy to combine.
+	by its \emph{likelihood ratio}, as long as the pieces of evidence are
+	conditionally independent given $F$ and given $F^c$, so several signals
+	are easy to combine.
 
 	\noindent\begin{minipage}[c]{.5\linewidth}
 		\textbf{Odds.} The odds of an event $F$ compare its probability with
@@ -667,8 +669,8 @@ are exercises of Week~8.
 	$0.1/0.9=\frac19$; the likelihood ratio of three good years is
 	$0.343/0.125=2.744$; posterior odds $2.744/9\approx0.305$, so
 	$P(S\mid E)=0.305/1.305\approx0.234$, as before. Now a fourth good year
-	comes. With probabilities we would redo the whole tree; with odds we
-	multiply by one number, the likelihood ratio of one good year,
+	comes. With probabilities, we apply Bayes' formula again, with the old
+	posterior as the new prior and a new $P(E)$; with odds we multiply by one number, the likelihood ratio of one good year,
 	$0.7/0.5=1.4$: odds $0.305\cdot1.4\approx0.427$, so
 	$P\approx0.427/1.427\approx0.30$. This works because, once we know whether
 	the manager is skilled, the years are independent of each other. In
@@ -687,11 +689,12 @@ are exercises of Week~8.
 	\setlength{\parskip}{5pt}
 	\textbf{Partition.} Events $F_1,\dots,F_n$ form a partition of $\Om$ if
 	they are mutually exclusive and exactly one of them occurs (together
-	they cover $\Om$). $F$ and $F^c$ is the simplest partition; the rating
+	they cover $\Om$). $F$ and $F^c$ form the simplest partition; the rating
 	classes of a loan or the three possible machines that made an item are
 	others.
 
-	\textbf{Generalized Bayes formula.} For each $j$, by the definition and
+	\textbf{Generalized Bayes formula.} Let all $P(F_i)>0$ and $P(E)>0$. For
+	each $j$, by the definition and
 	the multiplication rule, $P(F_j\mid E)=P(F_jE)/P(E)$ with
 	$P(F_jE)=P(E\mid F_j)\,P(F_j)$:
 	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}. \]
@@ -707,7 +710,7 @@ are exercises of Week~8.
 	\noindent\begin{minipage}{\linewidth}
 		\textbf{Why it works: a picture.} The partition cuts the gray box $\Om$
 		into strips $F_1,F_2,F_3$, and the circle $E$ into the pieces
-		$EF_1,EF_2,EF_3$.
+		$EF_1,EF_2,EF_3$. In these pictures, area stands for probability.
 		\begin{center}
 			\gbayesvenn[.85]
 		\end{center}
@@ -759,7 +762,7 @@ are exercises of Week~8.
 		\item $F=\{1,2,3,4\}$: $P(EF)=P(\{2,4\})=\frac13=\frac12\cdot\frac23$,
 		      independent (half of $F$ is even, as half of $\Om$ is).
 		\item $G=\{4,5,6\}$: $P(EG)=P(\{4,6\})=\frac13\ne\frac12\cdot\frac12$,
-		      not independent (two thirds of $G$ is even).
+		      not independent (two of the three outcomes of $G$ are even).
 	\end{itemize}
 	\textbf{Complements.} If $E$ and $F$ are independent, so are $E$ and
 	$F^c$:
@@ -848,8 +851,9 @@ are exercises of Week~8.
 
 	\textbf{Properties.} $F$ is a step function: it is constant between the
 	values of $X$ and jumps by $p(x)$ at each value $x$ (so the pmf can be
-	read off from the jump heights). It never decreases, starts at 0 on the
-	far left and ends at 1 on the far right. At a jump the value is the
+	read off from the jump heights). It never decreases, tends to 0 as
+	$x\to-\infty$ and to 1 as $x\to+\infty$ (for a Poisson $X$, or a geometric $X$
+	with $p<1$, it never reaches 1 exactly). At a jump the value is the
 	\emph{upper} one (the filled dot), because $X\le x$ includes $X=x$; in
 	other words, $F$ is \emph{right-continuous}.
 
@@ -1024,8 +1028,9 @@ are exercises of Week~8.
 		\figpoisson
 	\end{minipage}
 
-	\textbf{When to use it.} For the number of rare events in a fixed period
-	or area: insurance claims on a day, defaults in a year, typing errors on
+	\textbf{When to use it.} For the number of events in a fixed period or
+	area, when the events happen independently of each other at a steady
+	average rate (such events are often rare): insurance claims on a day, defaults in a year, typing errors on
 	a page. $\lambda$ is the average number of events in the period.
 \end{key}
 
@@ -1041,7 +1046,7 @@ are exercises of Week~8.
 		\textbf{Definition.} Repeat independent trials, each a success with
 		probability $p$, until the first success. The number of the trial on
 		which it happens, $X$, has the geometric distribution with parameter
-		$p$:
+		$p$ ($0<p\le1$):
 		\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]
 		The first $n-1$ trials fail, then the $n$th succeeds; multiply by
 		independence.

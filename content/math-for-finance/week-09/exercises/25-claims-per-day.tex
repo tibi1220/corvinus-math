@@ -7,7 +7,8 @@
 	\begin{context}
 		An insurance company has many policyholders. Each policy leads to a
 		\emph{claim} (a request for payment after a loss) only rarely, and the
-		policyholders act independently of each other. The number of claims
+		claims occur independently of each other at a steady average rate. The
+		number of claims
 		that arrive in a day is then usually modeled with a Poisson
 		distribution. The insurer uses this model to plan staff and cash
 		reserves.
@@ -61,7 +62,8 @@
 \end{slides}
 
 \begin{solution}
-	\idea The count of rare events (claims) in a fixed period (a day) is
+	\idea The number of events (claims) in a fixed period (a day), when the
+	events happen independently of each other at a steady average rate, is
 	modeled by the Poisson distribution, and here it is given directly with
 	$\lambda=3$. Each part is one use of the Poisson pmf
 	$P(X=i)=e^{-\lambda}\lambda^i/i!$ or of the facts
@@ -96,7 +98,7 @@
 		(d) $\E[X]=3$, $\Var(X)=3$, $\SD(X)=\sqrt3\approx1.732$
 	\end{answer}
 	\begin{remark}
-		\textbf{Common mistake:} in (c), computing $1-P(X=0)-P(X=1)$ but
+		\textbf{Common mistake:} in (c), subtracting only $P(X=0)$ and
 		forgetting $P(X=1)$, or computing $1-P(X\le2)$. ``At least 2'' still
 		contains the value 2, so only 0 and 1 are left out. Another frequent slip
 		is $\SD(X)=3$: for the Poisson distribution it is the \emph{variance}

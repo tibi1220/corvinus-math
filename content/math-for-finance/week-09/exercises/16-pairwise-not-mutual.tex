@@ -4,11 +4,12 @@
 % ---
 
 \begin{problem}
-	Two fair coins are tossed. Let $A$ = ``the first coin shows heads'', $B$ =
+	Two fair coins are tossed independently. Let $A$ = ``the first coin shows heads'', $B$ =
 	``the second coin shows heads'' and $C$ = ``the two coins show the same
 	side''. (a) Are $A$ and $B$ independent? $A$ and $C$? $B$ and $C$? (b) Are
-	$A$, $B$, $C$ (mutually) independent? (c) Explain in words why knowing two
-	of the events tells you everything about the third.
+	$A$, $B$, $C$ (mutually) independent? (c) Explain in words why knowing whether
+	each of any two of the events occurred determines whether the third
+	occurred.
 \end{problem}
 
 \begin{slides}
@@ -67,8 +68,8 @@
 	(c) If $A$ and $B$ both occur, the outcome is $HH$, so $C$ occurs:
 	\[ P(C\mid AB)=1\ne\tfrac12=P(C). \]
 	\pause
-	One coin alone says nothing about ``same side''; two of the events
-	together decide the third.
+	One coin alone says nothing about ``same side''; knowing whether each
+	of any two events occurred decides whether the third occurred.
 	\pause
 
 	\medskip
@@ -128,8 +129,8 @@
 	\step{(c)} Suppose we know that $A$ and $B$ both occurred. Then both
 	coins show heads, so they show the same side, and $C$ certainly occurred:
 	\[ P(C\mid AB)=\frac{P(ABC)}{P(AB)}=\frac{1/4}{1/4}=1, \]
-	while $P(C)=\frac12$. In the same way, any two of the events decide the
-	third: if $A$ occurs and $C$ occurs, the second coin must be heads, so
+	while $P(C)=\frac12$. In the same way, knowing whether each of any two
+	of the events occurred determines whether the third occurred: if $A$ occurs and $C$ occurs, the second coin must be heads, so
 	$B$ occurs; if $A$ occurs and $C$ does not, $B$ does not occur either.
 	Knowing only one coin tells nothing about ``same side'' (that is
 	the pairwise independence of (a)), but knowing both coins tells
@@ -138,8 +139,8 @@
 		(a) yes, all three pairs are independent:
 		$P(AB)=P(AC)=P(BC)=\frac14=\frac12\cdot\frac12$ \quad
 		(b) no: $P(ABC)=\frac14\ne\frac18=P(A)P(B)P(C)$ \quad
-		(c) $P(C\mid AB)=1\ne\frac12=P(C)$: two of the events determine the
-		third
+		(c) $P(C\mid AB)=1\ne\frac12=P(C)$: whether any two of the events
+		occurred determines whether the third occurred
 	\end{answer}
 	\begin{remark}
 		\textbf{Common mistake:} checking only the three pairs and concluding

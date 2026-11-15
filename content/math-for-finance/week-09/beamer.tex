@@ -202,13 +202,13 @@
         \fill[bvblue] (#2,-.16) rectangle (#3,.16);
       \end{scope}
       \draw[bvline,rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
-      \draw[bvline] (-.0875,-.16)--(-.0875,.16) (.05,-.16)--(.05,.16);}},
+      \draw[bvline] (-.094,-.16)--(-.094,.16) (.094,-.16)--(.094,.16);}},
     pics/gbE#1/.style={code={%
       \fill[white] (0,0) circle (.2);
       \begin{scope}
         \clip (0,0) circle (.2);
         \fill[bvrose] (#4,-.2) rectangle (#5,.2);
-        \draw[bvline] (-.092,-.2)--(-.092,.2) (.077,-.2)--(.077,.2);
+        \draw[bvline] (-.103,-.2)--(-.103,.2) (.103,-.2)--(.103,.2);
       \end{scope}
       \draw[bvclip] (0,0) circle (.2);}},
   }}
@@ -746,7 +746,7 @@
       \texttt{|***|**} & $(0,3,2)$ & \texttt{*||****} & $(1,0,4)$
     \end{tabular}
   \end{center}
-  \vspace{-2mm}\pause
+  \vspace{-3mm}\pause
   \begin{itemize}
     \item Every division is a row of $5$ stars and $2$ bars, and every such
           row is a division.
@@ -757,8 +757,8 @@
   \begin{block}{Combinations with repetition (stars and bars)}
     $n$ identical objects into $r$ distinct boxes: $n$ stars and $r-1$ bars,
     \alert{$\binom{n+r-1}{r-1}$} ways.\\
-    Every box nonempty: first put one object into each box, then divide the
-    other $n-r$ freely: $\binom{n-1}{r-1}$ ways.
+    Every box nonempty ($n\ge r$): put one object into each box, then
+    divide the other $n-r$: $\binom{n-1}{r-1}$ ways.
   \end{block}
   This is the ``unordered, with repetition'' entry of the table: choosing
   $k$ times from $n$ kinds is $k$ stars and $n-1$ bars, $\binom{n+k-1}{k}$.
@@ -1030,7 +1030,8 @@
     \begin{column}{.56\textwidth}
       \begin{block}{Bayes' formula}
         \[ \underbrace{\color{teal}P(F\mid E)}_{\text{posterior}}
-          =\frac{P(E\mid F)\,\overbrace{\color{gold}P(F)}^{\text{prior}}}{P(E)} \]
+          =\frac{P(E\mid F)\,\overbrace{\color{gold}P(F)}^{\text{prior}}}{P(E)}
+          \quad\text{if } P(E)>0 \]
         {\color{gold}Prior}: how likely $F$ is before we see $E$.
         {\color{teal}Posterior}: how likely $F$ is after we have seen $E$.
       \end{block}
@@ -1106,7 +1107,7 @@
   \uncover<4->{%
     \begin{alertblock}{Lesson}
       Three good years raise the chance of skill from {\color{gold}$10\%$}
-      (prior) to only {\color{teal}$23\%$} (posterior): three in four such
+      (prior) to only {\color{teal}$23\%$} (posterior): about three in four such
       ``star'' managers were just lucky.
     \end{alertblock}}
 \end{frame}
@@ -1121,7 +1122,7 @@
     \begin{column}{.62\textwidth}
       Probability of an event $=$ its share of $\Om$ (the gray box).\\[1mm]
       Conditional probability $=$ share inside the shape we know
-      happened.
+      happened. In these pictures, area stands for probability.
     \end{column}
   \end{columns}
   \vspace{1mm}
@@ -1143,13 +1144,16 @@
             multiplication}. In Bayes' formula the denominator $P(E)$ needs
           total probability again for every new piece of evidence. With odds,
           each new piece of evidence just multiplies the odds by its
-          \emph{likelihood ratio}, so several signals are easy to combine.
+          \emph{likelihood ratio}, as long as the pieces of evidence are
+          conditionally independent given $F$ and given $F^c$.
+          So several signals are easy to combine.
   \end{itemize}
   \pause
   \begin{exampleblock}{Skill or luck, continued}
     After three good years, the manager is skilled with probability
-    $0.234$. Now comes a fourth good year. With probabilities, we redo the
-    whole tree. With odds, we multiply by one number:
+    $0.234$. Now comes a fourth good year. With probabilities, we apply
+    Bayes' formula again, with the old posterior as the new prior and a new
+    $P(E)$. With odds, we multiply by one number:
     $P(\text{good year}\mid S)/P(\text{good year}\mid S^c)=0.7/0.5=1.4$.
   \end{exampleblock}
 \end{frame}
@@ -1202,7 +1206,8 @@
   \textbf{Skill or luck:} prior odds $0.1/0.9=1/9$; likelihood ratio of
   three good years $0.343/0.125=2.744$; posterior odds
   $2.744/9\approx0.305$, so $P(S\mid E)=0.305/1.305\approx0.234$, as
-  before. A fourth good year: $0.305\cdot1.4\approx0.427$, so
+  before. A fourth good year (the years are independent given skill and
+  given no skill): $0.305\cdot1.4\approx0.427$, so
   $P\approx0.427/1.427\approx0.30$.
 \end{frame}
 
@@ -1211,9 +1216,10 @@
   \begin{columns}[T]
     \begin{column}{.6\textwidth}
       $F_1,\dots,F_n$ is a \textbf{partition} of $\Om$: mutually exclusive
-      events, and exactly one of them occurs.
+      events, and exactly one of them occurs; all $P(F_i)>0$.
       \begin{block}{Generalized Bayes formula}
-        \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)} \]
+        \[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}
+          \quad\text{if } P(E)>0 \]
       \end{block}
       \begin{block}{Total probability}
         The denominator: add the paths that end in $E$,
@@ -1344,7 +1350,8 @@
       \begin{block}{Distribution function}
         $F(x)=P(X\le x)=\sum_{y\le x}p(y)$.\\[2pt]
         A step function: it jumps by $p(x)$ at every value $x$ and is
-        constant in between; it rises from 0 to 1.
+        constant in between; it tends to 0 on the far left and to 1 on the far
+        right.
       \end{block}
     \end{column}
     \begin{column}{.46\textwidth}
@@ -1505,8 +1512,9 @@
         $\E[X]=\lambda$, \qquad $\Var(X)=\lambda$.
       \end{block}
       \begin{itemize}
-        \item The number of \textbf{rare events} in a fixed period: claims a
-              day, defaults a year, errors on a page.
+        \item The number of \textbf{events} in a fixed period, when the
+              events happen independently of each other at a steady
+              average rate: claims a day, defaults a year, errors on a page.
         \item $\lambda$ is the average number of events in the period.
       \end{itemize}
     \end{column}
@@ -1521,7 +1529,7 @@
 
 \begin{frame}{Geometric distribution}
   \small
-  \begin{block}{Geometric distribution with parameter $p$}
+  \begin{block}{Geometric distribution with parameter $0<p\le1$}
     $X=$ the number of the trial on which the \textbf{first} success
     happens, in independent trials with success probability $p$:
     \[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]

@@ -9,7 +9,8 @@
 		to buy a stock at a fixed price, the \emph{strike price} $K$, on a given
 		date. If the stock price $S$ on that date is above $K$, the holder buys at
 		$K$ and gains $S-K$; otherwise the option is simply not used and pays nothing. So the
-		payoff is $\max(S-K,0)$.
+		payoff, before subtracting the option premium (the price paid for the
+		option), is $\max(S-K,0)$.
 	\end{context}
 	The price of a stock in one year is a random variable $S$ with
 	\begin{center}
@@ -127,9 +128,12 @@
 	\end{answer}
 	\begin{remark}
 		\textbf{Common mistake:} computing $\E[C]$ as $\max(\E[S]-110,0)=0$ and
-		concluding that the option is worthless. An option is valuable exactly
-		because of the uncertainty: it keeps the upside and cuts off the
-		downside. The same mistake in variance: $\Var(C)$ is not obtained from
+		concluding that the option is worthless. Here the expected payoff is
+		positive because there is a positive probability that the stock
+		finishes above the strike, even though its expected price is below the
+		strike: the payoff keeps the upside and cuts off the downside. (The
+		expected payoff $6$ is not the price of the option; this exercise only
+		asks for the moments of the payoff.) The same mistake in variance: $\Var(C)$ is not obtained from
 		$\Var(S)$ by a simple formula, because $\max(S-110,0)$ is not a linear
 		function of $S$.
 	\end{remark}

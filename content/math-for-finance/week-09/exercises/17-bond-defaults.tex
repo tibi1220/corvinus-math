@@ -62,7 +62,9 @@
 	\small
 	(b) Same economy: $P(D_1D_2)=\alert{0.02}$ is given.
 	\pause\\[1mm]
-	This is 8 times as large as $0.0025$: no product rule here.
+	This is 8 times as large as $0.0025$: we cannot multiply the two
+	marginal probabilities here, since $P(D_1D_2)=P(D_1)P(D_2)$ holds only
+	for independent events.
 	\pause
 	\[ P(D_1\cup D_2)=0.05+0.05-0.02=\alert{0.08}. \]
 	\pause
@@ -128,8 +130,10 @@
 	\[ P(D_1\cup D_2)=1-P(D_1^cD_2^c)=1-0.95\cdot0.95=1-0.9025=0.0975. \]
 
 	\step{(b)} Now the two issuers depend on the same economy, and
-	$P(D_1D_2)=0.02$ is given. We cannot multiply here: multiplication is
-	allowed only for independent events. This number is $0.02/0.0025=8$ times
+	$P(D_1D_2)=0.02$ is given. We cannot multiply the two marginal
+	probabilities here: $P(D_1D_2)=P(D_1)P(D_2)$ holds only for independent
+	events. (The conditional multiplication rule is still valid: with the
+	value of (c), $P(D_1D_2)=P(D_1)P(D_2\mid D_1)=0.05\cdot0.4=0.02$.) This number is $0.02/0.0025=8$ times
 	the value under independence. The probability that at least one bond
 	defaults is again inclusion--exclusion:
 	\[ P(D_1\cup D_2)=0.05+0.05-0.02=0.08. \]
@@ -169,6 +173,7 @@
 		$\Om$. This is why the seller of a second-to-default swap cares a lot
 		about default correlation.
 		\textbf{Common mistake:} computing $P(D_1D_2)=0.05\cdot0.05$ in (b)
-		as well. The product rule holds only for independent events.
+		as well. We cannot multiply the two marginal probabilities here:
+		$P(D_1D_2)=P(D_1)P(D_2)$ holds only for independent events.
 	\end{remark}
 \end{solution}

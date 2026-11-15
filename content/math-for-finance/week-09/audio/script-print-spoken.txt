@@ -100,7 +100,7 @@ The third child gets all five coins: 0, 0, 5.
 [[slnc 500]]
 Click. Every division is a row of 5 stars and 2 bars, and every such row is a division. The row has 7 places, and it is fixed once we choose the places of the 2 bars: 7 choose 2, that is 21 divisions.
 [[slnc 500]]
-Click. In general: n identical objects, r boxes, so n stars and r minus 1 bars: n plus r minus 1, choose r minus 1. If every box must be nonempty, put one object in each box first and distribute the remaining n minus r freely: n minus 1 choose r minus 1. For the coins: if every child gets at least one coin, 4 choose 2, that is 6 ways.
+Click. In general: n identical objects, r boxes, so n stars and r minus 1 bars: n plus r minus 1, choose r minus 1. If every box must be nonempty, so n at least r, put one object in each box first and distribute the remaining n minus r freely: n minus 1 choose r minus 1. For the coins: if every child gets at least one coin, 4 choose 2, that is 6 ways.
 [[slnc 500]]
 And this is the missing entry of the table. Choosing k times from n kinds, when the order does not matter, means: how many times do we choose each kind? That is k stars in n boxes, so n minus 1 bars: n plus k minus 1 choose n minus 1, which is the same as n plus k minus 1 choose k. For a, b, c, d, e and k equals 2: 6 choose 2, that is 15, as in the table.
 [[slnc 500]]
@@ -206,9 +206,9 @@ Look at the table of slide 5: with replacement it is ordered, with repetition, n
 
 Exercise 8.32. Events of a stock path. Slide 15.
 [[slnc 600]]
-Finance context: a stock moves Up or Down on each of 3 days, a three-step binomial tree. Questions like did the stock end above its starting price, or did it ever fall below it, are events; some options, for example barrier options, pay depending on such path properties.
+Finance context: a stock moves up or down by one unit on each of 3 days, a three-step binomial tree. Questions like did the stock end above its starting price, or did it ever fall below it, are events; some options, for example barrier options, pay depending on such path properties.
 [[slnc 800]]
-A stock moves Up or Down on each of 3 days: Omega is U U U, U U D, U D U, U D D, D U U, D U D, D D U, D D D. Let A be the stock ends above the start, B be up on day 1, and C be never below the start. List A, B and C, and find A B, A complement B, and A B complement. Which inclusion holds between A and C?
+A stock moves up or down by one unit on each of 3 days: Omega is U U U, U U D, U D U, U D D, D U U, D U D, D D U, D D D. Let A be the stock ends above the start, B be up on day 1, and C be never below the start. List A, B and C, and find A B, A complement B, and A B complement. Which inclusion holds between A and C?
 [[slnc 800]]
 Try it in pairs, three minutes. A hint: track the position, the number of ups minus the number of downs, after each day.
 [[slnc 500]]
@@ -290,7 +290,7 @@ Ask the class: how can we check the diagram?
 [[slnc 800]]
 The seven regions inside the circles must add up to 890: 390 plus 30 plus 20 plus 230 plus 130 plus 20 plus 70 is 890.
 [[slnc 500]]
-Note for you: the last line of the slide says, next week: divide by 1000 and these become probabilities. Say now instead of next week: the next slide does it.
+Note for you: the last line of the slide says, in Week 9: divide by 1000 and these become probabilities. This is Week 9, so say now: the next slide does it.
 [[slnc 500]]
 Now divide every number by 1000, and you have probabilities for a randomly chosen client: P of C union K union M is 0.89, the probability of no product is 0.11, and P of C K complement is 0.52. That is the next slide.
 [[slnc 1200]]
@@ -448,7 +448,7 @@ Total probability and Bayes' formula. Slide 27.
 [[slnc 600]]
 On the slide: a tree. From the root, two branches go to F and to F complement, with probabilities P of F and P of F complement; from each of them, two branches go to E and to E complement, with the conditional probabilities. The two leaves E are highlighted. Under the tree: multiply along a path; add the paths that end in E.
 [[slnc 500]]
-Bayes' formula: P of F given E equals P of E given F times P of F, over P of E. We know P of E given F, but we need P of F given E: Bayes' formula turns the condition around. Where does it come from? The numerator is P of E and F by the multiplication rule, so this is just the definition, P of F given E equals P of E and F over P of E, with the numerator written in a form we can compute.
+Bayes' formula, if P of E is greater than 0: P of F given E equals P of E given F times P of F, over P of E. We know P of E given F, but we need P of F given E: Bayes' formula turns the condition around. Where does it come from? The numerator is P of E and F by the multiplication rule, so this is just the definition, P of F given E equals P of E and F over P of E, with the numerator written in a form we can compute.
 [[slnc 500]]
 The names: P of F is the prior, gold on the slide: what we believe before we see E. P of F given E is the posterior, teal on the slide: what we believe after we have seen E. Bayes is the rule for updating beliefs with evidence.
 [[slnc 500]]
@@ -473,7 +473,7 @@ Total probability: two paths end in E, so P of E equals 0.0343 plus 0.1125, whic
 [[slnc 400]]
 Bayes: the skilled path over both paths. P of S given E equals P of E given S times P of S, over P of E, which is 0.0343 over 0.1468, approximately 0.234.
 [[slnc 500]]
-Lesson: three good years raise the chance of skill from 10 percent, the prior, to only 23 percent, the posterior. Three in four such star managers were just lucky. Compare with your guesses.
+Lesson: three good years raise the chance of skill from 10 percent, the prior, to only 23 percent, the posterior. About three in four such star managers were just lucky. Compare with your guesses.
 [[slnc 500]]
 Why so low? Look at the two highlighted numbers. The lucky path, 0.1125, is more than three times the skilled path, 0.0343. Skill makes three good years almost three times as likely, 0.343 against 0.125, but unskilled managers are nine times as many. The large group wins.
 [[slnc 400]]
@@ -490,7 +490,7 @@ Here is why Bayes' formula is true, in one picture. No numbers, only shapes.
 [[slnc 400]]
 Step 1: the picture. Point at the top. The gray box is the whole sample space Omega. The blue diamond is the hypothesis F, say, the manager is skilled. The light blue circle is the evidence E, three good years. Where they overlap, both happen: the red piece is F E.
 [[slnc 400]]
-Step 2: probability is a share. Point at the row of fractions. P of F is the share of the box that the diamond covers. Read the little fraction as diamond over box. In the same way, P of E is circle over box.
+Step 2: probability is a share. In these pictures, area stands for probability. Point at the row of fractions. P of F is the share of the box that the diamond covers. Read the little fraction as diamond over box. In the same way, P of E is circle over box.
 [[slnc 400]]
 Step 3: conditional probability is a share inside what we know. Suppose we know that E happened. Then the outcome is somewhere in the circle, and the rest of the box no longer counts: the circle is our new box. Inside the circle, F happens exactly in the red piece. So P of F given E is red over circle. The other way around, if we know F happened, the diamond is the new box, and P of E given F is red over diamond. Point at the last two fractions of the row. Same red piece, different denominators: that is why P of E given F and P of F given E are different numbers.
 [[slnc 500]]
@@ -513,7 +513,7 @@ Keep this picture in mind for the next exercise. When the diamond is tiny, even 
 
 Exercise 9.9. An early-warning model, a finance example. Slides 30 and 31.
 [[slnc 600]]
-Finance context: a borrower defaults when they fail to repay their loan as agreed. Banks run early-warning systems: statistical models that flag borrowers who look likely to default, so that the bank can act in time: call the client, restructure the loan, stop new lending. No model is perfect: it misses some future defaulters and also flags some good borrowers.
+Finance context: a borrower defaults when they fail to repay their loan as agreed. Banks run early-warning systems: statistical models that flag borrowers who look likely to default, so that the bank can act in time: call the client, restructure the loan, stop new lending. No model is perfect: it misses some future defaulters and also flags some borrowers who will not default.
 [[slnc 500]]
 2 percent of a bank's borrowers default within a year. An early-warning model flags 90 percent of the borrowers who will default, but also 5 percent of those who will not default. Part a: what fraction of all borrowers is flagged? Part b: a borrower is flagged. What is the probability that the borrower defaults? Part c: a borrower is not flagged. What is the probability that the borrower defaults?
 [[slnc 800]]
@@ -535,7 +535,7 @@ Part a.
 [[slnc 400]]
 Ask the class: how can a borrower get flagged?
 [[slnc 800]]
-Two ways: defaulter and flagged, or good and flagged.
+Two ways: defaulter and flagged, or non-defaulting and flagged.
 [[slnc 400]]
 Defaulter or not is exclusive, so total probability: P of A equals P of A given D times P of D, plus P of A given D complement times P of D complement, which is 0.018 plus 0.049, which is 0.067. Two paths end in a flag. So 6.7 percent of the borrowers are flagged.
 [[slnc 500]]
@@ -547,19 +547,19 @@ In the picture of slide 29: the diamond D is tiny, 2 percent of the box, and 90 
 [[slnc 500]]
 Note for you: slide 31, the same with counts. Go through the tree of 10 thousand borrowers number by number. Natural frequencies convince those who do not trust the formula.
 [[slnc 500]]
-On the slide: the same tree with counts. 10 thousand borrowers split into 200 defaulters and 9800 good borrowers; the 200 split into 180 flagged and 20 not flagged, the 9800 into 490 flagged and 9310 not flagged. The flagged counts, 180 and 490, are highlighted.
+On the slide: the same tree with counts. 10 thousand borrowers split into 200 defaulters and 9800 non-defaulting borrowers; the 200 split into 180 flagged and 20 not flagged, the 9800 into 490 flagged and 9310 not flagged. The flagged counts, 180 and 490, are highlighted.
 [[slnc 400]]
-Of 10 thousand borrowers, 200 default and 9800 do not. The model flags 90 percent of the defaulters, 180, and 5 percent of the good ones, 490. So 180 plus 490, which is 670, are flagged, and 180 of them default: P of D given A equals 180 over 670, approximately 0.269.
+Of 10 thousand borrowers, 200 default and 9800 do not. The model flags 90 percent of the defaulters, 180, and 5 percent of the non-defaulting borrowers, 490. So 180 plus 490, which is 670, are flagged, and 180 of them default: P of D given A equals 180 over 670, approximately 0.269.
 [[slnc 500]]
 Part c.
 [[slnc 400]]
 Ask the class: what is the new sample space now?
 [[slnc 800]]
-The borrowers who are not flagged.
+The unflagged borrowers.
 [[slnc 400]]
-Not flagged: 20 plus 9310, which is 9330, of whom 20 default: P of D given A complement equals 20 over 9330, which is 2 over 933, approximately 0.00214. With the formula: 0.002 over 0.933, the same.
+Unflagged: 20 plus 9310, which is 9330, of whom 20 default: P of D given A complement equals 20 over 9330, which is 2 over 933, approximately 0.00214. With the formula: 0.002 over 0.933, the same.
 [[slnc 500]]
-The base-rate effect: the model is good, it flags 90 percent of the defaulters, yet only about 27 percent of the flags are true. Defaults are rare, so the 5 percent false flags among the many good borrowers, 490, outnumber the true flags, 180. Still, the model is useful: a flag raises the default probability from 2 percent to 27 percent, and no flag lowers it to 0.2 percent.
+The base-rate effect: the model flags 90 percent of the defaulters, yet only about 27 percent of the flags are true. Defaults are rare, so the 5 percent false flags among the many non-defaulting borrowers, 490, outnumber the true flags, 180. Still, the flag is informative: it raises the default probability from 2 percent to 27 percent, and no flag lowers it to 0.2 percent. Whether the model is useful in practice also depends on what the bank does after a flag and on the costs of missed defaults and false alarms.
 [[slnc 1200]]
 
 Why odds? Slide 32.
@@ -568,9 +568,9 @@ Clock check: this slide is planned for minute 39. If you are more than about 5 m
 [[slnc 500]]
 Why another way to write probabilities? First, because people in finance talk this way. Bettors and bookmakers quote 3 to 1 against; so do many traders. Credit scoring works with odds too: a scorecard adds points to the logarithm of the odds of default, one block of points for each characteristic of the borrower.
 [[slnc 400]]
-The main reason for us: with odds, updating becomes one multiplication. In Bayes' formula the denominator P of E needs total probability, the whole tree, again for every new piece of evidence. With odds, each new piece of evidence just multiplies the odds by one number, its likelihood ratio. So several signals are easy to combine.
+The main reason for us: with odds, updating becomes one multiplication. In Bayes' formula the denominator P of E needs total probability, the whole tree, again for every new piece of evidence. With odds, each new piece of evidence just multiplies the odds by one number, its likelihood ratio, as long as the pieces of evidence are conditionally independent given F and given F complement. So several signals are easy to combine.
 [[slnc 500]]
-Click. Back to our fund manager. After three good years, the probability of skill is 0.234. Now comes a fourth good year. With probabilities, we would redo the whole tree with 0.7 to the power 4 and 0.5 to the power 4. With odds, we multiply by one number: a good year is 0.7 over 0.5, that is 1.4 times as likely for a skilled manager. We do the multiplication in two slides.
+Click. Back to our fund manager. After three good years, the probability of skill is 0.234. Now comes a fourth good year. With probabilities, we apply Bayes' formula again, with the old posterior, 0.234, as the new prior and a new P of E. With odds, we multiply by one number: a good year is 0.7 over 0.5, that is 1.4 times as likely for a skilled manager. This works because the years are independent given skill and given no skill. We do the multiplication in two slides.
 [[slnc 1200]]
 
 Odds. Slide 33.
@@ -610,7 +610,7 @@ Divide both by P of E: that is P of F given E over P of F complement given E, th
 [[slnc 500]]
 Click. The fund manager in odds. Prior odds of skill: 0.1 over 0.9, one ninth, 9 to 1 against. Likelihood ratio of three good years: 0.343 over 0.125, which is 2.744. New odds: one ninth times 2.744, approximately 0.305, and P of S given E equals 0.305 over 1.305, approximately 0.234, as before, without any tree.
 [[slnc 500]]
-A fourth good year: multiply by 1.4 again. 0.305 times 1.4 is approximately 0.427, and P is 0.427 over 1.427, approximately 0.30. Four good years in a row, and still only a 30 percent chance of skill. Each good year multiplies the odds by 1.4, which is not much: luck is a strong competitor.
+A fourth good year: the years are independent given skill and given no skill, so we multiply by 1.4 again. 0.305 times 1.4 is approximately 0.427, and P is 0.427 over 1.427, approximately 0.30. Four good years in a row, and still only a 30 percent chance of skill. Each good year multiplies the odds by 1.4, which is not much: luck is a strong competitor.
 [[slnc 500]]
 Ask the class: how many good years in a row do we need before the odds of skill pass 1, that is, before skill is more likely than luck?
 [[slnc 800]]
@@ -623,9 +623,9 @@ Clock check: this slide is planned for minute 47. If you are more than about 5 m
 [[slnc 500]]
 On the slide: a tree. From the root, three branches to F 1, F 2 and F 3, labeled P of F 1, P of F 2 and P of F 3, and from each F i one branch to E, labeled P of E given F i. Under it: one path to E for each F i.
 [[slnc 500]]
-Now more than two hypotheses. F 1 to F n is a partition of Omega: mutually exclusive events, and exactly one of them occurs. Think of rating classes, or economic scenarios: boom, normal, recession. F and F complement is the special case n equals 2.
+Now more than two hypotheses. F 1 to F n is a partition of Omega: mutually exclusive events, and exactly one of them occurs; we assume all P of F i are greater than 0. Think of rating classes, or economic scenarios: boom, normal, recession. F and F complement is the special case n equals 2.
 [[slnc 500]]
-Bayes' formula is the same as before: P of F j given E equals P of E given F j times P of F j, over P of E. And the denominator again comes from total probability. The F i cut E into n pieces, E and F 1 up to E and F n, that do not overlap, so P of E equals the sum of P of E and F i, which equals the sum of P of E given F i times P of F i.
+Bayes' formula is the same as before, if P of E is greater than 0: P of F j given E equals P of E given F j times P of F j, over P of E. And the denominator again comes from total probability. The F i cut E into n pieces, E and F 1 up to E and F n, that do not overlap, so P of E equals the sum of P of E and F i, which equals the sum of P of E given F i times P of F i.
 [[slnc 500]]
 Point at the tree. The root now has n branches, one for each F i, and each is followed by a branch to E. The branches to E complement are left out. Multiply along a path to get P of F i times P of E given F i. Add all the paths to get P of E. Bayes is one path divided by all of them.
 [[slnc 400]]
@@ -638,7 +638,7 @@ Note for you: one click: first the picture and the total-probability row, then, 
 [[slnc 500]]
 On the slide: the gray box Omega, cut into three vertical strips, F 1, F 2 and F 3. A light blue circle E sits across all three strips, so the strips cut it into three pieces, E F 1, E F 2 and E F 3. Below, total probability with shapes: P of E equals the sum of three terms; each term is piece i of the circle over strip i, times strip i over the box, and the strips are crossed out; the sum is the whole circle over the box. After a click, Bayes for F 2: P of F 2 given E equals piece 2 over the box, divided by the circle over the box; the boxes are crossed out, and what is left is piece 2 over the circle: the share of the piece E F 2 in E.
 [[slnc 500]]
-The same idea as the diamond and the circle, with three hypotheses. Point at the picture. The partition cuts the box Omega into three strips, F 1, F 2, F 3: they do not overlap, and together they fill the box. The circle E is cut by the strips into three pieces, E F 1, E F 2, E F 3.
+The same idea as the diamond and the circle, with three hypotheses. Again, area stands for probability. Point at the picture. The partition cuts the box Omega into three strips, F 1, F 2, F 3: they do not overlap, and together they fill the box. The circle E is cut by the strips into three pieces, E F 1, E F 2, E F 3.
 [[slnc 400]]
 Point at the first row. Each term of total probability is one path of the tree, P of E given F i times P of F i. With shapes: piece i over strip i, times strip i over box. The strip is below in the first fraction and above in the second, so it cancels: each path is piece i over box, that is P of E F i. Add the three pieces and you get the whole circle: circle over box, P of E. That is total probability: each path gives one piece, and the pieces together give E.
 [[slnc 400]]
@@ -669,7 +669,7 @@ Path: multiply along it, for example 0.5 times 0.01, which is 0.005. The paths t
 [[slnc 500]]
 Note for you: slide 38.
 [[slnc 500]]
-Part a. A path is a product, for example P of D and A equals P of D given A times P of A, which is 0.005. The paths ending in D are mutually exclusive, so we add them: P of D equals P of D given A times P of A, plus P of D given B times P of B, plus P of D given C times P of C, which is 0.5 times 0.01, plus 0.3 times 0.03, plus 0.2 times 0.08, which is 0.005 plus 0.009 plus 0.016, which is 0.03. A weighted average of the three default rates, 1 percent, 3 percent and 8 percent, with the class shares as weights. It is closer to 1 percent than to 8 percent because half of the loans are A.
+Part a. A path is a product, for example P of D and A equals P of D given A times P of A, which is 0.005. The paths ending in D are mutually exclusive, so we add them: P of D equals P of D given A times P of A, plus P of D given B times P of B, plus P of D given C times P of C, which is 0.5 times 0.01, plus 0.3 times 0.03, plus 0.2 times 0.08, which is 0.005 plus 0.009 plus 0.016, which is 0.03. So the expected proportion of loans that default is 3 percent. A weighted average of the three default rates, 1 percent, 3 percent and 8 percent, with the class shares as weights. It is closer to 1 percent than to 8 percent because half of the loans are A.
 [[slnc 500]]
 Part b.
 [[slnc 400]]
@@ -689,7 +689,7 @@ P of D complement.
 [[slnc 400]]
 P of D complement equals 1 minus 0.03, which is 0.97. The path from C to D complement: P of D complement given C times P of C, which is 0.92 times 0.2, which is 0.184. P of C given D complement equals 0.184 over 0.97, approximately 0.190. Close to the prior 0.2: almost every loan survives the year, so no default tells us little.
 [[slnc 500]]
-Lesson: C is only 20 percent of the loans, but it gives more than half, 53 percent, of the defaults; A is half of the loans but gives only one sixth of the defaults. Compare with your guesses.
+Lesson: C is only 20 percent of the loans, but on average it gives more than half, 53 percent, of the defaults; A is half of the loans but gives on average only one sixth of the defaults. Compare with your guesses.
 [[slnc 1200]]
 
 Independent events. Slide 40.
@@ -731,7 +731,7 @@ Independent: the probability of both is the product, P of D 1 and D 2 equals 0.0
 [[slnc 500]]
 Note for you: slide 42.
 [[slnc 500]]
-Part b. Same economy: P of D 1 and D 2 equals 0.02 is given. That is 8 times 0.0025: no product rule here. P of D 1 union D 2 equals 0.05 plus 0.05 minus 0.02, which is 0.08.
+Part b. Same economy: P of D 1 and D 2 equals 0.02 is given. That is 8 times 0.0025: we cannot multiply the two marginal probabilities here, since P of D 1 and D 2 equals P of D 1 times P of D 2 holds only for independent events. The conditional multiplication rule is still valid: with the value of part c, P of D 1 times P of D 2 given D 1 is 0.05 times 0.4, which is 0.02. P of D 1 union D 2 equals 0.05 plus 0.05 minus 0.02, which is 0.08.
 [[slnc 500]]
 Part c.
 [[slnc 400]]
@@ -766,7 +766,7 @@ On the slide: the graph of F for p of 1 equal to one quarter, p of 2 equal to on
 [[slnc 500]]
 A random variable X assigns a number to every outcome. It is discrete if it takes finitely or countably many values: the number of defaults, the number of claims, a price on a grid. Its probability mass function, the pmf, is p of x equals P of X equals x; p of x is greater than or equal to 0, and the sum of p of x over all x is 1. The pmf is the complete list: which values, with which probabilities. The probabilities add up to 1 because exactly one of the values comes out.
 [[slnc 500]]
-The distribution function is F of x equals P of X less than or equal to x, which is the sum of p of y over all y less than or equal to x. For a discrete X it is a step function: it jumps by p of x at every value x, is constant in between, and rises from 0 to 1.
+The distribution function is F of x equals P of X less than or equal to x, which is the sum of p of y over all y less than or equal to x. For a discrete X it is a step function: it jumps by p of x at every value x, is constant in between; it tends to 0 on the far left and to 1 on the far right.
 [[slnc 500]]
 Read the graph from left to right. Below 1, X cannot be that small, so F is 0. At 1 it jumps by p of 1, one quarter; at 2 by one half, to three quarters; at 3 by one eighth, to seven eighths; at 4 by one eighth, to 1, and stays there. The height of each jump is the pmf at that point: the pmf and F carry the same information. The filled dots show that at a jump F takes the upper value: F of 2, P of X less than or equal to 2, includes the value 2 itself. The open dots are the values just before the jump.
 [[slnc 400]]
@@ -844,11 +844,11 @@ F of 9 minus F of 3, which is 30 minus 3, over 36, which is 27 over 36, three qu
 
 Exercise 9.21. The payoff of a call option, a finance example. Slides 51 and 52.
 [[slnc 600]]
-Finance context: a call option gives its holder the right, but not the obligation, to buy a stock at a fixed price, the strike price K, on a given date. If the stock price S on that date is above K, the holder buys at K and gains S minus K; otherwise the option is simply not used and pays nothing. So the payoff is the maximum of S minus K and 0.
+Finance context: a call option gives its holder the right, but not the obligation, to buy a stock at a fixed price, the strike price K, on a given date. If the stock price S on that date is above K, the holder buys at K and gains S minus K; otherwise the option is simply not used and pays nothing. So the payoff, before subtracting the option premium, the price paid for the option, is the maximum of S minus K and 0.
 [[slnc 500]]
 The price of a stock in one year is a random variable S, which is 80, 100, 120 or 140, with probabilities 0.2, 0.4, 0.3 and 0.1. Part a: find the expected value, the variance and the standard deviation of S. Part b: a call option with strike price 110 pays C equals the maximum of S minus 110 and 0 in one year. Find the pmf of C, the expected value of C and the standard deviation of C. Part c: compare the expected value of C with the maximum of the expected value of S minus 110, and 0.
 [[slnc 800]]
-A call with strike 110 is the right to buy the stock for 110 in one year. If the price is above 110, you buy at 110 and could sell at the market price, so you gain the difference; otherwise you do not use the right, and you get 0. So C equals the maximum of S minus 110 and 0. Try it in pairs, three minutes: part a first, then part b.
+A call with strike 110 is the right to buy the stock for 110 in one year. If the price is above 110, you buy at 110 and could sell at the market price, so you gain the difference; otherwise you do not use the right, and you get 0. So C equals the maximum of S minus 110 and 0: the payoff before subtracting the option premium, the price paid for the option. Try it in pairs, three minutes: part a first, then part b.
 [[slnc 500]]
 Note for you: slide 51 shows the statement, then the solution of part a on its second page; slide 52 has parts b and c. Ask first, then show.
 [[slnc 500]]
@@ -935,7 +935,7 @@ Show the solution. 10 independent trials, the loans, each a success, a default, 
 [[slnc 500]]
 On the slide: next to the solution, the bars of P of X equals i: 0.5987 at 0 and 0.3151 at 1, both gold and marked b and c; then tiny bars at 2, 3 and 4. A brace over 2 and above is marked: d, X at least 2, 0.086. A dashed line marks the expected value 0.5.
 [[slnc 500]]
-Parts b and c. No default: all ten loans are repaid, and by independence we multiply: P of X equals 0 equals 0.95 to the power 10, approximately 0.5987. Exactly one default: P of X equals 1 equals 10 times 0.05 times 0.95 to the power 9, approximately 0.3151.
+Parts b and c. No default: all ten loans survive the year without default; each avoids default during the year with probability 0.95, and by independence we multiply: P of X equals 0 equals 0.95 to the power 10, approximately 0.5987. Exactly one default: P of X equals 1 equals 10 times 0.05 times 0.95 to the power 9, approximately 0.3151.
 [[slnc 500]]
 Ask the class: where does the factor 10 in part c come from?
 [[slnc 800]]
@@ -958,7 +958,7 @@ Note for you. Clock check: this slide is planned for minute 39 of Session 2. If 
 [[slnc 500]]
 On the slide: a time line of one day, from 0:00 to 24:00, with claims arriving at random times, here 3 of them, in gold. Below it, the bars of P of X equals i for lambda equals 3: equally high at 2 and 3, the bar at 3 in gold, then falling off to the right.
 [[slnc 500]]
-The Poisson story: the number of rare events in a fixed period: claims a day, defaults a year, errors on a page. The events come one by one, at random times, independently of each other, as on the time line of the slide. With parameter lambda greater than 0, P of X equals i equals e to the minus lambda, times lambda to the power i, over i factorial, for i equal to 0, 1, 2, and so on; and the expected value and the variance of X are both lambda: lambda is the average number of events in the period. One number describes the whole distribution.
+The Poisson story: the number of events in a fixed period, when the events happen independently of each other at a steady average rate: claims a day, defaults a year, errors on a page. Such events are often rare. The events come one by one, at random times, as on the time line of the slide. With parameter lambda greater than 0, P of X equals i equals e to the minus lambda, times lambda to the power i, over i factorial, for i equal to 0, 1, 2, and so on; and the expected value and the variance of X are both lambda: lambda is the average number of events in the period. One number describes the whole distribution.
 [[slnc 500]]
 Note that X has no upper limit: any count 0, 1, 2, and so on is possible, but large counts are very unlikely, because i factorial grows fast. The factor e to the minus lambda makes the probabilities add up to 1, since the sum of lambda to the power i over i factorial is e to the lambda.
 [[slnc 400]]
@@ -971,7 +971,7 @@ Tiny example: a bank sees on average 2 defaults a year in a loan book, modeled a
 
 Exercise 9.25. Insurance claims in a day, a finance example. Slide 57.
 [[slnc 600]]
-Finance context: an insurance company has many policyholders. Each policy leads to a claim, a request for payment after a loss, only rarely, and the policyholders act independently of each other. The number of claims that arrive in a day is then usually modeled with a Poisson distribution. The insurer uses this model to plan staff and cash reserves.
+Finance context: an insurance company has many policyholders. Each policy leads to a claim, a request for payment after a loss, only rarely, and the claims occur independently of each other at a steady average rate. The number of claims that arrive in a day is then usually modeled with a Poisson distribution. The insurer uses this model to plan staff and cash reserves.
 [[slnc 500]]
 The number X of claims an insurance office receives on a day has a Poisson distribution with parameter lambda equals 3. Part a: what is the probability that no claim arrives on a day? Part b: what is the probability that exactly 2 claims arrive? Part c: what is the probability that at least 2 claims arrive? Part d: find the expected value of X and the standard deviation of X.
 [[slnc 800]]
@@ -1097,7 +1097,7 @@ P of X equals 0 equals 4 choose 0 times 16 choose 5, over 20 choose 5, which is 
 [[slnc 500]]
 Part c. Complement: P of X greater than or equal to 1 equals 1 minus P of X equals 0, approximately 0.7183.
 [[slnc 500]]
-Part d. Two erroneous and three correct invoices; the two choices multiply: P of X equals 2 equals 4 choose 2 times 16 choose 3, over 20 choose 5, which is 6 times 560 over 15504, which is 3360 over 15504, approximately 0.2167.
+Part d. Two erroneous and three correct invoices. Each choice of two erroneous invoices can be combined with every choice of three correct ones, so the two counts multiply: P of X equals 2 equals 4 choose 2 times 16 choose 3, over 20 choose 5, which is 6 times 560 over 15504, which is 3360 over 15504, approximately 0.2167.
 [[slnc 500]]
 Part e. The expected value of X is n times m over capital N, which is 5 times 4 over 20, which is 1. The sample is a quarter of the invoices, so on average it catches a quarter of the four errors. On the chart, the dashed line at 1 sits on the tallest bar.
 [[slnc 400]]

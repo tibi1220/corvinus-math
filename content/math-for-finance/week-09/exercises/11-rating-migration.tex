@@ -24,7 +24,8 @@
 	\begin{enumerate}
 		\item[(a)] What is the probability that the bond defaults within 2 years?
 		\item[(b)] Given that it defaulted within 2 years, what is the probability
-		      that it was first downgraded to HY?
+		      that it was HY after the first year, before defaulting in the second
+		      year?
 	\end{enumerate}
 \end{problem}
 
@@ -102,13 +103,14 @@
 	(IG, HY or D) as the partition.
 
 	\step{(b)} Let $E=\{X_2=\text{D}\}$ (default within 2 years) and
-	$H=\{X_1=\text{HY}\}$ (first downgraded to HY). We need $P(H\mid E)$. The
+	$H=\{X_1=\text{HY}\}$ (HY after the first year). We need $P(H\mid E)$. The
 	event $HE$ is the single path IG$\to$HY$\to$D, with probability $0.006$.
 	By the definition of conditional probability (this is Bayes' formula):
 	\[ P(H\mid E)=\frac{P(HE)}{P(E)}=\frac{0.06\cdot0.10}{0.0253}
 		=\frac{0.006}{0.0253}\approx 0.237. \]
 	In words: among the bonds that default within two years, about $23.7\%$
-	went through HY first.
+	were HY after the first year and defaulted in the second year. (The
+	annual model says nothing about rating changes within a year.)
 
 	\begin{answer}
 		(a) $0.0253$ \qquad (b) $\dfrac{0.006}{0.0253}\approx 0.237$
@@ -120,7 +122,8 @@
 		stayed IG. The three shares add up to $1$.
 		Notice that the HY path is the least likely of the three, although HY
 		bonds default ten times as often as IG bonds: only $6\%$ of the bonds
-		reach HY at all. \textbf{Common mistake:} answering $0.10$ in (b), which
+		are HY after the first year, so relatively few can follow the
+		IG$\to$HY$\to$D path. \textbf{Common mistake:} answering $0.10$ in (b), which
 		is $P(E\mid H)$, not $P(H\mid E)$.
 	\end{remark}
 \end{solution}

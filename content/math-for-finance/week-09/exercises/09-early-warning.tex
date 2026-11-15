@@ -9,8 +9,8 @@
 		Banks run \emph{early-warning systems}: statistical models that flag
 		borrowers who look likely to default, so that the bank can act in time
 		(call the client, restructure the loan, stop new lending). No model is
-		perfect: it misses some future defaulters and also flags some good
-		borrowers.
+		perfect: it misses some future defaulters and also flags some
+		borrowers who will not default.
 	\end{context}
 	$2\%$ of a bank's borrowers default within a year. An early-warning model
 	flags $90\%$ of the borrowers who will default, but also $5\%$ of those who
@@ -25,8 +25,8 @@
 \begin{slideproblem}
 	$2\%$ of a bank's borrowers default within a year. A model flags $90\%$ of
 	the future defaulters and $5\%$ of the other borrowers. (a) What fraction
-	of borrowers is flagged? Probability of default for (b) a flagged, (c) a
-	not flagged borrower?
+	of borrowers is flagged? Probability of default for (b) a flagged, (c) an
+	unflagged borrower?
 \end{slideproblem}
 
 \begin{slides}
@@ -86,7 +86,7 @@
 				\node (d) at (1.5,1.5) {\scriptsize $200$};
 				\node (g) at (1.5,-1.5) {\scriptsize $9800$};
 				\draw (r) -- node[lab,above left] {default} (d);
-				\draw (r) -- node[lab,below left] {good} (g);
+				\draw (r) -- node[lab,below left] {no default} (g);
 				\node[text=teal] (da) at (3.2,2.25) {\scriptsize $\mathbf{180}$ flag};
 				\node (dn) at (3.2,.75) {\scriptsize $20$ no flag};
 				\node[text=teal] (ga) at (3.2,-.75) {\scriptsize $\mathbf{490}$ flag};
@@ -106,12 +106,12 @@
 		\end{column}
 	\end{columns}
 	\uncover<4->{\smallskip
-		\alert{Base rate:} the model is good ($90\%$ of defaulters flagged), yet
-		only about $27\%$ of the flags are true. Defaults are rare, so the
-		$5\%$ false flags among the many good borrowers ($490$) outnumber the
+		\alert{Base rate:} the model flags $90\%$ of defaulters, yet only about
+		$27\%$ of the flags are true. Defaults are rare, so the $5\%$ false
+		flags among the many non-defaulting borrowers ($490$) outnumber the
 		true flags ($180$).}
 	\uncover<5->{\smallskip
-		Still useful: a flag raises the default probability from $2\%$ to
+		Still informative: a flag raises the default probability from $2\%$ to
 		$27\%$; no flag lowers it to $0.2\%$.}
 \end{slides}
 
@@ -167,8 +167,8 @@
 		\end{tikzpicture}
 	\end{minipage}
 
-	\step{(a)} A flagged borrower is either a future defaulter ($DA$) or a good
-	borrower ($D^cA$). These two events are mutually exclusive, so their
+	\step{(a)} A flagged borrower is either a future defaulter ($DA$) or a
+	non-defaulting borrower ($D^cA$). These two events are mutually exclusive, so their
 	probabilities add. This is the law of total probability:
 	\[ P(A)=P(A\mid D)P(D)+P(A\mid D^c)P(D^c)
 		=0.9\cdot0.02+0.05\cdot0.98=0.018+0.049=0.067. \]
@@ -192,8 +192,8 @@
 
 	\step{Check with frequencies.} Imagine $10\,000$ borrowers. About $2\%$ of
 	them, $200$, will default; $9800$ will not. Of the $200$ defaulters the
-	model flags $90\%$, that is $180$ (and misses $20$). Of the $9800$ good
-	borrowers it flags $5\%$, that is $490$ (and does not flag $9310$).
+	model flags $90\%$, that is $180$ (and misses $20$). Of the $9800$
+	non-defaulting borrowers it flags $5\%$, that is $490$ (and does not flag $9310$).
 	\begin{itemize}[nosep]
 		\item Flagged: $180+490=670$ borrowers, $6.7\%$ of all (part (a)).
 		\item Of the $670$ flagged, $180$ default: $180/670\approx0.269$
@@ -207,14 +207,16 @@
 	\end{answer}
 	\begin{remark}
 		\textbf{The base-rate effect.} The model catches $90\%$ of the
-		defaulters and raises a false alarm for only $5\%$ of the good
-		borrowers, yet only about $27\%$ of the flagged borrowers actually
+		defaulters and raises a false alarm for only $5\%$ of the
+		non-defaulting borrowers, yet only about $27\%$ of the flagged borrowers actually
 		default. The reason is the low \emph{base rate}: defaults are rare
 		($2\%$), so the $5\%$ false alarms come from a very large group ($9800$
-		borrowers) and outnumber the true alarms ($490$ against $180$). The model
-		is still useful: a flag raises the probability of default from $2\%$ to
-		about $27\%$, more than thirteen times, and no flag lowers it to about
-		$0.2\%$. Exercise~\exref{medical-test} has the same structure, and
+		borrowers) and outnumber the true alarms ($490$ against $180$). The flag
+		is still informative: it raises the probability of default from $2\%$
+		to about $27\%$, more than thirteen times, and no flag lowers it to
+		about $0.2\%$. Whether the model is useful in practice also depends on
+		what the bank does after a flag and on the costs of missed defaults and
+		false alarms. Exercise~\exref{medical-test} has the same structure, and
 		Exercise~\exref{early-warning-odds} redoes (b) with odds and adds a
 		second model.
 	\end{remark}

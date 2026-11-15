@@ -16,8 +16,10 @@
 	(a) The analyst picks 4 different bonds (without replacement). What is the
 	distribution of $X$? Find $P(X=0)$ and $P(X=1)$.
 	(b) The analyst picks one bond at random 4 times, and the same bond may be
-	picked again (with replacement). What is the distribution of $X$ now? Find
-	$P(X=0)$ and $P(X=1)$.
+	picked again (with replacement): the 4 draws are independent, and each is
+	uniform over all 50 bonds. Now let $X$ be the number of the 4 draws that
+	select a junk bond, counting repeated selections separately. What is the
+	distribution of $X$ now? Find $P(X=0)$ and $P(X=1)$.
 	(c) Compare the results of (a) and (b). Find $\E[X]$ in both cases.
 \end{problem}
 
@@ -45,8 +47,9 @@
 	\[ P(X=1)=\frac{\dbinom{10}{1}\dbinom{40}{3}}{\dbinom{50}{4}}
 		=\frac{10\cdot9880}{230300}=\frac{98800}{230300}\approx0.4290. \]
 
-	\step{(b)} Now each pick is made from all 50 bonds, whatever happened
-	before. So the 4 picks are independent trials, and in each trial the
+	\step{(b)} Now each pick is made uniformly from all 50 bonds, whatever
+	happened before, and $X$ counts the draws that select a junk bond (a junk
+	bond picked twice counts twice). So the 4 picks are independent trials, and in each trial the
 	chance of a junk bond is the same, $p=\frac{10}{50}=0.2$. The number of
 	``successes'' (junk bonds) in $n=4$ independent trials with success
 	probability $p=0.2$ is binomial with parameters $(4,\,0.2)$:

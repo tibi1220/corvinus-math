@@ -7,8 +7,10 @@
 	\begin{context}
 		On a \emph{prediction market}, people trade contracts that pay 1 euro if
 		an event happens (for example, a candidate wins an election) and nothing
-		otherwise. The price of such a contract is read as the market's
-		probability of the event. Bookmakers quote \emph{decimal odds}: the total
+		otherwise. For this exercise, ignore discounting, fees, and risk premia,
+		and assume contracts are priced at their expected payoffs. Then the price
+		of such a contract can be read as the market's probability of the event.
+		Bookmakers quote \emph{decimal odds}: the total
 		amount a stake of 1 euro returns if the bet wins, the stake included.
 	\end{context}
 	(a) A prediction-market contract pays 1 euro if a candidate wins the
@@ -20,10 +22,11 @@
 	probabilities
 	do these quotes imply? Why do they not add up to 1?
 	(c) News arrives that is 3 times as likely if the candidate in (a) wins as
-	if they lose. What is the fair price of the contract now?
+	if they lose. What is the price of the contract now, under this model?
 \end{problem}
 
 \begin{slideproblem}
+	Assume prices equal expected payoffs (no discounting, fees, or risk premia).
 	(a) A contract pays 1 euro if a candidate wins the election, 0 otherwise;
 	its price is 0.40 euros. What probability and what odds does the market
 	give to a win?
@@ -32,15 +35,16 @@
 	wins). Implied
 	probabilities? Why is their sum not 1?
 	(c) News arrives that is 3 times as likely if the candidate wins as if they
-	lose. New fair price of the contract?
+	lose. New price of the contract under this model?
 \end{slideproblem}
 
 \begin{slides}
 	\small
 	\exstatement
 	\pause
-	\sol (a) $W$ = ``the candidate wins''. A contract that pays 1 euro if $W$ happens
-	is priced at the probability of $W$: \ $P(W)=0.40$.\\[1mm]
+	\sol (a) $W$ = ``the candidate wins''. In our model, a contract that pays 1
+	euro if $W$ happens is priced at its expected payoff, the probability of
+	$W$: \ $P(W)=0.40$.\\[1mm]
 	\pause
 	Odds of $W$: \
 	$\dfrac{P(W)}{P(W^c)}=\dfrac{0.40}{0.60}=\dfrac23$, \ ``2 to 3 in favor''
@@ -58,10 +62,11 @@
 	(b) Implied probabilities $0.40$ and $0.625$.\\[1mm]
 	\pause
 	Their sum is $1.025>1$. Bet $0.40$ on A and $0.625$ on B: you get 1 euro
-	back for sure, but you paid $1.025$ euros. The extra $0.025$ (2.5\%) is
-	the bookmaker's margin (the \emph{overround}).\\[1mm]
+	back for sure, but you paid $1.025$ euros. The sum of the implied probabilities
+	exceeds 1 by $0.025$, an \emph{overround} of 2.5\%: the bookmaker's
+	margin.\\[1mm]
 	\pause
-	Remove the margin by dividing by the sum:
+	One simple estimate: divide by the sum (margin allocated proportionally):
 	\[ P(\text{A wins})\approx\frac{0.40}{1.025}\approx 0.390,\qquad
 		P(\text{B wins})\approx\frac{0.625}{1.025}\approx 0.610. \]
 	\pause
@@ -70,12 +75,13 @@
 	\[ \frac23\cdot 3=2. \]
 	\pause
 	Back to a probability:
-	$P(W\mid\text{news})=\dfrac{2}{1+2}=\dfrac23\approx 0.667$. \ The fair
-	price rises from $0.40$ to about $0.667$ euros.
+	$P(W\mid\text{news})=\dfrac{2}{1+2}=\dfrac23\approx 0.667$. \ Under our
+	model, the price rises from $0.40$ to about $0.667$ euros.
 \end{slides}
 
 \begin{solution}
-	\idea A contract that pays 1 euro if an event happens is worth the
+	\idea In our model (no discounting, fees, or risk premia), a contract that
+	pays 1 euro if an event happens is priced at its expected payoff, the
 	probability of the event, so prices and decimal odds can be turned into
 	probabilities. Then we use the odds of an event,
 	\[ \text{odds of } H=\frac{P(H)}{P(H^c)},\qquad
@@ -84,10 +90,12 @@
 	ratio.
 
 	\step{(a)} Let $W$ be the event ``the candidate wins''. The contract pays 1
-	euro if $W$ happens and 0 otherwise. Suppose the true probability of $W$ is
-	$q$. If the price were below $q$, buying contracts would be a good deal on
-	average; if it were above $q$, selling them would be. Trading pushes the
-	price towards $q$, so the price is read as the market's probability:
+	euro if $W$ happens and 0 otherwise, so its expected payoff is
+	$1\cdot P(W)+0\cdot P(W^c)=P(W)$. In reality, prices also reflect
+	discounting, fees, and risk premia, so an expected payoff is not
+	automatically a market price. Here we ignore these and assume the contract
+	is priced at its expected payoff. So we interpret the price as the
+	market's probability:
 	\[ P(W)=0.40. \]
 	The odds of $W$ compare the probability that the candidate wins with the
 	probability that they lose:
@@ -107,12 +115,16 @@
 	\[ 0.40+0.625=1.025>1. \]
 	The reason is the bookmaker's margin. Bet 0.40 euros on A and 0.625 euros
 	on B. Whichever team wins, you get exactly 1 euro back, but you paid
-	$1.025$ euros: you lose $0.025$ euros for sure. This extra 2.5\% is the
-	bookmaker's profit, called the \emph{overround}. A fair bookmaker would set
+	$1.025$ euros: you lose $0.025$ euros for sure. The sum of the implied probabilities
+	exceeds 1 by $0.025$, an \emph{overround} of 2.5\%. In this example,
+	covering both outcomes costs $1.025$ euros and returns 1 euro for certain.
+	The overround is the bookmaker's margin; it is not in general the
+	bookmaker's realized profit rate. A bookmaker without a margin would set
 	the quotes so that the implied probabilities add up to exactly 1.
 
-	To estimate the probabilities behind the quotes, remove the margin by
-	dividing each implied probability by their sum (then they add up to 1):
+	The quotes do not determine the probabilities behind them uniquely. One
+	simple estimate is to normalize the implied probabilities by their sum,
+	assuming the margin is allocated proportionally (then they add up to 1):
 	\[ P(\text{A wins})\approx\frac{0.40}{1.025}\approx 0.390,\qquad
 		P(\text{B wins})\approx\frac{0.625}{1.025}\approx 0.610. \]
 
@@ -125,12 +137,12 @@
 		\frac{P(N\mid W)}{P(N\mid W^c)}=\frac23\cdot 3=2. \]
 	The new odds are 2, ``2 to 1 in favor''. Back to a probability:
 	\[ P(W\mid N)=\frac{2}{1+2}=\frac23\approx 0.667. \]
-	The contract still pays 1 euro if the candidate wins, so its fair price is now about
-	$0.667$ euros (up from $0.40$ euros).
+	The contract still pays 1 euro if the candidate wins, so under our model
+	its price is now about $0.667$ euros (up from $0.40$ euros).
 	\begin{answer}
 		(a) probability $0.40$, odds $\frac23$ (2 to 3 in favor) \quad
-		(b) $0.40$ and $0.625$; the sum $1.025$ includes a 2.5\% margin;
-		without it about $0.390$ and $0.610$ \quad
+		(b) $0.40$ and $0.625$; the sum $1.025$ includes a 2.5\% overround;
+		normalized estimates about $0.390$ and $0.610$ \quad
 		(c) $\frac23\approx 0.667$ euros
 	\end{answer}
 	\begin{remark}
@@ -142,7 +154,9 @@
 	\begin{remark}
 		The ``odds'' of a bookmaker are not the odds of this course. Decimal odds
 		2.50 mean a net gain of 1.50 euros per euro staked, that is ``1.5 to 1
-		against'' (3 to 2 against). In our sense the odds of team A winning are
-		$0.40/0.60=2/3$, exactly as for the candidate in (a).
+		against'' (3 to 2 against). In our sense, the odds corresponding to
+		A's \emph{unnormalized implied probability} are $0.40/0.60=2/3$,
+		exactly as for the candidate in (a); the normalized estimate $0.390$
+		gives slightly lower odds.
 	\end{remark}
 \end{solution}

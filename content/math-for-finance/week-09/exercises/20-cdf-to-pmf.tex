@@ -84,9 +84,10 @@
 			p(1)   & =\tfrac35-\tfrac12=\tfrac{1}{10},         &
 			p(2)   & =\tfrac45-\tfrac35=\tfrac15,                \\[4pt]
 			p(3)   & =\tfrac{9}{10}-\tfrac45=\tfrac{1}{10},    &
-			p(3.5) & =1-\tfrac{9}{10}=\tfrac{1}{10}.
+			p(3.5) & =1-\tfrac{9}{10}=\tfrac{1}{10},
 		\end{aligned}
 	\]
+	and $p(x)=0$ for all other $x$.
 	Check: $\frac12+\frac1{10}+\frac15+\frac1{10}+\frac1{10}
 		=\frac{5+1+2+1+1}{10}=1$, as it must be.
 
@@ -120,7 +121,7 @@
 
 	\begin{answer}
 		(a) $p(0)=\frac12$, $p(1)=\frac1{10}$, $p(2)=\frac15$,
-		$p(3)=\frac1{10}$, $p(3.5)=\frac1{10}$ \quad
+		$p(3)=\frac1{10}$, $p(3.5)=\frac1{10}$, $p(x)=0$ for all other $x$ \quad
 		(b) $P(X\le2)=\frac45$, $P(X>1)=\frac25$, $P(1<X\le3)=\frac3{10}$,
 		$P(X<2)=\frac35$ \quad
 		(c) $\E[X]=1.15$
@@ -130,8 +131,7 @@
 		For a discrete random variable they differ by the probability of the
 		endpoint: $P(X\le a)=P(X<a)+p(a)$. Here
 		\[ P(X\le2)-P(X<2)=\frac45-\frac35=\frac15=p(2). \]
-		The two are equal only
-		when $a$ is not a possible value of $X$ (where $F$ does not jump).
+		The two are equal exactly when $p(a)=0$ (where $F$ does not jump).
 		The same care is needed for intervals: $P(a<X\le b)=F(b)-F(a)$, but
 		$P(a\le X\le b)=F(b)-F(a)+p(a)$.
 	\end{remark}

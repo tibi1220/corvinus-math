@@ -112,8 +112,9 @@
 	\[ P(X\ge1)=1-P(X=0)=1-\frac{91}{323}=\frac{232}{323}\approx0.7183. \]
 
 	\step{(d)} For $X=2$ we choose 2 of the 4 erroneous invoices and 3 of the
-	16 correct ones. These two choices are made independently of each other, so
-	by the basic counting principle the numbers of ways multiply:
+	16 correct ones. Each choice of two erroneous invoices can be combined
+	with every choice of three correct invoices, so the basic counting
+	principle gives the product of the two counts:
 	\[ \binom42=6,\qquad \binom{16}{3}=\frac{16\cdot15\cdot14}{3\cdot2\cdot1}=560, \]
 	\[ P(X=2)=\frac{6\cdot560}{15504}=\frac{3360}{15504}=\frac{70}{323}\approx0.2167. \]
 
@@ -132,9 +133,10 @@
 	\begin{remark}
 		\textbf{Common mistake:} using the binomial distribution with $n=5$ and
 		$p=4/20=0.2$. The binomial needs independent trials with the same success
-		probability. Here the draws are not independent: if the first invoice
-		is erroneous, only 3 of the remaining 19 are erroneous, so the second
-		draw is less likely to be erroneous ($3/19$ instead of $4/19$). This is
+		probability. Here the draws are not independent: given that the first
+		invoice is erroneous, the second is erroneous with probability $3/19$;
+		given that the first is correct, the probability is $4/19$.
+		Unconditionally it is $4/20$. This is
 		what ``without replacement'' changes. The binomial would give
 		$P(X=0)=0.8^5\approx0.3277$ instead of $0.2817$. The expected value is
 		the same in both models ($np=5\cdot0.2=1$), but the probabilities differ.

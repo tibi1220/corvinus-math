@@ -47,7 +47,7 @@
 	\begin{itemize}
 		\item Prior odds of default:
 		      $\dfrac{P(D)}{P(D^c)}=\dfrac{0.02}{0.98}=\dfrac{1}{49}$
-		      \quad (1 defaulter for every 49 good borrowers).
+		      \quad (1 defaulter for every 49 non-defaulting borrowers).
 		      \pause
 		\item Likelihood ratio of a flag:
 		      $\dfrac{P(A_1\mid D)}{P(A_1\mid D^c)}=\dfrac{0.90}{0.05}=18$
@@ -59,7 +59,7 @@
 	\end{itemize}
 	\pause
 	Same as in Exercise~\exref{early-warning}: among the flagged, 18
-	defaulters for every 49 good borrowers ($180$ vs.\ $490$).
+	defaulters for every 49 non-defaulting borrowers ($180$ vs.\ $490$).
 \end{slides}
 
 \begin{slides}
@@ -116,12 +116,12 @@
 
 	\step{(a) Posterior odds and probability.} Multiply:
 	\[ \frac{P(D\mid A_1)}{P(D^c\mid A_1)}=\frac{1}{49}\cdot18=\frac{18}{49}. \]
-	So among the flagged borrowers there are 18 defaulters for every 49 good
-	borrowers, and
+	So among the flagged borrowers there are 18 defaulters for every 49
+	non-defaulting borrowers, and
 	\[ P(D\mid A_1)=\frac{18/49}{1+18/49}=\frac{18}{18+49}=\frac{18}{67}
 		\approx0.269. \]
 	This agrees with Exercise~\exref{early-warning}: of 10\,000 borrowers,
-	$180$ defaulters and $490$ good borrowers are flagged, and
+	$180$ defaulters and $490$ non-defaulting borrowers are flagged, and
 	$180:490=18:49$. Even though the likelihood ratio is large, the prior odds
 	are so small that the posterior odds are still below 1.
 
@@ -147,7 +147,7 @@
 	complements:
 	\[ \frac{P(A_2^c\mid D)}{P(A_2^c\mid D^c)}=\frac{1-0.90}{1-0.05}
 		=\frac{0.10}{0.95}=\frac{2}{19}. \]
-	It is less than 1: a missing flag is more likely for a good borrower, so it
+	It is less than 1: a missing flag is more likely for a non-defaulting borrower, so it
 	lowers the odds of default. By the same independence (now applied to $A_1$
 	and $A_2^c$, which is also allowed, because complements of conditionally
 	independent events are conditionally independent too), the likelihood
@@ -161,8 +161,9 @@
 		(c) $36/967\approx0.0372$
 	\end{answer}
 	\begin{remark}
-		The odds form makes combining signals easy: each independent signal
-		multiplies the odds by its likelihood ratio, in any order. The ratios
+		The odds form makes combining signals easy: each signal that is
+		conditionally independent of the others given default and given no
+		default multiplies the odds by its likelihood ratio, in any order. The ratios
 		$18$ and $2/19$ in (c) largely cancel ($18\cdot2/19\approx1.9$), so the
 		borrower ends up only a little above the prior: 3.7\% instead of 2\%.
 

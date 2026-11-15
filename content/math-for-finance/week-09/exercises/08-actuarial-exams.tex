@@ -4,13 +4,13 @@
 % ---
 
 \begin{problem}
-	A graduate takes three professional (actuarial) exams, one after the other.
+	A graduate attempts up to three professional (actuarial) exams, one after the other.
 	After a failure they stop and take no further exam. They pass the first
 	exam with probability $0.9$. If they passed the first exam, they pass the
 	second with probability $0.8$. If they passed the first two exams, they pass
 	the third with probability $0.7$.
 	(a) What is the probability that they pass all three exams?
-	(b) What is the probability that they fail exactly at the third exam?
+	(b) What is the probability that they fail on the third exam?
 	(c) The graduate did not pass all three exams. What is the conditional
 	probability that they failed the second exam?
 \end{problem}
@@ -19,7 +19,7 @@
 	Three exams in a row; after a failure they stop. $P(\text{pass 1st})=0.9$;
 	if they passed the 1st: $P(\text{pass 2nd})=0.8$; if they passed the first
 	two: $P(\text{pass 3rd})=0.7$. Probability that they (a) pass all three;
-	(b) fail exactly at the third; (c) failed the second, given that they did
+	(b) fail on the third exam; (c) failed the second, given that they did
 	not pass all three?
 \end{slideproblem}
 
@@ -70,7 +70,7 @@
 	\small
 	\begin{columns}[T]
 		\begin{column}{.52\textwidth}
-			(b) Fails exactly at the third: passes 1st, passes 2nd, fails 3rd:
+			(b) Fails on the third exam: passes 1st, passes 2nd, fails 3rd:
 			\[ P(E_1E_2E_3^c)=0.9\cdot0.8\cdot0.3=\alert{0.216}. \]
 			\uncover<2->{(c) Condition: \emph{not all three},
 				$(E_1E_2E_3)^c$. Complement rule:
@@ -165,7 +165,7 @@
 	In words: 90\% pass the first exam; 80\% of these pass the second
 	($0.72$); 70\% of those pass the third ($0.504$).
 
-	\step{(b)} Failing exactly at the third exam means passing the first two
+	\step{(b)} Failing on the third exam means passing the first two
 	and then failing the third: the path $E_1E_2E_3^c$. Multiply along it:
 	\[ P(E_1E_2E_3^c)=P(E_1)\,P(E_2\mid E_1)\,P(E_3^c\mid E_1E_2)
 		=0.9\cdot0.8\cdot0.3=0.216. \]

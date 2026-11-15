@@ -470,7 +470,7 @@ Without replacement: the second draw cannot repeat the first, so the pairs red r
 
 Exercise 8.32. Events of a stock path, a finance example. Slide 32.
 [[slnc 600]]
-A stock moves up or down on each of 3 days. The sample space consists of up up up, up up down, up down up, up down down, down up up, down up down, down down up, and down down down. Let A be the event that the stock ends above the start, B the event that it is up on day 1, and C the event that it is never below the start. List A, B and C, and find A B, A complement B, and A B complement. Which inclusion holds between A and C?
+A stock moves up or down by one unit on each of 3 days. The sample space consists of up up up, up up down, up down up, up down down, down up up, down up down, down down up, and down down down. Let A be the event that the stock ends above the start, B the event that it is up on day 1, and C the event that it is never below the start. List A, B and C, and find A B, A complement B, and A B complement. Which inclusion holds between A and C?
 [[slnc 800]]
 Track the position, the number of ups minus the number of downs, after each day. Up and down steps have the same size here.
 [[slnc 400]]
