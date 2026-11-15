@@ -24,7 +24,8 @@
 %   \extitle{slug}               the title from the docstring
 %   \exerciseframe[opts]{slug}   beamer: the frames of the exercise
 %   \studyexercise{slug}         study guide: heading, statement, solution
-%   \scriptexercise{slug}        script: the statement box, as on the slide
+%   \scriptexercise{slug}        script: the statement box, with the finance
+%                                context
 %   \allexercises                exercises.tex: every exercise, in order; on
 %                                the website statement and solution with
 %                                markers where the pipeline splits the HTML
@@ -197,15 +198,12 @@
         \soltitle \__ex_input_part:nn {#1} { solution }
       }
 
+    % The script gives the full statement, with the finance context: the
+    % lecturer reads it out, so the background of the example is at hand.
     \NewDocumentCommand \scriptexercise { m }
       {
         \__ex_load:n {#1}
-        \group_begin:
-          \bool_set_false:N \l__ex_context_bool
-          \tl_if_empty:NTF \g__ex_slideproblem_tl
-            { \__ex_statement_box:n { problem } }
-            { \__ex_statement_box:n { slideproblem } }
-        \group_end:
+        \__ex_statement_box:n { problem }
       }
 
     % The website (lwarp): statement and solution of each exercise, between

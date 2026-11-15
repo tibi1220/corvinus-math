@@ -2,7 +2,8 @@
 % explained from scratch in a key box, followed by the exercises of that topic
 % with their detailed solutions, in the order of the slides. The exercises
 % are in exercises/ (one file each); \studyexercise prints the heading, the
-% statement and the solution.
+% statement and the solution. Part 1 revises Week 8 with exercises of Week 8
+% (numbered 8.x, see exercises/macros.tex).
 
 \maketitle
 
@@ -10,11 +11,286 @@
 \clearpage
 
 %======================================================================
-\section{Part 1: Probability, Bayes' formula, independence}
+\section{Part 1: Counting, events, probability}
 %======================================================================
 
-\subsection*{Probability rules}
-\addcontentsline{toc}{subsection}{Probability rules}
+This part revises the counting methods and the language of events from
+Week~8, and then turns counts into probabilities. Its exercises numbered 8.x
+are exercises of Week~8.
+
+\subsection*{Counting revisited}
+\addcontentsline{toc}{subsection}{Counting revisited}
+
+\begin{key}{Counting toolbox}
+	\setlength{\parskip}{5pt}
+	\textbf{Basic principle of counting.} If experiment~1 has $m$ outcomes and,
+	for each of them, experiment~2 has $n$ outcomes, then together they have
+	$m\cdot n$ outcomes. Think of a tree: the first step gives $m$ branches,
+	each of them splits into $n$ branches, so the tree has $m\cdot n$ leaves.
+	Every path from the root to a leaf is one outcome.
+	\begin{center}
+		\begin{tikzpicture}[y=.8cm,every node/.style={font=\footnotesize},
+				dot/.style={circle,inner sep=1.3pt}]
+			\node[dot,fill=navy] (r) at (0,0) {};
+			\node[navy] at (1.1,3.05) {$m$ ways};
+			\node[teal] at (3.3,3.05) {$n$ ways each};
+			\foreach \lab/\y in {1/2.1,2/.7,m/-1.9} {
+					\node[dot,fill=navy] (a\lab) at (2.2,\y) {};
+					\draw[navy,thick] (r)--(a\lab)
+					node[pos=.62,above,sloped,font=\scriptsize] {$\lab$};
+					\foreach \sec/\dy in {1/.45,2/.05,n/-.45} {
+							\node[dot,fill=teal,inner sep=1pt] (b\lab\sec) at (4.4,\y+\dy) {};
+							\draw[teal] (a\lab)--(b\lab\sec);
+							\node[right,font=\scriptsize] at (b\lab\sec)
+							{$(\lab,\sec)$};
+						}
+					\node[teal,font=\scriptsize] at (4.4,\y-.18) {$\vdots$};
+				}
+			\node at (2.2,-.55) {$\vdots$};
+			\draw[decorate,decoration={brace,amplitude=5pt},thick,gold]
+			(5.45,2.65)--(5.45,-2.45)
+			node[midway,right=6pt,align=left,font=\small,text=black]
+			{\textcolor{teal}{$m\cdot n$}\\leaves};
+		\end{tikzpicture}
+	\end{center}
+	Example: 3 shirts and 4 pairs of trousers give $3\cdot4=12$ outfits. With
+	$r$ stages that have $n_1,n_2,\dots,n_r$ ways, there are
+	$n_1n_2\cdots n_r$ outcomes.
+
+	\textbf{Two questions to ask every time.} When we choose $k$ elements from
+	$n$: (1) Does the order matter? (2) Can an element be used more than once?
+	\begin{center}
+		\begin{tabular}{lcc}
+			\toprule
+			              & order matters        & order does not matter \\\midrule
+			no repetition & $\dfrac{n!}{(n-k)!}$ & $\dbinom nk$          \\[4mm]
+			repetition    & $n^k$                & $\dbinom{n+k-1}{k}$   \\\bottomrule
+		\end{tabular}
+	\end{center}
+	\textbf{Example.} $\Om=\{a,b,c,d,e\}$, so $n=5$, and we choose $k=2$. In
+	the unordered cases \texttt{ab} stands for the set $\{a,b\}$.
+	\begin{itemize}[nosep]
+		\item Ordered, no repetition: $5\cdot4=20$, \texttt{ab ba ac ca \dots\
+			      de ed} (\texttt{ab} and \texttt{ba} are different).
+		\item Unordered, no repetition: $\binom52=10$, \texttt{ab ac ad ae bc bd
+			      be cd ce de}.
+		\item Ordered, with repetition: $5^2=25$, \texttt{aa ab ba bb \dots\ ee}
+		      (every ordered pair).
+		\item Unordered, with repetition: $\binom62=15$, \texttt{aa ab ac ad ae
+			      bb bc bd be cc cd ce dd de ee}.
+	\end{itemize}
+	Each unordered selection without repetition comes in $k!=2$ orders, so
+	$20/2=10$. With repetition this division does not work (\texttt{aa} has
+	only one order); the last entry of the table comes from stars and bars
+	below.
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{Multinomial coefficients}
+\addcontentsline{toc}{subsection}{Multinomial coefficients}
+
+\begin{key}{Multinomial coefficient}
+	The number of ways to divide $n$ distinct objects into $r$ labeled groups
+	of sizes $n_1,\dots,n_r$ ($n_1+\dots+n_r=n$) is
+	\[ \binom{n}{n_1,\dots,n_r}=\frac{n!}{n_1!\cdots n_r!}
+		=\binom{n}{n_1}\binom{n-n_1}{n_2}\cdots\binom{n_r}{n_r}. \]
+	\textbf{Why.} Choose the first group in $\binom n{n_1}$ ways, the second
+	from the remaining objects in $\binom{n-n_1}{n_2}$ ways, and so on; in the
+	product the factorials cancel one after the other.
+
+	\textbf{The same formula as for identical objects in a row.} Write under
+	every object the name of its group. A division is then a word with $n_1$
+	letters ``1'', $n_2$ letters ``2'', \dots, and the number of such words is
+	$n!/(n_1!\cdots n_r!)$. With two groups this is the binomial coefficient:
+	$\binom{n}{k,\,n-k}=\binom nk$.
+
+	\textbf{Careful.} The formula needs \emph{given} group sizes. If every
+	object simply chooses one of $r$ groups, with no condition on the sizes,
+	the count is $r^n$.
+\end{key}
+
+\studyexercise{rating-bonds}
+
+%----------------------------------------------------------------------
+\subsection*{Stars and bars}
+\addcontentsline{toc}{subsection}{Stars and bars}
+
+\begin{key}{Combinations with repetition (stars and bars)}
+	\textbf{Question.} In how many ways can $n$ identical objects be put into
+	$r$ distinct boxes?
+
+	\textbf{Example.} 5 identical coins for 3 children. Write a star for each
+	coin and a bar between two children:
+	\begin{center}
+		\begin{tabular}{cc@{\hspace{12mm}}cc}
+			\texttt{**|*|**} & means $(2,1,2)$ & \texttt{*****||} & means $(5,0,0)$ \\
+			\texttt{|***|**} & means $(0,3,2)$ & \texttt{*||****} & means $(1,0,4)$
+		\end{tabular}
+	\end{center}
+	Every division is a row of 5 stars and 2 bars, and every such row is a
+	division. The row has 7 places, and it is fixed once we choose the places
+	of the 2 bars: $\binom72=21$ divisions.
+
+	\textbf{In general.} $n$ identical objects into $r$ distinct boxes: $n$
+	stars and $r-1$ bars,
+	\[ \binom{n+r-1}{r-1}\ \text{ways.} \]
+	If every box must be nonempty, first put one object into each box, then
+	divide the other $n-r$ freely: $\binom{n-1}{r-1}$ ways.
+
+	\textbf{The last entry of the table.} Choosing $k$ times from $n$ kinds,
+	with repetition and without order, is the same problem: only the number
+	of times each kind is chosen matters. These are $k$ stars in $n$ boxes,
+	so $n-1$ bars: $\binom{n+k-1}{k}$. In the example above,
+	$\binom{5+2-1}{2}=15$.
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{Binomial and multinomial theorems}
+\addcontentsline{toc}{subsection}{Binomial and multinomial theorems}
+
+\begin{key}{Binomial and multinomial theorems}
+	\[ (a+b)^n=\sum_{k=0}^n\binom nk a^kb^{n-k},\qquad
+		(x_1+\dots+x_r)^n=\sum_{n_1+\dots+n_r=n}\binom{n}{n_1,\dots,n_r}
+		x_1^{n_1}\cdots x_r^{n_r}. \]
+	\textbf{Why.} Multiply out $(a+b)(a+b)\cdots(a+b)$: from every factor we
+	take either $a$ or $b$. We get $a^kb^{n-k}$ when we take $a$ from exactly
+	$k$ of the $n$ factors, and there are $\binom nk$ ways to choose these
+	factors. This is why the numbers $\binom nk$ are called \emph{binomial
+		coefficients}, and why the coefficients of $(a+b)^n$ are row $n$ of
+	Pascal's triangle (below).
+
+	With $r$ terms it is the same: we get $x_1^{n_1}\cdots x_r^{n_r}$ when we
+	take $x_1$ from $n_1$ factors, $x_2$ from $n_2$ factors, \dots: a division
+	of the $n$ factors into groups of sizes $n_1,\dots,n_r$, counted by the
+	multinomial coefficient.
+
+	\textbf{Substitution trick.} The sum of all coefficients of an expansion is
+	its value when every variable equals 1. For example
+	\[ \sum_{k=0}^n\binom nk=(1+1)^n=2^n,\qquad
+		\sum_{k=0}^n(-1)^k\binom nk=(1-1)^n=0\quad(n\ge1). \]
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{Pascal's triangle}
+\addcontentsline{toc}{subsection}{Pascal's triangle}
+
+\begin{key}{Pascal's triangle}
+	\begin{center}
+		\begin{tikzpicture}[every node/.style={font=\small}]
+			\foreach \n in {0,...,6} {
+					\node[navy!70] at (-4.4,-.62*\n) {\scriptsize row $n=\n$};
+					\foreach \k in {0,...,\n} {
+							\pgfmathtruncatemacro{\c}{factorial(\n)/(factorial(\k)*factorial(\n-\k))}
+							\node[inner sep=1pt,minimum size=14pt] (p\n-\k)
+							at ({(\k-\n/2)*.95},{-.62*\n}) {\c};
+						}
+				}
+			\draw[gold,thick] (p4-1) circle (7.5pt);
+			\draw[gold,thick] (p4-2) circle (7.5pt);
+			\draw[teal,thick,fill=teal!15] (p5-2) circle (7.5pt);
+			\node[teal] at (p5-2) {10};
+			\draw[gold,thick,->] (p4-1)--(p5-2);
+			\draw[gold,thick,->] (p4-2)--(p5-2);
+			\node[right,align=left,font=\footnotesize] at (3.6,-2.8)
+			{$\binom41+\binom42=\binom52$\\ $4+6=10$};
+		\end{tikzpicture}
+	\end{center}
+	Row $n$, position $k=0,1,\dots,n$ (counted from the left, starting at 0)
+	holds $\binom nk$. \textbf{Pascal's rule} (proved in
+	Exercise~\exref{pascals-rule})
+	\[ \binom nk+\binom n{k+1}=\binom{n+1}{k+1} \]
+	builds the triangle: every entry is the sum of the two entries just above
+	it, e.g.\ $\binom41+\binom42=4+6=10=\binom52$.
+
+	\textbf{Readings of row $n$:}
+	(1) paths with $k$ up-moves among $n$ moves: the lattice paths of
+	Exercise~\exref{lattice-paths} and the binomial tree of
+	Exercise~\exref{binomial-tree};
+	(2) the coefficients of $(a+b)^n$, e.g.\
+	\[ (a+b)^5=a^5+5a^4b+10a^3b^2+10a^2b^3+5ab^4+b^5 \]
+	(row 5);
+	(3) the row sum is $2^n$, and each row is symmetric:
+	$\binom nk=\binom n{n-k}$.
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{Sample space and events}
+\addcontentsline{toc}{subsection}{Sample space and events}
+
+\begin{key}{Sample space, events and De Morgan's laws}
+	\textbf{Sample space} $\Om$: the set of all possible outcomes of an
+	experiment. An \textbf{event} is a subset $E\subseteq\Om$; it
+	\emph{occurs} if the outcome lies in $E$.
+	$E\cup F$ = ``$E$ or $F$'', \ $E\cap F=EF$ = ``$E$ and $F$'', \ $E^c$ =
+	``not $E$'', \ $E\subseteq F$ = ``$E$ implies $F$''. $E$ and $F$ are
+	\textbf{mutually exclusive} if $EF=\emptyset$.
+	\begin{center}
+		\setlength{\tabcolsep}{6mm}
+		\begin{tabular}{ccc}
+			\venn{\fill[teal!35] (0,0) circle (.85);}
+			          & \venn{\fill[teal!35] (1,0) circle (.85);}
+			          & \venn{\fill[teal!35] (0,0) circle (.85); \fill[white] (1,0) circle (.85);}                       \\
+			$E$       & $F$                                                                        & $E\setminus F=EF^c$ \\[2mm]
+			\venn{\fill[teal!35] (0,0) circle (.85); \fill[teal!35] (1,0) circle (.85);}
+			          & \venn{\begin{scope}\clip (0,0) circle (.85);
+					            \fill[teal!35] (1,0) circle (.85);\end{scope}}
+			          & \venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}                                        \\
+			$E\cup F$ & $EF$                                                                       & $E^c$
+		\end{tabular}
+	\end{center}
+
+	\textbf{De Morgan's laws for two events.}
+	\[ \boxed{(E\cup F)^c=E^c\cap F^c}\qquad\qquad
+		\boxed{(E\cap F)^c=E^c\cup F^c} \]
+	In words: ``not ($E$ or $F$)'' = ``neither $E$ nor $F$''; ``not (both $E$
+	and $F$)'' = ``at least one of them fails''.
+	\begin{center}
+		\renewcommand{\arraystretch}{1.2}
+		\begin{tabular}{ccccc}
+			\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+			                  & $\cap$ &
+			\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+			                  & $=$    &
+			\venn{\shadeall{navy!35}\fill[white] (0,0) circle (.85);
+				\fill[white] (1,0) circle (.85);}       \\
+			\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+			\scriptsize outside both $=(E\cup F)^c$                       \\[1mm]
+			\venn{\shadeall{teal!35}\fill[white] (0,0) circle (.85);}
+			                  & $\cup$ &
+			\venn{\shadeall{gold!40}\fill[white] (1,0) circle (.85);}
+			                  & $=$    &
+			\venn{\shadeall{navy!35}\begin{scope}\clip (0,0) circle (.85);
+					\fill[white] (1,0) circle (.85);\end{scope}} \\
+			\scriptsize $E^c$ &        & \scriptsize $F^c$ &  &
+			\scriptsize all but the lens $=(E\cap F)^c$
+		\end{tabular}
+	\end{center}
+	Shade $E^c$ and $F^c$: shaded \emph{twice} $=$ intersection; shaded
+	\emph{at least once} $=$ union.
+
+	\textbf{General form ($n$ events).}
+	\[ \Big(\bigcup_{i=1}^nE_i\Big)^c=\bigcap_{i=1}^nE_i^c,\qquad
+		\Big(\bigcap_{i=1}^nE_i\Big)^c=\bigcup_{i=1}^nE_i^c. \]
+	We use exactly this with probabilities below: $P(A^cB^c)=1-P(A\cup B)$.
+
+	\textbf{Inclusion--exclusion.} For two events
+	$|E\cup F|=|E|+|F|-|EF|$: in $|E|+|F|$ the outcomes of the overlap $EF$
+	were counted twice, so we subtract them once. For three events
+	\[ |E\cup F\cup G|=|E|+|F|+|G|-|EF|-|EG|-|FG|+|EFG|. \]
+	A Venn diagram with three sets is filled \emph{from the inside out}: first
+	the center, then the regions of exactly two sets, then the regions of
+	exactly one set (Exercise~\exref{bank-products}).
+\end{key}
+
+\studyexercise{sample-space}
+\studyexercise{stock-path-events}
+\studyexercise{credit-basket}
+\studyexercise{bank-products}
+
+\clearpage
+%----------------------------------------------------------------------
+\subsection*{From counting to probability}
+\addcontentsline{toc}{subsection}{From counting to probability}
 
 \begin{key}{Probability and its rules}
 	\setlength{\parskip}{5pt}
@@ -22,8 +298,9 @@
 	(all possible outcomes); an event $E$ is a set of outcomes. Its
 	probability $P(E)$ is a number that says how likely $E$ is. Think of it as
 	a long-run frequency: if we repeat the experiment many times, $E$ occurs in
-	about a fraction $P(E)$ of the repetitions. Every probability obeys three
-	rules, the \textbf{axioms}:
+	about a fraction $P(E)$ of the repetitions. (In Exercise~\exref{bank-products},
+	dividing the counts by 1000 turns them into such fractions.) Every
+	probability obeys three rules, the \textbf{axioms}:
 	\begin{enumerate}[nosep,label=(\arabic*)]
 		\item $0\le P(E)\le1$ \quad (a fraction lies between 0 and 1);
 		\item $P(\Om)=1$ \quad (some outcome always occurs);
@@ -80,14 +357,17 @@
 	(only the 2) and $P(E^cF^c)=1-\frac46=\frac26$ (the 1 and the 3).
 
 	\textbf{Three events.} The same inclusion--exclusion idea as for
-	counting in Week~8:
+	counting:
 	\[ P(E\cup F\cup G)=P(E)+P(F)+P(G)-P(EF)-P(EG)-P(FG)+P(EFG). \]
 \end{key}
 
 \studyexercise{two-exams}
 
 \clearpage
-%----------------------------------------------------------------------
+%======================================================================
+\section{Part 2: Conditional probability, Bayes' formula, independence}
+%======================================================================
+
 \subsection*{Equally likely outcomes}
 \addcontentsline{toc}{subsection}{Equally likely outcomes}
 
@@ -110,7 +390,7 @@
 	$2,3,\dots,12$ are \emph{not} equally likely: a sum of 2 needs $(1,1)$,
 	a sum of 7 has six ways. So list the outcomes in a way that makes them
 	equally likely, and count $E$ in the same way as $\Om$ (both ordered or
-	both unordered). The counting methods of Week~8 give $|E|$ and $|\Om|$.
+	both unordered). The counting methods of Part~1 give $|E|$ and $|\Om|$.
 
 	\textbf{``At least one'' $\to$ complement.} It is often easier to count
 	the opposite event. Two dice: ``at least one six'' has the complement
@@ -170,6 +450,26 @@
 \subsection*{Total probability and Bayes' formula}
 \addcontentsline{toc}{subsection}{Total probability and Bayes' formula}
 
+\begin{key}{Why we need Bayes' formula}
+	\setlength{\parskip}{5pt}
+	Data usually come in the ``wrong'' direction. From history, or from
+	testing a model, we know how the \emph{evidence} $E$ behaves under each
+	\emph{hypothesis}: $P(E\mid F)$ and $P(E\mid F^c)$. A decision needs the
+	reverse: how likely the hypothesis is \emph{now that we have seen the
+		evidence}, $P(F\mid E)$. In general $P(E\mid F)\ne P(F\mid E)$. Bayes'
+	formula turns the condition around: it updates what we believed before
+	the evidence, $P(F)$, into what we should believe after it, $P(F\mid E)$.
+
+	\textbf{Skill or luck?} $10\%$ of fund managers are skilled. A skilled
+	manager beats the market three years in a row with probability $0.343$
+	($=0.7^3$), an unskilled one with probability $0.125$ ($=0.5^3$, pure
+	luck). Your manager has just beaten the market three years in a row. How
+	likely is it that they are skilled? With $S$ = ``skilled'' and $E$ =
+	``beats the market three years in a row'', we know $P(E\mid S)=0.343$,
+	$P(E\mid S^c)=0.125$ and $P(S)=0.1$, and we want $P(S\mid E)$. Three wins
+	in a row: surely skilled? The answer is at the end of the next box.
+\end{key}
+
 \begin{key}{Total probability and Bayes' formula}
 	\setlength{\parskip}{5pt}
 	\textbf{Setting.} $F$ is a hypothesis (a hidden cause: ``the borrower
@@ -199,17 +499,20 @@
 			\node[font=\small,right] at (5.9,-1.95) {$P(F^cE^c)$};
 		\end{tikzpicture}
 	\end{center}
-	\textbf{Bayes' formula.} Having seen $E$, how likely is $F$? This turns
-	the condition around. By the definition of conditional probability,
-	$P(F\mid E)=P(FE)/P(E)$, and by the multiplication rule
-	$P(FE)=P(E\mid F)\,P(F)$. So
-	\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}{P(E)}. \]
+	\textbf{Bayes' formula.} Having seen $E$, how likely is $F$? By the
+	definition of conditional probability, $P(F\mid E)=P(FE)/P(E)$, and by
+	the multiplication rule $P(FE)=P(E\mid F)\,P(F)$. So
+	\[ \underbrace{\color{teal}P(F\mid E)}_{\text{posterior}}
+		=\frac{P(E\mid F)\,\overbrace{\color{gold}P(F)}^{\text{prior}}}{P(E)}. \]
+	The {\color{gold}\textbf{prior}} $P(F)$ is how likely $F$ is before we
+	see $E$; the {\color{teal}\textbf{posterior}} $P(F\mid E)$ is how likely
+	$F$ is after we have seen $E$.
 
 	\textbf{The denominator: law of total probability.} $E$ happens either
 	together with $F$ or together with $F^c$; these two pieces are mutually
 	exclusive, and each is given by the multiplication rule (multiply along
 	the path):
-	\[ P(E)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
+	\[ P(E)=P(EF)+P(EF^c)=P(E\mid F)\,P(F)+P(E\mid F^c)\,P(F^c). \]
 	In the tree: \emph{add the paths that end in $E$.} Substituting this into
 	Bayes' formula gives the fully written-out version
 	\[ P(F\mid E)=\frac{P(E\mid F)\,P(F)}
@@ -217,13 +520,13 @@
 	\emph{one path divided by all the paths that end in $E$.}
 
 	\noindent\begin{minipage}{\linewidth}
-	\textbf{Why it works: a picture.} Draw the sample space $\Om$ as a gray
-	box, the hypothesis $F$ as a blue diamond and the observation $E$ as a
-	light blue circle. Where they overlap, both happen: the red piece is
-	$FE$.
-	\begin{center}
-		\bayesvenn
-	\end{center}
+		\textbf{Why it works: a picture.} Draw the sample space $\Om$ as a gray
+		box, the hypothesis $F$ as a blue diamond and the observation $E$ as a
+		light blue circle. Where they overlap, both happen: the red piece is
+		$FE$.
+		\begin{center}
+			\bayesvenn
+		\end{center}
 	\end{minipage}
 	\begin{enumerate}[nosep,label=\arabic*.]
 		\item \emph{The probability of an event is its share of $\Om$.} $P(F)$
@@ -259,15 +562,41 @@
 	\[ P(FE)=P(F)\,P(E\mid F)=P(E)\,P(F\mid E). \]
 	Dividing by $P(E)$ gives Bayes' formula.
 
-	\textbf{Tiny example.} A fair coin chooses one of two urns. Urn~1 holds
-	3 red and 1 white ball, urn~2 holds 1 red and 3 white. One ball is drawn.
-	With $F$ = ``urn~1'' and $E$ = ``red'':
-	\[ P(E)=\frac34\cdot\frac12+\frac14\cdot\frac12=\frac12,\qquad
-		P(F\mid E)=\frac{3/8}{1/2}=\frac34. \]
-	Seeing red raises the probability of urn~1 from $\frac12$ to $\frac34$.
-	\textbf{Careful:} $P(E\mid F)$ and $P(F\mid E)$ are different numbers.
-	When $F$ is rare, even a good signal leaves $P(F\mid E)$ small, because
-	most of the paths to $E$ come through $F^c$.
+	\noindent\begin{minipage}{\linewidth}
+		\textbf{Skill or luck: the answer.} Total probability, then Bayes:
+		\begin{center}
+			\begin{tikzpicture}[x=1.2cm,y=.62cm,
+					lab/.style={font=\scriptsize,inner sep=1pt}]
+				\node (r) at (0,0) {$\bullet$};
+				\node (s) at (1.3,1.5) {$S$};
+				\node (u) at (1.3,-1.5) {$S^c$};
+				\draw (r) -- node[lab,above left] {$0.1$} (s);
+				\draw (r) -- node[lab,below left] {$0.9$} (u);
+				\node (se) at (3.0,2.25) {$E$};
+				\node (sn) at (3.0,.75) {$E^c$};
+				\node (ue) at (3.0,-.75) {$E$};
+				\node (un) at (3.0,-2.25) {$E^c$};
+				\draw (s) -- node[lab,above left] {$0.343$} (se);
+				\draw (s) -- node[lab,below left] {$0.657$} (sn);
+				\draw (u) -- node[lab,above left] {$0.125$} (ue);
+				\draw (u) -- node[lab,below left] {$0.875$} (un);
+				\node[lab,right,text=teal] at (3.25,2.25) {$\mathbf{0.0343}$};
+				\node[lab,right] at (3.25,.75) {$0.0657$};
+				\node[lab,right,text=teal] at (3.25,-.75) {$\mathbf{0.1125}$};
+				\node[lab,right] at (3.25,-2.25) {$0.7875$};
+			\end{tikzpicture}
+		\end{center}
+	\end{minipage}
+	\[ P(E)=0.343\cdot0.1+0.125\cdot0.9=0.0343+0.1125=0.1468, \]
+	\[ \underbrace{\color{teal}P(S\mid E)}_{\text{posterior}}
+		=\frac{P(E\mid S)\,\overbrace{\color{gold}P(S)}^{\text{prior}}}{P(E)}
+		=\frac{0.343\cdot{\color{gold}0.1}}{0.1468}\approx{\color{teal}0.234}. \]
+	Three good years raise the chance of skill from {\color{gold}$10\%$}
+	(prior) to only {\color{teal}$23\%$} (posterior): three in four such
+	``star'' managers were just lucky. \textbf{Careful:} $P(E\mid S)$ and
+	$P(S\mid E)$ are different numbers. When $F$ is rare, even a good signal
+	leaves $P(F\mid E)$ small, because most of the paths to $E$ come through
+	$F^c$.
 \end{key}
 
 \studyexercise{early-warning}
@@ -278,47 +607,73 @@
 
 \begin{key}{Odds and Bayes' formula in odds form}
 	\setlength{\parskip}{5pt}
-	\textbf{Odds.} The odds of an event $H$ compare its probability with the
-	probability of the opposite:
-	\[ \text{odds of }H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)},
-		\qquad\text{and back:}\qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
-	(To go back, solve $o=p/(1-p)$ for $p$: $o-op=p$, so $p=o/(1+o)$.)
+	\textbf{Why odds?} Odds are how bettors, bookmakers and many traders
+	talk: ``3 to 1 against''. Credit scoring works with them too: a scorecard
+	adds points to the (log) odds of default. The main reason for us:
+	\emph{updating becomes one multiplication.} In Bayes' formula the
+	denominator $P(E)$ needs total probability again for every new piece of
+	evidence. With odds, each new piece of evidence just multiplies the odds
+	by its \emph{likelihood ratio}, so several signals are easy to combine.
+
+	\noindent\begin{minipage}[c]{.5\linewidth}
+		\textbf{Odds.} The odds of an event $F$ compare its probability with
+		the probability of the opposite:
+		\[ \text{odds of }F=\frac{P(F)}{P(F^c)}=\frac{P(F)}{1-P(F)}, \]
+		and back: $P(F)=\dfrac{\text{odds}}{1+\text{odds}}$. (To go back, solve
+		$o=p/(1-p)$ for $p$: $o-op=p$, so $p=o/(1+o)$.) Probability compares
+		the slice with the whole pie; odds compare the slice with the rest.
+	\end{minipage}\hfill
+	\begin{minipage}[c]{.48\linewidth}
+		\centering
+		\oddspies\\[1mm]
+		\footnotesize $p=P(F)$, \ $q=P(F^c)=1-p$
+	\end{minipage}
 
 	\textbf{Worked mini example.}
 	\begin{itemize}[nosep]
-		\item $P(H)=\frac23$: odds $=\frac{2/3}{1/3}=2$, ``2 to 1 in favor''.
-		\item $P(H)=0.2$: odds $=\frac{0.2}{0.8}=0.25=\frac14$, ``1 to 4'',
+		\item $P(F)=\frac23$: odds $=\frac{2/3}{1/3}=2$, ``2 to 1 in favor''.
+		\item $P(F)=0.2$: odds $=\frac{0.2}{0.8}=0.25=\frac14$, ``1 to 4'',
 		      usually said ``4 to 1 against''.
-		\item Odds $3$ (``3 to 1''): $P(H)=\frac{3}{1+3}=0.75$. Odds $\frac19$:
-		      $P(H)=\frac{1/9}{10/9}=0.1$.
+		\item Odds $3$ (``3 to 1''): $P(F)=\frac{3}{1+3}=0.75$. Odds $\frac19$:
+		      $P(F)=\frac{1/9}{10/9}=0.1$.
 	\end{itemize}
 	For a small probability the odds are almost the same number
-	($P(H)=0.02$ gives odds $0.02/0.98\approx0.0204$). As $P(H)$ approaches
+	($P(F)=0.02$ gives odds $0.02/0.98\approx0.0204$). As $P(F)$ approaches
 	1, the odds grow without bound.
 
-	\textbf{Bayes' formula in odds form.} Write Bayes' formula for $H$ and
-	for $H^c$ and divide; the common denominator $P(E)$ cancels:
-	\[ \underbrace{\frac{P(H\mid E)}{P(H^c\mid E)}}_{\text{new odds}}
-		=\underbrace{\frac{P(H)}{P(H^c)}}_{\text{old odds}}\cdot
-		\underbrace{\frac{P(E\mid H)}{P(E\mid H^c)}}_{\text{likelihood ratio}}. \]
-	The likelihood ratio says how many times more likely the evidence $E$ is
-	if $H$ is true than if it is false. If it is above 1, the evidence raises
-	the odds of $H$; below 1, it lowers them.
+	\textbf{Bayes' formula in odds form.} Write Bayes' formula for $F$ and
+	for $F^c$ and divide; the common denominator $P(E)$ cancels:
+	\[ \underbrace{\color{teal}\frac{P(F\mid E)}{P(F^c\mid E)}}_{\text{posterior (new) odds}}
+		=\underbrace{\color{gold}\frac{P(F)}{P(F^c)}}_{\text{prior (old) odds}}\cdot
+		\underbrace{\frac{P(E\mid F)}{P(E\mid F^c)}}_{\text{likelihood ratio}}. \]
+	The new odds are also called the \textbf{posterior odds}, the old odds
+	the \textbf{prior odds}. The likelihood ratio says how many times more
+	likely the evidence $E$ is if $F$ is true than if it is false. If it is
+	above 1, the evidence raises the odds of $F$; below 1, it lowers them.
 
-	\textbf{Tiny example (the two urns again).} Old odds of urn~1:
-	$\frac{1/2}{1/2}=1$. Likelihood ratio of a red ball:
-	$\frac{3/4}{1/4}=3$. New odds $1\cdot3=3$, so
-	$P(\text{urn 1}\mid\text{red})=\frac{3}{4}$, as before. If the ball is
-	put back and a second draw is red again, multiply once more: once we
-	know which urn it is, the second draw does not depend on the first, so
-	its likelihood ratio is again 3. Odds $3\cdot3=9$, probability
-	$\frac{9}{10}$. Direct check:
-	\[ P(\text{urn 1}\mid\text{red, red})
-		=\frac{\frac12\cdot\frac{9}{16}}{\frac12\cdot\frac{9}{16}
-			+\frac12\cdot\frac{1}{16}}
-		=\frac{9/32}{9/32+1/32}=\frac{9}{10}. \]
-	In general, pieces of evidence that are independent given $H$ and given
-	$H^c$ (\emph{conditionally independent}) multiply the odds by their
+	\noindent\begin{minipage}{\linewidth}
+		\textbf{The picture again.} With the shapes of the Bayes picture, the
+		prior odds are ``diamond against the rest of the box'', and the
+		likelihood ratio is (red over diamond) over (the rest of the circle
+		over the rest of the box). Multiplying, the diamond and the rest of the
+		box cancel, and ``red against the rest of the circle'' is left: the
+		odds of $F$ inside the circle $E$.
+		\begin{center}
+			\bayesvenn[.6]\qquad\bayesodds[.95]
+		\end{center}
+	\end{minipage}
+
+	\textbf{Skill or luck, continued.} Prior odds of skill
+	$0.1/0.9=\frac19$; the likelihood ratio of three good years is
+	$0.343/0.125=2.744$; posterior odds $2.744/9\approx0.305$, so
+	$P(S\mid E)=0.305/1.305\approx0.234$, as before. Now a fourth good year
+	comes. With probabilities we would redo the whole tree; with odds we
+	multiply by one number, the likelihood ratio of one good year,
+	$0.7/0.5=1.4$: odds $0.305\cdot1.4\approx0.427$, so
+	$P\approx0.427/1.427\approx0.30$. This works because, once we know whether
+	the manager is skilled, the years are independent of each other. In
+	general, pieces of evidence that are independent given $F$ and given
+	$F^c$ (\emph{conditionally independent}) multiply the odds by their
 	likelihood ratios one after the other.
 \end{key}
 
@@ -341,13 +696,33 @@
 	$P(F_jE)=P(E\mid F_j)\,P(F_j)$:
 	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)}. \]
 	\textbf{The denominator: total probability.} $E$ is cut into the mutually
-	exclusive pieces $F_1E,\dots,F_nE$, and $P(F_iE)=P(E\mid F_i)P(F_i)$, so
-	\[ P(E)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i),\qquad\text{and so}\qquad
+	exclusive pieces $EF_1,\dots,EF_n$, and $P(EF_i)=P(E\mid F_i)P(F_i)$, so
+	\[ P(E)=\sum_{i=1}^n P(EF_i)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i),\qquad
 		P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}
 		{\sum_{i=1}^n P(E\mid F_i)\,P(F_i)}. \]
 	In the tree, the root now has $n$ branches $F_1,\dots,F_n$, each followed
 	by a branch to $E$: add the $n$ paths to get $P(E)$, and divide one path
 	by this sum to get $P(F_j\mid E)$.
+
+	\noindent\begin{minipage}{\linewidth}
+		\textbf{Why it works: a picture.} The partition cuts the gray box $\Om$
+		into strips $F_1,F_2,F_3$, and the circle $E$ into the pieces
+		$EF_1,EF_2,EF_3$.
+		\begin{center}
+			\gbayesvenn[.85]
+		\end{center}
+	\end{minipage}
+	Each path of the tree gives one piece: $P(E\mid F_i)P(F_i)$ is (piece over
+	strip) times (strip over box), the strip cancels, and ``piece over box''
+	is left. Together the pieces give the circle (total probability):
+	\begin{center}
+		\gbayestotal[.9]
+	\end{center}
+	Bayes' formula for $F_2$ is then (piece over box) over (circle over box);
+	the box cancels, and the share of the piece $EF_2$ in the circle is left:
+	\begin{center}
+		\gbayesproof[.9]
+	\end{center}
 
 	\textbf{Tiny example.} A box holds coins of three kinds; we pick one at
 	random and toss it. With probability $\frac12$ it is a fair coin ($F_1$,
@@ -415,7 +790,7 @@
 
 \clearpage
 %======================================================================
-\section{Part 2: Random variables and named distributions}
+\section{Part 3: Random variables and named distributions}
 %======================================================================
 
 \subsection*{Discrete random variables}
@@ -446,23 +821,26 @@
 	\end{minipage}\hfill
 	\begin{minipage}[t]{.46\linewidth}
 		\centering\vspace{-1mm}
-		\begin{tikzpicture}[x=1.3cm,y=2.4cm,baseline=(top)]
+		\begin{tikzpicture}[x=1.3cm,y=2.4cm,baseline=(top),
+				closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+						minimum size=4.5pt},
+				open/.style={circle,fill=white,draw=teal,line width=.8pt,
+						inner sep=0pt,minimum size=4.5pt}]
 			\coordinate (top) at (0,1.25);
+			\foreach \y/\l in {.25/{1/4},.75/{3/4},1/1} {
+					\draw[gray!40,very thin] (-.8,\y)--(2.8,\y);
+					\node[left,font=\footnotesize] at (-.8,\y) {$\l$};
+				}
 			\draw[->] (-.8,0)--(2.9,0) node[right,font=\small]{$x$};
 			\draw[->] (0,-.05)--(0,1.25) node[above,font=\small]{$F(x)$};
-			\foreach \y/\l in {.25/{1/4},.75/{3/4},1/1}
-			\draw (-.05,\y)--(.05,\y) node[left=3pt,font=\footnotesize,
-					fill=white,inner sep=.5pt] {$\l$};
-			\foreach \x/\a/\b in {1/.25/.75,2/.75/1}
-			\draw[gray,densely dotted] (\x,\a)--(\x,\b);
-			\draw[gray,densely dotted] (0,0)--(0,.25);
-			\draw[very thick,teal] (-.8,0)--(0,0);
-			\draw[very thick,teal] (0,.25)--(1,.25) (1,.75)--(2,.75)
-			(2,1)--(2.8,1);
-			\foreach \x/\y in {0/.25,1/.75,2/1}
-			\fill[teal] (\x,\y) circle (2pt);
+			\foreach \x/\a/\b in {0/0/.25,1/.25/.75,2/.75/1}
+			\draw[teal!60,densely dashed] (\x,\a)--(\x,\b);
+			\draw[very thick,teal] (-.8,0)--(0,0) (0,.25)--(1,.25)
+			(1,.75)--(2,.75) (2,1)--(2.8,1);
 			\foreach \x/\y in {0/0,1/.25,2/.75}
-			\draw[teal,fill=white] (\x,\y) circle (2pt);
+			\node[open] at (\x,\y) {};
+			\foreach \x/\y in {0/.25,1/.75,2/1}
+			\node[closed] at (\x,\y) {};
 			\foreach \x in {1,2} \node[below,font=\footnotesize] at (\x,0) {\x};
 			\node[below left,font=\footnotesize] at (0,0) {0};
 		\end{tikzpicture}
@@ -531,6 +909,36 @@
 	profit but leaves the risk unchanged.
 \end{key}
 
+\begin{key}{Example: the sum of two dice}
+	\setlength{\parskip}{5pt}
+	$S$ = the sum of two fair dice. The $36$ ordered pairs are equally likely,
+	so $p(s)$ = (number of pairs with sum $s$)$/36$. In the chart each bar is
+	built from one cell for every pair with that sum (first die white,
+	second die navy):
+	\begin{center}
+		\dicebars
+	\end{center}
+	\[ \E[S]=\sum_s s\,p(s)=\frac{2\cdot1+3\cdot2+4\cdot3+\dots+12\cdot1}{36}
+		=\frac{252}{36}=7, \]
+	the center of the symmetric chart. For the variance,
+	\[ \E[S^2]=\sum_s s^2\,p(s)=\frac{1974}{36},\qquad
+		\Var(S)=\frac{1974}{36}-7^2=\frac{35}{6}\approx5.83, \]
+	so $\SD(S)=\sqrt{35/6}\approx2.42$: the sum is typically 7, give or take
+	about 2.4.
+
+	\textbf{The distribution function of $S$.} Add up the bars from the left:
+	$F(s)=\frac{1}{36},\frac{3}{36},\frac{6}{36},\frac{10}{36},\dots,
+		\frac{35}{36},1$ for $s=2,3,4,5,\dots,11,12$, constant in between and 0
+	below 2.
+	\begin{center}
+		\dicecdf
+	\end{center}
+	Probabilities can be read off $F$:
+	\[ P(4<S\le9)=F(9)-F(4)=\frac{30}{36}-\frac{6}{36}=\frac{2}{3},\qquad
+		P(S>9)=1-F(9)=\frac{6}{36}=\frac16. \]
+	The first one is the sums $5,\dots,9$, the arrow in the picture.
+\end{key}
+
 \studyexercise{call-option}
 \studyexercise{trading-strategy}
 
@@ -540,12 +948,18 @@
 
 \begin{key}{The Bernoulli distribution}
 	\setlength{\parskip}{5pt}
-	\textbf{Definition.} An experiment with two outcomes, success
-	(probability $p$) and failure (probability $1-p$): a loan defaults or not,
-	a call ends in a sale or not, a coin shows heads or not. Let $X=1$ on
-	success and $X=0$ on failure. Then $X$ has the Bernoulli distribution with
-	parameter $p$:
-	\[ P(X=1)=p,\qquad P(X=0)=1-p. \]
+	\noindent\begin{minipage}[c]{.6\linewidth}
+		\textbf{Definition.} An experiment with two outcomes, success
+		(probability $p$) and failure (probability $1-p$): a loan defaults or
+		not, a call ends in a sale or not, a coin shows heads or not. Let $X=1$
+		on success and $X=0$ on failure. Then $X$ has the Bernoulli
+		distribution with parameter $p$:
+		\[ P(X=1)=p,\qquad P(X=0)=1-p. \]
+	\end{minipage}\hfill
+	\begin{minipage}[c]{.36\linewidth}
+		\centering
+		\figbernoulli
+	\end{minipage}
 
 	\textbf{Mean and variance.} $\E[X]=1\cdot p+0\cdot(1-p)=p$. Since $X$
 	only takes the values 0 and 1, $X^2=X$, so $\E[X^2]=p$ and
@@ -567,11 +981,17 @@
 	time. The number of successes $X$ has the binomial distribution with
 	parameters $(n,p)$:
 	\[ P(X=i)=\binom{n}{i}p^i(1-p)^{n-i},\qquad i=0,1,\dots,n. \]
-	Why: one particular order with $i$ successes and $n-i$ failures has
-	probability $p^i(1-p)^{n-i}$ (multiply, by independence), and there are
-	$\binom{n}{i}$ ways to choose which $i$ of the $n$ trials are the
-	successes. These orders are mutually exclusive, so their probabilities
-	add up.
+	\noindent\begin{minipage}[c]{.48\linewidth}
+		Why: one particular order with $i$ successes and $n-i$ failures has
+		probability $p^i(1-p)^{n-i}$ (multiply, by independence), and there are
+		$\binom{n}{i}$ ways to choose which $i$ of the $n$ trials are the
+		successes. These orders are mutually exclusive, so their probabilities
+		add up.
+	\end{minipage}\hfill
+	\begin{minipage}[c]{.5\linewidth}
+		\centering
+		\figbinomial
+	\end{minipage}
 
 	\textbf{Mean and variance.} $X$ is the sum of $n$ independent Bernoulli
 	variables, one for each trial, so $\E[X]=np$ and $\Var(X)=np(1-p)$: $n$
@@ -592,21 +1012,21 @@
 
 \begin{key}{The Poisson distribution}
 	\setlength{\parskip}{5pt}
-	\textbf{Definition.} $X$ has the Poisson distribution with parameter
-	$\lambda>0$ if
-	\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots \]
-	These add up to 1, because $\sum_{i\ge0}\lambda^i/i!=e^{\lambda}$. Its
-	mean and its variance are both $\lambda$.
+	\noindent\begin{minipage}[c]{.48\linewidth}
+		\textbf{Definition.} $X$ has the Poisson distribution with parameter
+		$\lambda>0$ if
+		\[ P(X=i)=e^{-\lambda}\frac{\lambda^i}{i!},\qquad i=0,1,2,\dots \]
+		These add up to 1, because $\sum_{i\ge0}\lambda^i/i!=e^{\lambda}$. Its
+		mean and its variance are both $\lambda$.
+	\end{minipage}\hfill
+	\begin{minipage}[c]{.5\linewidth}
+		\centering
+		\figpoisson
+	\end{minipage}
 
 	\textbf{When to use it.} For the number of rare events in a fixed period
 	or area: insurance claims on a day, defaults in a year, typing errors on
-	a page. $\lambda$ is the average number of events.
-
-	\textbf{Poisson approximation of the binomial.} If $n$ is large and $p$
-	is small (so that $\lambda=np$ is moderate), then the binomial $(n,p)$
-	probabilities are close to the Poisson probabilities with $\lambda=np$.
-	This is why counts of rare events are Poisson: many independent chances,
-	each with a small probability.
+	a page. $\lambda$ is the average number of events in the period.
 \end{key}
 
 \studyexercise{claims-per-day}
@@ -617,12 +1037,19 @@
 
 \begin{key}{The geometric distribution}
 	\setlength{\parskip}{5pt}
-	\textbf{Definition.} Repeat independent trials, each a success with
-	probability $p$, until the first success. The number of the trial on
-	which it happens, $X$, has the geometric distribution with parameter $p$:
-	\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]
-	The first $n-1$ trials fail, then the $n$th succeeds; multiply by
-	independence.
+	\noindent\begin{minipage}[c]{.48\linewidth}
+		\textbf{Definition.} Repeat independent trials, each a success with
+		probability $p$, until the first success. The number of the trial on
+		which it happens, $X$, has the geometric distribution with parameter
+		$p$:
+		\[ P(X=n)=(1-p)^{n-1}p,\qquad n=1,2,\dots \]
+		The first $n-1$ trials fail, then the $n$th succeeds; multiply by
+		independence.
+	\end{minipage}\hfill
+	\begin{minipage}[c]{.5\linewidth}
+		\centering
+		\figgeometric
+	\end{minipage}
 
 	\textbf{Tail.} $X>n$ means that the first $n$ trials all fail, so
 	$P(X>n)=(1-p)^n$.
@@ -631,7 +1058,7 @@
 	$p=1/6$ (waiting for a six) we need 6 rolls on average.
 
 	\textbf{Memoryless property.} $P(X>n+k\mid X>n)=(1-p)^{n+k}/(1-p)^n
-	=(1-p)^k=P(X>k)$: after $n$ failures, the wait starts again from
+		=(1-p)^k=P(X>k)$: after $n$ failures, the wait starts again from
 	scratch. A long run of failures does not make a success ``due''.
 \end{key}
 
@@ -650,6 +1077,9 @@
 	\[ P(X=i)=\frac{\binom{m}{i}\binom{N-m}{n-i}}{\binom{N}{n}}. \]
 	Why: all $\binom{N}{n}$ samples are equally likely; a favorable one
 	takes $i$ of the $m$ special items and $n-i$ of the $N-m$ others.
+	\begin{center}
+		\fighyper
+	\end{center}
 
 	\textbf{Mean.} $\E[X]=nm/N$: the sample size times the share of special
 	items.
@@ -674,18 +1104,16 @@ with a detailed solution.
 	\renewcommand{\arraystretch}{1.15}
 	\begin{tabular}{ll}
 		\toprule
-		Topic                               & Exercises for self-study                                \\\midrule
-		Probability rules                   & \exref{card-acceptance}--\exref{inconsistent-survey}    \\
-		Equally likely outcomes             & \exref{four-suits}--\exref{at-least-one-six}            \\
-		Conditional probability             & \exref{special-cases}, \exref{different-dice}           \\
-		Total probability, Bayes' formula   & \exref{medical-test}, \exref{rating-migration}          \\
-		Odds                                & \exref{prediction-market}, \exref{coin-updating}        \\
-		Generalized Bayes formula           & \exref{three-cooks}--\exref{lost-cards-kings}           \\
-		Independent events                  & \exref{shooting-contest}--\exref{reliability}           \\
-		Random variables, expected value    & \exref{cdf-to-pmf}--\exref{scratch-card}                \\
-		Binomial distribution               & \exref{guessing-on-a-test}                              \\
-		Poisson distribution                & \exref{payment-errors}                                  \\
-		Geometric distribution              & \exref{waiting-for-a-six}                               \\
-		Hypergeometric distribution         & \exref{bonds-with-and-without-replacement}              \\\bottomrule
+		Topic                             & Exercises for self-study                                     \\\midrule
+		Probability rules                 & \exref{investor-holdings}, \exref{inconsistent-survey}       \\
+		Equally likely outcomes           & \exref{random-portfolio}, \exref{at-least-one-six}           \\
+		Total probability, Bayes' formula & \exref{medical-test}, \exref{rating-migration}               \\
+		Odds                              & \exref{prediction-market}                                    \\
+		Generalized Bayes formula         & \exref{insurance-risk-classes}                               \\
+		Independent events                & \exref{reliability}                                          \\
+		Random variables                  & \exref{cdf-to-pmf}                                           \\
+		Binomial distribution             & \exref{guessing-on-a-test}                                   \\
+		Geometric distribution            & \exref{waiting-for-a-six}                                    \\
+		Hypergeometric distribution       & \exref{bonds-with-and-without-replacement}                   \\\bottomrule
 	\end{tabular}
 \end{center}

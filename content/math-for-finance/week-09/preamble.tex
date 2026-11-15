@@ -138,6 +138,446 @@
 	\normalsize Corvinus University of Budapest\\
 	\normalsize\href{mailto:\myemail}{\texttt{\myemail}}}
 
+% The figures of the slides (beamer.tex has the same definitions): the odds
+% form and the generalized Bayes formula with the shapes above, probability
+% and odds as a pie, the sum of two dice, and the named distributions.
+\usetikzlibrary{decorations.pathreplacing,arrows.meta}
+% Odds form of Bayes' formula with the same shapes. Mini shapes: bvFc (Omega
+% without the diamond F), bvFcE (the circle E without F). One row: prior
+% odds times likelihood ratio; F and F^c cancel, posterior odds remain.
+\tikzset{
+  pics/bvFc/.style={code={\filldraw[bvline,fill=bvgray,rounded corners=2pt]
+    (-.3,-.16) rectangle (.3,.16);
+    \filldraw[bvline,fill=white] (0,.13)--(.13,0)--(0,-.13)--(-.13,0)--cycle;}},
+  pics/bvFcE/.style={code={%
+    \begin{scope}[scale=.17,shift={(-.8,0)}]
+      \filldraw[bvline,fill=bvlight] (.8,0) circle (1.2);
+      \begin{scope}
+        \clip (.8,0) circle (1.2);
+        \filldraw[bvline,fill=white]
+          (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \end{scope}
+    \end{scope}}},
+}
+\newcommand{\bayesodds}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle\frac{P(F)}{P(F^c)}\cdot\frac{P(E\mid F)}{P(E\mid F^c)}=$};
+    \pic at (.45,0) {bvfrac={bvF}{bvFc}};
+    \node at (1,0) {$\cdot$};
+    \draw[line width=.6pt] (1.2,0)--(2.2,0);
+    \pic at (1.7,.72) {bvfrac={bvFE}{bvF}};
+    \pic at (1.7,-.72) {bvfrac={bvFcE}{bvFc}};
+    \pic at (.45,.3) {bvx};
+    \pic at (.45,-.3) {bvx};
+    \pic at (1.7,.42) {bvx};
+    \pic at (1.7,-1.02) {bvx};
+    \node at (2.55,0) {$=$};
+    \pic at (3.2,0) {bvfrac={bvFE}{bvFcE}};
+    \node[right] at (3.6,0) {$\displaystyle=\frac{P(F\mid E)}{P(F^c\mid E)}$};
+  \end{tikzpicture}}
+
+% Generalized Bayes formula with the same shapes: the partition F_1, F_2, F_3
+% cuts Omega into strips and the circle E into the pieces EF_1, EF_2, EF_3.
+% Mini shapes: gbF<i> (Omega with strip i in blue), gbE<i> (the circle E
+% with piece i in red), gbE (the whole circle E).
+\newcommand{\gbdefine}[5]{%
+  \tikzset{
+    pics/gbF#1/.style={code={%
+      \filldraw[bvline,fill=bvgray,rounded corners=2pt]
+        (-.3,-.16) rectangle (.3,.16);
+      \begin{scope}
+        \clip[rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
+        \fill[bvblue] (#2,-.16) rectangle (#3,.16);
+      \end{scope}
+      \draw[bvline,rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
+      \draw[bvline] (-.0875,-.16)--(-.0875,.16) (.05,-.16)--(.05,.16);}},
+    pics/gbE#1/.style={code={%
+      \fill[white] (0,0) circle (.2);
+      \begin{scope}
+        \clip (0,0) circle (.2);
+        \fill[bvrose] (#4,-.2) rectangle (#5,.2);
+        \draw[bvline] (-.092,-.2)--(-.092,.2) (.077,-.2)--(.077,.2);
+      \end{scope}
+      \draw[bvclip] (0,0) circle (.2);}},
+  }}
+\gbdefine{1}{-.3}{-.094}{-.2}{-.103}
+\gbdefine{2}{-.094}{.094}{-.103}{.103}
+\gbdefine{3}{.094}{.3}{.103}{.2}
+\tikzset{
+  pics/gbE/.style={code={%
+    \filldraw[bvline,fill=bvlight] (0,0) circle (.2);
+    \begin{scope}
+      \clip (0,0) circle (.2);
+      \draw[bvline] (-.103,-.2)--(-.103,.2) (.103,-.2)--(.103,.2);
+    \end{scope}
+    \draw[bvclip] (0,0) circle (.2);}},
+}
+% The big picture: Omega, the strips F_1, F_2, F_3 and the circle E
+\newcommand{\gbayesvenn}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \filldraw[bvline,line width=.8pt,fill=bvgray,rounded corners=6pt]
+      (-2.4,-1.9) rectangle (2.4,1.9);
+    \draw[bvline,line width=.8pt] (-.75,-1.9)--(-.75,1.9) (.75,-1.9)--(.75,1.9);
+    \filldraw[bvline,line width=.8pt,fill=bvlight] (0,-.1) circle (1.45);
+    \begin{scope}
+      \clip (0,-.1) circle (1.45);
+      \draw[bvline,line width=.8pt] (-.75,-1.9)--(-.75,1.9) (.75,-1.9)--(.75,1.9);
+    \end{scope}
+    \node at (-1.6,1.55) {$F_1$};
+    \node at (0,1.63) {$F_2$};
+    \node at (1.6,1.55) {$F_3$};
+    \node at (2.05,-1.6) {$\Omega$};
+    \node[font=\scriptsize] at (-1.1,-.1) {$EF_1$};
+    \node[font=\scriptsize] at (0,-.1) {$EF_2$};
+    \node[font=\scriptsize] at (1.1,-.1) {$EF_3$};
+    \node at (0,-1.05) {$E$};
+  \end{tikzpicture}}
+% Row 1: each path of the tree is a piece of E over Omega; their sum is E
+\newcommand{\gbayestotal}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(E)=\sum_{i=1}^3 P(E\mid F_i)\,P(F_i)=$};
+    \foreach \i/\x in {1/0,2/2.4,3/4.8} {
+        \pic at (\x+.45,0) {bvfrac={gbE\i}{gbF\i}};
+        \node at (\x+1,0) {$\cdot$};
+        \pic at (\x+1.55,0) {bvfrac={gbF\i}{bvOm}};
+        \pic at (\x+.45,-.3) {bvx};
+        \pic at (\x+1.55,.3) {bvx};
+      }
+    \node at (2.2,0) {$+$};
+    \node at (4.6,0) {$+$};
+    \node at (7.05,0) {$=$};
+    \pic at (7.65,0) {bvfrac={gbE}{bvOm}};
+  \end{tikzpicture}}
+% Row 2: Bayes for F_2; Omega cancels, the share of the piece EF_2 in E
+\newcommand{\gbayesproof}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(F_2\mid E)=\frac{P(E\mid F_2)\,P(F_2)}{P(E)}=$};
+    \draw[line width=.6pt] (.2,0)--(1,0);
+    \pic at (.6,.72) {bvfrac={gbE2}{bvOm}};
+    \pic at (.6,-.72) {bvfrac={gbE}{bvOm}};
+    \pic at (.6,.42) {bvx};
+    \pic at (.6,-1.02) {bvx};
+    \node at (1.4,0) {$=$};
+    \pic at (2,0) {bvfrac={gbE2}{gbE}};
+    \node[right,align=left,font=\footnotesize] at (2.45,0)
+      {the share of the piece $EF_2$ in $E$};
+  \end{tikzpicture}}
+
+% Probability and odds as a pie: the slice p = P(F) (navy) and the rest
+% q = P(F^c) (white). Probability: the slice over the whole pie; odds: the
+% slice against the rest.
+\tikzset{
+  pics/oddsp/.style={code={\filldraw[draw=black!50,fill=navy]
+    (0,0)--(144:.7) arc[start angle=144,end angle=216,radius=.7]--cycle;
+    \node[white] at (180:.47) {$p$};}},
+  pics/oddsq/.style={code={\filldraw[draw=black!50,fill=white]
+    (0,0)--(216:.7) arc[start angle=216,end angle=504,radius=.7]--cycle;
+    \node at (0:.35) {$q$};}},
+}
+\newcommand{\oddspies}{%
+  \begin{tikzpicture}
+    \node[left] at (0,0) {probability $=$};
+    \pic at (.8,.85) {oddsp};
+    \draw[line width=.6pt] (0,0)--(1.6,0);
+    \pic at (.8,-.85) {oddsp};
+    \pic at (.8,-.85) {oddsq};
+    \node[right] at (1.7,0) {$\displaystyle=\frac{p}{p+q}$};
+    \node[left] at (0,-2.75) {odds $=$};
+    \pic at (.8,-2.75) {oddsp};
+    \node at (1.15,-2.75) {$:$};
+    \pic at (2.1,-2.75) {oddsq};
+    \node[right] at (2.85,-2.75) {$=p:q$};
+  \end{tikzpicture}}
+
+% The sum S of two dice: a bar for every sum s, one cell for every pair of
+% faces with that sum (first die white, second navy), as in the classic
+% picture of the two-dice distribution. pic die={face}{1 or 2}.
+\tikzset{
+  pics/die/.style 2 args={code={%
+    \ifnum#2=1 \def\diefill{white}\def\diepip{black}%
+    \else \def\diefill{navy}\def\diepip{white}\fi
+    \filldraw[draw=black!70,fill=\diefill,line width=.3pt,
+      rounded corners=.6mm] (-1.6mm,-1.6mm) rectangle (1.6mm,1.6mm);
+    \ifodd#1 \fill[\diepip] (0,0) circle (.34mm);\fi
+    \ifnum#1>1 \fill[\diepip] (-.85mm,.85mm) circle (.34mm)
+      (.85mm,-.85mm) circle (.34mm);\fi
+    \ifnum#1>3 \fill[\diepip] (.85mm,.85mm) circle (.34mm)
+      (-.85mm,-.85mm) circle (.34mm);\fi
+    \ifnum#1=6 \fill[\diepip] (-.85mm,0) circle (.34mm)
+      (.85mm,0) circle (.34mm);\fi}},
+}
+\newcommand{\dicebars}{%
+  \begin{tikzpicture}[x=.64cm,y=.82cm]
+    \foreach \k in {1,...,6} {
+        \draw[gray!40,very thin] (1.4,\k)--(12.6,\k);
+        \node[left,font=\tiny] at (1.4,\k) {$\k/36$};
+      }
+    \draw[->] (1.4,0)--(12.8,0) node[right,font=\scriptsize] {$s$};
+    \draw[->] (1.4,0)--(1.4,7.3) node[above,font=\scriptsize] {$p(s)$};
+    \foreach \s in {2,...,12} {
+        \pgfmathtruncatemacro\lo{max(1,\s-6)}
+        \pgfmathtruncatemacro\hi{min(6,\s-1)}
+        \pgfmathtruncatemacro\n{\hi-\lo+1}
+        \filldraw[fill=teal!20,draw=teal] (\s-.4,0) rectangle (\s+.4,\n);
+        \foreach \a in {\lo,...,\hi} {
+            \pgfmathtruncatemacro\b{\s-\a}
+            \pgfmathtruncatemacro\c{\a-\lo}
+            \pic at (\s,\c+.72) {die={\a}{1}};
+            \pic at (\s,\c+.28) {die={\b}{2}};
+          }
+        \node[below,font=\scriptsize] at (\s,0) {$\s$};
+      }
+    \draw[gold,very thick,dashed] (7,6)--(7,7.1);
+    \draw[gold,very thick] (7,-.12)--(7,.12);
+    \node[above,font=\scriptsize] at (7,7.1) {$\E[S]=7$};
+    \draw[gold,thick,<->] (4.585,6.5)--(9.415,6.5);
+    \node[right,font=\scriptsize] at (9.415,6.5) {$\pm\SD(S)$};
+  \end{tikzpicture}}
+
+% The distribution function of the sum of two dice: F(s) = (number of pairs
+% with sum at most s)/36, a step function; the arrow marks
+% P(4<S<=9) = F(9) - F(4).
+\newcommand{\dicecdf}{%
+  \begin{tikzpicture}[x=.6cm,y=5.4cm,
+      closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+        minimum size=4pt},
+      open/.style={circle,fill=white,draw=teal,line width=.7pt,
+        inner sep=0pt,minimum size=4pt}]
+    \foreach \k in {6,12,...,30} {
+        \draw[gray!40,very thin] (1,\k/36)--(13,\k/36);
+        \node[left,font=\tiny] at (1,\k/36) {$\k/36$};
+      }
+    \draw[gray!40,very thin] (1,1)--(13,1);
+    \node[left,font=\tiny] at (1,1) {$1$};
+    \draw[->] (1,0)--(13.3,0) node[right,font=\scriptsize] {$s$};
+    \draw[->] (1,0)--(1,1.12) node[above,font=\scriptsize] {$F(s)$};
+    \foreach \x in {2,...,12}
+      \node[below,font=\scriptsize] at (\x,0) {$\x$};
+    \draw[very thick,teal] (1,0)--(2,0);
+    \draw[teal!60,densely dashed] (2,0/36)--(2,1/36);
+    \draw[very thick,teal] (2,1/36)--(3,1/36);
+    \draw[teal!60,densely dashed] (3,1/36)--(3,3/36);
+    \draw[very thick,teal] (3,3/36)--(4,3/36);
+    \draw[teal!60,densely dashed] (4,3/36)--(4,6/36);
+    \draw[very thick,teal] (4,6/36)--(5,6/36);
+    \draw[teal!60,densely dashed] (5,6/36)--(5,10/36);
+    \draw[very thick,teal] (5,10/36)--(6,10/36);
+    \draw[teal!60,densely dashed] (6,10/36)--(6,15/36);
+    \draw[very thick,teal] (6,15/36)--(7,15/36);
+    \draw[teal!60,densely dashed] (7,15/36)--(7,21/36);
+    \draw[very thick,teal] (7,21/36)--(8,21/36);
+    \draw[teal!60,densely dashed] (8,21/36)--(8,26/36);
+    \draw[very thick,teal] (8,26/36)--(9,26/36);
+    \draw[teal!60,densely dashed] (9,26/36)--(9,30/36);
+    \draw[very thick,teal] (9,30/36)--(10,30/36);
+    \draw[teal!60,densely dashed] (10,30/36)--(10,33/36);
+    \draw[very thick,teal] (10,33/36)--(11,33/36);
+    \draw[teal!60,densely dashed] (11,33/36)--(11,35/36);
+    \draw[very thick,teal] (11,35/36)--(12,35/36);
+    \draw[teal!60,densely dashed] (12,35/36)--(12,36/36);
+    \draw[very thick,teal] (12,36/36)--(12.9,36/36);
+    \node[open] at (2,0/36) {};
+    \node[open] at (3,1/36) {};
+    \node[open] at (4,3/36) {};
+    \node[open] at (5,6/36) {};
+    \node[open] at (6,10/36) {};
+    \node[open] at (7,15/36) {};
+    \node[open] at (8,21/36) {};
+    \node[open] at (9,26/36) {};
+    \node[open] at (10,30/36) {};
+    \node[open] at (11,33/36) {};
+    \node[open] at (12,35/36) {};
+    \node[closed] at (2,1/36) {};
+    \node[closed] at (3,3/36) {};
+    \node[closed] at (4,6/36) {};
+    \node[closed] at (5,10/36) {};
+    \node[closed] at (6,15/36) {};
+    \node[closed] at (7,21/36) {};
+    \node[closed] at (8,26/36) {};
+    \node[closed] at (9,30/36) {};
+    \node[closed] at (10,33/36) {};
+    \node[closed] at (11,35/36) {};
+    \node[closed] at (12,36/36) {};
+    \draw[gold,very thick,<->] (10.45,6/36)--(10.45,30/36);
+    \draw[gold,densely dotted] (4,6/36)--(10.45,6/36) (9,30/36)--(10.45,30/36);
+    \node[right,font=\scriptsize,align=left] at (10.5,18/36)
+      {$F(9)-F(4)$\\$=24/36$};
+  \end{tikzpicture}}
+
+% Pictures of the named distributions: the random experiment, and the bars
+% of P(X=i) (teal; the case shown in the experiment in gold).
+\newcommand{\figbernoulli}{%
+  \begin{tikzpicture}
+    \filldraw[draw=black!50,fill=gold!70] (0,0)--(90:.8)
+      arc[start angle=90,end angle=198,radius=.8]--cycle;
+    \filldraw[draw=black!50,fill=white] (0,0)--(198:.8)
+      arc[start angle=198,end angle=450,radius=.8]--cycle;
+    \node[font=\scriptsize] at (172:.52) {$p$};
+    \node[font=\scriptsize] at (-30:.42) {$1-p$};
+    \draw[navy,very thick,-{Stealth[length=2.5mm]}] (0,0)--(118:.68);
+    \fill[navy] (0,0) circle (1.5pt);
+    \node[font=\tiny,align=center] at (0,-1.05) {one spin:\\success with prob.\ $p$};
+    \filldraw[fill=teal!22,draw=teal] (1.55,-.7) rectangle (2.05,{-.7+.7*2.2});
+    \filldraw[fill=gold!55,draw=gold] (2.45,-.7) rectangle (2.95,{-.7+.3*2.2});
+    \draw (1.35,-.7)--(3.15,-.7);
+    \node[below,font=\tiny,align=center] at (1.8,-.7) {$0$\\failure};
+    \node[below,font=\tiny,align=center] at (2.7,-.7) {$1$\\success};
+    \node[above,font=\tiny] at (1.8,{-.7+.7*2.2}) {$1-p$};
+    \node[above,font=\tiny] at (2.7,{-.7+.3*2.2}) {$p$};
+    \node[font=\tiny] at (2.25,1.5) {$P(X=x)$, \ $p=0.3$};
+  \end{tikzpicture}}
+\newcommand{\figbinomial}{%
+  \begin{tikzpicture}
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (-0.17,2.15) rectangle (0.17,2.49); \node[font=\tiny] at (0.00,2.32) {F};
+    \filldraw[draw=gold!80!black,fill=gold!70,rounded corners=1pt] (0.31,2.15) rectangle (0.65,2.49); \node[font=\tiny] at (0.48,2.32) {S};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (0.79,2.15) rectangle (1.13,2.49); \node[font=\tiny] at (0.96,2.32) {F};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (1.27,2.15) rectangle (1.61,2.49); \node[font=\tiny] at (1.44,2.32) {F};
+    \filldraw[draw=gold!80!black,fill=gold!70,rounded corners=1pt] (1.75,2.15) rectangle (2.09,2.49); \node[font=\tiny] at (1.92,2.32) {S};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (2.23,2.15) rectangle (2.57,2.49); \node[font=\tiny] at (2.40,2.32) {F};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (2.71,2.15) rectangle (3.05,2.49); \node[font=\tiny] at (2.88,2.32) {F};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (3.19,2.15) rectangle (3.53,2.49); \node[font=\tiny] at (3.36,2.32) {F};
+    \filldraw[draw=gold!80!black,fill=gold!70,rounded corners=1pt] (3.67,2.15) rectangle (4.01,2.49); \node[font=\tiny] at (3.84,2.32) {S};
+    \filldraw[draw=black!50,fill=white,rounded corners=1pt] (4.15,2.15) rectangle (4.49,2.49); \node[font=\tiny] at (4.32,2.32) {F};
+    \node[font=\tiny] at (2.16,1.9) {one order with $i=3$: \ probability $p^3(1-p)^7$,
+      \ and $\binom{10}{3}$ such orders};
+    \filldraw[fill=teal!22,draw=teal] (-0.180,0) rectangle (0.180,0.153);
+    \node[below,font=\tiny] at (0.000,0) {$0$};
+    \filldraw[fill=teal!22,draw=teal] (0.300,0) rectangle (0.660,0.654);
+    \node[below,font=\tiny] at (0.480,0) {$1$};
+    \filldraw[fill=teal!22,draw=teal] (0.780,0) rectangle (1.140,1.261);
+    \node[below,font=\tiny] at (0.960,0) {$2$};
+    \filldraw[fill=gold!55,draw=gold] (1.260,0) rectangle (1.620,1.441);
+    \node[below,font=\tiny] at (1.440,0) {$3$};
+    \filldraw[fill=teal!22,draw=teal] (1.740,0) rectangle (2.100,1.081);
+    \node[below,font=\tiny] at (1.920,0) {$4$};
+    \filldraw[fill=teal!22,draw=teal] (2.220,0) rectangle (2.580,0.556);
+    \node[below,font=\tiny] at (2.400,0) {$5$};
+    \filldraw[fill=teal!22,draw=teal] (2.700,0) rectangle (3.060,0.198);
+    \node[below,font=\tiny] at (2.880,0) {$6$};
+    \filldraw[fill=teal!22,draw=teal] (3.180,0) rectangle (3.540,0.049);
+    \node[below,font=\tiny] at (3.360,0) {$7$};
+    \filldraw[fill=teal!22,draw=teal] (3.660,0) rectangle (4.020,0.008);
+    \node[below,font=\tiny] at (3.840,0) {$8$};
+    \node[below,font=\tiny] at (4.320,0) {$9$};
+    \node[below,font=\tiny] at (4.800,0) {$10$};
+    \draw (-0.290,0)--(5.090,0);
+    \node[font=\tiny,anchor=east] at (4.95,1.35) {$P(X=i)$, \ $n=10$, $p=0.3$};
+  \end{tikzpicture}}
+\newcommand{\figpoisson}{%
+  \begin{tikzpicture}
+    \draw[thick,navy] (0,2.25)--(4.8,2.25);
+    \foreach \x/\l in {0/0{:}00,2.4/12{:}00,4.8/24{:}00} {
+        \draw[navy] (\x,2.17)--(\x,2.33);
+        \node[below,font=\tiny] at (\x,2.17) {\l};
+      }
+    \foreach \x in {.85,2.95,3.5} {
+        \fill[gold] (\x,2.25) circle (2.6pt);
+        \draw[gold!80!black,thick] (\x,2.38)--(\x,2.62);
+      }
+    \node[font=\tiny,anchor=west] at (0,2.68) {one day: claims arrive at random times (here $3$)};
+    \filldraw[fill=teal!22,draw=teal] (-0.180,0) rectangle (0.180,0.319);
+    \node[below,font=\tiny] at (0.000,0) {$0$};
+    \filldraw[fill=teal!22,draw=teal] (0.300,0) rectangle (0.660,0.956);
+    \node[below,font=\tiny] at (0.480,0) {$1$};
+    \filldraw[fill=teal!22,draw=teal] (0.780,0) rectangle (1.140,1.434);
+    \node[below,font=\tiny] at (0.960,0) {$2$};
+    \filldraw[fill=gold!55,draw=gold] (1.260,0) rectangle (1.620,1.434);
+    \node[below,font=\tiny] at (1.440,0) {$3$};
+    \filldraw[fill=teal!22,draw=teal] (1.740,0) rectangle (2.100,1.075);
+    \node[below,font=\tiny] at (1.920,0) {$4$};
+    \filldraw[fill=teal!22,draw=teal] (2.220,0) rectangle (2.580,0.645);
+    \node[below,font=\tiny] at (2.400,0) {$5$};
+    \filldraw[fill=teal!22,draw=teal] (2.700,0) rectangle (3.060,0.323);
+    \node[below,font=\tiny] at (2.880,0) {$6$};
+    \filldraw[fill=teal!22,draw=teal] (3.180,0) rectangle (3.540,0.138);
+    \node[below,font=\tiny] at (3.360,0) {$7$};
+    \filldraw[fill=teal!22,draw=teal] (3.660,0) rectangle (4.020,0.052);
+    \node[below,font=\tiny] at (3.840,0) {$8$};
+    \filldraw[fill=teal!22,draw=teal] (4.140,0) rectangle (4.500,0.017);
+    \node[below,font=\tiny] at (4.320,0) {$9$};
+    \filldraw[fill=teal!22,draw=teal] (4.620,0) rectangle (4.980,0.005);
+    \node[below,font=\tiny] at (4.800,0) {$10$};
+    \draw (-0.290,0)--(5.090,0);
+    \node[font=\tiny,anchor=east] at (4.95,1.5) {$P(X=i)$, \ $\lambda=3$};
+  \end{tikzpicture}}
+\newcommand{\figgeometric}{%
+  \begin{tikzpicture}
+    \draw[navy,thick,fill=white] (0.00,2.3) circle (.17); \draw[navy,thick] (-0.08,2.22)--(0.08,2.38) (-0.08,2.38)--(0.08,2.22);
+    \node[font=\tiny] at (0.00,1.98) {$1$};
+    \draw[->,gray] (0.20,2.3)--(0.42,2.3);
+    \draw[navy,thick,fill=white] (0.62,2.3) circle (.17); \draw[navy,thick] (0.54,2.22)--(0.70,2.38) (0.54,2.38)--(0.70,2.22);
+    \node[font=\tiny] at (0.62,1.98) {$2$};
+    \draw[->,gray] (0.82,2.3)--(1.04,2.3);
+    \draw[navy,thick,fill=white] (1.24,2.3) circle (.17); \draw[navy,thick] (1.16,2.22)--(1.32,2.38) (1.16,2.38)--(1.32,2.22);
+    \node[font=\tiny] at (1.24,1.98) {$3$};
+    \draw[->,gray] (1.44,2.3)--(1.66,2.3);
+    \filldraw[draw=gold!80!black,thick,fill=gold!70] (1.86,2.3) circle (.17); \draw[navy,very thick] (1.78,2.3)--(1.84,2.22)--(1.95,2.4);
+    \node[font=\tiny] at (1.86,1.98) {$4$};
+    \node[font=\tiny,anchor=west,align=left] at (2.3,2.3)
+      {fail, fail, fail, success:\\$X=4$, \ $P(X=4)=(1-p)^3p$};
+    \filldraw[fill=teal!22,draw=teal] (-0.180,0) rectangle (0.180,1.500);
+    \node[below,font=\tiny] at (0.000,0) {$1$};
+    \filldraw[fill=teal!22,draw=teal] (0.300,0) rectangle (0.660,1.050);
+    \node[below,font=\tiny] at (0.480,0) {$2$};
+    \filldraw[fill=teal!22,draw=teal] (0.780,0) rectangle (1.140,0.735);
+    \node[below,font=\tiny] at (0.960,0) {$3$};
+    \filldraw[fill=gold!55,draw=gold] (1.260,0) rectangle (1.620,0.514);
+    \node[below,font=\tiny] at (1.440,0) {$4$};
+    \filldraw[fill=teal!22,draw=teal] (1.740,0) rectangle (2.100,0.360);
+    \node[below,font=\tiny] at (1.920,0) {$5$};
+    \filldraw[fill=teal!22,draw=teal] (2.220,0) rectangle (2.580,0.252);
+    \node[below,font=\tiny] at (2.400,0) {$6$};
+    \filldraw[fill=teal!22,draw=teal] (2.700,0) rectangle (3.060,0.176);
+    \node[below,font=\tiny] at (2.880,0) {$7$};
+    \filldraw[fill=teal!22,draw=teal] (3.180,0) rectangle (3.540,0.124);
+    \node[below,font=\tiny] at (3.360,0) {$8$};
+    \filldraw[fill=teal!22,draw=teal] (3.660,0) rectangle (4.020,0.086);
+    \node[below,font=\tiny] at (3.840,0) {$9$};
+    \filldraw[fill=teal!22,draw=teal] (4.140,0) rectangle (4.500,0.061);
+    \node[below,font=\tiny] at (4.320,0) {$10$};
+    \draw (-0.290,0)--(4.610,0);
+    \node[font=\tiny,anchor=east] at (4.6,1.35) {$P(X=n)$, \ $p=0.3$};
+  \end{tikzpicture}}
+\newcommand{\fighyper}{%
+  \begin{tikzpicture}
+    \draw[navy,thick,rounded corners=6pt] (-1.3,-.15)--(-1.3,1.75)
+      (-1.3,-.15)--(1.2,-.15)--(1.2,1.75);
+    \filldraw[draw=navy,fill=white] (-0.95,0.15) circle (.15);
+    \filldraw[draw=gold!80!black,fill=gold!70] (-0.95,0.57) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.95,0.99) circle (.15);
+    \draw[black!40,densely dashed] (-0.95,1.41) circle (.15);
+    \draw[black!40,densely dashed] (-0.48,0.15) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.48,0.57) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.48,0.99) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.48,1.41) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.01,0.15) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.01,0.57) circle (.15);
+    \filldraw[draw=navy,fill=white] (-0.01,0.99) circle (.15);
+    \draw[black!40,densely dashed] (-0.01,1.41) circle (.15);
+    \filldraw[draw=gold!80!black,fill=gold!70] (0.46,0.15) circle (.15);
+    \filldraw[draw=navy,fill=white] (0.46,0.57) circle (.15);
+    \draw[black!40,densely dashed] (0.46,0.99) circle (.15);
+    \filldraw[draw=navy,fill=white] (0.46,1.41) circle (.15);
+    \filldraw[draw=navy,fill=white] (0.93,0.15) circle (.15);
+    \draw[black!40,densely dashed] (0.93,0.57) circle (.15);
+    \filldraw[draw=gold!80!black,fill=gold!70] (0.93,0.99) circle (.15);
+    \filldraw[draw=navy,fill=white] (0.93,1.41) circle (.15);
+    \draw[->,thick,navy] (1.35,.8)--(2.2,.8);
+    \node[above,font=\tiny,align=center] at (1.78,.85) {pick\\$n=5$};
+    \draw[gray,rounded corners=3pt] (2.3,.5) rectangle (4.5,1.06);
+    \filldraw[draw=navy,fill=white] (2.55,0.78) circle (.15);
+    \filldraw[draw=gold!80!black,fill=gold!70] (2.97,0.78) circle (.15);
+    \filldraw[draw=navy,fill=white] (3.39,0.78) circle (.15);
+    \filldraw[draw=navy,fill=white] (3.81,0.78) circle (.15);
+    \filldraw[draw=navy,fill=white] (4.23,0.78) circle (.15);
+    \node[font=\tiny,align=center] at (-.05,-.55)
+      {$N=20$ items, $m=4$ special (gold);\\dashed: picked, not put back};
+    \node[font=\tiny,align=center] at (3.4,.2) {sample: $X=1$ special};
+  \end{tikzpicture}}
+
 % The exercises (one file each in exercises/) and the commands that place them
 \input{exercises/macros}
 
