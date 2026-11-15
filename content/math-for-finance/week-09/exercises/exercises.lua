@@ -13,7 +13,7 @@
 -- The tag "finance" marks a finance exercise. scripts/build-content.mjs reads
 -- the same docstrings for the website.
 
-local M = { list = {} }
+local M = { list = {}, slugs = {} }
 
 local function docstring(file)
   local meta, inside = {}, false
@@ -38,8 +38,10 @@ local function define(name, value)
 end
 
 -- Defines, for every exercise, \exnum@<slug> (9.1), \extitle@<slug>,
--- \exfile@<slug> and, for finance exercises, \exfinance@<slug>.
-function M.scan(dir, week)
+-- \exfile@<slug> and, for finance exercises, \exfinance@<slug>. Unless
+-- listed is false, the exercise is also one of the week's own (M.each, so
+-- \allexercises).
+function M.scan(dir, week, listed)
   local files, numbers = {}, {}
   for name in lfs.dir(dir) do
     local number, slug = name:match("^(%d+)%-([%w%-]+)%.tex$")
@@ -54,6 +56,11 @@ function M.scan(dir, week)
   end
   table.sort(files, function(a, b) return a.number < b.number end)
   for _, exercise in ipairs(files) do
+    if M.slugs[exercise.slug] then
+      error("exercises: " .. dir .. "/" .. exercise.name .. " and "
+        .. M.slugs[exercise.slug] .. " have the same slug")
+    end
+    M.slugs[exercise.slug] = dir .. "/" .. exercise.name
     local meta = docstring(dir .. "/" .. exercise.name)
     if not meta.title then
       error("exercises: " .. exercise.name .. " has no title in its docstring")
@@ -64,8 +71,25 @@ function M.scan(dir, week)
     for tag in (meta.tags or ""):gmatch("[^,%s]+") do
       if tag == "finance" then define("exfinance@" .. exercise.slug, "") end
     end
-    M.list[#M.list + 1] = exercise
+    if listed ~= false then M.list[#M.list + 1] = exercise end
   end
+end
+
+-- The exercises of an earlier week, for exercises/macros.tex:
+-- exercises.include("week-08") makes them usable by slug like the week's own
+-- (\exref gives 8.11, \exerciseframe places the frames), but they are not
+-- listed among the week's exercises. scripts/build-content.mjs copies them to
+-- week-08/exercises/ next to the document; compiled in the week's own folder
+-- they are read from ../week-08/exercises/.
+function M.include(weekdir)
+  local week = tonumber(weekdir:match("^week%-(%d+)$"))
+  if not week then error("exercises: not a week folder: " .. weekdir) end
+  local dir = weekdir .. "/exercises"
+  if not lfs.attributes(dir, "mode") then dir = "../" .. dir end
+  if not lfs.attributes(dir, "mode") then
+    error("exercises: no exercises found for " .. weekdir)
+  end
+  M.scan(dir, tostring(week), false)
 end
 
 -- \<command>{<slug>} for every exercise, in number order.

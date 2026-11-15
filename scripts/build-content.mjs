@@ -180,15 +180,39 @@ async function lastModified(files, dates) {
 }
 
 // The files of a week's exercises/ folder, which its documents read while
-// compiling (see exercises/macros.tex): [{ name, data }], sorted by name.
+// compiling (see exercises/macros.tex): [{ name, data, source }], sorted by
+// name; name is where the file goes next to the document, source its path.
+// They are followed by the exercises of the earlier weeks that macros.tex
+// includes (exercises.include("week-08")), as week-08/exercises/NN-slug.tex.
 async function exerciseFiles(dir) {
   const folder = path.join(dir, 'exercises');
   const names = await fs.readdir(folder).catch(() => []);
   const files = [];
   for (const name of names.sort()) {
     if (name.startsWith('.')) continue;
-    const data = await fs.readFile(path.join(folder, name));
-    files.push({ name: `exercises/${name}`, data });
+    const source = path.join(folder, name);
+    const data = await fs.readFile(source);
+    files.push({ name: `exercises/${name}`, data, source });
+  }
+  const macros = files.find(({ name }) => name === 'exercises/macros.tex');
+  const included = macros
+    ? [
+        ...macros.data
+          .toString('utf8')
+          .matchAll(/^[^%\n]*exercises\.include\("(week-\d+)"\)/gm),
+      ].map(match => match[1])
+    : [];
+  for (const week of included) {
+    const other = path.join(dir, '..', week, 'exercises');
+    const names = await fs.readdir(other).catch(() => {
+      throw new Error(`${week}/exercises is missing (included by ${folder})`);
+    });
+    for (const name of names.sort()) {
+      if (!/^\d+-[\w-]+\.tex$/.test(name)) continue;
+      const source = path.join(other, name);
+      const data = await fs.readFile(source);
+      files.push({ name: `${week}/exercises/${name}`, data, source });
+    }
   }
   return files;
 }
@@ -849,7 +873,7 @@ async function build() {
       const files = await exerciseFiles(job.dir);
       const base = path.join(course.slug, weekSlug(week), document.slug);
       const modified = await lastModified(
-        [...used, ...files.map(({ name }) => path.join(job.dir, name))],
+        [...used, ...files.map(({ source }) => source)],
         dates,
       );
 

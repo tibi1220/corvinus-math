@@ -17,7 +17,8 @@
 %                                          guide, exercise PDFs, website)
 %
 % Commands for the documents (the argument is the slug: 01-license-plates.tex
-% has the slug license-plates):
+% has the slug license-plates; an exercise of an earlier week included below
+% is referred to the same way):
 %
 %   \exref{slug}                 the number, e.g. 9.1, for "Exercise~\exref{...}"
 %   \extitle{slug}               the title from the docstring
@@ -35,6 +36,11 @@
 
 \directlua{exercises = dofile("exercises/exercises.lua")
   exercises.scan("exercises", "\exweek")}
+
+% Exercises of earlier weeks used in this week's documents (by slug, numbered
+% as in their own week, e.g. 8.11; not listed among this week's exercises).
+% scripts/build-content.mjs reads these lines to copy the files.
+\directlua{exercises.include("week-08")}
 
 \ExplSyntaxOn
 
