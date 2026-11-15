@@ -153,6 +153,156 @@
     \node[right,font=\footnotesize] at (3.95,-.45) {(the definition)};
   \end{tikzpicture}}
 
+% Odds form of Bayes' formula with the same shapes. Mini shapes: bvFc (Omega
+% without the diamond F), bvFcE (the circle E without F). One row: prior
+% odds times likelihood ratio; F and F^c cancel, posterior odds remain.
+\tikzset{
+  pics/bvFc/.style={code={\filldraw[bvline,fill=bvgray,rounded corners=2pt]
+    (-.3,-.16) rectangle (.3,.16);
+    \filldraw[bvline,fill=white] (0,.13)--(.13,0)--(0,-.13)--(-.13,0)--cycle;}},
+  pics/bvFcE/.style={code={%
+    \begin{scope}[scale=.17,shift={(-.8,0)}]
+      \filldraw[bvline,fill=bvlight] (.8,0) circle (1.2);
+      \begin{scope}
+        \clip (.8,0) circle (1.2);
+        \filldraw[bvline,fill=white]
+          (-.6,1.25)--(.65,0)--(-.6,-1.25)--(-1.85,0)--cycle;
+      \end{scope}
+    \end{scope}}},
+}
+\newcommand{\bayesodds}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle\frac{P(F)}{P(F^c)}\cdot\frac{P(E\mid F)}{P(E\mid F^c)}=$};
+    \pic at (.45,0) {bvfrac={bvF}{bvFc}};
+    \node at (1,0) {$\cdot$};
+    \draw[line width=.6pt] (1.2,0)--(2.2,0);
+    \pic at (1.7,.72) {bvfrac={bvFE}{bvF}};
+    \pic at (1.7,-.72) {bvfrac={bvFcE}{bvFc}};
+    \pic at (.45,.3) {bvx};
+    \pic at (.45,-.3) {bvx};
+    \pic at (1.7,.42) {bvx};
+    \pic at (1.7,-1.02) {bvx};
+    \node at (2.55,0) {$=$};
+    \pic at (3.2,0) {bvfrac={bvFE}{bvFcE}};
+    \node[right] at (3.6,0) {$\displaystyle=\frac{P(F\mid E)}{P(F^c\mid E)}$};
+  \end{tikzpicture}}
+
+% Generalized Bayes formula with the same shapes: the partition F_1, F_2, F_3
+% cuts Omega into strips and the circle E into the pieces EF_1, EF_2, EF_3.
+% Mini shapes: gbF<i> (Omega with strip i in blue), gbE<i> (the circle E
+% with piece i in red), gbE (the whole circle E).
+\newcommand{\gbdefine}[5]{%
+  \tikzset{
+    pics/gbF#1/.style={code={%
+      \filldraw[bvline,fill=bvgray,rounded corners=2pt]
+        (-.3,-.16) rectangle (.3,.16);
+      \begin{scope}
+        \clip[rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
+        \fill[bvblue] (#2,-.16) rectangle (#3,.16);
+      \end{scope}
+      \draw[bvline,rounded corners=2pt] (-.3,-.16) rectangle (.3,.16);
+      \draw[bvline] (-.0875,-.16)--(-.0875,.16) (.05,-.16)--(.05,.16);}},
+    pics/gbE#1/.style={code={%
+      \fill[white] (0,0) circle (.2);
+      \begin{scope}
+        \clip (0,0) circle (.2);
+        \fill[bvrose] (#4,-.2) rectangle (#5,.2);
+        \draw[bvline] (-.092,-.2)--(-.092,.2) (.077,-.2)--(.077,.2);
+      \end{scope}
+      \draw[bvclip] (0,0) circle (.2);}},
+  }}
+\gbdefine{1}{-.3}{-.094}{-.2}{-.103}
+\gbdefine{2}{-.094}{.094}{-.103}{.103}
+\gbdefine{3}{.094}{.3}{.103}{.2}
+\tikzset{
+  pics/gbE/.style={code={%
+    \filldraw[bvline,fill=bvlight] (0,0) circle (.2);
+    \begin{scope}
+      \clip (0,0) circle (.2);
+      \draw[bvline] (-.103,-.2)--(-.103,.2) (.103,-.2)--(.103,.2);
+    \end{scope}
+    \draw[bvclip] (0,0) circle (.2);}},
+}
+% The big picture: Omega, the strips F_1, F_2, F_3 and the circle E
+\newcommand{\gbayesvenn}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \filldraw[bvline,line width=.8pt,fill=bvgray,rounded corners=6pt]
+      (-2.4,-1.9) rectangle (2.4,1.9);
+    \draw[bvline,line width=.8pt] (-.75,-1.9)--(-.75,1.9) (.75,-1.9)--(.75,1.9);
+    \filldraw[bvline,line width=.8pt,fill=bvlight] (0,-.1) circle (1.45);
+    \begin{scope}
+      \clip (0,-.1) circle (1.45);
+      \draw[bvline,line width=.8pt] (-.75,-1.9)--(-.75,1.9) (.75,-1.9)--(.75,1.9);
+    \end{scope}
+    \node at (-1.6,1.55) {$F_1$};
+    \node at (0,1.63) {$F_2$};
+    \node at (1.6,1.55) {$F_3$};
+    \node at (2.05,-1.6) {$\Omega$};
+    \node[font=\scriptsize] at (-1.1,-.1) {$EF_1$};
+    \node[font=\scriptsize] at (0,-.1) {$EF_2$};
+    \node[font=\scriptsize] at (1.1,-.1) {$EF_3$};
+    \node at (0,-1.05) {$E$};
+  \end{tikzpicture}}
+% Row 1: each path of the tree is a piece of E over Omega; their sum is E
+\newcommand{\gbayestotal}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(E)=\sum_{i=1}^3 P(E\mid F_i)\,P(F_i)=$};
+    \foreach \i/\x in {1/0,2/2.4,3/4.8} {
+        \pic at (\x+.45,0) {bvfrac={gbE\i}{gbF\i}};
+        \node at (\x+1,0) {$\cdot$};
+        \pic at (\x+1.55,0) {bvfrac={gbF\i}{bvOm}};
+        \pic at (\x+.45,-.3) {bvx};
+        \pic at (\x+1.55,.3) {bvx};
+      }
+    \node at (2.2,0) {$+$};
+    \node at (4.6,0) {$+$};
+    \node at (7.05,0) {$=$};
+    \pic at (7.65,0) {bvfrac={gbE}{bvOm}};
+  \end{tikzpicture}}
+% Row 2: Bayes for F_2; Omega cancels, the share of the piece EF_2 in E
+\newcommand{\gbayesproof}[1][1]{%
+  \begin{tikzpicture}[scale=#1]
+    \node[left] at (0,0)
+      {$\displaystyle P(F_2\mid E)=\frac{P(E\mid F_2)\,P(F_2)}{P(E)}=$};
+    \draw[line width=.6pt] (.2,0)--(1,0);
+    \pic at (.6,.72) {bvfrac={gbE2}{bvOm}};
+    \pic at (.6,-.72) {bvfrac={gbE}{bvOm}};
+    \pic at (.6,.42) {bvx};
+    \pic at (.6,-1.02) {bvx};
+    \node at (1.4,0) {$=$};
+    \pic at (2,0) {bvfrac={gbE2}{gbE}};
+    \node[right,align=left,font=\footnotesize] at (2.45,0)
+      {the share of the piece $EF_2$ in $E$};
+  \end{tikzpicture}}
+
+% Probability and odds as a pie: the slice p = P(F) (navy) and the rest
+% q = P(F^c) (white). Probability: the slice over the whole pie; odds: the
+% slice against the rest.
+\tikzset{
+  pics/oddsp/.style={code={\filldraw[draw=black!50,fill=navy]
+    (0,0)--(144:.7) arc[start angle=144,end angle=216,radius=.7]--cycle;
+    \node[white] at (180:.47) {$p$};}},
+  pics/oddsq/.style={code={\filldraw[draw=black!50,fill=white]
+    (0,0)--(216:.7) arc[start angle=216,end angle=504,radius=.7]--cycle;
+    \node at (0:.35) {$q$};}},
+}
+\newcommand{\oddspies}{%
+  \begin{tikzpicture}
+    \node[left] at (0,0) {probability $=$};
+    \pic at (.8,.85) {oddsp};
+    \draw[line width=.6pt] (0,0)--(1.6,0);
+    \pic at (.8,-.85) {oddsp};
+    \pic at (.8,-.85) {oddsq};
+    \node[right] at (1.7,0) {$\displaystyle=\frac{p}{p+q}$};
+    \node[left] at (0,-2.75) {odds $=$};
+    \pic at (.8,-2.75) {oddsp};
+    \node at (1.15,-2.75) {$:$};
+    \pic at (2.1,-2.75) {oddsq};
+    \node[right] at (2.85,-2.75) {$=p:q$};
+  \end{tikzpicture}}
+
 % The exercises (one file each in exercises/) and \exerciseframe
 \input{exercises/macros}
 
@@ -696,19 +846,77 @@
 
 \exerciseframe{early-warning}
 
+\begin{frame}{Why odds?}
+  \small
+  \begin{itemize}
+    \item Odds are how bettors, bookmakers and many traders talk:
+          ``3 to 1 against''. Credit scoring works with them too: a
+          scorecard adds points to the (log) odds of default.
+    \item The main reason for us: \textbf{updating becomes one
+            multiplication}. In Bayes' formula the denominator $P(E)$ needs
+          total probability again for every new piece of evidence. With odds,
+          each new piece of evidence just multiplies the odds by its
+          \emph{likelihood ratio}, so several signals are easy to combine.
+  \end{itemize}
+  \pause
+  \begin{exampleblock}{Skill or luck, continued}
+    After three good years, the manager is skilled with probability
+    $0.234$. Now comes a fourth good year. With probabilities, we redo the
+    whole tree. With odds, we multiply by one number:
+    $P(\text{good year}\mid S)/P(\text{good year}\mid S^c)=0.7/0.5=1.4$.
+  \end{exampleblock}
+\end{frame}
+
 \begin{frame}{Odds}
-  \begin{block}{Odds of an event}
-    \[ \text{odds of } H=\frac{P(H)}{P(H^c)}=\frac{P(H)}{1-P(H)},
-      \qquad P(H)=\frac{\text{odds}}{1+\text{odds}}. \]
-    $P(H)=2/3$: odds $2$, ``2 to 1 in favor''. \quad $P(H)=0.2$: odds
-    $1/4$, ``4 to 1 against''.
-  \end{block}
+  \small
+  \begin{columns}[c]
+    \begin{column}{.54\textwidth}
+      \begin{block}{Odds of an event}
+        \[ \text{odds of } F=\frac{P(F)}{P(F^c)}=\frac{P(F)}{1-P(F)},
+          \]
+        and back: \ $P(F)=\dfrac{\text{odds}}{1+\text{odds}}$.
+      \end{block}
+      $P(F)=2/3$: odds $2$, ``2 to 1 in favor''.\\
+      $P(F)=0.2$: odds $1/4$, ``4 to 1 against''.
+
+      \medskip
+      Probability compares the slice with the whole pie; odds compare the
+      slice with the rest.
+    \end{column}
+    \begin{column}{.44\textwidth}
+      \centering
+      \oddspies\\[2mm]
+      \footnotesize $p=P(F)$, \ $q=P(F^c)=1-p$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{Bayes' formula in odds form}
+  \small
   \begin{block}{Bayes' formula in odds form}
-    \[ \underbrace{\frac{P(H\mid E)}{P(H^c\mid E)}}_{\text{new odds}}
-      =\underbrace{\frac{P(H)}{P(H^c)}}_{\text{old odds}}\cdot
-      \underbrace{\frac{P(E\mid H)}{P(E\mid H^c)}}_{\text{likelihood ratio}} \]
+    \[ \underbrace{\color{teal}\frac{P(F\mid E)}{P(F^c\mid E)}}_{\text{posterior (new) odds}}
+      =\underbrace{\color{gold}\frac{P(F)}{P(F^c)}}_{\text{prior (old) odds}}\cdot
+      \underbrace{\frac{P(E\mid F)}{P(E\mid F^c)}}_{\text{likelihood ratio}} \]
+    Evidence that is more likely if $F$ is true (likelihood ratio $>1$)
+    raises the odds of $F$.
   \end{block}
-  Evidence that is more likely if $H$ is true raises the odds of $H$.
+  \pause
+  \begin{columns}[c]
+    \begin{column}{.2\textwidth}
+      \centering
+      \bayesvenn[.5]
+    \end{column}
+    \begin{column}{.78\textwidth}
+      \centering
+      \bayesodds[.85]
+    \end{column}
+  \end{columns}
+  \pause
+  \textbf{Skill or luck:} prior odds $0.1/0.9=1/9$; likelihood ratio of
+  three good years $0.343/0.125=2.744$; posterior odds
+  $2.744/9\approx0.305$, so $P(S\mid E)=0.305/1.305\approx0.234$, as
+  before. A fourth good year: $0.305\cdot1.4\approx0.427$, so
+  $P\approx0.427/1.427\approx0.30$.
 \end{frame}
 
 \begin{frame}{The generalized Bayes formula}
@@ -749,6 +957,28 @@
     \end{column}
   \end{columns}
 \end{frame}
+
+\begin{frame}{Why the generalized formula works: a picture}
+  \small
+  \begin{columns}[c]
+    \begin{column}{.34\textwidth}
+      \centering
+      \gbayesvenn[.75]
+    \end{column}
+    \begin{column}{.62\textwidth}
+      The partition cuts $\Om$ into strips $F_1,F_2,F_3$, and the circle $E$
+      into the pieces $EF_1,EF_2,EF_3$.\\[1mm]
+      Each path of the tree gives one piece; together they give $E$
+      (total probability).
+    \end{column}
+  \end{columns}
+  \vspace{1mm}
+  \centering
+  \gbayestotal[.82]
+  \pause\\[1mm]
+  \gbayesproof[.82]
+\end{frame}
+
 
 \exerciseframe{default-by-rating}
 
