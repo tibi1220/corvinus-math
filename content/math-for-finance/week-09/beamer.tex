@@ -351,6 +351,46 @@
 % The distribution function of the sum of two dice: F(s) = (number of pairs
 % with sum at most s)/36, a step function; the arrow marks
 % P(4<S<=9) = F(9) - F(4).
+% The pmf (top) and the distribution function (bottom) of a fair die, for
+% the slide Discrete random variables. Filled dot: the value of F at a jump;
+% open dot: the value just before it.
+\newcommand{\diepmfcdf}{%
+  \begin{tikzpicture}[x=.62cm,
+      closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+        minimum size=4pt},
+      open/.style={circle,fill=white,draw=teal,line width=.7pt,
+        inner sep=0pt,minimum size=4pt}]
+    \begin{scope}[yshift=2.95cm,y=4.5cm]
+      \draw[gray!40,very thin] (0,1/6)--(6.8,1/6);
+      \node[left,font=\tiny] at (0,1/6) {$1/6$};
+      \foreach \x in {1,...,6} {
+          \filldraw[fill=teal!22,draw=teal] (\x-.3,0) rectangle (\x+.3,1/6);
+          \node[below,font=\scriptsize] at (\x,0) {$\x$};
+        }
+      \draw[->] (0,0)--(7.1,0) node[right,font=\scriptsize] {$x$};
+      \draw[->] (0,0)--(0,.25) node[above,font=\scriptsize] {$p(x)$};
+    \end{scope}
+    \begin{scope}[y=2.1cm]
+      \foreach \k/\l in {1/{1/6},2/{2/6},3/{3/6},4/{4/6},5/{5/6},6/{1}} {
+          \draw[gray!40,very thin] (0,\k/6)--(6.8,\k/6);
+          \node[left,font=\tiny] at (0,\k/6) {$\l$};
+        }
+      \draw[->] (0,0)--(7.1,0) node[right,font=\scriptsize] {$x$};
+      \draw[->] (0,0)--(0,1.13) node[above,font=\scriptsize] {$F(x)$};
+      \draw[very thick,teal] (0,0)--(1,0) (6,1)--(6.8,1);
+      \foreach \k in {1,...,6} {
+          \node[below,font=\scriptsize] at (\k,0) {$\k$};
+          \draw[teal!60,densely dashed] (\k,{(\k-1)/6})--(\k,\k/6);
+        }
+      \foreach \k in {1,...,5}
+        \draw[very thick,teal] (\k,\k/6)--(\k+1,\k/6);
+      \foreach \k in {1,...,6} {
+          \node[open] at (\k,{(\k-1)/6}) {};
+          \node[closed] at (\k,\k/6) {};
+        }
+    \end{scope}
+  \end{tikzpicture}}
+
 \newcommand{\dicecdf}{%
   \begin{tikzpicture}[x=.6cm,y=5.4cm,
       closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
@@ -1228,25 +1268,24 @@
     \end{column}
     \begin{column}{.38\textwidth}
       \centering
-      \begin{tikzpicture}[every node/.style={font=\small},
+      \begin{tikzpicture}[x=1cm,y=1cm,
           lab/.style={font=\scriptsize,inner sep=1pt,sloped},
-          grow=right,level distance=1.8cm,
-          level 1/.style={sibling distance=1.45cm}]
-        \node[circle,fill=navy,inner sep=2pt]{}
-          child{node[fill=navy!10]{$F_3$}
-            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
-              edge from parent node[lab,above]{$P(E|F_3)$}}
-            edge from parent node[lab,below]{$P(F_3)$}}
-          child{node[fill=navy!10]{$F_2$}
-            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
-              edge from parent node[lab,above]{$P(E|F_2)$}}
-            edge from parent node[lab,above]{$P(F_2)$}}
-          child{node[fill=navy!10]{$F_1$}
-            child[level distance=1.9cm]{node[fill=gold!30]{$E$}
-              edge from parent node[lab,above]{$P(E|F_1)$}}
-            edge from parent node[lab,above]{$P(F_1)$}};
+          F/.style={fill=navy!10,font=\small,inner sep=2pt},
+          E/.style={fill=gold!30,font=\small,inner sep=1.5pt},
+          Ec/.style={font=\small,inner sep=1.5pt}]
+        \node[circle,fill=navy,inner sep=2pt] (r) at (0,0) {};
+        \foreach \i/\y/\side in {1/1.95/above,2/.75/above,n/-1.65/below} {
+          \node[F] (F\i) at (1.6,\y) {$F_\i$};
+          \draw (r) -- (F\i) node[lab,pos=.68,\side] {$P(F_\i)$};
+          \node[E] (E\i) at (3.75,\y+.3) {$E$};
+          \node[Ec] (C\i) at (3.75,\y-.3) {$E^c$};
+          \draw (F\i) -- (E\i) node[lab,pos=.5,above] {$P(E|F_\i)$};
+          \draw (F\i) -- (C\i);
+        }
+        \node at (1.6,-.35) {$\vdots$};
+        \node at (3.75,-.35) {$\vdots$};
       \end{tikzpicture}\\[1mm]
-      \footnotesize one path to $E$ for each $F_i$
+      \footnotesize $n$ branches, one for each $F_i$; the paths to $E$ are highlighted
     \end{column}
   \end{columns}
 \end{frame}
@@ -1356,29 +1395,8 @@
     \end{column}
     \begin{column}{.46\textwidth}
       \centering
-      \begin{tikzpicture}[x=.95cm,y=2.8cm,
-          closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
-            minimum size=4.5pt},
-          open/.style={circle,fill=white,draw=teal,line width=.8pt,
-            inner sep=0pt,minimum size=4.5pt}]
-        \draw[->] (-.4,0)--(4.8,0) node[right,font=\scriptsize] {$x$};
-        \draw[->] (0,-.04)--(0,1.18) node[above,font=\scriptsize] {$F(x)$};
-        \foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1} {
-            \draw[gray!60,very thin] (0,\y)--(4.6,\y);
-            \node[left,font=\scriptsize] at (0,\y) {$\l$};
-          }
-        \foreach \x in {1,2,3,4}
-          \node[below,font=\scriptsize] at (\x,0) {$\x$};
-        \foreach \x/\a/\b in {1/0/.25,2/.25/.75,3/.75/.875,4/.875/1}
-          \draw[teal!60,densely dashed] (\x,\a)--(\x,\b);
-        \draw[very thick,teal] (-.4,0)--(1,0) (1,.25)--(2,.25)
-          (2,.75)--(3,.75) (3,.875)--(4,.875) (4,1)--(4.6,1);
-        \foreach \x/\y in {1/0,2/.25,3/.75,4/.875}
-          \node[open] at (\x,\y) {};
-        \foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
-          \node[closed] at (\x,\y) {};
-      \end{tikzpicture}\\[1mm]
-      \footnotesize $p(1)=\frac14$, $p(2)=\frac12$, $p(3)=p(4)=\frac18$
+      \diepmfcdf\\[.5mm]
+      \footnotesize a fair die: $p(x)=\frac16$ for $x=1,\dots,6$
     \end{column}
   \end{columns}
   \vspace{1mm}

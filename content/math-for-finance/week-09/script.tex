@@ -437,6 +437,46 @@
 % The distribution function of the sum of two dice: F(s) = (number of pairs
 % with sum at most s)/36, a step function; the arrow marks
 % P(4<S<=9) = F(9) - F(4).
+% The pmf (top) and the distribution function (bottom) of a fair die, for
+% the slide Discrete random variables. Filled dot: the value of F at a jump;
+% open dot: the value just before it.
+\newcommand{\diepmfcdf}{%
+  \begin{tikzpicture}[x=.62cm,
+      closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
+        minimum size=4pt},
+      open/.style={circle,fill=white,draw=teal,line width=.7pt,
+        inner sep=0pt,minimum size=4pt}]
+    \begin{scope}[yshift=2.95cm,y=4.5cm]
+      \draw[gray!40,very thin] (0,1/6)--(6.8,1/6);
+      \node[left,font=\tiny] at (0,1/6) {$1/6$};
+      \foreach \x in {1,...,6} {
+          \filldraw[fill=teal!22,draw=teal] (\x-.3,0) rectangle (\x+.3,1/6);
+          \node[below,font=\scriptsize] at (\x,0) {$\x$};
+        }
+      \draw[->] (0,0)--(7.1,0) node[right,font=\scriptsize] {$x$};
+      \draw[->] (0,0)--(0,.25) node[above,font=\scriptsize] {$p(x)$};
+    \end{scope}
+    \begin{scope}[y=2.1cm]
+      \foreach \k/\l in {1/{1/6},2/{2/6},3/{3/6},4/{4/6},5/{5/6},6/{1}} {
+          \draw[gray!40,very thin] (0,\k/6)--(6.8,\k/6);
+          \node[left,font=\tiny] at (0,\k/6) {$\l$};
+        }
+      \draw[->] (0,0)--(7.1,0) node[right,font=\scriptsize] {$x$};
+      \draw[->] (0,0)--(0,1.13) node[above,font=\scriptsize] {$F(x)$};
+      \draw[very thick,teal] (0,0)--(1,0) (6,1)--(6.8,1);
+      \foreach \k in {1,...,6} {
+          \node[below,font=\scriptsize] at (\k,0) {$\k$};
+          \draw[teal!60,densely dashed] (\k,{(\k-1)/6})--(\k,\k/6);
+        }
+      \foreach \k in {1,...,5}
+        \draw[very thick,teal] (\k,\k/6)--(\k+1,\k/6);
+      \foreach \k in {1,...,6} {
+          \node[open] at (\k,{(\k-1)/6}) {};
+          \node[closed] at (\k,\k/6) {};
+        }
+    \end{scope}
+  \end{tikzpicture}}
+
 \newcommand{\dicecdf}{%
   \begin{tikzpicture}[x=.6cm,y=5.4cm,
       closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
@@ -2825,27 +2865,26 @@ $1.4^7\approx10.5$: seven years.)}
 
 \needspace{0.3\textheight}
 \begin{slidefig}
-	a tree with one path to $E$ for each $F_i$.
+	a tree with $n$ branches, one for each $F_i$, each followed by $E$ (highlighted) and $E^c$.
 	\begin{center}
-		\begin{tikzpicture}[every node/.style={font=\small},
-				lab/.style={font=\scriptsize,inner sep=1pt,sloped},
-				grow=right,level distance=2.2cm,
-				level 1/.style={sibling distance=1.6cm}]
-			\node[circle,fill=navy,inner sep=2pt]{}
-			child{node[fill=navy!10]{$F_3$}
-					child[level distance=2.3cm]{node[fill=gold!30]{$E$}
-							edge from parent node[lab,above]{$P(E|F_3)$}}
-					edge from parent node[lab,below]{$P(F_3)$}}
-			child{node[fill=navy!10]{$F_2$}
-					child[level distance=2.3cm]{node[fill=gold!30]{$E$}
-							edge from parent node[lab,above]{$P(E|F_2)$}}
-					edge from parent node[lab,above]{$P(F_2)$}}
-			child{node[fill=navy!10]{$F_1$}
-					child[level distance=2.3cm]{node[fill=gold!30]{$E$}
-							edge from parent node[lab,above]{$P(E|F_1)$}}
-					edge from parent node[lab,above]{$P(F_1)$}};
+		\begin{tikzpicture}[x=1cm,y=1cm,
+			  lab/.style={font=\scriptsize,inner sep=1pt,sloped},
+			  F/.style={fill=navy!10,font=\small,inner sep=2pt},
+			  E/.style={fill=gold!30,font=\small,inner sep=1.5pt},
+			  Ec/.style={font=\small,inner sep=1.5pt}]
+			\node[circle,fill=navy,inner sep=2pt] (r) at (0,0) {};
+			\foreach \i/\y/\side in {1/1.95/above,2/.75/above,n/-1.65/below} {
+			  \node[F] (F\i) at (1.6,\y) {$F_\i$};
+			  \draw (r) -- (F\i) node[lab,pos=.68,\side] {$P(F_\i)$};
+			  \node[E] (E\i) at (3.75,\y+.3) {$E$};
+			  \node[Ec] (C\i) at (3.75,\y-.3) {$E^c$};
+			  \draw (F\i) -- (E\i) node[lab,pos=.5,above] {$P(E|F_\i)$};
+			  \draw (F\i) -- (C\i);
+			}
+			\node at (1.6,-.35) {$\vdots$};
+			\node at (3.75,-.35) {$\vdots$};
 		\end{tikzpicture}\\[1mm]
-		\footnotesize one path to $E$ for each $F_i$
+		\footnotesize $n$ branches, one for each $F_i$; the paths to $E$ are highlighted
 	\end{center}
 	\begin{printeq}
 	\[ P(F_j\mid E)=\frac{P(E\mid F_j)\,P(F_j)}{P(E)},\qquad
@@ -2866,8 +2905,8 @@ into $n$ pieces $EF_1,\dots,EF_n$ that do not overlap, so
 \[ P(E)=\sum_{i=1}^n P(EF_i)=\sum_{i=1}^n P(E\mid F_i)\,P(F_i). \]
 
 \say Point at the tree. The root now has $n$ branches, one for each
-$F_i$, and each is followed by a branch to $E$. (The branches to $E^c$ are
-left out.) Multiply along a path to get $P(F_i)\,P(E\mid F_i)$. Add all
+$F_i$, and each splits into $E$ and $E^c$. Only the paths that end in $E$
+matter here. Multiply along such a path to get $P(F_i)\,P(E\mid F_i)$. Add all
 the paths to get $P(E)$. Bayes is one path divided by all of them.
 
 The posteriors $P(F_1\mid E),\dots,P(F_n\mid E)$ add up to 1: given $E$,
@@ -3294,32 +3333,11 @@ against $0.0025$. When defaults come together, they come in clusters.
 
 \needspace{0.3\textheight}
 \begin{slidefig}
-	the graph of $F$ for $p(1)=\tfrac14$, $p(2)=\tfrac12$,
-	$p(3)=p(4)=\tfrac18$ (filled dot: the value of $F$ at the jump; open dot:
-	the value just before it):
+	a fair die: the pmf, six bars of height $\tfrac16$, and below it the
+	graph of $F$ (filled dot: the value of $F$ at the jump; open dot: the
+	value just before it):
 	\begin{center}
-		\begin{tikzpicture}[x=1.4cm,y=3.2cm,
-				closed/.style={circle,fill=teal,draw=teal,inner sep=0pt,
-						minimum size=5pt},
-				open/.style={circle,fill=white,draw=teal,line width=.8pt,
-						inner sep=0pt,minimum size=5pt}]
-			\draw[->] (-.4,0)--(4.8,0) node[right,font=\small] {$x$};
-			\draw[->] (0,-.04)--(0,1.18) node[above,font=\small] {$F(x)$};
-			\foreach \y/\l in {.25/{1/4},.75/{3/4},.875/{7/8},1/1} {
-					\draw[gray!60,very thin] (0,\y)--(4.6,\y);
-					\node[left,font=\footnotesize] at (0,\y) {$\l$};
-				}
-			\foreach \x in {1,2,3,4}
-			\node[below,font=\footnotesize] at (\x,0) {$\x$};
-			\foreach \x/\a/\b in {1/0/.25,2/.25/.75,3/.75/.875,4/.875/1}
-			\draw[teal!60,densely dashed] (\x,\a)--(\x,\b);
-			\draw[very thick,teal] (-.4,0)--(1,0) (1,.25)--(2,.25)
-			(2,.75)--(3,.75) (3,.875)--(4,.875) (4,1)--(4.6,1);
-			\foreach \x/\y in {1/0,2/.25,3/.75,4/.875}
-			\node[open] at (\x,\y) {};
-			\foreach \x/\y in {1/.25,2/.75,3/.875,4/1}
-			\node[closed] at (\x,\y) {};
-		\end{tikzpicture}
+		\diepmfcdf
 	\end{center}
 	\begin{printeq}
 	\[ p(x)=P(X=x),\qquad F(x)=P(X\le x)=\sum_{y\le x}p(y),\qquad
@@ -3341,11 +3359,12 @@ For a discrete $X$ it is a step function: it jumps by $p(x)$ at every
 value $x$, is constant in between; it tends to 0 on the far left and to
 1 on the far right.
 
-Read the graph from left to right. Below 1, $X$ cannot be that small, so
-$F=0$. At 1 it jumps by $p(1)=\tfrac14$; at 2 by $\tfrac12$, to
-$\tfrac34$; at 3 by $\tfrac18$, to $\tfrac78$; at 4 by $\tfrac18$, to 1, and
-stays there. The height of each jump is the pmf at that point: the pmf and
-$F$ carry the same information. The filled dots show that at a jump $F$
+The example on the slide is a fair die: $p(x)=\tfrac16$ for
+$x=1,\dots,6$, six bars of the same height. Read the graph of $F$ from left
+to right. Below 1, $X$ cannot be that small, so $F=0$. At each of the values
+$1,\dots,6$ it jumps by $\tfrac16$: $F(1)=\tfrac16$, $F(2)=\tfrac26$, and so
+on up to $F(6)=1$, and it stays there. The height of each jump is the bar
+of the pmf above it: the pmf and $F$ carry the same information. The filled dots show that at a jump $F$
 takes the upper value: $F(2)=P(X\le2)$ includes the value 2 itself. The
 open dots are the values just before the jump.
 
@@ -3355,15 +3374,15 @@ Why? $\{X\le b\}$ splits into $\{X\le a\}$ and $\{a<X\le b\}$, which do not
 overlap, so their probabilities add; subtract $F(a)$. And $\{X>a\}$ is the
 complement of $\{X\le a\}$.
 
-Example from the graph: $P(1<X\le3)=F(3)-F(1)=\tfrac78-\tfrac14=\tfrac58$,
-which is $p(2)+p(3)=\tfrac12+\tfrac18$. And $P(X>2)=1-F(2)=\tfrac14$.
+Example from the graph: $P(2<X\le5)=F(5)-F(2)=\tfrac56-\tfrac26=\tfrac12$,
+which is $p(3)+p(4)+p(5)=\tfrac36$. And $P(X>4)=1-F(4)=\tfrac13$.
 
-\ask What is $P(X<2)$? \emph{($F(1)=\tfrac14$: ``less than 2'' leaves the
+\ask What is $P(X<2)$? \emph{($F(1)=\tfrac16$: ``less than 2'' leaves the
 value 2 out.)}
 
 \begin{mistake}
 	$P(X<2)=F(2)$. For a discrete $X$, ``$<$'' and ``$\le$'' differ:
-	$P(X<2)=F(1)=\tfrac14$, but $F(2)=\tfrac34$.
+	$P(X<2)=F(1)=\tfrac16$, but $F(2)=\tfrac13$.
 \end{mistake}
 
 \needspace{0.25\textheight}
@@ -3414,10 +3433,11 @@ and multiplying by $a$ multiplies the standard deviation by $|a|$.
 Why the shortcut? Expand the square:
 $\E[(X-\mu)^2]=\E[X^2]-2\mu\,\E[X]+\mu^2=\E[X^2]-\mu^2$.
 
-Tiny example with the pmf of the last slide:
-\[ \E[X]=1\cdot\tfrac14+2\cdot\tfrac12+3\cdot\tfrac18+4\cdot\tfrac18=2.125,\qquad
-	\E[X^2]=1\cdot\tfrac14+4\cdot\tfrac12+9\cdot\tfrac18+16\cdot\tfrac18=5.375, \]
-so $\Var(X)=5.375-2.125^2\approx0.859$ and $\SD(X)\approx0.927$.
+Tiny example with the fair die of the last slide:
+\[ \E[X]=\frac{1+2+\dots+6}{6}=\frac{21}{6}=3.5,\qquad
+	\E[X^2]=\frac{1+4+9+16+25+36}{6}=\frac{91}{6}, \]
+so $\Var(X)=\tfrac{91}{6}-3.5^2=\tfrac{35}{12}\approx2.92$ and
+$\SD(X)\approx1.71$.
 
 \say In finance: $\E[X]$ is the expected return or payoff, $\SD(X)$
 measures the risk.

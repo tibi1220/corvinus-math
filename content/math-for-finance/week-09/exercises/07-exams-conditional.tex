@@ -44,20 +44,36 @@
 		\end{column}
 		\begin{column}{.36\textwidth}
 			\centering
-			\uncover<2->{%
-				\begin{tikzpicture}[scale=.55]
-					\only<3-4>{\fill[teal!25] (1.6,0) circle (1.5);}
-					\only<5->{\fill[navy!20] (0,0) circle (1.5);}
+			% One diagram per part, each shaded by its condition: (a) given B,
+			% (b) given A. The slide shows the full solution at once, so both
+			% stay visible.
+			\uncover<3->{%
+				\begin{tikzpicture}[scale=.42]
+					\fill[teal!25] (1.6,0) circle (1.5);
 					\draw[thick] (-2,-2) rectangle (3.6,2.1);
 					\draw[navy,thick] (0,0) circle (1.5);
 					\draw[teal,thick] (1.6,0) circle (1.5);
-					\node at (-.65,0) {\scriptsize 0.18};
-					\node at (.8,0) {\scriptsize 0.54};
-					\node at (2.25,0) {\scriptsize 0.10};
-					\node at (2.95,-1.6) {\scriptsize 0.18};
-					\node[navy] at (-1.4,1.55) {$A$};
-					\node[teal] at (3.0,1.55) {$B$};
-					\node at (.8,1.75) {\scriptsize $\Omega$};
+					\node at (-.65,0) {\tiny 0.18};
+					\node at (.8,0) {\tiny 0.54};
+					\node at (2.25,0) {\tiny 0.10};
+					\node at (2.95,-1.6) {\tiny 0.18};
+					\node[navy] at (-1.4,1.55) {\footnotesize $A$};
+					\node[teal] at (3.0,1.55) {\footnotesize $B$};
+					\node[anchor=east] at (-2.1,1.6) {\scriptsize (a)};
+				\end{tikzpicture}}\\[1mm]
+			\uncover<5->{%
+				\begin{tikzpicture}[scale=.42]
+					\fill[navy!20] (0,0) circle (1.5);
+					\draw[thick] (-2,-2) rectangle (3.6,2.1);
+					\draw[navy,thick] (0,0) circle (1.5);
+					\draw[teal,thick] (1.6,0) circle (1.5);
+					\node at (-.65,0) {\tiny 0.18};
+					\node at (.8,0) {\tiny 0.54};
+					\node at (2.25,0) {\tiny 0.10};
+					\node at (2.95,-1.6) {\tiny 0.18};
+					\node[navy] at (-1.4,1.55) {\footnotesize $A$};
+					\node[teal] at (3.0,1.55) {\footnotesize $B$};
+					\node[anchor=east] at (-2.1,1.6) {\scriptsize (b)};
 				\end{tikzpicture}}
 		\end{column}
 	\end{columns}
