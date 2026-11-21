@@ -30,6 +30,11 @@ const nextConfig: NextConfig = {
   // Cache Components (and Partial Prefetching, which needs it) imply Partial
   // Prerendering, which static export does not support.
   reactCompiler: true,
+  experimental: {
+    // Set by `next upgrade --agent=security`: nudges coding agents to apply
+    // published security upgrades of Next.js.
+    agentUpgrade: 'security',
+  },
   turbopack: {
     rules: {
       '*.css': {
