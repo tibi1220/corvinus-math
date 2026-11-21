@@ -2,7 +2,8 @@
 % explained from scratch in a key box, followed by the exercises of that topic
 % with their detailed solutions, in the order of the slides. The exercises
 % are in exercises/ (one file each); \studyexercise prints the heading, the
-% statement and the solution.
+% statement and the solution. Part 1 follows Session 1, Part 2 Session 2.
+% The pictures \fig... are defined in preamble.tex (the same as in beamer.tex).
 
 \maketitle
 
@@ -10,12 +11,16 @@
 \clearpage
 
 %======================================================================
-\section{Part 1: Continuous random variables}
+\section{Part 1: Continuous random variables and named distributions}
 %======================================================================
 
-\subsection*{Continuous random variables and their density}
-\addcontentsline{toc}{subsection}{Continuous random variables and their
-	density}
+This part introduces random variables that can take any value in an
+interval, describes them by a density and a distribution function, computes
+their expected value and variance, and presents the three most important
+continuous distributions: uniform, exponential and normal.
+
+\subsection*{From discrete to continuous}
+\addcontentsline{toc}{subsection}{From discrete to continuous}
 
 \begin{key}{Continuous random variables and their density}
 	\setlength{\parskip}{5pt}
@@ -26,29 +31,42 @@
 	fraction of a loan that is lost, a return. There are far too many values
 	to give each of them a positive probability; in fact $P(X=a)=0$ for every
 	single number $a$. Instead we ask for the probability of an
-	\emph{interval}, and we describe it with a curve.
+	\emph{interval}, and we describe it with a curve: the probability is the
+	area under the curve.
+	\begin{center}
+		\figdensity
+	\end{center}
+
+	\textbf{Density.} $X$ is \emph{continuous} if there is a function $f$,
+	its \emph{density}, such that for every interval
+	\[ P(a\le X\le b)=\int_a^b f(x)\,dx. \]
+	A density has two properties:
+	\begin{enumerate}[nosep,label=(\arabic*)]
+		\item $f(x)\ge0$ for every $x$ (areas are not negative);
+		\item $\int_{-\infty}^{\infty}f(x)\,dx=1$ (the total area is 1,
+		      because $X$ takes \emph{some} value).
+	\end{enumerate}
+	Every function with these two properties is the density of some
+	random variable.
 
 	\begin{minipage}[t]{.56\linewidth}
-		\textbf{Density.} $X$ is \emph{continuous} if there is a function $f$,
-		its \emph{density}, such that for every interval
-		\[ P(a\le X\le b)=\int_a^b f(x)\,dx: \]
-		the probability is the \emph{area under the curve} between $a$ and
-		$b$. A density has two properties:
-		\begin{enumerate}[nosep,label=(\arabic*)]
-			\item $f(x)\ge0$ for every $x$ (areas are not negative);
-			\item $\int_{-\infty}^{\infty}f(x)\,dx=1$ (the total area is 1,
-			      because $X$ takes \emph{some} value).
-		\end{enumerate}
+		\textbf{Tiny example.} $f(x)=\frac x2$ for $0\le x\le2$ and $f(x)=0$
+		otherwise (right). It is $\ge0$, and the total area is a triangle with
+		base 2 and height 1, so it is 1. Then
+		\[ P(X\le1)=\int_0^1\frac x2\,dx=\Big[\frac{x^2}{4}\Big]_0^1=\frac14, \]
+		\[ P(1<X\le2)=\Big[\frac{x^2}{4}\Big]_1^2=1-\frac14=\frac34. \]
+		Values near 2 are more likely than values near 0: the curve is higher
+		there.
 	\end{minipage}\hfill
 	\begin{minipage}[t]{.4\linewidth}
 		\centering\vspace{-1mm}
 		\begin{tikzpicture}[x=1.6cm,y=1.9cm,baseline=(top)]
 			\coordinate (top) at (0,1.2);
-			\fill[teal!30] (1,0) -- (1,.5) -- (2,1) -- (2,0) -- cycle;
+			\fill[teal!25] (1,0) -- (1,.5) -- (2,1) -- (2,0) -- cycle;
 			\draw[->] (-.2,0) -- (2.5,0) node[right,font=\small] {$x$};
 			\draw[->] (0,-.05) -- (0,1.25) node[above,font=\small] {$f(x)$};
-			\draw[very thick,teal] (-.2,0) -- (0,0) -- (2,1);
-			\draw[very thick,teal] (2,0) -- (2.4,0);
+			\draw[very thick,navy] (-.2,0) -- (0,0) -- (2,1);
+			\draw[very thick,navy] (2,0) -- (2.4,0);
 			\draw[gray,densely dotted] (2,0) -- (2,1);
 			\draw (-.05,1) -- (.05,1) node[left=3pt,font=\footnotesize] {$1$};
 			\foreach \x in {1,2} \node[below,font=\footnotesize] at (\x,0) {\x};
@@ -56,14 +74,6 @@
 			\node[font=\footnotesize] at (1.62,.3) {$\frac34$};
 		\end{tikzpicture}
 	\end{minipage}
-
-	\textbf{Tiny example.} $f(x)=\frac x2$ for $0\le x\le2$ and $f(x)=0$
-	otherwise (right). It is $\ge0$, and the total area is a triangle with
-	base 2 and height 1, so it is 1. Then
-	\[ P(X\le1)=\int_0^1\frac x2\,dx=\Big[\frac{x^2}{4}\Big]_0^1=\frac14,
-		\qquad P(1<X\le2)=\Big[\frac{x^2}{4}\Big]_1^2=1-\frac14=\frac34. \]
-	Values near 2 are more likely than values near 0: the curve is higher
-	there.
 
 	\textbf{A single point has no area.} $P(X=a)=\int_a^a f(x)\,dx=0$. So for
 	a continuous $X$ it does not matter whether we write $<$ or $\le$:
@@ -74,10 +84,12 @@
 	are probabilities. A density can be larger than 1: $f(x)=3$ on
 	$[0,\frac13]$ (and 0 outside) is a density, since the area is
 	$3\cdot\frac13=1$. Roughly, $P(x\le X\le x+h)\approx f(x)\,h$ for a small
-	$h$: the density is probability \emph{per unit length}.
+	$h$: the density is probability \emph{per unit length}, just as a mass
+	density is mass per unit volume.
 
 	\textbf{Finding a constant.} If $f(x)=c\,g(x)$ with an unknown $c$, use
-	property (2): compute $\int g$, then $c=1/\!\int g$.
+	property (2): compute $\int g$, then $c=1/\!\int g$. For example
+	$f(x)=cx^2$ on $[0,3]$ needs $c\cdot\frac{3^3}{3}=9c=1$, so $c=\frac19$.
 \end{key}
 
 \studyexercise{settlement-time}
@@ -96,26 +108,37 @@
 	(The second is the fundamental theorem of calculus.) So $f$ gives $F$ by
 	integration, and $F$ gives $f$ by differentiation.
 
-	\begin{minipage}[t]{.52\linewidth}
-		\textbf{Probabilities from $F$.} $\{X\le b\}$ is cut into $\{X\le a\}$
-		and $\{a<X\le b\}$ (for $a<b$), so
-		\[ \begin{gathered} P(a<X\le b)=F(b)-F(a),\\ P(X>a)=1-F(a).
-			\end{gathered} \]
-		No integral is needed once $F$ is known.
+	\textbf{Probabilities from $F$.} $\{X\le b\}$ is cut into $\{X\le a\}$
+	and $\{a<X\le b\}$ (for $a<b$), so
+	\[ P(a<X\le b)=F(b)-F(a),\qquad P(X>a)=1-F(a). \]
+	No integral is needed once $F$ is known. The area between $a$ and $b$
+	under the density of the first picture is the rise of $F$ between $a$
+	and $b$:
+	\begin{center}
+		\figcdf
+	\end{center}
+	\textbf{Shape.} $F$ never decreases, it tends to 0 on the far left and to
+	1 on the far right. For a continuous $X$ it has no jumps (a discrete $X$
+	has a step function, Week~9).
 
-		\textbf{Shape.} $F$ never decreases, it is 0 on the far left and 1 on
-		the far right. For a continuous $X$ it has no jumps (a discrete $X$
-		has a step function, Week~9).
+	\begin{minipage}[t]{.56\linewidth}
+		\textbf{Tiny example.} The density $f(x)=\frac x2$ on $[0,2]$ from the
+		previous box. For $0\le x\le2$,
+		\[ F(x)=\int_0^x\frac t2\,dt=\frac{x^2}{4}, \]
+		and $F(x)=0$ for $x<0$, $F(x)=1$ for $x>2$ (right). Then
+		$P(X>1)=1-F(1)=\frac34$ and
+		\[ P(0.5<X\le1)=F(1)-F(0.5)=\frac14-\frac1{16}=\frac3{16}. \]
+		Back: $F'(x)=\frac{2x}{4}=\frac x2=f(x)$.
 	\end{minipage}\hfill
-	\begin{minipage}[t]{.44\linewidth}
+	\begin{minipage}[t]{.4\linewidth}
 		\centering\vspace{-1mm}
 		\begin{tikzpicture}[x=1.45cm,y=2.2cm,baseline=(top)]
 			\coordinate (top) at (0,1.15);
 			\draw[->] (-.6,0) -- (2.75,0) node[right,font=\small] {$x$};
 			\draw[->] (0,-.05) -- (0,1.2) node[above,font=\small] {$F(x)$};
 			\draw[gray,densely dotted] (0,1) -- (2,1) -- (2,0);
-			\draw[gray,densely dotted] (1.414,0) -- (1.414,.5) -- (0,.5);
-			\draw[very thick,teal] (-.6,0) -- (0,0)
+			\draw[gold,densely dotted] (1.414,0) -- (1.414,.5) -- (0,.5);
+			\draw[very thick,navy] (-.6,0) -- (0,0)
 			plot[domain=0:2,samples=40] (\x,{\x*\x/4}) -- (2.65,1);
 			\draw (-.05,1) -- (.05,1) node[left=3pt,font=\footnotesize] {$1$};
 			\draw (-.05,.5) -- (.05,.5) node[left=3pt,font=\footnotesize] {$\frac12$};
@@ -125,18 +148,13 @@
 		\end{tikzpicture}
 	\end{minipage}
 
-	\textbf{Tiny example.} The density $f(x)=\frac x2$ on $[0,2]$ from the
-	previous box. For $0\le x\le2$,
-	\[ F(x)=\int_0^x\frac t2\,dt=\frac{x^2}{4}, \]
-	and $F(x)=0$ for $x<0$, $F(x)=1$ for $x>2$ (right). Then
-	$P(X>1)=1-F(1)=\frac34$ and
-	$P(0.5<X\le1)=F(1)-F(0.5)=\frac14-\frac1{16}=\frac3{16}$. Back:
-	$F'(x)=\frac{2x}{4}=\frac x2=f(x)$.
-
-	\textbf{Median.} The median is the number $m$ with $F(m)=\frac12$: $X$
-	is below it with probability $\frac12$ and above it with probability
-	$\frac12$. In the example $\frac{m^2}{4}=\frac12$, so
-	$m=\sqrt2\approx1.414$ (only the root in $[0,2]$ counts).
+	\textbf{Median and quantiles.} The median is the number $m$ with
+	$F(m)=\frac12$: $X$ is below it with probability $\frac12$ and above it
+	with probability $\frac12$. In the example $\frac{m^2}{4}=\frac12$, so
+	$m=\sqrt2\approx1.414$ (only the root in $[0,2]$ counts). In the same way
+	the number $x_p$ with $F(x_p)=p$ is the $p$-\emph{quantile}: $X$ is below
+	it with probability $p$. Quantiles are where the Value at Risk of a
+	portfolio comes from (Exercise~\exref{annual-return}).
 
 	\textbf{Careful.} Write $F$ on \emph{every} part of the real line (0 on
 	the left, 1 on the right), not only on the interval where $X$ lives.
@@ -145,89 +163,310 @@
 \studyexercise{loss-given-default}
 
 %----------------------------------------------------------------------
-\subsection*{Two examples: uniform and exponential}
-\addcontentsline{toc}{subsection}{Two examples: uniform and exponential}
+\subsection*{Expected value and variance}
+\addcontentsline{toc}{subsection}{Expected value and variance}
 
-\begin{key}{The uniform and the exponential distribution}
+\begin{key}{Expected value and variance of a continuous random variable}
 	\setlength{\parskip}{5pt}
-	\begin{minipage}[t]{.55\linewidth}
-		\textbf{Uniform on $[\alpha,\beta]$.} ``Equally likely to be anywhere
-		in $[\alpha,\beta]$'': the density is constant there, and the
-		constant must make the area 1,
-		\[ f(x)=\frac{1}{\beta-\alpha}\ \text{ on }[\alpha,\beta],\quad 0
-			\text{ outside}. \]
-		The probability of a piece of $[\alpha,\beta]$ is its length divided
-		by $\beta-\alpha$, so every piece of the same length is equally
-		likely. For $\alpha\le x\le\beta$,
-		$F(x)=\frac{x-\alpha}{\beta-\alpha}$.
+	\textbf{Sums become integrals.} For a discrete $X$ (Week~9)
+	$\E[X]=\sum_x x\,p(x)$. For a continuous $X$, the probability
+	$p(x)$ is replaced by $f(x)\,dx$, and the sum by an integral:
+	\[ \E[X]=\int_{-\infty}^{\infty}x\,f(x)\,dx,\qquad
+		\E[g(X)]=\int_{-\infty}^{\infty}g(x)\,f(x)\,dx. \]
+	\textbf{Why.} Cut the line into short pieces of length $h$. $X$ falls into
+	the piece at $x$ with probability about $f(x)\,h$, and then $X\approx x$.
+	So $\E[X]\approx\sum x\,f(x)\,h$, a Riemann sum, which tends to the
+	integral as $h\to0$. The expected value is the long-run average of $X$,
+	and it is the point where the area under the density would balance.
+
+	\textbf{The same rules as before.} Because the integral is linear,
+	\[ \E[aX+b]=a\,\E[X]+b. \]
+	With $\mu=\E[X]$, the variance and the standard deviation are defined
+	exactly as in the discrete case,
+	\[ \Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\mu^2,\qquad
+		\SD(X)=\sqrt{\Var(X)}, \]
+	and $\Var(aX+b)=a^2\Var(X)$, $\SD(aX+b)=|a|\,\SD(X)$. In practice compute
+	$\E[X^2]=\int x^2f(x)\,dx$ and use the shortcut $\E[X^2]-\mu^2$.
+
+	\textbf{Tiny example.} The density $f(x)=\frac x2$ on $[0,2]$:
+	\[ \E[X]=\int_0^2x\cdot\frac x2\,dx=\Big[\frac{x^3}{6}\Big]_0^2=\frac43,
+		\qquad \E[X^2]=\int_0^2x^2\cdot\frac x2\,dx=\Big[\frac{x^4}{8}\Big]_0^2=2, \]
+	\[ \Var(X)=2-\Big(\frac43\Big)^2=\frac29,\qquad
+		\SD(X)=\frac{\sqrt2}{3}\approx0.471. \]
+	The mean $\frac43$ is to the right of the middle of $[0,2]$, because the
+	density is higher on the right. It is a little below the median
+	$\sqrt2\approx1.414$: the mean and the median are different numbers in
+	general.
+
+	\textbf{In finance.} If $X$ is the fraction of a loan that is recovered
+	after a default, then for a loan of $L$ euros the expected loss is
+	$\E[L(1-X)]=L\,(1-\E[X])$ by linearity, and its standard deviation is
+	$L\,\SD(X)$ (Exercise~\exref{recovery-rate}).
+\end{key}
+
+\studyexercise{recovery-rate}
+
+%----------------------------------------------------------------------
+\subsection*{The uniform distribution}
+\addcontentsline{toc}{subsection}{The uniform distribution}
+
+\begin{key}{The uniform distribution}
+	\setlength{\parskip}{5pt}
+	\begin{minipage}[t]{.5\linewidth}
+		\textbf{Definition.} ``A number picked at random from
+		$[\alpha,\beta]$'': the density is constant there, and the constant
+		must make the area 1,
+		\[ f(x)=\begin{cases}\dfrac{1}{\beta-\alpha}, & \alpha\le x\le\beta,\\[2mm]
+				0, & \text{otherwise.}\end{cases} \]
 	\end{minipage}\hfill
-	\begin{minipage}[t]{.41\linewidth}
-		\centering\vspace{-1mm}
-		\begin{tikzpicture}[x=1cm,y=1cm,baseline=(top)]
-			\coordinate (top) at (0,1.4);
-			\draw[->] (-.3,0) -- (3.6,0) node[right,font=\small] {$x$};
-			\draw[->] (0,-.05) -- (0,1.4) node[above,font=\small] {$f(x)$};
-			\fill[teal!20] (.8,0) rectangle (2.8,.9);
-			\draw[very thick,teal] (-.3,0) -- (.8,0) (.8,.9) -- (2.8,.9)
-			(2.8,0) -- (3.4,0);
-			\node[below,font=\footnotesize] at (.8,0) {$\alpha$};
-			\node[below,font=\footnotesize] at (2.8,0) {$\beta$};
-			\draw (-.05,.9) -- (.05,.9) node[left=2pt,font=\footnotesize]
-			{$\frac1{\beta-\alpha}$};
-		\end{tikzpicture}
+	\begin{minipage}[t]{.46\linewidth}
+		\centering\vspace{-2mm}
+		\figuniform
 	\end{minipage}
+
+	\textbf{Probabilities: length over total length.} For
+	$\alpha\le c\le d\le\beta$, the area above $[c,d]$ is a rectangle,
+	\[ P(c\le X\le d)=\frac{d-c}{\beta-\alpha}, \]
+	so every piece of $[\alpha,\beta]$ of the same length is equally likely.
+	The distribution function is $F(x)=0$ for $x<\alpha$,
+	$F(x)=\frac{x-\alpha}{\beta-\alpha}$ for $\alpha\le x\le\beta$, and
+	$F(x)=1$ for $x>\beta$.
+
+	\textbf{Mean and variance.}
+	\[ \E[X]=\frac{\alpha+\beta}{2},\qquad \Var(X)=\frac{(\beta-\alpha)^2}{12}. \]
+	\textbf{Why.}
+	\[ \E[X]=\int_\alpha^\beta\frac{x}{\beta-\alpha}\,dx
+		=\frac{\beta^2-\alpha^2}{2(\beta-\alpha)}=\frac{\alpha+\beta}{2}, \]
+	the midpoint (as the picture suggests). Similarly
+	\[ \E[X^2]=\int_\alpha^\beta\frac{x^2}{\beta-\alpha}\,dx
+		=\frac{\beta^3-\alpha^3}{3(\beta-\alpha)}
+		=\frac{\alpha^2+\alpha\beta+\beta^2}{3}, \]
+	and
+	\[ \Var(X)=\frac{\alpha^2+\alpha\beta+\beta^2}{3}-\frac{(\alpha+\beta)^2}{4}
+		=\frac{\alpha^2-2\alpha\beta+\beta^2}{12}=\frac{(\beta-\alpha)^2}{12}. \]
+	The variance depends only on the length of the interval: shifting the
+	interval does not change the spread.
 
 	\textbf{Tiny example.} $X$ uniform on $[0,10]$: $f(x)=\frac1{10}$ there,
-	and $P(2<X<5)=\frac{5-2}{10}=0.3$, the same as $P(6<X<9)$.
+	and $P(2<X<5)=\frac{5-2}{10}=0.3$, the same as $P(6<X<9)$. Further
+	$\E[X]=5$, $\Var(X)=\frac{100}{12}\approx8.33$ and
+	$\SD(X)\approx2.89$.
+\end{key}
 
-	\begin{minipage}[t]{.55\linewidth}
-		\textbf{Exponential with rate $\lambda>0$.} The standard model of a
-		waiting time: the time until the next order, until a default, until
-		a component fails.
-		\[ f(x)=\lambda e^{-\lambda x}\ \text{ for }x\ge0,\quad 0\text{ for }
-			x<0. \]
-		For $x\ge0$,
-		\[ F(x)=\int_0^x\lambda e^{-\lambda t}\,dt=\big[-e^{-\lambda t}\big]_0^x
-			=1-e^{-\lambda x}, \]
-		so the \emph{tail} (the chance of waiting longer than $x$) is
-		$P(X>x)=e^{-\lambda x}$.
+\studyexercise{waiting-for-the-bus}
+
+%----------------------------------------------------------------------
+\subsection*{The exponential distribution}
+\addcontentsline{toc}{subsection}{The exponential distribution}
+
+\begin{key}{The exponential distribution}
+	\setlength{\parskip}{5pt}
+	\begin{minipage}[t]{.5\linewidth}
+		\textbf{Definition.} The standard model of a waiting time: the time
+		until the next order, until a default, until a component fails. With
+		a \emph{rate} $\lambda>0$,
+		\[ f(x)=\begin{cases}\lambda e^{-\lambda x}, & x\ge0,\\
+				0, & x<0.\end{cases} \]
+		$\lambda$ is the number of events per unit of time on average: orders
+		per minute, defaults per year.
 	\end{minipage}\hfill
-	\begin{minipage}[t]{.41\linewidth}
-		\centering\vspace{-1mm}
-		\begin{tikzpicture}[x=1cm,y=1cm,baseline=(top)]
-			\coordinate (top) at (0,1.6);
-			\fill[teal!20] (1.2,0) -- plot[domain=1.2:3.4,samples=30]
-			(\x,{1.4*exp(-\x)}) -- (3.4,0) -- cycle;
-			\draw[->] (-.3,0) -- (3.6,0) node[right,font=\small] {$x$};
-			\draw[->] (0,-.05) -- (0,1.6) node[above,font=\small] {$f(x)$};
-			\draw[very thick,teal] (-.3,0) -- (0,0);
-			\draw[very thick,teal] plot[domain=0:3.4,samples=40]
-			(\x,{1.4*exp(-\x)});
-			\draw (-.05,1.4) -- (.05,1.4) node[left=2pt,font=\footnotesize]
-			{$\lambda$};
-			\node[below,font=\footnotesize] at (1.2,0) {$x$};
-			\node[font=\footnotesize,anchor=west] at (1.65,.55) {$e^{-\lambda x}$};
-		\end{tikzpicture}
+	\begin{minipage}[t]{.46\linewidth}
+		\centering\vspace{-2mm}
+		\figexponential
 	\end{minipage}
 
-	\textbf{Tiny example.} Calls arrive at a rate of $\lambda=0.5$ per
-	minute. The probability of waiting more than 2 minutes is
-	$e^{-0.5\cdot2}=e^{-1}\approx0.368$, and of waiting less than 2 minutes
-	$1-e^{-1}\approx0.632$.
+	\textbf{Distribution function and tail.} For $x\ge0$
+	\[ F(x)=\int_0^x\lambda e^{-\lambda t}\,dt=\big[-e^{-\lambda t}\big]_0^x
+		=1-e^{-\lambda x},\qquad P(X>x)=e^{-\lambda x}. \]
+	The tail $P(X>x)$ (the chance of waiting longer than $x$) is the formula
+	to remember; everything else follows from it.
 
-	\textbf{Conditional probabilities.} They work as in Week~9. For $a<b$,
-	the event $\{X>b\}$ is part of $\{X>a\}$, so
-	\[ P(X>b\mid X>a)=\frac{P(X>b,\ X>a)}{P(X>a)}=\frac{P(X>b)}{P(X>a)}. \]
-	For the exponential distribution this is
-	\[ \frac{e^{-\lambda b}}{e^{-\lambda a}}=e^{-\lambda(b-a)}=P(X>b-a): \]
-	having waited
-	$a$ already does not change the chance of waiting $b-a$ more. The
-	exponential distribution \emph{has no memory}.
+	\textbf{Mean and variance.}
+	\[ \E[X]=\frac1\lambda,\qquad\Var(X)=\frac1{\lambda^2},\qquad
+		\SD(X)=\frac1\lambda. \]
+	\textbf{Why.} Integration by parts, with $u=x$ and $v'=\lambda e^{-\lambda x}$
+	($v=-e^{-\lambda x}$):
+	\[ \E[X]=\int_0^\infty x\,\lambda e^{-\lambda x}\,dx
+		=\big[-xe^{-\lambda x}\big]_0^\infty+\int_0^\infty e^{-\lambda x}\,dx
+		=0+\frac1\lambda. \]
+	In the same way
+	\[ \E[X^2]=\int_0^\infty x^2\,\lambda e^{-\lambda x}\,dx
+		=\big[-x^2e^{-\lambda x}\big]_0^\infty+\int_0^\infty2x\,e^{-\lambda x}\,dx
+		=\frac2\lambda\,\E[X]=\frac{2}{\lambda^2}, \]
+	so $\Var(X)=\frac2{\lambda^2}-\frac1{\lambda^2}=\frac1{\lambda^2}$. It is
+	natural: 2 orders per minute on average means a wait of $\frac12$ minute
+	on average.
+
+	\textbf{Memoryless property.} For $s,t\ge0$, the event $\{X>s+t\}$ is
+	part of $\{X>s\}$, so by the definition of conditional probability
+	\[ P(X>s+t\mid X>s)=\frac{P(X>s+t)}{P(X>s)}
+		=\frac{e^{-\lambda(s+t)}}{e^{-\lambda s}}=e^{-\lambda t}=P(X>t). \]
+	Having waited $s$ already does not change the chance of waiting $t$ more:
+	the wait ``starts again'' at every moment. This is the continuous
+	version of the memoryless geometric distribution of Week~9, and the
+	exponential is the only continuous distribution with this property. It
+	is a good model when events come ``out of the blue'' (orders, claims), and
+	a poor one for things that wear out.
+
+	\textbf{Tiny example.} Calls arrive at a rate of $\lambda=0.5$ per
+	minute, so the expected wait is $\frac1{0.5}=2$ minutes. The probability
+	of waiting more than 2 minutes is $e^{-0.5\cdot2}=e^{-1}\approx0.368$, of
+	waiting less than 2 minutes $1-e^{-1}\approx0.632$. If nobody has called
+	in the last 3 minutes, the chance that the wait lasts more than 5 minutes
+	in total is $P(X>5\mid X>3)=P(X>2)\approx0.368$, the same.
 \end{key}
 
 \studyexercise{order-arrivals}
 
 %----------------------------------------------------------------------
+\subsection*{The normal distribution}
+\addcontentsline{toc}{subsection}{The normal distribution}
+
+\begin{key}{The normal distribution}
+	\setlength{\parskip}{5pt}
+	\textbf{Why it matters.} Sums of many small independent effects are
+	approximately normal (this is the central limit theorem of next week):
+	measurement errors, heights, and, in the simplest models, returns of
+	stocks and portfolios. The normal distribution is the basic model of
+	risk in finance.
+
+	\textbf{Definition.} $X$ is normal with parameters $\mu$ and $\sigma^2$
+	($\sigma>0$), written $X\sim N(\mu,\sigma^2)$, if its density is
+	\[ f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,e^{-(x-\mu)^2/(2\sigma^2)},
+		\qquad x\in\mathbb{R}. \]
+	The curve is the \emph{bell curve}: symmetric about $\mu$, highest at
+	$\mu$, and very thin far from $\mu$. The constant $\frac{1}{\sigma\sqrt{2\pi}}$
+	makes the total area 1 (this needs a classical computation with a double
+	integral, $\int_{-\infty}^\infty e^{-z^2/2}\,dz=\sqrt{2\pi}$).
+	\[ \E[X]=\mu,\qquad\Var(X)=\sigma^2,\qquad\SD(X)=\sigma: \]
+	$\mu$ is the center of the bell, and $\sigma$ is its width.
+
+	\noindent\begin{minipage}{\linewidth}
+		\textbf{The 68--95--99.7 rule.} Whatever $\mu$ and $\sigma$ are, $X$ is
+		within $\sigma$, $2\sigma$ and $3\sigma$ of $\mu$ with probability about
+		$68\%$, $95\%$ and $99.7\%$:
+		\begin{center}
+			\fignormal
+		\end{center}
+	\end{minipage}
+	A value more than $3\sigma$ away from $\mu$ is very rare (3 times in
+	1000).
+
+	\textbf{The standard normal.} $Z\sim N(0,1)$ ($\mu=0$, $\sigma=1$) has
+	the density $\frac{1}{\sqrt{2\pi}}e^{-z^2/2}$. Its distribution function
+	has a name of its own,
+	\[ \Phi(z)=P(Z\le z)=\frac{1}{\sqrt{2\pi}}\int_{-\infty}^z e^{-t^2/2}\,dt. \]
+	This integral has no formula with elementary functions, so $\Phi$ is read
+	from a table (next page). The table gives only $z\ge0$; for negative $z$
+	use the symmetry of the bell curve: the area left of $-z$ equals the area
+	right of $z$,
+	\[ \Phi(-z)=1-\Phi(z). \]
+	\begin{center}
+		\figphi
+	\end{center}
+
+	\textbf{Standardizing.} If $X\sim N(\mu,\sigma^2)$, then
+	\[ Z=\frac{X-\mu}{\sigma}\sim N(0,1). \]
+	Subtracting $\mu$ moves the center to 0, dividing by $\sigma$ makes the
+	width 1, and the shape stays a bell (Part~2 proves it: a linear function
+	of a normal random variable is normal). So every normal probability is a
+	standard normal one:
+	\[ P(X\le x)=P\Big(\frac{X-\mu}{\sigma}\le\frac{x-\mu}{\sigma}\Big)
+		=\Phi\Big(\frac{x-\mu}{\sigma}\Big). \]
+	The number $\frac{x-\mu}{\sigma}$ (the \emph{z-score}) tells how many
+	standard deviations $x$ is from the mean. Going back, $X=\mu+\sigma Z$;
+	this also explains $\E[X]=\mu$ and $\Var(X)=\sigma^2$ from $\E[Z]=0$ (by
+	symmetry) and $\Var(Z)=1$.
+
+	\textbf{Tiny example.} Exam scores are $X\sim N(60,10^2)$. Then
+	\[ P(X>75)=1-\Phi\Big(\frac{75-60}{10}\Big)=1-\Phi(1.5)=1-0.9332=0.0668, \]
+	\[ P(50<X<70)=\Phi(1)-\Phi(-1)=2\Phi(1)-1=2\cdot0.8413-1=0.6826, \]
+	the ``68\%'' of the rule. The score that only $10\%$ of the students
+	exceed: $\Phi(z)=0.90$ for $z=1.282$, so $x=60+1.282\cdot10=72.82$.
+
+	\textbf{Quantiles.} The number $z_p$ with $\Phi(z_p)=p$ is the
+	$p$-quantile of $Z$; the most used ones are below the table. For $X$ the
+	$p$-quantile is $\mu+\sigma z_p$, and for a small $p$ use
+	$z_{1-p}$ with a minus sign: $\Phi(-1.645)=1-0.95=0.05$, so the $5\%$
+	quantile of $X$ is $\mu-1.645\,\sigma$. This is the 95\% Value at Risk
+	question of Exercise~\exref{annual-return}.
+\end{key}
+
+%----------------------------------------------------------------------
+\subsection*{The standard normal table}
+\addcontentsline{toc}{subsection}{The standard normal table}
+
+\begin{key}{Values of $\Phi(z)=P(Z\le z)$ for $Z\sim N(0,1)$}
+	The row gives $z$ to one decimal, the column the second decimal: for
+	example $\Phi(1.25)=0.8944$ is in row $1.2$, column $0.05$. For negative
+	$z$ use $\Phi(-z)=1-\Phi(z)$; for $z\ge3.1$, $\Phi(z)>0.999$.
+	\begin{center}
+		\small
+		\renewcommand{\arraystretch}{1.02}
+		\setlength{\tabcolsep}{3.6pt}
+		\begin{tabular}{@{}c|cccccccccc@{}}
+			\toprule
+			$z$ & $0.00$ & $0.01$ & $0.02$ & $0.03$ & $0.04$ & $0.05$ & $0.06$ & $0.07$ & $0.08$ & $0.09$ \\\midrule
+			0.0 & 0.5000 & 0.5040 & 0.5080 & 0.5120 & 0.5160 & 0.5199 & 0.5239 & 0.5279 & 0.5319 & 0.5359 \\
+			0.1 & 0.5398 & 0.5438 & 0.5478 & 0.5517 & 0.5557 & 0.5596 & 0.5636 & 0.5675 & 0.5714 & 0.5753 \\
+			0.2 & 0.5793 & 0.5832 & 0.5871 & 0.5910 & 0.5948 & 0.5987 & 0.6026 & 0.6064 & 0.6103 & 0.6141 \\
+			0.3 & 0.6179 & 0.6217 & 0.6255 & 0.6293 & 0.6331 & 0.6368 & 0.6406 & 0.6443 & 0.6480 & 0.6517 \\
+			0.4 & 0.6554 & 0.6591 & 0.6628 & 0.6664 & 0.6700 & 0.6736 & 0.6772 & 0.6808 & 0.6844 & 0.6879 \\
+			0.5 & 0.6915 & 0.6950 & 0.6985 & 0.7019 & 0.7054 & 0.7088 & 0.7123 & 0.7157 & 0.7190 & 0.7224 \\
+			0.6 & 0.7257 & 0.7291 & 0.7324 & 0.7357 & 0.7389 & 0.7422 & 0.7454 & 0.7486 & 0.7517 & 0.7549 \\
+			0.7 & 0.7580 & 0.7611 & 0.7642 & 0.7673 & 0.7704 & 0.7734 & 0.7764 & 0.7794 & 0.7823 & 0.7852 \\
+			0.8 & 0.7881 & 0.7910 & 0.7939 & 0.7967 & 0.7995 & 0.8023 & 0.8051 & 0.8078 & 0.8106 & 0.8133 \\
+			0.9 & 0.8159 & 0.8186 & 0.8212 & 0.8238 & 0.8264 & 0.8289 & 0.8315 & 0.8340 & 0.8365 & 0.8389 \\
+			1.0 & 0.8413 & 0.8438 & 0.8461 & 0.8485 & 0.8508 & 0.8531 & 0.8554 & 0.8577 & 0.8599 & 0.8621 \\
+			1.1 & 0.8643 & 0.8665 & 0.8686 & 0.8708 & 0.8729 & 0.8749 & 0.8770 & 0.8790 & 0.8810 & 0.8830 \\
+			1.2 & 0.8849 & 0.8869 & 0.8888 & 0.8907 & 0.8925 & 0.8944 & 0.8962 & 0.8980 & 0.8997 & 0.9015 \\
+			1.3 & 0.9032 & 0.9049 & 0.9066 & 0.9082 & 0.9099 & 0.9115 & 0.9131 & 0.9147 & 0.9162 & 0.9177 \\
+			1.4 & 0.9192 & 0.9207 & 0.9222 & 0.9236 & 0.9251 & 0.9265 & 0.9279 & 0.9292 & 0.9306 & 0.9319 \\
+			1.5 & 0.9332 & 0.9345 & 0.9357 & 0.9370 & 0.9382 & 0.9394 & 0.9406 & 0.9418 & 0.9429 & 0.9441 \\
+			1.6 & 0.9452 & 0.9463 & 0.9474 & 0.9484 & 0.9495 & 0.9505 & 0.9515 & 0.9525 & 0.9535 & 0.9545 \\
+			1.7 & 0.9554 & 0.9564 & 0.9573 & 0.9582 & 0.9591 & 0.9599 & 0.9608 & 0.9616 & 0.9625 & 0.9633 \\
+			1.8 & 0.9641 & 0.9649 & 0.9656 & 0.9664 & 0.9671 & 0.9678 & 0.9686 & 0.9693 & 0.9699 & 0.9706 \\
+			1.9 & 0.9713 & 0.9719 & 0.9726 & 0.9732 & 0.9738 & 0.9744 & 0.9750 & 0.9756 & 0.9761 & 0.9767 \\
+			2.0 & 0.9772 & 0.9778 & 0.9783 & 0.9788 & 0.9793 & 0.9798 & 0.9803 & 0.9808 & 0.9812 & 0.9817 \\
+			2.1 & 0.9821 & 0.9826 & 0.9830 & 0.9834 & 0.9838 & 0.9842 & 0.9846 & 0.9850 & 0.9854 & 0.9857 \\
+			2.2 & 0.9861 & 0.9864 & 0.9868 & 0.9871 & 0.9875 & 0.9878 & 0.9881 & 0.9884 & 0.9887 & 0.9890 \\
+			2.3 & 0.9893 & 0.9896 & 0.9898 & 0.9901 & 0.9904 & 0.9906 & 0.9909 & 0.9911 & 0.9913 & 0.9916 \\
+			2.4 & 0.9918 & 0.9920 & 0.9922 & 0.9925 & 0.9927 & 0.9929 & 0.9931 & 0.9932 & 0.9934 & 0.9936 \\
+			2.5 & 0.9938 & 0.9940 & 0.9941 & 0.9943 & 0.9945 & 0.9946 & 0.9948 & 0.9949 & 0.9951 & 0.9952 \\
+			2.6 & 0.9953 & 0.9955 & 0.9956 & 0.9957 & 0.9959 & 0.9960 & 0.9961 & 0.9962 & 0.9963 & 0.9964 \\
+			2.7 & 0.9965 & 0.9966 & 0.9967 & 0.9968 & 0.9969 & 0.9970 & 0.9971 & 0.9972 & 0.9973 & 0.9974 \\
+			2.8 & 0.9974 & 0.9975 & 0.9976 & 0.9977 & 0.9977 & 0.9978 & 0.9979 & 0.9979 & 0.9980 & 0.9981 \\
+			2.9 & 0.9981 & 0.9982 & 0.9982 & 0.9983 & 0.9984 & 0.9984 & 0.9985 & 0.9985 & 0.9986 & 0.9986 \\
+			3.0 & 0.9987 & 0.9987 & 0.9987 & 0.9988 & 0.9988 & 0.9989 & 0.9989 & 0.9989 & 0.9990 & 0.9990 \\
+			\bottomrule
+		\end{tabular}
+	\end{center}
+	\textbf{Key quantiles} $z_p$ with $\Phi(z_p)=p$:
+	\begin{center}
+		\begin{tabular}{@{}c|ccccc@{}}
+			\toprule
+			$p$   & $0.90$  & $0.95$  & $0.975$ & $0.99$  & $0.995$ \\\midrule
+			$z_p$ & $1.282$ & $1.645$ & $1.960$ & $2.326$ & $2.576$ \\\bottomrule
+		\end{tabular}
+	\end{center}
+	By symmetry $P(|Z|\le z_{0.975})=P(-1.96\le Z\le1.96)=0.95$, and
+	$P(Z\le-z_p)=1-p$, e.g.\ $P(Z\le-1.645)=0.05$ and $P(Z\le-2.326)=0.01$.
+\end{key}
+
+\clearpage
+\studyexercise{annual-return}
+
+\clearpage
+%======================================================================
+\section{Part 2: Functions of random variables, joint distributions,
+	independence}
+%======================================================================
+
+This part finds the distribution of a function of a random variable (for
+example a stock price from its log return), and then looks at two random
+variables at the same time: their joint distribution, and when they are
+independent.
+
 \subsection*{The distribution of a function of a random variable}
 \addcontentsline{toc}{subsection}{The distribution of a function of a
 	random variable}
@@ -235,8 +474,10 @@
 \begin{key}{The distribution of a function of a random variable}
 	\setlength{\parskip}{5pt}
 	\textbf{The question.} We know the distribution of $X$ (for example a
-	return), and we need the distribution of $Y=g(X)$ (for example the value
-	$1000(1+X)$ of an investment, or $X^2$).
+	log return), and we need the distribution of $Y=g(X)$ (for example the
+	price $S_0e^X$ of a stock, or $X^2$). For the expected value alone,
+	$\E[g(X)]=\int g(x)f(x)\,dx$ is enough; for probabilities about $Y$ we
+	need its distribution.
 
 	\textbf{The method: first the distribution function.}
 	\begin{enumerate}[nosep,label=\arabic*.]
@@ -254,13 +495,29 @@
 		f_Y(y)=\frac12. \]
 	So $Y$ is uniform on $[3,5]$: a linear function keeps the shape.
 
+	\textbf{A linear function of a normal is normal.} If $X\sim N(\mu,\sigma^2)$
+	and $a>0$, then for every $y$
+	\[ F_Y(y)=P(aX+b\le y)=P\Big(X\le\frac{y-b}{a}\Big)
+		=\Phi\Big(\frac{(y-b)/a-\mu}{\sigma}\Big)
+		=\Phi\Big(\frac{y-(a\mu+b)}{a\sigma}\Big), \]
+	and this is the distribution function of $N(a\mu+b,\,a^2\sigma^2)$. For
+	$a<0$ the inequality flips, and the symmetry $\Phi(-z)=1-\Phi(z)$ gives
+	the same result with $|a|\sigma$. So
+	\[ X\sim N(\mu,\sigma^2),\ a\ne0\ \Longrightarrow\ aX+b\sim
+		N(a\mu+b,\,a^2\sigma^2). \]
+	With $a=\frac1\sigma$ and $b=-\frac\mu\sigma$ this is the standardization
+	$\frac{X-\mu}{\sigma}\sim N(0,1)$ of Part~1. In finance: if the return
+	$X$ is normal, the value $1000(1+X)$ of an investment of 1000 euros is
+	normal too.
+
 	\begin{minipage}[t]{.56\linewidth}
 		\textbf{Nonlinear example.} $X$ uniform on $[0,1]$, $Y=\sqrt X$. $Y$
 		lies in $[0,1]$, and for $0\le y\le1$ (right)
 		\[ F_Y(y)=P(\sqrt X\le y)=P(X\le y^2)=y^2, \]
 		so $f_Y(y)=2y$ on $[0,1]$. This is not constant: the square root
 		pushes the values up (for example $\sqrt{0.25}=0.5$), so $Y$ is more
-		likely to be near 1 than near 0. Other functions change the shape.
+		likely to be near 1 than near 0. A nonlinear function changes the
+		shape.
 	\end{minipage}\hfill
 	\begin{minipage}[t]{.4\linewidth}
 		\centering\vspace{-1mm}
@@ -268,9 +525,9 @@
 			\coordinate (top) at (0,1.12);
 			\draw[->] (-.05,0) -- (1.15,0) node[right,font=\small] {$x$};
 			\draw[->] (0,-.05) -- (0,1.15) node[above,font=\small] {$y$};
-			\draw[very thick,teal] plot[domain=0:1,samples=60]
+			\draw[very thick,navy] plot[domain=0:1,samples=60]
 			(\x,{sqrt(\x)});
-			\node[teal,font=\footnotesize] at (.85,1.03) {$\sqrt x$};
+			\node[navy,font=\footnotesize] at (.85,1.03) {$\sqrt x$};
 			\draw[gray,densely dotted] (0,.6) -- (.36,.6) -- (.36,0);
 			\draw[line width=2.5pt,gold] (0,0) -- (.36,0);
 			\node[left,font=\footnotesize] at (0,.6) {$y$};
@@ -286,19 +543,25 @@
 	\[ F_Y(y)=P(1-X\le y)=P(X\ge1-y)=1-(1-y)=y: \]
 	$Y$ is again uniform on $[0,1]$.
 
+	\textbf{The lognormal stock price.} If the log return $X=\ln(S/S_0)$ of a
+	stock is $N(\mu,\sigma^2)$, the price is $S=S_0e^X$. As $\ln$ is
+	increasing, for $s>0$
+	\[ F_S(s)=P(S_0e^X\le s)=P\Big(X\le\ln\frac{s}{S_0}\Big)
+		=\Phi\Big(\frac{\ln(s/S_0)-\mu}{\sigma}\Big). \]
+	$S$ is called \emph{lognormal}; it is the price model behind the
+	Black--Scholes formula (Exercise~\exref{lognormal-price}).
+
 	\textbf{Careful.} Do not just substitute into the density: $f_Y(y)$ is
 	\emph{not} simply $f_X$ evaluated at the solved-for $x$, that is, not
-	$f_X\big(g^{-1}(y)\big)$. For example, for $Y=X^2$ (Exercise~\exref{square-of-uniform})
-	$f_Y(y)$ is not $f_X(\sqrt y)$. Always go through $F_Y$.
+	$f_X\big(g^{-1}(y)\big)$. For example, for $Y=X^2$
+	(Exercise~\exref{square-of-uniform}) $f_Y(y)$ is not $f_X(\sqrt y)$.
+	Always go through $F_Y$.
 \end{key}
 
 \studyexercise{square-of-uniform}
+\studyexercise{lognormal-price}
 
-\clearpage
-%======================================================================
-\section{Part 2: Joint distributions and independence}
-%======================================================================
-
+%----------------------------------------------------------------------
 \subsection*{Joint distribution: the discrete case}
 \addcontentsline{toc}{subsection}{Joint distribution: the discrete case}
 
@@ -324,10 +587,10 @@
 		\centering\vspace{6mm}
 		\renewcommand{\arraystretch}{1.8}\setlength{\tabcolsep}{7pt}
 		\begin{tabular}{c|ccc|c}
-			$X\backslash Y$ & $0$ & $1$ & $2$ & $p_X$ \\\hline
-			$0$ & $\frac14$ & $\frac14$ & $0$ & $\frac12$ \\
-			$1$ & $0$ & $\frac14$ & $\frac14$ & $\frac12$ \\\hline
-			$p_Y$ & $\frac14$ & $\frac12$ & $\frac14$ & $1$
+			$X\backslash Y$ & $0$       & $1$       & $2$       & $p_X$     \\\hline
+			$0$             & $\frac14$ & $\frac14$ & $0$       & $\frac12$ \\
+			$1$             & $0$       & $\frac14$ & $\frac14$ & $\frac12$ \\\hline
+			$p_Y$           & $\frac14$ & $\frac12$ & $\frac14$ & $1$
 		\end{tabular}
 	\end{minipage}
 
@@ -342,27 +605,16 @@
 	and $Y$, add the cells where it holds. In the example
 	$P(X=Y)=p(0,0)+p(1,1)=\frac12$.
 
-	\textbf{Joint distribution function.} For any $X$ and $Y$,
-	\[ F(a,b)=P(X\le a,\ Y\le b), \]
-	the sum of the cells with $x\le a$ \emph{and} $y\le b$. In the example
-	$F(0,1)=p(0,0)+p(0,1)=\frac12$.
-
-	\begin{minipage}[t]{.55\linewidth}
-		\textbf{A second example.} The table on the right has
-		$X,Y\in\{0,1\}$. Row sums give $p_X(0)=p_X(1)=0.5$, column sums give
-		$p_Y(0)=0.4$, $p_Y(1)=0.6$, and
-		$F(0,1)=p(0,0)+p(0,1)=0.3+0.2=0.5$.
-	\end{minipage}\hfill
-	\begin{minipage}[t]{.41\linewidth}
-		\centering\vspace{2mm}
-		\renewcommand{\arraystretch}{1.4}\setlength{\tabcolsep}{7pt}
-		\begin{tabular}{c|cc|c}
-			$X\backslash Y$ & $0$ & $1$ & $p_X$ \\\hline
-			$0$ & $0.3$ & $0.2$ & $0.5$ \\
-			$1$ & $0.1$ & $0.4$ & $0.5$ \\\hline
-			$p_Y$ & $0.4$ & $0.6$ & $1$
-		\end{tabular}
-	\end{minipage}
+	\textbf{Joint distribution function.} For any $X$ and $Y$ (discrete or
+	continuous),
+	\[ F(a,b)=P(X\le a,\ Y\le b). \]
+	In the discrete case it is the sum of the cells with $x\le a$ \emph{and}
+	$y\le b$, the upper left corner of the table:
+	\[ F(a,b)=\sum_{x\le a}\sum_{y\le b}p(x,y). \]
+	In the example $F(0,1)=p(0,0)+p(0,1)=\frac12$ and
+	$F(1,1)=\frac14+\frac14+0+\frac14=\frac34$. The marginal distribution
+	functions are its limits: $F_X(a)=P(X\le a)=F(a,\infty)$, and
+	$F_Y(b)=F(\infty,b)$.
 
 	\textbf{Conditional probabilities} come from the table as in Week~9:
 	\[ P(Y=y\mid X=x)=\frac{p(x,y)}{p_X(x)}. \]
@@ -397,7 +649,10 @@
 	(The continuous version of the row and column sums.) The joint
 	distribution function is
 	\[ F(a,b)=P(X\le a,\ Y\le b)=\int_{-\infty}^{a}\!\int_{-\infty}^{b}
-		f(x,y)\,dy\,dx. \]
+		f(x,y)\,dy\,dx, \]
+	the volume above the quadrant to the lower left of $(a,b)$, and
+	$f(x,y)=\frac{\partial^2F}{\partial x\,\partial y}(x,y)$ (differentiate in
+	$x$ and in $y$).
 
 	\textbf{Tiny example.} $f(x,y)=6xy^2$ on the unit square $0\le x\le1$,
 	$0\le y\le1$, and 0 elsewhere. The total is 1 (inner integral over $y$
@@ -432,7 +687,7 @@
 			\draw[->] (-.08,0) -- (1.25,0) node[right,font=\small] {$x$};
 			\draw[->] (0,-.08) -- (0,1.25) node[above,font=\small] {$y$};
 			\draw[thick,navy] (0,0) rectangle (1,1);
-			\draw[gray,dashed] (0,0) -- (1,1);
+			\draw[navy,densely dashed] (0,0) -- (1,1);
 			\draw[gold,line width=1.5pt] (.55,0) -- (.55,.55);
 			\node[below,font=\footnotesize] at (1,0) {1};
 			\node[left,font=\footnotesize] at (0,1) {1};
@@ -475,8 +730,8 @@
 	$y$, then $X$ and $Y$ are independent. In the example of the continuous
 	box, $X$ and $Y$ are independent, and the distribution functions agree:
 	\[ 6xy^2=2x\cdot3y^2=f_X(x)\,f_Y(y),\qquad
-		F\big(\tfrac12,\tfrac12\big)=\tfrac1{32}
-		=\tfrac14\cdot\tfrac18=F_X\big(\tfrac12\big)F_Y\big(\tfrac12\big). \]
+		F\Big(\frac12,\frac12\Big)=\frac1{32}
+		=\frac14\cdot\frac18=F_X\Big(\frac12\Big)\,F_Y\Big(\frac12\Big). \]
 	\textbf{Careful:} if the density is positive only on a triangle such as
 	$\{0<y<x<1\}$, $X$ and $Y$ are \emph{not} independent, even if $f$ is
 	constant there: knowing $X=0.1$ forces $Y<0.1$.
@@ -488,8 +743,17 @@
 	$t$ with probability
 	\[ P(X>t,\ Y>t)=P(X>t)\,P(Y>t)=e^{-\lambda t}e^{-\mu t}
 		=e^{-(\lambda+\mu)t}, \]
+	so the shorter of the two waits is exponential with rate $\lambda+\mu$,
 	and ``at least one is at most $t$'' is the complement,
 	$1-e^{-(\lambda+\mu)t}$.
+
+	\textbf{Two independent uniforms.} If $X$ and $Y$ are independent and
+	uniform on $[0,1]$, the joint density is $1\cdot1=1$ on the unit square,
+	so the probability of a region in the square is simply its
+	\emph{area}. For example $P(X+Y\le\frac12)$ is the area of the triangle
+	below the line $x+y=\frac12$, $\frac12\cdot\frac12\cdot\frac12=\frac18$.
+	With a uniform on $[0,T]$ divide the area by $T^2$
+	(Exercise~\exref{meeting-time}).
 
 	\textbf{Same marginals, different joint.} Two pairs can have the same
 	marginals but different joint distributions: the marginals alone do not
@@ -503,11 +767,13 @@
 
 \studyexercise{two-stocks-independence}
 \studyexercise{two-default-times}
+\studyexercise{meeting-time}
 
 %----------------------------------------------------------------------
 \subsection*{More practice}
 \addcontentsline{toc}{subsection}{More practice}
 
+\noindent\begin{minipage}{\linewidth}
 The exercises of this week are numbered by topic, so the numbers missing
 above are further exercises on the same topics. They are for self-study:
 you find them on the Exercises page of this week on the course website, each
@@ -516,13 +782,15 @@ with a detailed solution.
 	\renewcommand{\arraystretch}{1.15}
 	\begin{tabular}{ll}
 		\toprule
-		Topic                                    & Exercises for self-study                                \\\midrule
-		Continuous random variables and density  & \exref{power-density}--\exref{waiting-for-the-bus}      \\
-		Distribution function                    & \exref{recovery-rate}, \exref{from-cdf-to-density}      \\
-		Uniform and exponential                  & \exref{service-calls}, \exref{default-time}             \\
-		Function of a random variable            & \exref{portfolio-value}--\exref{log-of-uniform}         \\
-		Joint distribution, discrete             & \exref{three-coins}, \exref{insurance-claims}           \\
-		Joint distribution, continuous           & \exref{exponential-pair}, \exref{triangle-density}      \\
-		Independent random variables             & \exref{meeting-time}, \exref{which-are-independent}     \\\bottomrule
+		Topic                                   & Exercises for self-study                                \\\midrule
+		Density and distribution function       & \exref{device-lifetime}, \exref{from-cdf-to-density}    \\
+		Expected value and variance             & \exref{power-density}                                   \\
+		Exponential distribution                & \exref{default-time}                                    \\
+		Normal distribution                     & \exref{standard-normal-table}                           \\
+		Function of a random variable           & \exref{log-of-uniform}                                  \\
+		Joint distribution, discrete            & \exref{three-coins}                                     \\
+		Joint distribution, continuous          & \exref{exponential-pair}                                \\
+		Independent random variables            & \exref{which-are-independent}                           \\\bottomrule
 	\end{tabular}
 \end{center}
+\end{minipage}

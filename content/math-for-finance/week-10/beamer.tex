@@ -1,11 +1,13 @@
 % Compile with latexmk (uses ~/.latexmkrc: LuaLaTeX, output in build/)
-% Week 10: continuous random variables, density, distribution function, the
-% distribution of a function of a random variable, joint distributions
-% (discrete and continuous), independent random variables.
+% Week 10: continuous random variables, density, distribution function,
+% expected value and variance, the uniform, exponential and normal
+% distributions; the distribution of a function of a random variable, joint
+% distributions (discrete and continuous), independent random variables.
 % Sessions 1 and 2 are held on the SAME DAY, back to back (2 x 90 min,
-% short break in between).
-% Reference: Ross, A First Course in Probability, 8th ed., Ch. 5--6 (notation
-% and the problems paraphrased); the course lecture slides only for comparison.
+% short break in between). The lecture of this week is given by someone
+% else: the slides assume nothing from it and teach every concept.
+% Reference: Ross, A First Course in Probability, 8th ed., Ch. 5--6
+% (notation and the problems paraphrased).
 % The exercises are in exercises/ (one file each), placed by \exerciseframe.
 
 \documentclass[aspectratio=169,11pt,usepdftitle=false]{beamer}
@@ -13,8 +15,9 @@
 \setsansfont{Latin Modern Sans}
 \usepackage{amsmath,amssymb,mathtools}
 \usepackage{tikz}
-\usetikzlibrary{calc}
+\usetikzlibrary{calc,arrows.meta}
 \usepackage{booktabs}
+\usepackage{array}
 \usepackage{cancel}
 
 \usetheme{Madrid}
@@ -53,19 +56,148 @@
 \newcommand{\SD}{\operatorname{SD}}
 \newcommand{\sol}{\alert{Solution.}\ }
 
-% Small Venn diagram of two events E, F in Omega; #1 = shading commands
-\newcommand{\venn}[1]{%
-  \begin{tikzpicture}[scale=.42,baseline=(O.base)]
-    \node (O) at (.5,0) {\phantom{x}};
-    #1
-    \draw[thick] (-1.5,-1.15) rectangle (2.5,1.15);
-    \draw[thick,navy] (0,0) circle (.85);
-    \draw[thick,navy] (1,0) circle (.85);
-    \node at (-.35,0) {\scriptsize $E$};
-    \node at (1.35,0) {\scriptsize $F$};
-    \node at (2.15,.8) {\scriptsize $\Omega$};
+% Pictures of continuous distributions (teal areas, navy curves, gold marks).
+% The same definitions are in beamer.tex and preamble.tex.
+% A density f(x) = x e^{-x} (x >= 0) and the area P(a <= X <= b) under it,
+% a = 1.5, b = 3.2 (area 0.387).
+\newcommand{\figdensity}{%
+  \begin{tikzpicture}[x=.85cm,y=5cm]
+    \fill[teal!25] (1.5,0) -- plot[domain=1.5:3.2,samples=40]
+      (\x,{\x*exp(-\x)}) -- (3.2,0) -- cycle;
+    \draw[->] (-.2,0)--(6.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.02)--(0,.47);
+    \draw[very thick,navy] (-.2,0)--(0,0) plot[domain=0:6.1,samples=80]
+      (\x,{\x*exp(-\x)});
+    \node[navy,font=\scriptsize] at (1.7,.42) {$f(x)$};
+    \node[below,font=\scriptsize] at (1.5,0) {$a$};
+    \node[below,font=\scriptsize] at (3.2,0) {$b$};
+    \draw[teal,->] (4.1,.24)--(2.5,.13);
+    \node[right,font=\scriptsize,align=left] at (3.9,.29)
+      {area $=$\\$P(a\le X\le b)$};
   \end{tikzpicture}}
-\newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
+% The distribution function F(x) = 1 - (1+x) e^{-x} of the same density;
+% the arrow marks F(b) - F(a), the same area.
+\newcommand{\figcdf}{%
+  \begin{tikzpicture}[x=.8cm,y=1.9cm]
+    \draw[->] (-.2,0)--(6.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.05)--(0,1.2);
+    \draw[gray!50,dashed] (0,1)--(6.1,1);
+    \node[left,font=\scriptsize] at (0,1) {$1$};
+    \draw[very thick,navy] (-.2,0)--(0,0) plot[domain=0:6.1,samples=80]
+      (\x,{1-(1+\x)*exp(-\x)});
+    \node[navy,font=\scriptsize] at (1.0,.62) {$F(x)$};
+    \draw[gold,densely dotted] (1.5,0)--(1.5,0.442)--(6.1,0.442)
+      (3.2,0)--(3.2,0.829)--(6.1,0.829);
+    \node[below,font=\scriptsize] at (1.5,0) {$a$};
+    \node[below,font=\scriptsize] at (3.2,0) {$b$};
+    \draw[gold,very thick,<->] (5.6,0.442)--(5.6,0.829);
+    \node[right,font=\scriptsize] at (5.6,.635) {$F(b)-F(a)$};
+  \end{tikzpicture}}
+% Uniform density on [alpha, beta]; the shaded interval [c, d] has
+% probability (d - c)/(beta - alpha); the gold mark is E[X].
+\newcommand{\figuniform}{%
+  \begin{tikzpicture}[x=.9cm,y=1.6cm]
+    \fill[teal!25] (2.1,0) rectangle (3.1,.8);
+    \draw[->] (-.2,0)--(5.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.05)--(0,1.25);
+    \draw[very thick,navy] (-.2,0)--(1,0) (1,.8)--(4.6,.8) (4.6,0)--(5.2,0);
+    \draw[navy,densely dotted] (1,0)--(1,.8) (4.6,0)--(4.6,.8);
+    \draw[gray!50,dashed] (0,.8)--(1,.8);
+    \node[left,font=\scriptsize] at (0,.8) {$\frac{1}{\beta-\alpha}$};
+    \node[below,font=\scriptsize] at (1,0) {$\alpha$};
+    \node[below,font=\scriptsize] at (4.6,0) {$\beta$};
+    \node[below,font=\scriptsize] at (2.1,0) {$c$};
+    \node[below,font=\scriptsize] at (3.1,0) {$d$};
+    \node[font=\tiny] at (2.6,.4) {$\frac{d-c}{\beta-\alpha}$};
+    \draw[gold,very thick,dashed] (2.8,.8)--(2.8,1.12);
+    \node[above,font=\tiny] at (2.8,1.1) {$\E[X]=\frac{\alpha+\beta}{2}$};
+  \end{tikzpicture}}
+% Exponential density with rate lambda (drawn with lambda = 1): the shaded
+% tail beyond x has area e^{-lambda x}; the gold mark is E[X] = 1/lambda.
+\newcommand{\figexponential}{%
+  \begin{tikzpicture}[x=.9cm,y=1.5cm]
+    \fill[teal!25] (1.6,0) -- plot[domain=1.6:5,samples=40]
+      (\x,{exp(-\x)}) -- (5,0) -- cycle;
+    \draw[->] (-.2,0)--(5.4,0) node[right,font=\scriptsize] {$t$};
+    \draw[->] (0,-.05)--(0,1.25);
+    \draw[very thick,navy] (-.2,0)--(0,0);
+    \draw[very thick,navy] plot[domain=0:5,samples=60] (\x,{exp(-\x)});
+    \node[left,font=\scriptsize] at (0,1) {$\lambda$};
+    \node[navy,font=\scriptsize] at (1.05,.75) {$\lambda e^{-\lambda t}$};
+    \draw[gold,very thick,dashed] (1,0)--(1,.37);
+    \node[below,font=\scriptsize] at (1,0) {$\frac1\lambda$};
+    \node[below,font=\scriptsize] at (1.6,0) {$x$};
+    \draw[teal,->] (3.3,.55)--(2.3,.08);
+    \node[above,font=\scriptsize] at (3.6,.52) {$P(X>x)=e^{-\lambda x}$};
+  \end{tikzpicture}}
+% Normal density with mean mu and standard deviation sigma: the bands
+% mu +- sigma, mu +- 2 sigma, mu +- 3 sigma and their probabilities.
+\newcommand{\fignormal}{%
+  \begin{tikzpicture}[x=.8cm,y=5.2cm]
+    \fill[teal!10] (-3,0) -- plot[domain=-3:3,samples=80]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (3,0) -- cycle;
+    \fill[teal!22] (-2,0) -- plot[domain=-2:2,samples=60]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (2,0) -- cycle;
+    \fill[teal!40] (-1,0) -- plot[domain=-1:1,samples=40]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (1,0) -- cycle;
+    \draw[->] (-3.7,0)--(3.9,0) node[right,font=\scriptsize] {$x$};
+    \draw[very thick,navy] plot[domain=-3.6:3.6,samples=100]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+    \draw[gold,very thick,dashed] (0,0)--(0,.44);
+    \node[above,font=\scriptsize] at (0,.44) {$\mu$};
+    \foreach \k/\l in {-3/\mu{-}3\sigma,-2/\mu{-}2\sigma,-1/\mu{-}\sigma,
+        1/\mu{+}\sigma,2/\mu{+}2\sigma,3/\mu{+}3\sigma} {
+        \draw (\k,0)--(\k,-.015);
+        \node[below,font=\tiny,inner sep=1pt] at (\k,-.01) {$\l$};
+      }
+    \draw[navy,<->] (-1,-.1)--(1,-.1);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.1) {$68\%$};
+    \draw[navy,<->] (-2,-.145)--(2,-.145);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.145) {$95\%$};
+    \draw[navy,<->] (-3,-.19)--(3,-.19);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.19) {$99.7\%$};
+  \end{tikzpicture}}
+% The standard normal Phi(z) as the area left of z, and the symmetry
+% Phi(-z) = 1 - Phi(z): the two gold tails have the same area.
+\newcommand{\figphi}{%
+  \begin{tikzpicture}[x=.3cm,y=3.2cm]
+    \fill[teal!30] (-3.3,0) -- plot[domain=-3.3:1,samples=60]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (1,0) -- cycle;
+    \draw[->] (-3.5,0)--(3.6,0);
+    \draw[very thick,navy] plot[domain=-3.3:3.3,samples=80]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+    \node[below,font=\scriptsize] at (1,0) {$z$};
+    \node[below,font=\scriptsize] at (0,0) {$0$};
+    \node[font=\tiny] at (-.6,.15) {$\Phi(z)$};
+    \node[font=\tiny] at (0,.5) {area left of $z$};
+    \begin{scope}[xshift=2.45cm]
+      \fill[gold!50] (-3.3,0) -- plot[domain=-3.3:-1,samples=40]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (-1,0) -- cycle;
+      \fill[gold!50] (1,0) -- plot[domain=1:3.3,samples=40]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (3.3,0) -- cycle;
+      \draw[->] (-3.5,0)--(3.6,0);
+      \draw[very thick,navy] plot[domain=-3.3:3.3,samples=80]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+      \node[below,font=\scriptsize] at (-1,0) {$-z$};
+      \node[below,font=\scriptsize] at (1,0) {$z$};
+      \node[font=\tiny] at (0,.5) {$\Phi(-z)=1-\Phi(z)$};
+    \end{scope}
+  \end{tikzpicture}}
+% The unit square: the joint density of two variables on [0,1]^2 and a
+% region A (below the diagonal) whose probability is a double integral.
+\newcommand{\figjointsquare}{%
+  \begin{tikzpicture}[scale=1.5]
+    \fill[teal!12] (0,0) rectangle (1.4,1.4);
+    \fill[teal!45] (0,0) -- (1.4,0) -- (1.4,1.4) -- cycle;
+    \draw[->] (-.1,0) -- (1.7,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.1) -- (0,1.7) node[above,font=\scriptsize] {$y$};
+    \draw[thick,navy] (0,0) rectangle (1.4,1.4);
+    \draw[navy,densely dashed] (0,0) -- (1.4,1.4);
+    \node[below,font=\scriptsize] at (1.4,0) {$1$};
+    \node[left,font=\scriptsize] at (0,1.4) {$1$};
+    \node[font=\scriptsize] at (1.0,.35) {$A$};
+    \node[font=\tiny,rotate=45] at (.55,.72) {$y=x$};
+  \end{tikzpicture}}
 
 % The exercises (one file each in exercises/) and \exerciseframe
 \input{exercises/macros}
@@ -76,8 +208,8 @@
 
 \title[Mathematics for Finance]{Mathematics for Finance}
 \author{Tibor SÁNDOR}
-\subtitle{Week 10: Continuous random variables, joint distributions,
-  independence}
+\subtitle{Week 10: Continuous random variables, named continuous
+  distributions, joint distributions, independence}
 \institute{Corvinus University of Budapest\\[2pt]
   \href{mailto:\myemail}{\texttt{\myemail}}}
 
@@ -90,58 +222,71 @@
 \begin{frame}{Plan for today}
   \begin{enumerate}
     \item \textbf{Session 1 (90 min):} continuous random variables and
-          their density; the distribution function; two examples, the
-          uniform and the exponential distribution; the distribution of a
-          function of a random variable.
-    \item \textbf{Session 2 (90 min):} joint distributions of two random
-          variables, discrete and continuous; marginal distributions; the
-          joint distribution function; independent random variables.
+          their density; the distribution function; expected value and
+          variance; the named continuous distributions: uniform,
+          exponential, normal.
+    \item \textbf{Session 2 (90 min):} the distribution of a function of a
+          random variable; joint distributions of two random variables,
+          discrete and continuous; the joint distribution function;
+          independent random variables.
   \end{enumerate}
   \vspace{.3cm}
   \textbf{Why does a finance student need this?} Waiting times, losses and
   returns can take any value in an interval, and the risk of a portfolio
   depends on how its parts move \emph{together}.
+  \vspace{.2cm}
+
+  Each topic: the key ideas, then an exercise. More exercises, all with
+  full solutions, are in the exercises PDF for self-study.
 \end{frame}
 
 %======================================================================
-\section{Session 1: Continuous random variables}
+\section{Session 1: Continuous random variables, named distributions}
 %======================================================================
 
-\begin{frame}
-  \centering\Large\color{navy}Session 1: Continuous random variables
+\begin{frame}{Session 1: Continuous random variables and named
+    distributions}
+  \textbf{Last week:} discrete random variables. A pmf $p(x)=P(X=x)$, the
+  distribution function $F(x)=P(X\le x)$, $\E[X]=\sum_x x\,p(x)$,
+  $\Var(X)$, and five named distributions: Bernoulli, binomial, Poisson,
+  geometric, hypergeometric.
+  \vspace{3mm}
+
+  \textbf{Today:} the same questions for a random variable that can take
+  \emph{any} value in an interval.
+  \begin{itemize}
+    \item the density $f$ and the distribution function $F$;
+    \item expected value, variance, standard deviation: sums become
+          integrals;
+    \item three named continuous distributions: \textbf{uniform},
+          \textbf{exponential}, \textbf{normal}.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{From discrete to continuous}
   \small
-  \textbf{Last week:} a discrete random variable takes finitely (or
-  countably) many values $x_1,x_2,\dots$; its pmf $p(x)=P(X=x)$ gives each
-  value a probability, and the probabilities add up to 1.
-  \vspace{2mm}
+  \begin{columns}[c]
+    \begin{column}{.55\textwidth}
+      \textbf{Discrete:} $X$ takes the values $x_1,x_2,\dots$; each value
+      has a probability $p(x_i)=P(X=x_i)$, and they add up to 1.
+      \vspace{2mm}
 
-  \textbf{Now:} the time until the next order, the loss on a loan, a
-  return. These can take \emph{any} value in an interval.
-  \begin{itemize}
-    \item There are too many values to give each a positive probability:
-          $P(X=a)=0$ for every single number $a$.
-    \item Instead we ask for the probability of an \emph{interval}:
-          $P(a\le X\le b)$.
-    \item We describe it with a curve, the \textbf{density}: the
-          probability is the \emph{area} under the curve.
-  \end{itemize}
-  \vspace{1mm}
-  \begin{center}
-    \begin{tikzpicture}[scale=.75]
-      \fill[teal!25] (1.2,0) -- plot[domain=1.2:2.6,samples=40]
-        (\x,{1.6*exp(-0.5*(\x-2)^2)}) -- (2.6,0) -- cycle;
-      \draw[->] (-.2,0) -- (4.6,0) node[right] {$x$};
-      \draw[thick,navy] plot[domain=0:4.3,samples=60]
-        (\x,{1.6*exp(-0.5*(\x-2)^2)});
-      \node[navy] at (3.9,1.2) {$f(x)$};
-      \node[below] at (1.2,0) {\scriptsize $a$};
-      \node[below] at (2.6,0) {\scriptsize $b$};
-      \node at (1.9,.55) {\scriptsize area};
-    \end{tikzpicture}
-  \end{center}
+      \textbf{Continuous:} the time until the next order, the loss on a
+      loan, a return. These can take \emph{any} value in an interval.
+      \begin{itemize}
+        \item There are too many values to give each a positive
+              probability: $P(X=a)=0$ for every single number $a$.
+        \item We ask for the probability of an \emph{interval}:
+              $P(a\le X\le b)$.
+        \item It is the \emph{area} under a curve, the \textbf{density}
+              $f$.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.43\textwidth}
+      \centering
+      \figdensity
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{Continuous random variables and their density}
@@ -175,7 +320,7 @@
 \begin{frame}{The distribution function}
   \small
   \begin{columns}[T]
-    \begin{column}{.56\textwidth}
+    \begin{column}{.53\textwidth}
       \begin{block}{Distribution function (any random variable)}
         \[ F(x)=P(X\le x). \]
         For a continuous $X$: \
@@ -188,128 +333,249 @@
       $F$ grows from 0 to 1; for a continuous $X$ it has no jumps (a
       discrete $X$ has a step function).
     \end{column}
-    \begin{column}{.42\textwidth}
+    \begin{column}{.45\textwidth}
       \centering
-      \begin{tikzpicture}[scale=.75]
-        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
-        \draw[->] (0,-.1) -- (0,2.3);
-        \draw[dashed,gray] (0,2) node[left,black] {\scriptsize 1} -- (4.1,2);
-        \draw[thick,navy] (-.3,0) -- (.5,0)
-          plot[domain=.5:3.5,samples=40]
-          (\x,{2*(3*((\x-.5)/3)^2-2*((\x-.5)/3)^3)}) -- (4.1,2);
-        \node[navy] at (.9,1.4) {$F(x)$};
-        \draw[dotted] (1.6,0) node[below] {\scriptsize $a$} -- (1.6,.52)
-          -- (4.1,.52);
-        \draw[dotted] (2.8,0) node[below] {\scriptsize $b$} -- (2.8,1.55)
-          -- (4.1,1.55);
-        \draw[<->,teal,thick] (4.1,.52) -- (4.1,1.55);
-        \node[teal,right] at (4.1,1.03) {\scriptsize $F(b)-F(a)$};
-      \end{tikzpicture}
+      \figcdf\\[1mm]
+      \footnotesize the density of the first picture: the area between
+      $a$ and $b$ is the rise of $F$
     \end{column}
   \end{columns}
 \end{frame}
 
 \exerciseframe{loss-given-default}
 
-\begin{frame}{Two examples: uniform and exponential}
+\begin{frame}{Expected value and variance}
   \small
-  \begin{columns}[T]
-    \begin{column}{.49\textwidth}
-      \begin{block}{Uniform on $[\alpha,\beta]$}
-        $f(x)=\dfrac{1}{\beta-\alpha}$ on $[\alpha,\beta]$, 0 outside.\\[3pt]
-        Probability $=$ length$/(\beta-\alpha)$: every interval of the same
-        length is equally likely.
-      \end{block}
-      \centering
-      \begin{tikzpicture}[scale=.7]
-        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
-        \fill[teal!25] (1.6,0) rectangle (2.6,1.2);
-        \draw[thick,navy] (-.3,0) -- (.6,0) (.6,1.2) -- (3.4,1.2)
-          (3.4,0) -- (4,0);
-        \draw[dotted] (.6,0) node[below] {\scriptsize $\alpha$} -- (.6,1.2);
-        \draw[dotted] (3.4,0) node[below] {\scriptsize $\beta$} -- (3.4,1.2);
-      \end{tikzpicture}
+  Sums become integrals, $p(x)$ becomes $f(x)$:
+  \begin{block}{Expected value}
+    \[ \E[X]=\int_{-\infty}^{\infty} x\,f(x)\,dx,\qquad
+      \E[g(X)]=\int_{-\infty}^{\infty} g(x)\,f(x)\,dx,\qquad
+      \E[aX+b]=a\,\E[X]+b. \]
+  \end{block}
+  \begin{block}{Variance and standard deviation}
+    With $\mu=\E[X]$: \
+    $\Var(X)=\E\big[(X-\mu)^2\big]=\E[X^2]-\mu^2$, \
+    $\SD(X)=\sqrt{\Var(X)}$,\\[2pt]
+    $\Var(aX+b)=a^2\Var(X)$, \ $\SD(aX+b)=|a|\,\SD(X)$.
+  \end{block}
+  \textbf{Example.} $f(x)=2x$ on $[0,1]$ (0 outside):
+  \[ \E[X]=\int_0^1 x\cdot 2x\,dx=\frac23,\qquad
+    \E[X^2]=\int_0^1 x^2\cdot 2x\,dx=\frac12,\qquad
+    \Var(X)=\frac12-\frac49=\frac1{18}. \]
+\end{frame}
+
+\exerciseframe{recovery-rate}
+
+\begin{frame}{The uniform distribution}
+  \small
+  \begin{block}{Uniform distribution on $[\alpha,\beta]$}
+    \[ f(x)=\begin{cases}\dfrac{1}{\beta-\alpha}, & \alpha\le x\le\beta,\\
+        0, & \text{otherwise,}\end{cases}\qquad
+      F(x)=\frac{x-\alpha}{\beta-\alpha}\ \ (\alpha\le x\le\beta). \]
+    $\E[X]=\dfrac{\alpha+\beta}{2}$, \qquad
+    $\Var(X)=\dfrac{(\beta-\alpha)^2}{12}$.
+  \end{block}
+  \begin{columns}[c]
+    \begin{column}{.5\textwidth}
+      \begin{itemize}
+        \item A number ``picked at random'' from $[\alpha,\beta]$: every
+              interval of the same length is equally likely.
+        \item $P(c\le X\le d)=\dfrac{d-c}{\beta-\alpha}$: length over total
+              length.
+        \item $F=0$ left of $\alpha$, $F=1$ right of $\beta$.
+      \end{itemize}
     \end{column}
-    \begin{column}{.49\textwidth}
-      \begin{block}{Exponential with rate $\lambda>0$}
-        $f(x)=\lambda e^{-\lambda x}$ for $x\ge0$, 0 for $x<0$.\\[3pt]
-        $F(x)=1-e^{-\lambda x}$, \ $P(X>x)=e^{-\lambda x}$.\\[3pt]
-        Waiting times: the next order, a default.
-      \end{block}
+    \begin{column}{.48\textwidth}
       \centering
-      \begin{tikzpicture}[scale=.7]
-        \draw[->] (-.3,0) -- (4.2,0) node[right] {$x$};
-        \fill[teal!25] (1.5,0) -- plot[domain=1.5:4,samples=30]
-          (\x,{1.6*exp(-0.9*\x)}) -- (4,0) -- cycle;
-        \draw[thick,navy] (-.3,0) -- (0,0) plot[domain=0:4,samples=40]
-          (\x,{1.6*exp(-0.9*\x)});
-        \node[below] at (1.5,0) {\scriptsize $x$};
-        \node[teal] at (2.9,.65) {\scriptsize $e^{-\lambda x}$};
-      \end{tikzpicture}
+      \figuniform
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{waiting-for-the-bus}
+
+\begin{frame}{The exponential distribution}
+  \small
+  \begin{block}{Exponential distribution with rate $\lambda>0$}
+    \[ f(x)=\begin{cases}\lambda e^{-\lambda x}, & x\ge0,\\
+        0, & x<0,\end{cases}\qquad
+      F(x)=1-e^{-\lambda x},\quad P(X>x)=e^{-\lambda x}\ \ (x\ge0). \]
+    $\E[X]=\dfrac1\lambda$, \qquad $\Var(X)=\dfrac1{\lambda^2}$.
+  \end{block}
+  \begin{columns}[c]
+    \begin{column}{.5\textwidth}
+      \begin{itemize}
+        \item Waiting times: the next order, the next claim, a default.
+              $\lambda$ = events per unit of time.
+        \item \textbf{Memoryless:} for $s,t\ge0$
+              \[ P(X>s+t\mid X>s)=P(X>t). \]
+              Having waited $s$ does not shorten the rest of the wait.
+      \end{itemize}
+    \end{column}
+    \begin{column}{.48\textwidth}
+      \centering
+      \figexponential
     \end{column}
   \end{columns}
 \end{frame}
 
 \exerciseframe{order-arrivals}
 
-\begin{frame}{The distribution of a function of a random variable}
+\begin{frame}{The normal distribution}
   \small
-  We know the distribution of $X$; what is the distribution of
-  $Y=g(X)$, e.g.\ $Y=X^2$ or $Y=1000(1+X)$?
-  \begin{block}{Method: first the distribution function}
-    \begin{enumerate}
-      \item $F_Y(y)=P(Y\le y)=P(g(X)\le y)$;
-      \item rewrite the event $g(X)\le y$ as an event about $X$, and use
-            the distribution of $X$;
-      \item if a density is needed: $f_Y(y)=F_Y'(y)$.
-    \end{enumerate}
-  \end{block}
-  \textbf{Example.} $X$ uniform on $[0,1]$, $Y=2X+3$. For $3\le y\le 5$:
-  \[ F_Y(y)=P(2X+3\le y)=P\Big(X\le \frac{y-3}{2}\Big)=\frac{y-3}{2}, \qquad
-    f_Y(y)=\frac12 . \]
-  So $Y$ is uniform on $[3,5]$. A linear function keeps the shape; other
-  functions change it.
+  \begin{columns}[T]
+    \begin{column}{.53\textwidth}
+      \begin{block}{Normal distribution $N(\mu,\sigma^2)$}
+        \[ f(x)=\frac{1}{\sigma\sqrt{2\pi}}\,
+          e^{-(x-\mu)^2/(2\sigma^2)},\qquad x\in\mathbb{R}. \]
+        $\E[X]=\mu$, \ $\Var(X)=\sigma^2$: the bell is centered at $\mu$,
+        $\sigma$ is its width.
+      \end{block}
+      \begin{block}{Standard normal $Z\sim N(0,1)$}
+        $\Phi(z)=P(Z\le z)$, from the table; \ $\Phi(-z)=1-\Phi(z)$.
+      \end{block}
+      \textbf{Standardizing:} if $X\sim N(\mu,\sigma^2)$, then
+      $Z=\dfrac{X-\mu}{\sigma}\sim N(0,1)$, so
+      \[ P(X\le x)=\Phi\Big(\frac{x-\mu}{\sigma}\Big). \]
+    \end{column}
+    \begin{column}{.45\textwidth}
+      \centering
+      \fignormal\\[1mm]
+      \footnotesize the 68--95--99.7 rule: $X$ is within $\sigma$,
+      $2\sigma$, $3\sigma$ of $\mu$ with probability about $68\%$, $95\%$,
+      $99.7\%$
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\exerciseframe{square-of-uniform}
+\begin{frame}{The standard normal table}
+  \footnotesize
+  \begin{columns}[c]
+    \begin{column}{.62\textwidth}
+      \centering
+      $\Phi(z)=P(Z\le z)$ for $Z\sim N(0,1)$\\[1.5mm]
+      \renewcommand{\arraystretch}{1.08}
+      \begin{tabular}{@{}cc@{\hspace{5mm}}cc@{\hspace{5mm}}cc@{\hspace{5mm}}cc@{}}
+        \toprule
+        $z$ & $\Phi(z)$ & $z$ & $\Phi(z)$ & $z$ & $\Phi(z)$ & $z$ & $\Phi(z)$\\
+        \midrule
+        0.0 & 0.5000 & 0.8 & 0.7881 & 1.6 & 0.9452 & 2.4 & 0.9918\\
+        0.1 & 0.5398 & 0.9 & 0.8159 & 1.7 & 0.9554 & 2.5 & 0.9938\\
+        0.2 & 0.5793 & 1.0 & 0.8413 & 1.8 & 0.9641 & 2.6 & 0.9953\\
+        0.3 & 0.6179 & 1.1 & 0.8643 & 1.9 & 0.9713 & 2.7 & 0.9965\\
+        0.4 & 0.6554 & 1.2 & 0.8849 & 2.0 & 0.9772 & 2.8 & 0.9974\\
+        0.5 & 0.6915 & 1.3 & 0.9032 & 2.1 & 0.9821 & 2.9 & 0.9981\\
+        0.6 & 0.7257 & 1.4 & 0.9192 & 2.2 & 0.9861 & 3.0 & 0.9987\\
+        0.7 & 0.7580 & 1.5 & 0.9332 & 2.3 & 0.9893 &     &       \\
+        \bottomrule
+      \end{tabular}\\[2.5mm]
+      \textbf{Quantiles} $z_p$ with $\Phi(z_p)=p$:\\[1mm]
+      \begin{tabular}{@{}c*{5}{c}@{}}
+        \toprule
+        $p$   & 0.90  & 0.95  & 0.975 & 0.99  & 0.995\\
+        $z_p$ & 1.282 & 1.645 & 1.960 & 2.326 & 2.576\\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{.36\textwidth}
+      \centering
+      \figphi\\[2mm]
+      \raggedright
+      \begin{itemize}
+        \item Negative $z$: \ $\Phi(-z)=1-\Phi(z)$.
+        \item $P(Z>z)=1-\Phi(z)$.
+        \item $P(a<Z\le b)=\Phi(b)-\Phi(a)$.
+        \item $P(|Z|\le z_{0.975})=0.95$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\exerciseframe{annual-return}
 
 \begin{frame}{Session 1: summary}
   \small
   \begin{itemize}
-    \item Continuous $X$: $P(a\le X\le b)=\int_a^b f(x)\,dx$, the area
-          under the density. $f\ge0$, total area 1, $P(X=a)=0$.
-    \item Distribution function $F(x)=P(X\le x)=\int_{-\infty}^x f(t)\,dt$;
-          \ $f=F'$; \ $P(a<X\le b)=F(b)-F(a)$.
-    \item Uniform on $[\alpha,\beta]$: probability $=$ length$/(\beta-\alpha)$.
-    \item Exponential with rate $\lambda$: $P(X>x)=e^{-\lambda x}$; it has
-          no memory.
-    \item The distribution of $Y=g(X)$: first $F_Y(y)=P(g(X)\le y)$, then
-          differentiate.
+    \item Density: $P(a\le X\le b)=\int_a^b f(x)\,dx$; \ $f\ge0$, total
+          area 1, $P(X=a)=0$.
+    \item $F(x)=P(X\le x)=\int_{-\infty}^x f(t)\,dt$; \ $f=F'$; \
+          $P(a<X\le b)=F(b)-F(a)$.
+    \item $\E[X]=\int x f(x)\,dx$, \ $\E[g(X)]=\int g(x)f(x)\,dx$, \
+          $\Var(X)=\E[X^2]-(\E[X])^2$, \ $\SD(X)=\sqrt{\Var(X)}$.
   \end{itemize}
+  \vspace{1mm}
+  \centering
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}llll@{}}
+    \toprule
+    Distribution & density $f(x)$ & $\E[X]$ & $\Var(X)$\\\midrule
+    uniform on $[\alpha,\beta]$ & $\frac{1}{\beta-\alpha}$ on
+    $[\alpha,\beta]$ & $\frac{\alpha+\beta}{2}$ &
+    $\frac{(\beta-\alpha)^2}{12}$\\
+    exponential $(\lambda)$ & $\lambda e^{-\lambda x}$, $x\ge0$; \
+    $P(X>x)=e^{-\lambda x}$ & $\frac1\lambda$ & $\frac1{\lambda^2}$\\
+    normal $N(\mu,\sigma^2)$ & $\frac{1}{\sigma\sqrt{2\pi}}
+    e^{-(x-\mu)^2/(2\sigma^2)}$; \
+    $P(X\le x)=\Phi\big(\frac{x-\mu}{\sigma}\big)$ & $\mu$ &
+    $\sigma^2$\\\bottomrule
+  \end{tabular}
+  \vspace{1.5mm}
+
+  \raggedright
+  \textbf{Self-study:} Exercises~\exref{device-lifetime},
+  \exref{from-cdf-to-density}, \exref{power-density},
+  \exref{default-time}, \exref{standard-normal-table}.
 \end{frame}
 
 %======================================================================
-\section{Session 2: Joint distributions, independence}
+\section{Session 2: Functions of random variables, joint distributions}
 %======================================================================
 
-\begin{frame}
-  \centering\Large\color{navy}Session 2: Joint distributions and
-  independent random variables
-\end{frame}
-
-\begin{frame}{Recap of Session 1}
+\begin{frame}{Session 2: Functions of random variables, joint
+    distributions, independence}
+  \small
+  \textbf{Recap of Session 1}
   \begin{itemize}
-    \item Density: $P(a\le X\le b)=\int_a^b f(x)\,dx$; $f\ge0$, total
-          area 1.
-    \item $F(x)=P(X\le x)$, \ $f=F'$, \ $P(a<X\le b)=F(b)-F(a)$.
-    \item Uniform: probability $=$ length$/$total length. Exponential:
-          $P(X>x)=e^{-\lambda x}$.
-    \item $Y=g(X)$: first the distribution function, then differentiate.
+    \item Density: $P(a\le X\le b)=\int_a^b f(x)\,dx$; \
+          $F(x)=P(X\le x)$, \ $f=F'$, \ $P(a<X\le b)=F(b)-F(a)$.
+    \item $\E[X]=\int x f(x)\,dx$, \ $\Var(X)=\E[X^2]-(\E[X])^2$.
+    \item Uniform: length over total length. Exponential:
+          $P(X>x)=e^{-\lambda x}$. Normal: $P(X\le x)=
+          \Phi\big(\frac{x-\mu}{\sigma}\big)$.
   \end{itemize}
   \vspace{2mm}
-  \textbf{Now:} two random variables at the same time. How do two stocks,
-  two loans, two claims behave \emph{together}?
+  \textbf{Now}
+  \begin{itemize}
+    \item the distribution of $Y=g(X)$, e.g.\ a stock price $S=S_0e^X$;
+    \item two random variables at the same time: how do two stocks, two
+          loans, two claims behave \emph{together}?
+  \end{itemize}
 \end{frame}
+
+\begin{frame}{The distribution of a function of a random variable}
+  \small
+  We know the distribution of $X$; what is the distribution of
+  $Y=g(X)$, e.g.\ $Y=X^2$ or $Y=S_0e^X$?
+  \begin{block}{Method: first the distribution function}
+    (1) $F_Y(y)=P(Y\le y)=P(g(X)\le y)$; \
+    (2) rewrite $g(X)\le y$ as an event about $X$ and use the distribution
+    of $X$; \
+    (3) if a density is needed: $f_Y(y)=F_Y'(y)$.
+  \end{block}
+  \textbf{Example.} $X$ uniform on $[0,1]$, $Y=2X+3$. For $3\le y\le 5$:
+  \[ F_Y(y)=P(2X+3\le y)=P\Big(X\le \frac{y-3}{2}\Big)=\frac{y-3}{2}, \qquad
+    f_Y(y)=\frac12 , \]
+  so $Y$ is uniform on $[3,5]$.
+  \begin{block}{A linear function of a normal is normal}
+    If $X\sim N(\mu,\sigma^2)$ and $a\ne0$, then
+    $aX+b\sim N(a\mu+b,\,a^2\sigma^2)$. \ In particular
+    $\dfrac{X-\mu}{\sigma}\sim N(0,1)$.
+  \end{block}
+\end{frame}
+
+\exerciseframe{square-of-uniform}
+
+\exerciseframe{lognormal-price}
 
 \begin{frame}{Joint distribution: the discrete case}
   \small
@@ -323,7 +589,8 @@
         $p_Y(y)=\sum_x p(x,y)$ \ (column sums).
       \end{block}
       \begin{block}{Joint distribution function (any $X$, $Y$)}
-        $F(a,b)=P(X\le a,\,Y\le b)$
+        $F(a,b)=P(X\le a,\,Y\le b)=\displaystyle\sum_{x\le a}\sum_{y\le b}
+        p(x,y)$
       \end{block}
     \end{column}
     \begin{column}{.43\textwidth}
@@ -337,7 +604,7 @@
       \end{tabular}\\[2mm]
       \footnotesize the sums are written in the \emph{margins}: hence
       ``marginal''\\[1mm]
-      here $F(0,1)=0.3+0.2=0.5$
+      here $F(0,1)=0.3+0.2=0.5$, \ $F(0,0)=0.3$
     \end{column}
   \end{columns}
 \end{frame}
@@ -347,33 +614,25 @@
 \begin{frame}{Joint distribution: the continuous case}
   \small
   \begin{columns}[T]
-    \begin{column}{.58\textwidth}
+    \begin{column}{.6\textwidth}
       \begin{block}{Joint density}
-        $f(x,y)\ge0$ with
-        \[ P\big((X,Y)\in A\big)=\iint_A f(x,y)\,dx\,dy , \]
-        and the total is $\iint f=1$.
+        $f(x,y)\ge0$, total $\iint f=1$, and for a region $A$
+        \[ P\big((X,Y)\in A\big)=\iint_A f(x,y)\,dx\,dy . \]
       \end{block}
       \begin{block}{Marginal densities: integrate the other variable out}
-        $f_X(x)=\displaystyle\int_{-\infty}^{\infty} f(x,y)\,dy$, \quad
-        $f_Y(y)=\displaystyle\int_{-\infty}^{\infty} f(x,y)\,dx$
+        $f_X(x)=\int_{-\infty}^{\infty} f(x,y)\,dy$, \quad
+        $f_Y(y)=\int_{-\infty}^{\infty} f(x,y)\,dx$
       \end{block}
-      $F(a,b)=\displaystyle\int_{-\infty}^{a}\!\int_{-\infty}^{b}
-      f(x,y)\,dy\,dx$
+      \begin{block}{Joint distribution function}
+        $F(a,b)=P(X\le a,\,Y\le b)=\int_{-\infty}^{a}
+        \!\int_{-\infty}^{b} f(x,y)\,dy\,dx$
+      \end{block}
     \end{column}
-    \begin{column}{.4\textwidth}
+    \begin{column}{.38\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.5]
-        \fill[teal!20] (0,0) rectangle (1.4,1.4);
-        \fill[teal!50] (0,0) -- (1.4,0) -- (1.4,1.4) -- cycle;
-        \draw[->] (-.1,0) -- (1.7,0) node[right] {$x$};
-        \draw[->] (0,-.1) -- (0,1.7) node[above] {$y$};
-        \draw[thick,navy] (0,0) rectangle (1.4,1.4);
-        \node[below] at (1.4,0) {\scriptsize 1};
-        \node[left] at (0,1.4) {\scriptsize 1};
-        \node at (1.0,.35) {\scriptsize $A$};
-      \end{tikzpicture}\\[1mm]
-      \footnotesize the probability of a region $A$ is the volume above it;
-      do the inner integral first
+      \figjointsquare\\[1mm]
+      \footnotesize the probability of a region $A$ (here $X>Y$) is the
+      volume under $f$ above it; do the inner integral first
     \end{column}
   \end{columns}
 \end{frame}
@@ -404,24 +663,34 @@
   \end{columns}
   \vspace{1mm}
   Knowing the value of $X$ does not change the distribution of $Y$.
+  Probabilities of ``and'' multiply.
 \end{frame}
 
 \exerciseframe{two-stocks-independence}
 
 \exerciseframe{two-default-times}
 
+\exerciseframe{meeting-time}
+
 \begin{frame}{Session 2: summary}
   \small
   \begin{itemize}
-    \item Discrete: joint pmf $p(x,y)$ in a table; marginals are the row and
-          column sums.
-    \item Continuous: joint density $f(x,y)$; probability of a region $=$
-          double integral; marginals: integrate the other variable out.
+    \item $Y=g(X)$: first $F_Y(y)=P(g(X)\le y)$, then $f_Y=F_Y'$. \
+          $X\sim N(\mu,\sigma^2)\Rightarrow aX+b\sim N(a\mu+b,a^2\sigma^2)$.
+    \item Discrete: joint pmf $p(x,y)$ in a table; \ $p_X(x)=\sum_y
+          p(x,y)$, \ $p_Y(y)=\sum_x p(x,y)$.
+    \item Continuous: $P((X,Y)\in A)=\iint_A f(x,y)\,dx\,dy$; \
+          $f_X(x)=\int f(x,y)\,dy$, \ $f_Y(y)=\int f(x,y)\,dx$.
     \item Joint distribution function $F(a,b)=P(X\le a,\,Y\le b)$.
     \item Independent: $p(x,y)=p_X(x)p_Y(y)$, or $f(x,y)=f_X(x)f_Y(y)$,
-          for \emph{all} $x$, $y$; then probabilities of ``and'' multiply.
+          for \emph{all} $x$, $y$; then $P(X\in A,Y\in B)=P(X\in A)P(Y\in
+          B)$.
     \item The marginals alone do not tell how $X$ and $Y$ move together.
   \end{itemize}
+  \vspace{1mm}
+  \textbf{Self-study:} Exercises~\exref{log-of-uniform},
+  \exref{three-coins}, \exref{exponential-pair},
+  \exref{which-are-independent}.
 \end{frame}
 
 \end{document}

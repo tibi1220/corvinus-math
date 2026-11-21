@@ -1,6 +1,6 @@
 % ---
 % title: A density with a constant
-% tags: continuous, density
+% tags: continuous, density, expectation, variance
 % ---
 
 \begin{problem}
@@ -16,12 +16,16 @@
 	(b) Find $P(X>2)$.
 	(c) Find $P(1<X<2)$.
 	(d) Is the value $f(x)$ a probability? Explain, using the value $f(3)$.
+	(e) Find $\E[X]$.
+	(f) Find $\Var(X)$ and $\SD(X)$.
 \end{problem}
 
 \begin{solution}
 	\idea A density must be nonnegative and the total area under it must be
 	$1$. This one condition fixes $c$. After that, every probability is an
 	area under the density, that is, an integral of $f$ over the interval.
+	The expected value and the variance are integrals too: of $x\,f(x)$ and
+	of $x^2f(x)$.
 
 	\step{(a)} The total probability is $1$, so the area under $f$ over the
 	whole line is $1$. Outside $[0,3]$ the density is $0$, so only $[0,3]$
@@ -86,16 +90,43 @@
 	$[0,1]$, the same computation would give $c\cdot\frac13=1$, so $c=3$ and
 	$f(1)=3>1$. The total area is still $1$, because the interval is short.
 
+	\step{(e)} The expected value of a continuous random variable is
+	$\E[X]=\int_{-\infty}^{\infty}x\,f(x)\,dx$: each value $x$ weighted by
+	the density, the analogue of $\sum x\,p(x)$ in the discrete case. The
+	density is $0$ outside $[0,3]$:
+	\[
+		\E[X]=\int_0^3 x\cdot\frac{x^2}{9}\,dx=\int_0^3\frac{x^3}{9}\,dx
+		=\left[\frac{x^4}{36}\right]_0^3=\frac{81}{36}=\frac94=2.25 .
+	\]
+	This is larger than the midpoint $1.5$ of the interval, as the picture
+	suggests: most of the probability sits near $3$.
+
+	\step{(f)} Use $\Var(X)=\E[X^2]-(\E[X])^2$, with
+	$\E[X^2]=\int x^2f(x)\,dx$:
+	\[
+		\E[X^2]=\int_0^3 x^2\cdot\frac{x^2}{9}\,dx=\left[\frac{x^5}{45}\right]_0^3
+		=\frac{243}{45}=\frac{27}{5}=5.4 .
+	\]
+	So
+	\[
+		\Var(X)=\frac{27}{5}-\Bigl(\frac94\Bigr)^2=\frac{27}{5}-\frac{81}{16}
+		=\frac{432-405}{80}=\frac{27}{80}=0.3375,
+		\qquad
+		\SD(X)=\sqrt{0.3375}\approx0.581 .
+	\]
+
 	\begin{answer}
 		(a) $c=\frac19$ \quad
 		(b) $P(X>2)=\frac{19}{27}\approx0.704$ \quad
 		(c) $P(1<X<2)=\frac{7}{27}\approx0.259$ \quad
 		(d) no: $f(3)=1$ is a height, not a probability; only areas under $f$
-		are probabilities, and a density can exceed $1$
+		are probabilities, and a density can exceed $1$ \quad
+		(e) $\E[X]=\frac94=2.25$ \quad
+		(f) $\Var(X)=\frac{27}{80}=0.3375$, $\SD(X)\approx0.581$
 	\end{answer}
 	\begin{remark}
 		\textbf{Common mistake:} choosing $c$ so that the largest value of $f$
-		is $1$ (here this happens to give $c=\frac19$ too, by coincidence).
+		is $1$ (here this happens to give $c=\frac19$ too).
 		The correct condition is that the \emph{area} under $f$ is $1$. Check
 		with the interval $[0,1]$: there the rule ``largest value $1$'' would
 		give $c=1$ and total area $\frac13$, which is wrong.
@@ -103,5 +134,10 @@
 		\smallskip
 		\textbf{Check:} $P(X\le1)=\frac1{27}$, so
 		$P(X\le1)+P(1<X<2)+P(X\ge2)=\frac{1+7+19}{27}=1$.
+
+		\smallskip
+		\textbf{Another common mistake:} computing $\E[X^2]$ as
+		$(\E[X])^2$, which would give $\Var(X)=0$. The square goes
+		\emph{inside} the integral: $\E[X^2]=\int x^2f(x)\,dx$.
 	\end{remark}
 \end{solution}

@@ -1,6 +1,6 @@
 % ---
 % title: Waiting for the bus
-% tags: continuous, density, uniform
+% tags: continuous, density, uniform, expectation, variance
 % ---
 
 \begin{problem}
@@ -9,17 +9,72 @@
 	density is constant on $[0,15]$ and $0$ outside. Let $X$ be your
 	waiting time (in minutes).
 	(a) Find the density $f(x)$ of $X$.
-	(b) Find $P(X<5)$.
-	(c) Find $P(3<X<8)$.
+	(b) Find $P(X<5)$ and $P(3<X<8)$.
+	(c) Find the expected waiting time $\E[X]$ and the standard deviation
+	$\SD(X)$.
 	(d) You have already waited $5$ minutes and the bus has not come yet. What
 	is the probability that you wait more than $10$ minutes in total?
 \end{problem}
+
+\begin{slideproblem}
+	A bus arrives at a random time between $0$ and $15$ minutes from now,
+	uniformly distributed on $[0,15]$. Let $X$ be your waiting time
+	(minutes).
+	(a) Find the density $f(x)$.
+	\ (b) $P(X<5)$ and $P(3<X<8)$.
+	\ (c) $\E[X]$ and $\SD(X)$.
+	\ (d) You have already waited $5$ minutes. Probability that you wait more
+	than $10$ minutes in total?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.6\textwidth}
+			\sol (a) Rectangle of width 15 and area 1:
+			\ $\alert{f(x)=\frac1{15}}$ on $[0,15]$, $0$ outside.\\[1mm]
+			\pause
+			(b) Area $=$ width $\times$ height:
+			$P(X<5)=\frac5{15}=\alert{\frac13}$, \
+			$P(3<X<8)=\frac{5}{15}=\alert{\frac13}$.\\[1mm]
+			\pause
+			(c) Uniform on $(0,15)$: \ $\E[X]=\frac{0+15}{2}=\alert{7.5}$,\\
+			$\Var(X)=\frac{15^2}{12}=18.75$, \ $\SD(X)\approx\alert{4.33}$.\\[1mm]
+			\pause
+			(d) $P(X>10\mid X>5)=\frac{P(X>10)}{P(X>5)}
+				=\frac{5/15}{10/15}=\alert{\frac12}$,\\
+			not $P(X>10)=\frac13$.
+		\end{column}
+		\begin{column}{.38\textwidth}
+			\centering
+			\begin{tikzpicture}[x=.26cm,y=28cm]
+				\fill[teal!22] (3,0) rectangle (8,1/15);
+				\draw[teal] (3,0)--(3,1/15) (8,0)--(8,1/15);
+				\draw[->] (0,0)--(17,0) node[right,font=\scriptsize] {$x$};
+				\draw[->] (0,0)--(0,.095) node[above,font=\scriptsize] {$f(x)$};
+				\draw[navy,thick] (0,1/15)--(15,1/15);
+				\draw[navy,dashed] (15,0)--(15,1/15);
+				\draw[gold,thick,dashed] (7.5,0)--(7.5,.085);
+				\node[above,font=\tiny,text=gold!80!black] at (7.5,.085) {$\E[X]=7.5$};
+				\node[left,font=\tiny] at (0,1/15) {$\frac1{15}$};
+				\node[font=\tiny,text=teal!70!black] at (5.5,.033) {$\frac13$};
+				\foreach \x in {3,8,15}
+				\node[below,font=\tiny] at (\x,0) {$\x$};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
 
 \begin{solution}
 	\idea The density is a constant $c$ on $[0,15]$, and the total area under a
 	density is $1$; this gives $c$. A probability is the area under the density
 	over the interval. Here that area is a rectangle, so no integral is really
-	needed: the probability is width times height.
+	needed: the probability is width times height. A random variable with a
+	constant density on an interval $(\alpha,\beta)$ is called
+	\emph{uniform} on $(\alpha,\beta)$; its expected value is the midpoint
+	$\frac{\alpha+\beta}{2}$ and its variance is $\frac{(\beta-\alpha)^2}{12}$.
 
 	\step{(a)} Write $f(x)=c$ for $0\le x\le 15$ and $f(x)=0$ otherwise. The
 	total probability is $1$, so
@@ -54,8 +109,8 @@
 		\end{tikzpicture}
 	\end{center}
 	The gold strip plus the left part of the teal strip (up to the dashed line
-	at $5$) is the area for (b); the teal strip from $3$ to $8$ is the area for
-	(c).
+	at $5$) is the area $P(X<5)$; the teal strip from $3$ to $8$ is the area
+	$P(3<X<8)$.
 
 	\step{(b)} $X<5$ means the bus comes within the first $5$ minutes. The
 	probability is the area under $f$ between $0$ and $5$ (there is no
@@ -66,15 +121,38 @@
 	\]
 	The same with geometry: a rectangle of width $5$ and height $\frac1{15}$.
 
-	\step{(c)} Again the area under $f$, now between $3$ and $8$:
+	Next, again the area under $f$, now between $3$ and $8$:
 	\[
 		P(3<X<8)=\int_{3}^{8}\frac1{15}\,dx=\Big[\frac{x}{15}\Big]_{3}^{8}
 		=\frac8{15}-\frac3{15}=\frac5{15}=\frac13 .
 	\]
-	This equals the answer of (b). The reason: for a uniform random variable
+	This equals $P(X<5)$. The reason: for a uniform random variable
 	the density is flat, so the probability of an interval inside $[0,15]$ is
 	its length divided by $15$. Only the length of the interval matters, not
 	where it lies. Both $(0,5)$ and $(3,8)$ have length $5$.
+
+	\step{(c)} The expected value is $\E[X]=\int x\,f(x)\,dx$, and the
+	density is $\frac1{15}$ on $[0,15]$:
+	\[
+		\E[X]=\int_0^{15}\frac{x}{15}\,dx=\Big[\frac{x^2}{30}\Big]_0^{15}
+		=\frac{225}{30}=7.5 .
+	\]
+	This is the midpoint of the interval, as the symmetry of the rectangle
+	suggests. For the variance, first
+	\[
+		\E[X^2]=\int_0^{15}\frac{x^2}{15}\,dx=\Big[\frac{x^3}{45}\Big]_0^{15}
+		=\frac{3375}{45}=75,
+	\]
+	then
+	\[
+		\Var(X)=\E[X^2]-(\E[X])^2=75-7.5^2=75-56.25=18.75,\qquad
+		\SD(X)=\sqrt{18.75}\approx4.33 .
+	\]
+	The general formulas for the uniform distribution on $(\alpha,\beta)$
+	give the same: $\E[X]=\frac{0+15}{2}=7.5$ and
+	$\Var(X)=\frac{(15-0)^2}{12}=\frac{225}{12}=18.75$. On average you wait
+	$7.5$ minutes, and the waiting time typically differs from this by about
+	$4.3$ minutes.
 
 	\step{(d)} This is a conditional probability. Let $E=\{X>10\}$ (you wait
 	more than $10$ minutes in total) and $F=\{X>5\}$ (the bus has not come in
@@ -99,8 +177,8 @@
 
 	\begin{answer}
 		(a) ${f(x)=\frac1{15}}$ for ${0\le x\le15}$, and $0$ otherwise \quad
-		(b) ${P(X<5)=\frac13}$ \quad
-		(c) ${P(3<X<8)=\frac13}$ \quad
+		(b) ${P(X<5)=\frac13}$, ${P(3<X<8)=\frac13}$ \quad
+		(c) $\E[X]=7.5$ minutes, $\Var(X)=18.75$, $\SD(X)\approx4.33$ minutes \quad
 		(d) ${P(X>10\mid X>5)=\frac12}$
 	\end{answer}
 	\begin{remark}

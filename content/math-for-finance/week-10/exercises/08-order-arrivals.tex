@@ -1,6 +1,6 @@
 % ---
 % title: Waiting for the next order
-% tags: finance, exponential, density, distribution-function
+% tags: finance, exponential, density, distribution-function, expectation
 % ---
 
 \begin{problem}
@@ -10,25 +10,27 @@
 		to wait for the next order. The waiting time between orders is often
 		modeled with an exponential distribution.
 	\end{context}
-	The waiting time $X$, in minutes, until the next order for a stock has
-	density
-	\[ f(x)=\begin{cases} 2e^{-2x}, & x\ge0,\\ 0, & x<0 \end{cases} \]
-	(an exponential distribution with rate $\lambda=2$ per minute).
+	The waiting time $X$, in minutes, until the next order for a stock is
+	exponential with rate $\lambda=2$ (orders per minute): its density is
+	\[ f(x)=\begin{cases} 2e^{-2x}, & x\ge0,\\ 0, & x<0. \end{cases} \]
 	(a) Check that $f$ is a density and find the distribution function $F$.
 	(b) Find $P(X>1)$.
 	(c) Find $P(X<0.5)$.
 	(d) No order has arrived in the first half minute. What is the
 	probability that we wait more than 1.5 minutes in total? Compare with (b).
+	(e) Find the expected waiting time $\E[X]$ and $\SD(X)$.
 \end{problem}
 
 \begin{slideproblem}
-	The waiting time $X$ (minutes) until the next order for a stock has
-	density $f(x)=2e^{-2x}$ for $x\ge0$ (and $0$ for $x<0$).
+	The waiting time $X$ (minutes) until the next order for a stock is
+	exponential with rate $\lambda=2$: density $f(x)=2e^{-2x}$ for $x\ge0$
+	(and $0$ for $x<0$).
 	(a) Check that $f$ is a density; find $F$.
 	\ (b) $P(X>1)$.
 	\ (c) $P(X<0.5)$.
 	\ (d) No order in the first half minute. Probability that we wait more
 	than 1.5 minutes in total? Compare with (b).
+	\ (e) $\E[X]$ and $\SD(X)$.
 \end{slideproblem}
 
 \begin{slides}
@@ -36,58 +38,34 @@
 	\exstatement
 	\pause
 	\begin{columns}[T]
-		\begin{column}{.58\textwidth}
-			\sol (a) $f(x)\ge0$, and
-			\[ \int_0^{\infty}2e^{-2x}\,dx=\Bigl[-e^{-2x}\Bigr]_0^{\infty}
-				=0-(-1)=1. \]
+		\begin{column}{.5\textwidth}
+			\sol (a) $f\ge0$, \
+			$\int_0^{\infty}2e^{-2x}\,dx=\bigl[-e^{-2x}\bigr]_0^{\infty}=1$.\\
+			For $x\ge0$: \
+			$F(x)=\bigl[-e^{-2t}\bigr]_0^{x}=\alert{1-e^{-2x}}$;\\
+			tail: \ $P(X>x)=e^{-2x}$.\\[1mm]
 			\pause
-			For $x\ge0$:
-			\[ F(x)=\int_0^{x}2e^{-2t}\,dt=\Bigl[-e^{-2t}\Bigr]_0^{x}
-				=1-e^{-2x}, \]
-			$F(x)=0$ for $x<0$.
-			\pause
-			\ Tail: \ $\alert{P(X>x)=e^{-2x}}$.
+			(b) $P(X>1)=e^{-2}\approx\alert{0.135}$\\[1mm]
+			(c) $P(X<0.5)=F(0.5)=1-e^{-1}\approx\alert{0.632}$
 		\end{column}
-		\begin{column}{.40\textwidth}
-			\centering
-			\begin{tikzpicture}[xscale=1.5,yscale=1.1]
-				\fill[teal!30] (1,0) -- plot[domain=1:2.4,samples=40]
-				(\x,{2*exp(-2*\x)}) -- (2.4,0) -- cycle;
-				\draw[->] (-.2,0) -- (2.6,0) node[right] {\scriptsize $x$};
-				\draw[->] (0,-.1) -- (0,2.3) node[above] {\scriptsize $f(x)$};
-				\draw[navy,thick] plot[domain=0:2.4,samples=50]
-				(\x,{2*exp(-2*\x)});
-				\foreach \x in {0.5,1,1.5,2}
-				\draw (\x,.04) -- (\x,-.04) node[below] {\scriptsize $\x$};
-				\draw (.04,2) -- (-.04,2) node[left] {\scriptsize $2$};
-				\draw[teal,->] (1.6,.7) node[above] {\scriptsize $P(X>1)$}
-				-- (1.2,.12);
-			\end{tikzpicture}
+		\begin{column}{.48\textwidth}
+			\pause
+			(d) $P(X>1.5\mid X>0.5)=\dfrac{P(X>1.5)}{P(X>0.5)}$\\[1mm]
+			\hspace*{2em}$=\dfrac{e^{-3}}{e^{-1}}=e^{-2}\approx\alert{0.135}$,\\[1mm]
+			the same as (b): \alert{no memory}.\\[1mm]
+			\pause
+			(e) $\E[X]=\frac1\lambda=\alert{0.5}$ minute (30 seconds),\\
+			$\Var(X)=\frac1{\lambda^2}=0.25$, \ $\SD(X)=\alert{0.5}$ minute.
 		\end{column}
 	\end{columns}
-\end{slides}
-
-\begin{slides}
-	\small
-	(b) $P(X>1)=e^{-2\cdot1}=e^{-2}\approx0.135$.\\[2mm]
-	\pause
-	(c) $X$ is continuous, so $P(X=0.5)=0$ and
-	\[ P(X<0.5)=F(0.5)=1-e^{-2\cdot0.5}=1-e^{-1}\approx0.632. \]
-	\pause
-	(d) ``More than 1.5 in total'' already contains ``more than 0.5'':
-	\[ P(X>1.5\mid X>0.5)=\frac{P(X>1.5)}{P(X>0.5)}
-		=\frac{e^{-3}}{e^{-1}}=e^{-2}\approx0.135. \]
-	\pause
-	The same as (b)! Having waited half a minute does not change the chance of
-	waiting more than one more minute.\\[1mm]
-	\alert{The exponential distribution has no memory.}
 \end{slides}
 
 \begin{solution}
 	\idea A density must be nonnegative and integrate to 1. The distribution
 	function is the integral of the density from the left up to $x$. Then
 	every probability about $X$ comes from $F$; for (d) we use the definition
-	of conditional probability.
+	of conditional probability, and for (e) the formulas of the exponential
+	distribution.
 
 	\step{(a)} For $x\ge0$, $2e^{-2x}>0$ because an exponential is always positive,
 	and $f(x)=0$ for $x<0$, so $f(x)\ge0$ everywhere. The total area under $f$ is
@@ -145,12 +123,25 @@
 	of waiting more than one minute from the start. The past waiting does not
 	matter: the exponential distribution is \emph{memoryless}. In general,
 	$P(X>s+t\mid X>s)=e^{-\lambda(s+t)}/e^{-\lambda s}=e^{-\lambda t}=P(X>t)$.
+	\step{(e)} For an exponential random variable with rate $\lambda$,
+	$\E[X]=\frac1\lambda$ and $\Var(X)=\frac1{\lambda^2}$. Here $\lambda=2$:
+	\[ \E[X]=\frac12=0.5,\qquad \Var(X)=\frac1{2^2}=0.25,\qquad
+		\SD(X)=\sqrt{0.25}=0.5. \]
+	On average the next order comes after half a minute, $30$ seconds: two
+	orders per minute on average mean $30$ seconds between orders. The same
+	from the definition, $\E[X]=\int_0^\infty x\cdot2e^{-2x}\,dx$; integration
+	by parts with $u=x$, $v'=2e^{-2x}$ gives
+	\[ \E[X]=\Bigl[-x\,e^{-2x}\Bigr]_0^\infty+\int_0^\infty e^{-2x}\,dx
+		=0+\Bigl[-\frac{e^{-2x}}{2}\Bigr]_0^\infty=\frac12. \]
+	For an exponential random variable the standard deviation equals the
+	mean: the waiting time is very uncertain.
 	\begin{answer}
 		(a) $\int_0^\infty 2e^{-2x}\,dx=1$; $F(x)=1-e^{-2x}$ for $x\ge0$,
 		$F(x)=0$ for $x<0$
 		\quad (b) $e^{-2}\approx0.135$
 		\quad (c) $1-e^{-1}\approx0.632$
 		\quad (d) $e^{-2}\approx0.135$, the same as (b)
+		\quad (e) $\E[X]=0.5$ minute, $\SD(X)=0.5$ minute
 	\end{answer}
 	\begin{remark}
 		\textbf{Common mistake:} in (d), computing

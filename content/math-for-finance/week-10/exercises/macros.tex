@@ -17,13 +17,15 @@
 %                                          guide, exercise PDFs, website)
 %
 % Commands for the documents (the argument is the slug: 01-license-plates.tex
-% has the slug license-plates):
+% has the slug license-plates; an exercise of an earlier week included below
+% is referred to the same way):
 %
 %   \exref{slug}                 the number, e.g. 10.1, for "Exercise~\exref{...}"
 %   \extitle{slug}               the title from the docstring
 %   \exerciseframe[opts]{slug}   beamer: the frames of the exercise
 %   \studyexercise{slug}         study guide: heading, statement, solution
-%   \scriptexercise{slug}        script: the statement box, as on the slide
+%   \scriptexercise{slug}        script: the statement box, with the finance
+%                                context
 %   \allexercises                exercises.tex: every exercise, in order; on
 %                                the website statement and solution with
 %                                markers where the pipeline splits the HTML
@@ -35,6 +37,12 @@
 
 \directlua{exercises = dofile("exercises/exercises.lua")
   exercises.scan("exercises", "\exweek")}
+
+% Exercises of earlier weeks used in this week's documents (by slug, numbered
+% as in their own week, e.g. 8.11; not listed among this week's exercises)
+% would be included here with \directlua{exercises.include("week-NN")};
+% scripts/build-content.mjs reads such lines to copy the files. Week 10 uses
+% none.
 
 \ExplSyntaxOn
 
@@ -145,6 +153,11 @@
         \end { \__ex_block: }
       }
 
+    % The steps (\pause, \uncover, ...) of an exercise are not shown one by
+    % one: the first frame gives two pages, its first slide (the statement,
+    % no solution) and its last state (the full solution); a further frame
+    % (cont.) only its last state. Slide 99 is past every step, so it shows
+    % everything (a frame has only the slides it uses, so <1,99> is two).
     \tl_new:N \l__ex_frames_tl
     \NewDocumentCommand \exerciseframe { O{t} m }
       {
@@ -152,7 +165,9 @@
         \tl_clear:N \l__ex_frames_tl
         \seq_map_indexed_inline:Nn \g__ex_slides_seq
           {
-            \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}[#1] }
+            \int_compare:nNnTF {##1} = { 1 }
+              { \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}<1,99>[#1] } }
+              { \tl_put_right:Nn \l__ex_frames_tl { \begin{frame}<99>[#1] } }
             \tl_put_right:Ne \l__ex_frames_tl
               {
                 {
@@ -184,14 +199,16 @@
         \soltitle \__ex_input_part:nn {#1} { solution }
       }
 
+    % The script gives the full statement, with the finance context: the
+    % lecturer reads it out, so the background of the example is at hand. The
+    % print version of the script (\scriptprint) leaves the context out.
     \NewDocumentCommand \scriptexercise { m }
       {
         \__ex_load:n {#1}
         \group_begin:
-          \bool_set_false:N \l__ex_context_bool
-          \tl_if_empty:NTF \g__ex_slideproblem_tl
-            { \__ex_statement_box:n { problem } }
-            { \__ex_statement_box:n { slideproblem } }
+          \cs_if_exist:NT \scriptprint
+            { \bool_set_false:N \l__ex_context_bool }
+          \__ex_statement_box:n { problem }
         \group_end:
       }
 

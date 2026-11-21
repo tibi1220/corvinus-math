@@ -13,6 +13,51 @@
 	(b) Find the probability that they meet, $P(|X-Y|\le 10)$.
 \end{problem}
 
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) Each arrival time is uniform on $[0,60]$:
+	$f_X(x)=f_Y(y)=\frac1{60}$ there. They are independent, so the joint
+	density is the product:
+	\[ f(x,y)=f_X(x)\,f_Y(y)=\frac{1}{60}\cdot\frac1{60}=\frac{1}{3600},
+		\qquad 0\le x\le60,\ 0\le y\le60, \]
+	and $f(x,y)=0$ outside this square.
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.58\textwidth}
+			(b) They meet if $|X-Y|\le10$: the \alert{band} between
+			$y=x-10$ and $y=x+10$. The density is constant, so
+			\[ P(|X-Y|\le10)=\frac{\text{area of the band}}{3600}. \]
+			\pause
+			Outside the band: two triangles with legs $50$, together a
+			$50\times50$ square:
+			\[ P(|X-Y|\le10)=1-\frac{50^2}{60^2}=\frac{11}{36}
+				\approx\alert{0.306}. \]
+		\end{column}
+		\begin{column}{.40\textwidth}
+			\centering
+			\begin{tikzpicture}[scale=0.06,>=stealth]
+				\fill[teal!30] (0,0)--(10,0)--(60,50)--(60,60)--(50,60)--(0,10)--cycle;
+				\draw[thick] (0,0) rectangle (60,60);
+				\draw[navy,thick] (10,0)--(60,50);
+				\draw[navy,thick] (0,10)--(50,60);
+				\draw[->] (0,0)--(68,0) node[right] {\scriptsize $x$};
+				\draw[->] (0,0)--(0,68) node[above] {\scriptsize $y$};
+				\node[below] at (10,0) {\tiny $10$};
+				\node[below] at (60,0) {\tiny $60$};
+				\node[left] at (0,10) {\tiny $10$};
+				\node[left] at (0,60) {\tiny $60$};
+				\node at (42,15) {\tiny no meeting};
+				\node at (18,45) {\tiny no meeting};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
 \begin{solution}
 	\idea Independent random variables have a joint density that is the product
 	of the marginal densities. Here the product is constant on a square, so a

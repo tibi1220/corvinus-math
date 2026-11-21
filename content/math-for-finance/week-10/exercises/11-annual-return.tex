@@ -1,0 +1,169 @@
+% ---
+% title: The annual return of a fund
+% tags: finance, normal, quantile
+% ---
+
+\begin{problem}
+	\begin{context}
+		The \emph{return} of an investment over a year is its gain as a
+		fraction of the amount invested: a return of $0.08$ means a gain of
+		$8\%$, a negative return is a loss. Before the year starts the return
+		is unknown, and a simple, widely used model takes it to be normal: the
+		expected return $\mu$ and the \emph{volatility} $\sigma$ (the standard
+		deviation of the return) describe the investment. Banks and funds
+		report their risk with the \emph{Value at Risk} (VaR): the 95\% VaR is
+		the loss that is not exceeded with probability $95\%$. In other words,
+		only in the worst $5\%$ of the cases is the loss larger.
+	\end{context}
+	The annual return $X$ of a stock fund is normal with expected value
+	$\mu=0.08$ and standard deviation $\sigma=0.20$.
+	(a) Find the probability that the fund makes a loss in a year, $P(X<0)$.
+	(b) Find the probability that the return is more than $30\%$, $P(X>0.3)$.
+	(c) Find the return $r$ with $P(X<r)=0.05$. Complete the sentence: ``with
+	probability $95\%$ the loss in a year is at most \dots''.
+	(d) An investor puts $10\,000$ euros into the fund. Find the 95\% Value at
+	Risk in euros for one year.
+\end{problem}
+
+\begin{slideproblem}
+	The annual return $X$ of a stock fund is normal with $\mu=0.08$ and
+	$\sigma=0.20$.
+	(a) $P(X<0)$, the probability of a loss.
+	\ (b) $P(X>0.3)$.
+	\ (c) The return $r$ with $P(X<r)=0.05$. With probability $95\%$ the
+	loss is at most how much?
+	\ (d) The 95\% Value at Risk of an investment of $10\,000$ euros.
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.62\textwidth}
+			\sol Standardize: \ $Z=\dfrac{X-0.08}{0.2}$ is standard normal.\\[1mm]
+			(a) $P(X<0)=\Phi\bigl(\frac{0-0.08}{0.2}\bigr)=\Phi(-0.4)
+				=1-\Phi(0.4)=\alert{0.3446}$\\[1mm]
+			\pause
+			(b) $\frac{0.3-0.08}{0.2}=1.1$: \
+			$P(X>0.3)=1-\Phi(1.1)=\alert{0.1357}$\\[1mm]
+			\pause
+			(c) $\frac{r-0.08}{0.2}=-1.645$, \ so \
+			$r=0.08-1.645\cdot0.2=\alert{-0.249}$:\\
+			with prob.\ $95\%$ the loss is at most \alert{$24.9\%$}.\\[1mm]
+			\pause
+			(d) VaR $=0.249\cdot10\,000=\alert{2\,490}$ euros.
+		\end{column}
+		\begin{column}{.36\textwidth}
+			\centering
+			\begin{tikzpicture}[x=3.2cm,y=1.05cm]
+				\draw[gray!40,very thin] (-.62,1)--(.78,1) (-.62,2)--(.78,2);
+				\node[left,font=\tiny] at (-.62,1) {$1$};
+				\node[left,font=\tiny] at (-.62,2) {$2$};
+				\fill[teal!22] (-.62,0) -- plot[domain=-.62:0,samples=40]
+					(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))}) -- (0,0) -- cycle;
+				\fill[gold!55] (-.62,0) -- plot[domain=-.62:-.249,samples=30]
+					(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))}) -- (-.249,0) -- cycle;
+				\draw[->] (-.62,0)--(.82,0) node[right,font=\scriptsize] {$x$};
+				\draw[navy,thick] plot[domain=-.62:.78,samples=70]
+					(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))});
+				\draw[navy,dashed] (.08,0)--(.08,2.1);
+				\node[above,font=\tiny,text=navy] at (.08,2.1) {$\mu=0.08$};
+				\draw[gold!80!black] (-.249,0)--(-.249,.55);
+				\node[font=\tiny,text=gold!80!black,anchor=east] at (-.3,.75) {$5\%$};
+				\node[font=\tiny,text=teal!70!black] at (-.12,.5) {loss};
+				\foreach \x/\l in {-0.249/-0.249,0/0,0.3/0.3}
+				\node[below,font=\tiny] at (\x,0) {$\l$};
+			\end{tikzpicture}\\
+			{\tiny teal: $P(X<0)=0.3446$; \ gold: worst $5\%$}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea Every probability about a normal $X$ is turned into one about the
+	standard normal $Z=\frac{X-\mu}{\sigma}$, and then read from the table of
+	$\Phi$, with $\Phi(-z)=1-\Phi(z)$ for negative $z$. In (c) the
+	probability is given and the value is unknown: we look for a quantile,
+	going backwards through the same steps.
+
+	\step{The picture.} The density of $X$ is a bell curve centered at
+	$\mu=0.08$. The teal area is the probability of a loss, (a); the gold
+	area, the worst $5\%$ of the years, is cut off by the return $r$ of (c).
+	\begin{center}
+		\begin{tikzpicture}[x=6cm,y=1.4cm]
+			\draw[gray!40,very thin] (-.62,1)--(.78,1) (-.62,2)--(.78,2);
+			\node[left,font=\scriptsize] at (-.62,1) {$1$};
+			\node[left,font=\scriptsize] at (-.62,2) {$2$};
+			\fill[teal!22] (-.62,0) -- plot[domain=-.62:0,samples=40]
+				(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))}) -- (0,0) -- cycle;
+			\fill[gold!55] (-.62,0) -- plot[domain=-.62:-.249,samples=30]
+				(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))}) -- (-.249,0) -- cycle;
+			\draw[->] (-.62,0)--(.82,0) node[right,font=\small] {$x$};
+			\draw[navy,thick] plot[domain=-.62:.78,samples=80]
+				(\x,{exp(-((\x-0.08)^2)/0.08)/(0.2*sqrt(2*pi))});
+			\draw[navy,dashed] (.08,0)--(.08,2.15);
+			\node[above,font=\scriptsize,text=navy] at (.08,2.15) {$\mu=0.08$};
+			\draw[gold!80!black] (-.249,0)--(-.249,.55);
+			\node[font=\scriptsize,text=gold!80!black,anchor=east] at (-.29,.7)
+				{worst $5\%$};
+			\node[font=\scriptsize,text=teal!70!black,align=center] at (-.1,.55)
+				{loss\\$0.3446$};
+			\foreach \x/\l in {-0.249/-0.249,0/0,0.3/0.3,0.48/0.48}
+			\node[below,font=\scriptsize] at (\x,0) {$\l$};
+			\node[font=\scriptsize,text=navy,anchor=west] at (.3,1.6) {$f(x)$};
+		\end{tikzpicture}
+	\end{center}
+
+	\step{(a)} A loss means $X<0$. Subtract $\mu$ and divide by $\sigma$ on
+	both sides; this does not change the event:
+	\[ P(X<0)=P\Bigl(\frac{X-0.08}{0.2}<\frac{0-0.08}{0.2}\Bigr)
+		=P(Z<-0.4)=\Phi(-0.4). \]
+	The table has only nonnegative $z$, so use the symmetry of the bell
+	curve:
+	\[ \Phi(-0.4)=1-\Phi(0.4)=1-0.6554=0.3446. \]
+	Although the expected return is a gain of $8\%$, the fund loses money in
+	about one year out of three.
+
+	\step{(b)} Standardize in the same way, and use the complement:
+	\[ P(X>0.3)=P\Bigl(Z>\frac{0.3-0.08}{0.2}\Bigr)=P(Z>1.1)
+		=1-\Phi(1.1)=1-0.8643=0.1357. \]
+
+	\step{(c)} We need $r$ with $P(X<r)=0.05$. Standardized,
+	$P\bigl(Z<\frac{r-0.08}{0.2}\bigr)=0.05$, so $\frac{r-0.08}{0.2}$ is the
+	number $z$ with $\Phi(z)=0.05$. It is negative, and by symmetry it is the
+	negative of the number with $\Phi(z)=0.95$, which is $1.645$. Hence
+	\[ \frac{r-0.08}{0.2}=-1.645,\qquad r=0.08-1.645\cdot0.2=0.08-0.329=-0.249. \]
+	So $P(X<-0.249)=0.05$, and $P(X\ge-0.249)=0.95$: with probability $95\%$
+	the return is at least $-24.9\%$, that is, the loss in a year is at most
+	$24.9\%$ of the investment.
+
+	\step{(d)} The euro gain on $10\,000$ euros is $10\,000\,X$. By (c), with
+	probability $95\%$ it is at least $10\,000\cdot(-0.249)=-2\,490$ euros. So
+	the 95\% Value at Risk for one year is
+	\[ \text{VaR}_{95\%}=0.249\cdot10\,000=2\,490\text{ euros}. \]
+	With probability $95\%$ the investor loses at most $2\,490$ euros in a
+	year, and with probability $5\%$ they lose more.
+
+	\begin{answer}
+		(a) $\Phi(-0.4)=0.3446$ \quad
+		(b) $1-\Phi(1.1)=0.1357$ \quad
+		(c) $r=0.08-1.645\cdot0.2=-0.249$: with probability $95\%$ the loss
+		is at most $24.9\%$ \quad
+		(d) $\text{VaR}_{95\%}=2\,490$ euros
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (c), using $+1.645$ and getting
+		$r=0.08+0.329=0.409$. That is the return exceeded only with probability
+		$5\%$, the \emph{best} $5\%$ of the years; the risk is in the left
+		tail. Draw the bell curve first and check on which side the area $5\%$
+		lies.
+
+		By the $68$--$95$--$99.7$ rule, the return is within $2\sigma$ of
+		$\mu$, between $0.08-0.4=-0.32$ and $0.08+0.4=0.48$, with probability
+		about $95\%$. The VaR uses only one tail, so it needs the one-sided
+		quantile $1.645$, not $1.96$ (or $2$). Real returns have heavier tails
+		than the normal model: large losses are more frequent than the bell
+		curve predicts, so the normal VaR tends to understate the risk.
+	\end{remark}
+\end{solution}

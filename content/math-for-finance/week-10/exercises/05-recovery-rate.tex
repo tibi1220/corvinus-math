@@ -1,0 +1,226 @@
+% ---
+% title: The recovery rate
+% tags: finance, density, distribution-function, expectation, variance
+% ---
+
+\begin{problem}
+	\begin{context}
+		When a borrower defaults, the bank rarely loses the whole loan: it sells
+		the collateral, or it gets part of the money back in a court procedure.
+		The \emph{recovery rate} is the fraction of the defaulted loan that the
+		bank gets back. It is a number between 0 (nothing is recovered) and 1
+		(everything is recovered), and before the default it is not known.
+		Banks need its expected value and its spread to set aside enough
+		capital for the losses on their loans.
+	\end{context}
+	The recovery rate $R$ of a defaulted loan is a continuous random variable
+	with density
+	\[
+		f(x)=\begin{cases}
+			6x(1-x) & 0\le x\le 1, \\
+			0       & \text{otherwise}.
+		\end{cases}
+	\]
+	(a) Find the distribution function $F$ of $R$.
+	(b) Find $P(R>0.8)$.
+	(c) Find $P(0.2<R<0.4)$.
+	(d) Find $\E[R]$, $\Var(R)$ and $\SD(R)$.
+	(e) A loan of 1 million euros has defaulted, and the bank loses
+	$1\,000\,000\,(1-R)$ euros on it. Find the expected loss and the standard
+	deviation of the loss.
+\end{problem}
+
+\begin{slideproblem}
+	The recovery rate $R$ (the fraction of a defaulted loan that the bank
+	gets back) has density $f(x)=6x(1-x)$ for $0\le x\le1$, and $0$ otherwise.
+	(a) Find the distribution function $F$.
+	(b) $P(R>0.8)$. \ (c) $P(0.2<R<0.4)$.
+	(d) $\E[R]$, $\Var(R)$, $\SD(R)$.
+	(e) On a defaulted loan of 1 million euros the bank loses
+	$1\,000\,000\,(1-R)$ euros: expected loss and its standard deviation?
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\begin{columns}[T]
+		\begin{column}{.47\textwidth}
+			\sol (a) For $0\le x\le1$:\\
+			$F(x)=\int_0^x(6t-6t^2)\,dt=\alert{3x^2-2x^3}$;\\
+			$F(x)=0$ for $x<0$, \ $F(x)=1$ for $x>1$.\\[1mm]
+			\pause
+			(b) $P(R>0.8)=1-F(0.8)=\alert{0.104}$\\[1mm]
+			(c) $F(0.4)-F(0.2)=0.352-0.104=\alert{0.248}$
+		\end{column}
+		\begin{column}{.51\textwidth}
+			\pause
+			(d) $\E[R]=\int_0^1x\cdot6x(1-x)\,dx=2-\frac32=\alert{\frac12}$\\[1mm]
+			$\E[R^2]=\int_0^1x^2\cdot6x(1-x)\,dx=\frac32-\frac65=\frac3{10}$\\[1mm]
+			$\Var(R)=\frac3{10}-\frac14=\alert{\frac1{20}}$, \
+			$\SD(R)=\sqrt{0.05}\approx\alert{0.2236}$\\[1mm]
+			\pause
+			(e) $\E[\text{loss}]=1\,000\,000\,(1-\E[R])=\alert{500\,000}$ euros\\[1mm]
+			$\SD(\text{loss})=1\,000\,000\cdot\SD(R)\approx\alert{223\,607}$ euros
+			\ (as $\Var(aX+b)=a^2\Var(X)$)
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea The distribution function is the area under the density to the left
+	of $x$: $F(x)=P(R\le x)=\int_{-\infty}^{x}f(t)\,dt$. Once $F$ is known,
+	every interval probability is a difference of two values of $F$. The
+	expected value and the variance are integrals of $x\,f(x)$ and
+	$x^2f(x)$; the loss is a linear function of $R$, so its expected value
+	and standard deviation follow from those of $R$.
+
+	\step{The picture.} The density is a hill on $[0,1]$: it is $0$ at both
+	ends and largest in the middle, $f(0.5)=6\cdot0.5\cdot0.5=1.5$, and it is
+	symmetric about $0.5$. Each
+	probability below is an area under this curve. The shaded parts show
+	$P(0.2<R<0.4)$ (teal) and $P(R>0.8)$ (gold).
+	\begin{center}
+		\begin{tikzpicture}[x=6cm,y=2.4cm,>=stealth]
+			\fill[teal!35] (0.2,0)
+			-- plot[domain=0.2:0.4,samples=30] (\x,{6*\x*(1-\x)}) -- (0.4,0) -- cycle;
+			\fill[gold!60] (0.8,0)
+			-- plot[domain=0.8:1,samples=30] (\x,{6*\x*(1-\x)}) -- (1,0) -- cycle;
+			\draw[->] (-0.1,0)--(1.15,0) node[right] {$x$};
+			\draw[->] (0,-0.05)--(0,1.75) node[above] {$f(x)$};
+			\foreach \x in {0.2,0.4,0.5,0.8,1}
+			\draw (\x,0.03)--(\x,-0.03) node[below] {\footnotesize$\x$};
+			\node[below left] at (0,0) {\footnotesize$0$};
+			\draw[gray!60,dashed] (0,1.5)--(0.5,1.5);
+			\node[left] at (0,1.5) {\footnotesize$1.5$};
+			\draw[navy,very thick] (-0.1,0)--(0,0);
+			\draw[navy,very thick] plot[domain=0:1,samples=60] (\x,{6*\x*(1-\x)});
+			\draw[navy,very thick] (1,0)--(1.12,0);
+		\end{tikzpicture}
+	\end{center}
+	Before we start, check that $f$ is a density: it is never negative, and
+	the total area is
+	\[
+		\int_0^1 (6x-6x^2)\,dx=\Bigl[3x^2-2x^3\Bigr]_0^1=3-2=1.
+	\]
+
+	\step{(a)} We compute $F(x)=\int_{-\infty}^{x}f(t)\,dt$ separately on the
+	three pieces where $f$ has a different formula.
+	\begin{itemize}
+		\item For $x<0$: the density is $0$ to the left of $x$, so there is no
+		      area, and $F(x)=0$. (The recovery rate cannot be negative.)
+		\item For $0\le x\le1$: the density is $0$ left of $0$, so only the
+		      part from $0$ to $x$ counts. Write the density as $6t-6t^2$. An
+		      antiderivative is $3t^2-2t^3$ (check: its derivative is
+		      $6t-6t^2$). So
+		      \[
+			      F(x)=\int_0^x (6t-6t^2)\,dt=\Bigl[3t^2-2t^3\Bigr]_0^x
+			      =(3x^2-2x^3)-(0-0)=3x^2-2x^3.
+		      \]
+		\item For $x>1$: all the area (which is $1$) lies to the left of $x$,
+		      so $F(x)=1$. Indeed, the formula above gives $F(1)=3-2=1$, and
+		      the density adds nothing after $1$.
+	\end{itemize}
+	So
+	\[
+		F(x)=\begin{cases}
+			0          & x<0,          \\
+			3x^2-2x^3  & 0\le x\le 1,  \\
+			1          & x>1.
+		\end{cases}
+	\]
+	Check: $F'(x)=6x-6x^2=f(x)$ on $(0,1)$, as it must be.
+
+	\step{(b)} ``$R>0.8$'' is the complement of ``$R\le0.8$'', so
+	$P(R>0.8)=1-F(0.8)$. Here
+	\[
+		F(0.8)=3\cdot0.64-2\cdot0.512=1.92-1.024=0.896,
+	\]
+	so
+	\[
+		P(R>0.8)=1-0.896=0.104=\frac{13}{125}.
+	\]
+	The gold area in the picture is small: near $1$ the density is low, so a
+	near-complete recovery is rare.
+
+	\step{(c)} Use $P(a<R\le b)=F(b)-F(a)$. $R$ is continuous, so a single
+	point has probability $0$: $P(R=0.4)=0$, and the strict inequality $R<0.4$
+	changes nothing. First the two values of $F$:
+	\[
+		F(0.4)=3\cdot0.16-2\cdot0.064=0.48-0.128=0.352,
+	\]
+	\[
+		F(0.2)=3\cdot0.04-2\cdot0.008=0.12-0.016=0.104.
+	\]
+	Then
+	\[
+		P(0.2<R<0.4)=F(0.4)-F(0.2)=0.352-0.104=0.248=\frac{31}{125}.
+	\]
+	(Notice $F(0.2)=0.104=1-F(0.8)$: the density is symmetric about $0.5$,
+	$f(1-x)=6(1-x)x=f(x)$, so the area left of $0.2$ equals the area right of
+	$0.8$.)
+
+	\step{(d)} The expected value of a continuous random variable is
+	$\E[R]=\int_{-\infty}^{\infty}x\,f(x)\,dx$, the analogue of
+	$\sum x\,p(x)$ in the discrete case. Outside $[0,1]$ the density is $0$:
+	\[
+		\E[R]=\int_0^1 x\cdot6x(1-x)\,dx=\int_0^1(6x^2-6x^3)\,dx
+		=\Bigl[2x^3-\frac{3x^4}{2}\Bigr]_0^1=2-\frac32=\frac12 .
+	\]
+	This was to be expected: the density is symmetric about $0.5$, so its
+	balance point is $0.5$. For the variance we use
+	$\Var(R)=\E[R^2]-(\E[R])^2$, and $\E[R^2]=\int x^2f(x)\,dx$:
+	\[
+		\E[R^2]=\int_0^1 x^2\cdot6x(1-x)\,dx=\int_0^1(6x^3-6x^4)\,dx
+		=\Bigl[\frac{3x^4}{2}-\frac{6x^5}{5}\Bigr]_0^1=\frac32-\frac65=\frac3{10}.
+	\]
+	So
+	\[
+		\Var(R)=\frac3{10}-\Bigl(\frac12\Bigr)^2=\frac3{10}-\frac14=\frac1{20}=0.05,
+		\qquad
+		\SD(R)=\sqrt{0.05}\approx0.2236 .
+	\]
+	On average the bank recovers half of a defaulted loan, and the recovery
+	rate typically differs from $0.5$ by about $0.22$.
+
+	\step{(e)} The loss is $1\,000\,000\,(1-R)=-1\,000\,000\,R+1\,000\,000$
+	euros, a linear function $aR+b$ of $R$ with $a=-1\,000\,000$ and
+	$b=1\,000\,000$. For a linear function, $\E[aR+b]=a\,\E[R]+b$ and
+	$\Var(aR+b)=a^2\Var(R)$, so $\SD(aR+b)=|a|\,\SD(R)$ (adding a constant does
+	not change the spread, and the sign of $a$ does not matter). Hence
+	\[
+		\E[\text{loss}]=1\,000\,000\,\bigl(1-\E[R]\bigr)=1\,000\,000\cdot\frac12
+		=500\,000 \text{ euros},
+	\]
+	\[
+		\SD(\text{loss})=1\,000\,000\cdot\SD(R)=1\,000\,000\cdot\sqrt{0.05}
+		\approx223\,607 \text{ euros}.
+	\]
+	The bank expects to lose half of the loan, but the actual loss is quite
+	uncertain: a typical deviation from $500\,000$ euros is more than
+	$200\,000$ euros.
+
+	\begin{answer}
+		(a) $F(x)=0$ for $x<0$, $F(x)=3x^2-2x^3$ for $0\le x\le1$, $F(x)=1$
+		for $x>1$ \quad
+		(b) $P(R>0.8)=0.104$ \quad
+		(c) $P(0.2<R<0.4)=0.248$ \quad
+		(d) $\E[R]=\frac12$, $\Var(R)=\frac1{20}$, $\SD(R)\approx0.2236$ \quad
+		(e) expected loss $500\,000$ euros, standard deviation
+		$\approx223\,607$ euros
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} reading a probability off the density,
+		e.g.\ saying $P(R=0.5)=f(0.5)=1.5$. A density value is not a
+		probability (here it is even larger than $1$). Probabilities are
+		\emph{areas} under $f$, and the area above a single point is $0$.
+		Another one: computing the variance in (e) as $1\,000\,000\cdot\Var(R)$.
+		The factor comes in squared, $\Var(aR+b)=a^2\Var(R)$; only the standard
+		deviation scales with $|a|$.
+
+		The loss given default is $L=1-R$, the fraction of the loan that is
+		lost (compare Exercise~\exref{loss-given-default}). Since the density
+		of $R$ is symmetric about $0.5$, here $L$ has the same distribution
+		as $R$.
+	\end{remark}
+\end{solution}

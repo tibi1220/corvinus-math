@@ -38,64 +38,40 @@
 	\exstatement
 	\pause
 	\begin{columns}[T]
-		\begin{column}{.55\textwidth}
-			\sol (a) The density is the derivative of $F$:
-			\[ f(x)=F'(x)=\begin{cases}
-					2x, & 0\le x\le1, \\
-					0,  & \text{otherwise}.
-				\end{cases} \]
+		\begin{column}{.62\textwidth}
+			\sol (a) $f=F'$: \ $\alert{f(x)=2x}$ for $0\le x\le1$, \ $f(x)=0$
+			otherwise.\\
+			Check: $\int_0^1 2x\,dx=\big[x^2\big]_0^1=1$. Large losses are more
+			likely.\\[1mm]
 			\pause
-			Check: $\int_0^1 2x\,dx=\big[x^2\big]_0^1=1-0=1$.\\[1mm]
-			Large losses are more likely than small ones.
+			(b) $P(L>0.5)=1-F(0.5)=1-0.5^2=\alert{0.75}$.\\[1mm]
+			\pause
+			(c) $P(0.2<L\le0.6)=F(0.6)-F(0.2)=0.36-0.04=\alert{0.32}$.\\[1mm]
+			\pause
+			(d) $F(m)=m^2=\frac12$, \ so \ $m=\sqrt{0.5}\approx\alert{0.707}$:
+			half of the defaults lose more than 70.7\% of the loan.
 		\end{column}
-		\begin{column}{.42\textwidth}
+		\begin{column}{.36\textwidth}
 			\centering
-			\begin{tikzpicture}[xscale=1.6,yscale=.95]
-				\draw[->] (-.1,0) -- (1.35,0) node[right] {\scriptsize $x$};
-				\draw[->] (0,-.1) -- (0,2.25) node[above] {\scriptsize $y$};
-				\draw[gold,thick] plot[domain=0:1,samples=50] (\x,{\x*\x});
+			\begin{tikzpicture}[xscale=2.3,yscale=1.05]
+				\draw[gray!40,very thin] (0,1)--(1.3,1) (0,2)--(1.3,2);
+				\node[left,font=\tiny] at (0,1) {$1$};
+				\node[left,font=\tiny] at (0,2) {$2$};
+				\fill[teal!22] (.5,0) -- (.5,1) -- (1,2) -- (1,0) -- cycle;
+				\draw[teal] (.5,0) -- (.5,1);
+				\node[font=\tiny,text=teal!70!black] at (.78,.5) {$0.75$};
+				\draw[->] (0,0) -- (1.4,0) node[right,font=\scriptsize] {$x$};
+				\draw[->] (0,0) -- (0,2.35);
 				\draw[navy,thick] (0,0) -- (1,2);
+				\draw[navy,dashed] (1,0) -- (1,2);
 				\draw[navy,thick] (1,0) -- (1.3,0);
-				\draw[navy,dashed] (1,0) -- (1,2);
-				\draw[gold,thick] (1,1) -- (1.3,1);
-				\draw (1,.04) -- (1,-.04) node[below] {\tiny $1$};
-				\draw (.04,1) -- (-.04,1) node[left] {\tiny $1$};
-				\draw (.04,2) -- (-.04,2) node[left] {\tiny $2$};
-				\node[navy,left] at (.95,2.08) {\scriptsize $f(x)=2x$};
-				\node[gold!80!black,right] at (1.02,1.25) {\scriptsize $F(x)=x^2$};
-			\end{tikzpicture}
-		\end{column}
-	\end{columns}
-\end{slides}
-
-\begin{slides}
-	\small
-	\begin{columns}[T]
-		\begin{column}{.58\textwidth}
-			(b) Complement: $P(L>a)=1-F(a)$.
-			\[ P(L>0.5)=1-F(0.5)=1-0.5^2=0.75. \]
-			\pause
-			(c) $P(a<L\le b)=F(b)-F(a)$:
-			\[ P(0.2<L\le0.6)=0.6^2-0.2^2=0.36-0.04=0.32. \]
-			\pause
-			(d) Solve $F(m)=\frac12$:
-			\[ m^2=\tfrac12,\qquad m=\sqrt{0.5}\approx0.707. \]
-			Half of the defaults lose more than 70.7\% of the loan.
-		\end{column}
-		\begin{column}{.39\textwidth}
-			\centering
-			\begin{tikzpicture}[scale=1.5]
-				\fill[teal!30] (.5,0) -- (.5,1) -- (1,2) -- (1,0) -- cycle;
-				\draw[->] (-.1,0) -- (1.3,0) node[right] {\scriptsize $x$};
-				\draw[->] (0,-.1) -- (0,2.25) node[above] {\scriptsize $f(x)$};
-				\draw[navy,thick] (0,0) -- (1,2);
-				\draw[navy,dashed] (1,0) -- (1,2);
-				\draw (.5,.04) -- (.5,-.04) node[below] {\tiny $0.5$};
-				\draw (1,.04) -- (1,-.04) node[below] {\tiny $1$};
-				\draw (.04,2) -- (-.04,2) node[left] {\tiny $2$};
-				\node[teal!60!black] at (.78,.55) {\scriptsize $0.75$};
-			\end{tikzpicture}\\[1mm]
-			{\scriptsize shaded area $=P(L>0.5)$}
+				\draw[gold,thick] plot[domain=0:1,samples=50] (\x,{\x*\x}) -- (1.3,1);
+				\node[font=\tiny,text=navy,left] at (.95,2.1) {$f(x)=2x$};
+				\node[font=\tiny,text=gold!80!black,above] at (1.2,1) {$F(x)$};
+				\foreach \x in {0.5,1}
+				\node[below,font=\tiny] at (\x,0) {$\x$};
+			\end{tikzpicture}\\
+			{\tiny shaded area $=P(L>0.5)$}
 		\end{column}
 	\end{columns}
 \end{slides}

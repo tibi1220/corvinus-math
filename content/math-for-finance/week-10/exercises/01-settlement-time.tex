@@ -28,54 +28,41 @@
 	\small
 	\exstatement
 	\pause
-	\sol A density has two properties: \ $f(x)\ge0$ \ and \
-	$\int_{-\infty}^{\infty}f(x)\,dx=1$ (total area 1).\\[1mm]
-	Probability $=$ area under $f$: \
-	$P(a<X<b)=\int_a^b f(x)\,dx$.
-	\pause
-	\medskip
-
-	(a) $\displaystyle\int_0^2 x(2-x)\,dx=\int_0^2(2x-x^2)\,dx
-		=\Big[x^2-\frac{x^3}{3}\Big]_0^2=4-\frac83=\frac43$.\\[1mm]
-	\pause
-	Total area 1: \ $c\cdot\frac43=1$, \ so \ $c=\frac34$.
-\end{slides}
-
-\begin{slides}
-	\small
 	\begin{columns}[T]
-		\begin{column}{.5\textwidth}
-			(b) The graph is symmetric around $x=1$, so the area splits in half:
-			\ $\displaystyle P(X>1)=\frac12$.\\[1mm]
-			\uncover<2->{%
-			(c) Antiderivative of $\frac34(2x-x^2)$: $\frac34\big(x^2-\frac{x^3}{3}\big)$.
-			\[ \begin{aligned}
-					P(0.5<X<1.5) & =\frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}     \\
-					             & =\frac34\Big(\frac98-\frac5{24}\Big)                         \\
-					             & =\frac34\cdot\frac{22}{24}=\frac{11}{16}=0.6875.
-				\end{aligned} \]}
+		\begin{column}{.62\textwidth}
+			\sol Probability $=$ area under $f$; the total area is 1.\\[1mm]
+			(a) $\displaystyle\int_0^2 c\,(2x-x^2)\,dx
+				=c\Big[x^2-\frac{x^3}{3}\Big]_0^2=\frac43\,c=1$,
+			\ so \ $\alert{c=\tfrac34}$.\\[1mm]
+			\pause
+			(b) $f$ is symmetric around $x=1$: \ $\alert{P(X>1)=\frac12}$.\\[1mm]
+			\pause
+			(c) $\displaystyle P(0.5<X<1.5)=\frac34\Big[x^2-\frac{x^3}{3}\Big]_{0.5}^{1.5}
+				=\frac34\Big(\frac98-\frac5{24}\Big)=\alert{\frac{11}{16}}=0.6875$.\\[1mm]
+			\pause
+			(d) No area above a single point: \ $\alert{P(X=1)=0}$.
+			So $<$ or $\le$ does not matter, and $f(1)=0.75$ is not a probability.
 		\end{column}
-		\begin{column}{.48\textwidth}
+		\begin{column}{.36\textwidth}
 			\centering
-			\begin{tikzpicture}[xscale=1.9,yscale=3.2]
-				\uncover<2->{\fill[teal!30] (.5,0) -- plot[domain=.5:1.5,samples=40]
-						(\x,{.75*\x*(2-\x)}) -- (1.5,0) -- cycle;
-					\node[teal!70!black] at (1,.28) {\scriptsize $0.6875$};}
-				\draw[->] (-.2,0) -- (2.35,0) node[right] {\scriptsize $x$};
-				\draw[->] (0,-.05) -- (0,.95) node[above] {\scriptsize $f(x)$};
+			\begin{tikzpicture}[xscale=1.75,yscale=2.6]
+				\draw[gray!40,very thin] (0,.25)--(2.2,.25) (0,.5)--(2.2,.5) (0,.75)--(2.2,.75);
+				\node[left,font=\tiny] at (0,.25) {$0.25$};
+				\node[left,font=\tiny] at (0,.5) {$0.5$};
+				\node[left,font=\tiny] at (0,.75) {$0.75$};
+				\fill[teal!22] (.5,0) -- plot[domain=.5:1.5,samples=40]
+					(\x,{.75*\x*(2-\x)}) -- (1.5,0) -- cycle;
+				\draw[teal] (.5,0)--(.5,{.75*.5*1.5}) (1.5,0)--(1.5,{.75*.5*1.5});
+				\node[font=\tiny,text=teal!70!black] at (1,.3) {$0.6875$};
+				\draw[->] (0,0) -- (2.35,0) node[right,font=\scriptsize] {$x$};
+				\draw[->] (0,0) -- (0,.95) node[above,font=\scriptsize] {$f(x)$};
 				\draw[navy,thick] plot[domain=0:2,samples=50] (\x,{.75*\x*(2-\x)});
+				\draw[gold,thick,dashed] (1,0) -- (1,.75);
 				\foreach \x in {0.5,1,1.5,2}
-				\draw (\x,.02) -- (\x,-.02) node[below] {\tiny $\x$};
-				\draw (.04,.75) -- (-.04,.75) node[left] {\tiny $0.75$};
-				\draw[gold,dashed] (1,0) -- (1,.75);
+				\node[below,font=\tiny] at (\x,0) {$\x$};
 			\end{tikzpicture}
 		\end{column}
 	\end{columns}
-	\onslide<3->
-	\medskip
-
-	(d) A single point has no area: $P(X=1)=\displaystyle\int_1^1 f(x)\,dx=0$.\\
-	So $P(X<1)=P(X\le1)$: for a continuous $X$, $<$ or $\le$ does not matter.
 \end{slides}
 
 \begin{solution}

@@ -51,6 +51,149 @@
 	\end{tikzpicture}}
 \newcommand{\shadeall}[1]{\fill[#1] (-1.5,-1.15) rectangle (2.5,1.15);}
 
+% Pictures of continuous distributions (teal areas, navy curves, gold marks).
+% The same definitions are in beamer.tex and preamble.tex.
+% A density f(x) = x e^{-x} (x >= 0) and the area P(a <= X <= b) under it,
+% a = 1.5, b = 3.2 (area 0.387).
+\newcommand{\figdensity}{%
+  \begin{tikzpicture}[x=.85cm,y=5cm]
+    \fill[teal!25] (1.5,0) -- plot[domain=1.5:3.2,samples=40]
+      (\x,{\x*exp(-\x)}) -- (3.2,0) -- cycle;
+    \draw[->] (-.2,0)--(6.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.02)--(0,.47);
+    \draw[very thick,navy] (-.2,0)--(0,0) plot[domain=0:6.1,samples=80]
+      (\x,{\x*exp(-\x)});
+    \node[navy,font=\scriptsize] at (1.7,.42) {$f(x)$};
+    \node[below,font=\scriptsize] at (1.5,0) {$a$};
+    \node[below,font=\scriptsize] at (3.2,0) {$b$};
+    \draw[teal,->] (4.1,.24)--(2.5,.13);
+    \node[right,font=\scriptsize,align=left] at (3.9,.29)
+      {area $=$\\$P(a\le X\le b)$};
+  \end{tikzpicture}}
+% The distribution function F(x) = 1 - (1+x) e^{-x} of the same density;
+% the arrow marks F(b) - F(a), the same area.
+\newcommand{\figcdf}{%
+  \begin{tikzpicture}[x=.8cm,y=1.9cm]
+    \draw[->] (-.2,0)--(6.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.05)--(0,1.2);
+    \draw[gray!50,dashed] (0,1)--(6.1,1);
+    \node[left,font=\scriptsize] at (0,1) {$1$};
+    \draw[very thick,navy] (-.2,0)--(0,0) plot[domain=0:6.1,samples=80]
+      (\x,{1-(1+\x)*exp(-\x)});
+    \node[navy,font=\scriptsize] at (1.0,.62) {$F(x)$};
+    \draw[gold,densely dotted] (1.5,0)--(1.5,0.442)--(6.1,0.442)
+      (3.2,0)--(3.2,0.829)--(6.1,0.829);
+    \node[below,font=\scriptsize] at (1.5,0) {$a$};
+    \node[below,font=\scriptsize] at (3.2,0) {$b$};
+    \draw[gold,very thick,<->] (5.6,0.442)--(5.6,0.829);
+    \node[right,font=\scriptsize] at (5.6,.635) {$F(b)-F(a)$};
+  \end{tikzpicture}}
+% Uniform density on [alpha, beta]; the shaded interval [c, d] has
+% probability (d - c)/(beta - alpha); the gold mark is E[X].
+\newcommand{\figuniform}{%
+  \begin{tikzpicture}[x=.9cm,y=1.6cm]
+    \fill[teal!25] (2.1,0) rectangle (3.1,.8);
+    \draw[->] (-.2,0)--(5.4,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.05)--(0,1.25);
+    \draw[very thick,navy] (-.2,0)--(1,0) (1,.8)--(4.6,.8) (4.6,0)--(5.2,0);
+    \draw[navy,densely dotted] (1,0)--(1,.8) (4.6,0)--(4.6,.8);
+    \draw[gray!50,dashed] (0,.8)--(1,.8);
+    \node[left,font=\scriptsize] at (0,.8) {$\frac{1}{\beta-\alpha}$};
+    \node[below,font=\scriptsize] at (1,0) {$\alpha$};
+    \node[below,font=\scriptsize] at (4.6,0) {$\beta$};
+    \node[below,font=\scriptsize] at (2.1,0) {$c$};
+    \node[below,font=\scriptsize] at (3.1,0) {$d$};
+    \node[font=\tiny] at (2.6,.4) {$\frac{d-c}{\beta-\alpha}$};
+    \draw[gold,very thick,dashed] (2.8,.8)--(2.8,1.12);
+    \node[above,font=\tiny] at (2.8,1.1) {$\E[X]=\frac{\alpha+\beta}{2}$};
+  \end{tikzpicture}}
+% Exponential density with rate lambda (drawn with lambda = 1): the shaded
+% tail beyond x has area e^{-lambda x}; the gold mark is E[X] = 1/lambda.
+\newcommand{\figexponential}{%
+  \begin{tikzpicture}[x=.9cm,y=1.5cm]
+    \fill[teal!25] (1.6,0) -- plot[domain=1.6:5,samples=40]
+      (\x,{exp(-\x)}) -- (5,0) -- cycle;
+    \draw[->] (-.2,0)--(5.4,0) node[right,font=\scriptsize] {$t$};
+    \draw[->] (0,-.05)--(0,1.25);
+    \draw[very thick,navy] (-.2,0)--(0,0);
+    \draw[very thick,navy] plot[domain=0:5,samples=60] (\x,{exp(-\x)});
+    \node[left,font=\scriptsize] at (0,1) {$\lambda$};
+    \node[navy,font=\scriptsize] at (1.05,.75) {$\lambda e^{-\lambda t}$};
+    \draw[gold,very thick,dashed] (1,0)--(1,.37);
+    \node[below,font=\scriptsize] at (1,0) {$\frac1\lambda$};
+    \node[below,font=\scriptsize] at (1.6,0) {$x$};
+    \draw[teal,->] (3.3,.55)--(2.3,.08);
+    \node[above,font=\scriptsize] at (3.6,.52) {$P(X>x)=e^{-\lambda x}$};
+  \end{tikzpicture}}
+% Normal density with mean mu and standard deviation sigma: the bands
+% mu +- sigma, mu +- 2 sigma, mu +- 3 sigma and their probabilities.
+\newcommand{\fignormal}{%
+  \begin{tikzpicture}[x=.8cm,y=5.2cm]
+    \fill[teal!10] (-3,0) -- plot[domain=-3:3,samples=80]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (3,0) -- cycle;
+    \fill[teal!22] (-2,0) -- plot[domain=-2:2,samples=60]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (2,0) -- cycle;
+    \fill[teal!40] (-1,0) -- plot[domain=-1:1,samples=40]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (1,0) -- cycle;
+    \draw[->] (-3.7,0)--(3.9,0) node[right,font=\scriptsize] {$x$};
+    \draw[very thick,navy] plot[domain=-3.6:3.6,samples=100]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+    \draw[gold,very thick,dashed] (0,0)--(0,.44);
+    \node[above,font=\scriptsize] at (0,.44) {$\mu$};
+    \foreach \k/\l in {-3/\mu{-}3\sigma,-2/\mu{-}2\sigma,-1/\mu{-}\sigma,
+        1/\mu{+}\sigma,2/\mu{+}2\sigma,3/\mu{+}3\sigma} {
+        \draw (\k,0)--(\k,-.015);
+        \node[below,font=\tiny,inner sep=1pt] at (\k,-.01) {$\l$};
+      }
+    \draw[navy,<->] (-1,-.1)--(1,-.1);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.1) {$68\%$};
+    \draw[navy,<->] (-2,-.145)--(2,-.145);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.145) {$95\%$};
+    \draw[navy,<->] (-3,-.19)--(3,-.19);
+    \node[fill=white,inner sep=1pt,font=\tiny] at (0,-.19) {$99.7\%$};
+  \end{tikzpicture}}
+% The standard normal Phi(z) as the area left of z, and the symmetry
+% Phi(-z) = 1 - Phi(z): the two gold tails have the same area.
+\newcommand{\figphi}{%
+  \begin{tikzpicture}[x=.3cm,y=3.2cm]
+    \fill[teal!30] (-3.3,0) -- plot[domain=-3.3:1,samples=60]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (1,0) -- cycle;
+    \draw[->] (-3.5,0)--(3.6,0);
+    \draw[very thick,navy] plot[domain=-3.3:3.3,samples=80]
+      (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+    \node[below,font=\scriptsize] at (1,0) {$z$};
+    \node[below,font=\scriptsize] at (0,0) {$0$};
+    \node[font=\tiny] at (-.6,.15) {$\Phi(z)$};
+    \node[font=\tiny] at (0,.5) {area left of $z$};
+    \begin{scope}[xshift=2.45cm]
+      \fill[gold!50] (-3.3,0) -- plot[domain=-3.3:-1,samples=40]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (-1,0) -- cycle;
+      \fill[gold!50] (1,0) -- plot[domain=1:3.3,samples=40]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)}) -- (3.3,0) -- cycle;
+      \draw[->] (-3.5,0)--(3.6,0);
+      \draw[very thick,navy] plot[domain=-3.3:3.3,samples=80]
+        (\x,{exp(-\x*\x/2)/sqrt(2*pi)});
+      \node[below,font=\scriptsize] at (-1,0) {$-z$};
+      \node[below,font=\scriptsize] at (1,0) {$z$};
+      \node[font=\tiny] at (0,.5) {$\Phi(-z)=1-\Phi(z)$};
+    \end{scope}
+  \end{tikzpicture}}
+% The unit square: the joint density of two variables on [0,1]^2 and a
+% region A (below the diagonal) whose probability is a double integral.
+\newcommand{\figjointsquare}{%
+  \begin{tikzpicture}[scale=1.5]
+    \fill[teal!12] (0,0) rectangle (1.4,1.4);
+    \fill[teal!45] (0,0) -- (1.4,0) -- (1.4,1.4) -- cycle;
+    \draw[->] (-.1,0) -- (1.7,0) node[right,font=\scriptsize] {$x$};
+    \draw[->] (0,-.1) -- (0,1.7) node[above,font=\scriptsize] {$y$};
+    \draw[thick,navy] (0,0) rectangle (1.4,1.4);
+    \draw[navy,densely dashed] (0,0) -- (1.4,1.4);
+    \node[below,font=\scriptsize] at (1.4,0) {$1$};
+    \node[left,font=\scriptsize] at (0,1.4) {$1$};
+    \node[font=\scriptsize] at (1.0,.35) {$A$};
+    \node[font=\tiny,rotate=45] at (.55,.72) {$y=x$};
+  \end{tikzpicture}}
+
 \title{Mathematics for Finance}
 \author{Tibor SÁNDOR\\[2pt]
 	\normalsize Corvinus University of Budapest\\

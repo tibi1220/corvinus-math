@@ -1,6 +1,6 @@
 % ---
 % title: When does the borrower default?
-% tags: finance, exponential, distribution-function
+% tags: finance, exponential, distribution-function, expectation
 % ---
 
 \begin{problem}
@@ -20,13 +20,15 @@
 	in the first 10 years)?
 	(c) The company has survived the first 5 years. What is the probability
 	that it defaults within the next 5 years?
+	(d) Find the expected time until default and its standard deviation.
 \end{problem}
 
 \begin{solution}
 	\idea First find the distribution function $F(t)=P(T\le t)$ by
 	integrating the density once. Then every question is a difference of
 	values of $F$; (c) is a conditional probability, computed from its
-	definition.
+	definition. For (d), $T$ is exponential with rate $\lambda$, so
+	$\E[T]=\frac1\lambda$ and $\SD(T)=\frac1\lambda$.
 
 	\step{The distribution function.} For $t<0$ the density is $0$, so
 	$F(t)=0$. For $t\ge0$ we integrate the density from $0$ to $t$. An
@@ -82,10 +84,21 @@
 	\]
 	This is the same number as in (a).
 
+	\step{(d)} For an exponential random variable with rate $\lambda$,
+	$\E[T]=\frac1\lambda$ and $\Var(T)=\frac1{\lambda^2}$. With
+	$\lambda=0.04$:
+	\[ \E[T]=\frac1{0.04}=25\text{ years},\qquad
+		\Var(T)=\frac1{0.04^2}=625,\qquad \SD(T)=\sqrt{625}=25\text{ years}. \]
+	On average the company defaults after $25$ years, but the spread is just
+	as large as the mean. In particular, the expected value is not a typical
+	time: $P(T\le25)=1-e^{-0.04\cdot25}=1-e^{-1}\approx0.632$, so almost two
+	thirds of such companies default before the expected time.
+
 	\begin{answer}
 		(a) $1-e^{-0.2}\approx0.181$ \quad
 		(b) $e^{-0.4}\approx0.670$ \quad
-		(c) $1-e^{-0.2}\approx0.181$, the same as (a)
+		(c) $1-e^{-0.2}\approx0.181$, the same as (a) \quad
+		(d) $\E[T]=25$ years, $\SD(T)=25$ years
 	\end{answer}
 	\begin{remark}
 		Result (c) is the \emph{memoryless property} of the exponential

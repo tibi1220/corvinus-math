@@ -1,0 +1,83 @@
+% ---
+% title: Working with the standard normal table
+% tags: normal, standard-normal
+% ---
+
+\begin{problem}
+	Let $Z$ be a standard normal random variable, and let $\Phi$ be its
+	distribution function, $\Phi(z)=P(Z\le z)$. Use the table of $\Phi(z)$
+	for $z=0.0,0.1,\dots,3.0$ and the rule $\Phi(-z)=1-\Phi(z)$.
+	(a) Find $P(Z\le1.2)$.
+	(b) Find $P(Z>-0.5)$.
+	(c) Find $P(-1<Z<2)$.
+	(d) Find the number $z$ with $P(Z\le z)=0.95$.
+	(e) $X$ is normal with $\mu=50$ and $\sigma=4$. Find $P(44<X<58)$.
+\end{problem}
+
+\begin{solution}
+	\idea The table gives $\Phi(z)=P(Z\le z)$ only for $z\ge0$. Every other
+	probability about $Z$ is reduced to these values with two rules: the
+	complement, $P(Z>z)=1-\Phi(z)$, and the symmetry of the density about
+	$0$, $\Phi(-z)=1-\Phi(z)$. An interval gives a difference,
+	$P(a<Z<b)=\Phi(b)-\Phi(a)$. A normal $X$ with parameters $\mu$, $\sigma$
+	is first standardized: $Z=\frac{X-\mu}{\sigma}$ is standard normal.
+
+	The values of the table used below:
+	\begin{center}
+		\begin{tabular}{c|ccccccc}
+			$z$       & $0.5$    & $1.0$    & $1.2$    & $1.5$    & $1.6$    & $1.7$    & $2.0$    \\
+			\hline
+			$\Phi(z)$ & $0.6915$ & $0.8413$ & $0.8849$ & $0.9332$ & $0.9452$ & $0.9554$ & $0.9772$
+		\end{tabular}
+	\end{center}
+
+	\step{(a)} This is a value of the table directly:
+	\[ P(Z\le1.2)=\Phi(1.2)=0.8849. \]
+
+	\step{(b)} By the complement, $P(Z>-0.5)=1-\Phi(-0.5)$, and by symmetry
+	$\Phi(-0.5)=1-\Phi(0.5)$. So
+	\[ P(Z>-0.5)=1-\bigl(1-\Phi(0.5)\bigr)=\Phi(0.5)=0.6915. \]
+	A picture explains it in one step: the density is symmetric about $0$,
+	so the area to the right of $-0.5$ equals the area to the left of $0.5$.
+
+	\step{(c)} The probability of an interval is the difference of the
+	distribution function at the endpoints, and $\Phi(-1)=1-\Phi(1)$:
+	\[ P(-1<Z<2)=\Phi(2)-\Phi(-1)=\Phi(2)-\bigl(1-\Phi(1)\bigr)
+		=0.9772-(1-0.8413), \]
+	so
+	\[ P(-1<Z<2)=0.9772-0.1587=0.8185. \]
+
+	\step{(d)} Now the probability is given and $z$ is unknown: we read the
+	table backwards. We need $\Phi(z)=0.95$. In the table
+	$\Phi(1.6)=0.9452$ and $\Phi(1.7)=0.9554$, so $z$ is between $1.6$ and
+	$1.7$; the list of quantiles next to the table ($z_{0.95}=1.645$) gives
+	it more precisely:
+	\[ z=1.645. \]
+	So $P(Z\le1.645)=0.95$: a standard normal random variable is larger than
+	$1.645$ only with probability $5\%$.
+
+	\step{(e)} Standardize: subtract $\mu=50$ and divide by $\sigma=4$ on
+	every side of the inequality. This does not change the event, and
+	$Z=\frac{X-50}{4}$ is standard normal:
+	\[ P(44<X<58)=P\Bigl(\frac{44-50}{4}<\frac{X-50}{4}<\frac{58-50}{4}\Bigr)
+		=P(-1.5<Z<2). \]
+	Then as in (c):
+	\[ P(-1.5<Z<2)=\Phi(2)-\bigl(1-\Phi(1.5)\bigr)=0.9772-(1-0.9332)
+		=0.9772-0.0668=0.9104. \]
+
+	\begin{answer}
+		(a) $0.8849$ \quad
+		(b) $\Phi(0.5)=0.6915$ \quad
+		(c) $0.8185$ \quad
+		(d) $z=1.645$ \quad
+		(e) $P(-1.5<Z<2)=0.9104$
+	\end{answer}
+	\begin{remark}
+		\textbf{Common mistake:} in (b), writing $P(Z>-0.5)=1-\Phi(0.5)$.
+		Draw the bell curve and shade the region first: the area to the right
+		of a negative number is \emph{more} than half, so the answer must be
+		larger than $0.5$. Another one: in (e), forgetting to divide by
+		$\sigma$, or dividing by the variance $\sigma^2=16$ instead of the
+		standard deviation $\sigma=4$.
+	\end{remark}
+\end{solution}

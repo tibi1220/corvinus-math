@@ -1,0 +1,186 @@
+% ---
+% title: The lognormal stock price
+% tags: finance, function-of-rv, normal, distribution-function
+% ---
+
+\begin{problem}
+	\begin{context}
+		If a stock costs $S_0$ today and $S$ in a year, its \emph{log return}
+		over the year is $X=\ln(S/S_0)$, so that $S=S_0\,e^{X}$. Log returns are
+		convenient: the log return over two years is the sum of the two yearly
+		log returns. The standard model of stock prices, which is also behind the
+		Black--Scholes formula for option prices, assumes that the log return is
+		normally distributed. Then the price $S=S_0e^X$ is said to have a
+		\emph{lognormal} distribution: its logarithm is normal. Unlike a normal
+		random variable, the price can never become negative.
+	\end{context}
+	A stock costs $S_0=100$ euros today. Its log return over the next year is
+	$X\sim N(0.06,\,0.2^2)$, and its price in one year is $S=100\,e^{X}$.
+	(a) Find the distribution function $F_S(s)=P(S\le s)$ of $S$, in terms of
+	the standard normal distribution function $\Phi$.
+	(b) Find the probability that the price in one year is below today's
+	price, $P(S<100)$.
+	(c) Find the median of $S$: the price $m$ with $P(S\le m)=0.5$.
+	(d) Find the price level $s$ with $P(S\le s)=0.05$, using
+	$z_{0.95}=1.645$. Interpret it.
+\end{problem}
+
+\begin{slideproblem}
+	Price today $S_0=100$; log return $X\sim N(0.06,\,0.2^2)$; price in a year
+	$S=100\,e^{X}$ (lognormal).
+	(a) Find $F_S(s)=P(S\le s)$ with $\Phi$.
+	\ (b) $P(S<100)$?
+	\ (c) The median $m$ of $S$: $P(S\le m)=0.5$.
+	\ (d) The level $s$ with $P(S\le s)=0.05$ \ ($z_{0.95}=1.645$).
+\end{slideproblem}
+
+\begin{slides}
+	\small
+	\exstatement
+	\pause
+	\sol (a) $S>0$, so $F_S(s)=0$ for $s\le0$. For $s>0$, $\ln$ is
+	increasing:
+	\[ F_S(s)=P\big(100e^X\le s\big)=P\Big(X\le\ln\frac{s}{100}\Big)
+		=\Phi\Big(\frac{\ln(s/100)-0.06}{0.2}\Big). \]
+	\pause
+	(b) $P(S<100)=P(X<\ln1)=P(X<0)=\Phi\big(\frac{0-0.06}{0.2}\big)
+		=\Phi(-0.3)=1-0.6179=\alert{0.3821}$.
+\end{slides}
+
+\begin{slides}
+	\small
+	\begin{columns}[T]
+		\begin{column}{.55\textwidth}
+			(c) $F_S(m)=0.5=\Phi(0)$ means
+			$\ln(m/100)=0.06$:
+			\[ m=100\,e^{0.06}\approx\alert{106.18}. \]
+			\pause
+			(d) $\Phi(z)=0.05$ for $z=-1.645$:
+			\[ \ln\frac{s}{100}=0.06-1.645\cdot0.2=-0.269, \]
+			\[ s=100\,e^{-0.269}\approx\alert{76.41}. \]
+			\pause
+			With 95\% probability the price stays above $76.41$: the loss on
+			one share is at most $23.59$ euros.
+		\end{column}
+		\begin{column}{.43\textwidth}
+			\centering
+			\begin{tikzpicture}[x=.026cm,y=110cm]
+				\fill[teal!30] (40,0) -- plot[domain=40:100,samples=50]
+					(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)})
+					-- (100,0) -- cycle;
+				\fill[gold!60] (40,0) -- plot[domain=40:76.41,samples=30]
+					(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)})
+					-- (76.41,0) -- cycle;
+				\draw[->] (40,0) -- (210,0) node[right] {\scriptsize $s$};
+				\draw[navy,thick] plot[domain=40:200,samples=80]
+					(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)});
+				\draw[navy,dashed] (106.18,0) -- (106.18,.021)
+					node[above] {\tiny median};
+				\foreach \x in {76,100,150,200}
+				\draw (\x,.0006) -- (\x,-.0006) node[below] {\tiny $\x$};
+				\node[teal!60!black] at (160,.012) {\tiny $f_S(s)$};
+				\node at (90,.0035) {\tiny (b)};
+				\node at (58,.0032) {\tiny (d)};
+			\end{tikzpicture}
+		\end{column}
+	\end{columns}
+\end{slides}
+
+\begin{solution}
+	\idea $S$ is a function of the normal random variable $X$. Write every
+	event about $S$ as an event about $X$, by taking logarithms; the logarithm
+	is increasing, so the inequalities keep their direction. Then standardize
+	$X$: if $X\sim N(\mu,\sigma^2)$, then $Z=(X-\mu)/\sigma$ is standard
+	normal, so $P(X\le x)=\Phi\big((x-\mu)/\sigma\big)$, where $\Phi$ is the
+	standard normal distribution function. Here $\mu=0.06$ and $\sigma=0.2$.
+
+	\step{(a)} The price $S=100e^X$ is always positive, so $F_S(s)=0$ for
+	$s\le0$. Take $s>0$. Divide by 100, then take the natural logarithm of
+	both sides; as $\ln$ is increasing, the event does not change:
+	\[ \{S\le s\}=\big\{100e^X\le s\big\}=\Big\{e^X\le\frac{s}{100}\Big\}
+		=\Big\{X\le\ln\frac{s}{100}\Big\}. \]
+	Standardizing $X$,
+	\[ F_S(s)=P\Big(X\le\ln\frac{s}{100}\Big)
+		=P\bigg(Z\le\frac{\ln(s/100)-0.06}{0.2}\bigg)
+		=\Phi\bigg(\frac{\ln(s/100)-0.06}{0.2}\bigg),\qquad s>0. \]
+	This is the distribution function of the lognormal distribution. (Its
+	density, the derivative of $F_S$, is drawn in the picture below.)
+
+	\step{(b)} A price below 100 means a negative log return: $S<100$ exactly
+	when $X<\ln(100/100)=\ln1=0$. So
+	\[ P(S<100)=P(X<0)=\Phi\Big(\frac{0-0.06}{0.2}\Big)=\Phi(-0.3). \]
+	By the symmetry of the standard normal density, $\Phi(-z)=1-\Phi(z)$,
+	and the table gives $\Phi(0.3)=0.6179$, so
+	\[ P(S<100)=1-0.6179=0.3821. \]
+	Even though the expected log return is positive, the price falls over
+	the year with probability about 38\%.
+
+	\step{(c)} We need $F_S(m)=0.5$. Since $\Phi(0)=0.5$ (half of the
+	standard normal probability lies on each side of 0), the argument of
+	$\Phi$ in (a) must be $0$:
+	\[ \frac{\ln(m/100)-0.06}{0.2}=0\iff\ln\frac{m}{100}=0.06
+		\iff m=100\,e^{0.06}\approx106.18. \]
+	So the price is above 106.18 euros with probability $\frac12$ and below
+	it with probability $\frac12$. The median of the log return is $0.06$,
+	and the exponential function, being increasing, carries the median over.
+
+	\step{(d)} We need $F_S(s)=0.05$, that is, $\Phi(z)=0.05$ for the
+	standardized value $z$. We know $\Phi(1.645)=0.95$, so by symmetry
+	$\Phi(-1.645)=1-0.95=0.05$, and $z=-1.645$. Hence
+	\[ \frac{\ln(s/100)-0.06}{0.2}=-1.645\iff
+		\ln\frac{s}{100}=0.06-1.645\cdot0.2=-0.269, \]
+	and
+	\[ s=100\,e^{-0.269}\approx76.41. \]
+	Interpretation: with probability 95\% the price in one year is above
+	76.41 euros, so the loss on one share is at most $100-76.41=23.59$ euros
+	with probability 95\%. This is the 95\% Value at Risk of one share over
+	one year, in the lognormal model.
+
+	In the picture the area under the density $f_S$ to the left of 100 is
+	$0.3821$ (b), and the area to the left of 76.41 is $0.05$ (d). The
+	density is skewed to the right: large prices are possible, but the
+	price cannot go below 0.
+	\begin{center}
+		\begin{tikzpicture}[x=.04cm,y=160cm]
+			\fill[teal!30] (30,0) -- plot[domain=30:100,samples=60]
+				(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)})
+				-- (100,0) -- cycle;
+			\fill[gold!60] (30,0) -- plot[domain=30:76.41,samples=40]
+				(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)})
+				-- (76.41,0) -- cycle;
+			\draw[->] (30,0) -- (225,0) node[right] {\small $s$};
+			\draw[navy,thick] plot[domain=30:215,samples=100]
+				(\x,{exp(-((ln(\x/100)-0.06)/0.2)^2/2)/(0.2*\x*2.5066)});
+			\draw[navy,dashed] (106.18,0) -- (106.18,.021)
+				node[above] {\scriptsize median $106.18$};
+			\foreach \x in {50,100,150,200}
+			\draw (\x,.0004) -- (\x,-.0004) node[below] {\scriptsize $\x$};
+			\draw (76.41,.0004) -- (76.41,-.0004) node[below] {\scriptsize $76.41$};
+			\node[navy] at (170,.011) {\small $f_S(s)$};
+			\node at (90,.004) {\scriptsize $0.3821$};
+			\node (q) at (45,.007) {\scriptsize $0.05$};
+			\draw[->] (q) -- (71,.0012);
+		\end{tikzpicture}
+	\end{center}
+	\begin{answer}
+		(a) $F_S(s)=\Phi\big((\ln(s/100)-0.06)/0.2\big)$ for $s>0$, and $0$ for
+		$s\le0$
+		\quad (b) $P(S<100)=\Phi(-0.3)=0.3821$
+		\quad (c) $m=100e^{0.06}\approx106.18$
+		\quad (d) $s=100e^{-0.269}\approx76.41$: with probability 95\% the price
+		stays above 76.41 euros
+	\end{answer}
+	\begin{remark}
+		The expected price is not the median. One can show that
+		$\E[S]=S_0\,e^{\mu+\sigma^2/2}=100\,e^{0.08}\approx108.33$, larger than
+		$m\approx106.18$: the long right tail of the lognormal density pulls
+		the mean up.
+
+		\textbf{Common mistake:} plugging the expected log return into the
+		price and calling it the expected price, $100e^{0.06}$. This is the
+		median, not the expected value: $\E[e^X]\ne e^{\E[X]}$, because
+		$e^x$ is not a linear function. Another mistake is to standardize the
+		price itself, as in $(100-106.18)/0.2$; only the log return $X$ is
+		normal, so always go back to $X$ first.
+	\end{remark}
+\end{solution}
