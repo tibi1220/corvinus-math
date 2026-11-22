@@ -15,6 +15,14 @@
 \usepackage[hidelinks]{hyperref}
 
 \input{preamble}
+% Page breaks around the boxes. tcolorbox's own "keep with the heading" check
+% measures the page before the heading has reached it and then pushes a box
+% that would fit to the next page, leaving the heading alone. Turn it off and
+% keep each heading with what follows by asking for room before it instead.
+\tcbset{ignore nobreak=true}
+\IfPackageLoadedTF{lwarp}{}{%
+  \usepackage{needspace}%
+  \AddtoDoHook{heading/preinit/subsection}{\needspace{8\baselineskip}\csname @gobble\endcsname}}
 \documentinfo{Study guide}
 
 \subtitle{Week 10 -- Study guide\\[2pt]
