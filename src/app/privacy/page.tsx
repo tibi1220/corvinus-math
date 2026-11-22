@@ -57,15 +57,32 @@ export default function PrivacyPage() {
 
         <h2>Hosting</h2>
         <p>
-          The site is served by GitHub Pages (GitHub, Inc., United States). When
-          you open the site, your browser connects to GitHub&apos;s servers,
-          which log visitors&apos; IP addresses for security and to run the
-          service. The operator has no access to these logs. The legal basis is
-          the legitimate interest in serving the site securely (GDPR Article
-          6(1)(f)); the details, including the safeguards for transfers to the
-          United States, are in{' '}
+          The site is served by GitHub Pages (GitHub, Inc., United States).
+          GitHub&apos;s servers log visitors&apos; IP addresses for security and
+          to run the service. The operator has no access to these logs. The
+          legal basis is the legitimate interest in serving the site securely
+          (GDPR Article 6(1)(f)); the details, including the safeguards for
+          transfers to the United States, are in{' '}
           <a href='https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement'>
             GitHub&apos;s privacy statement
+          </a>
+          .
+        </p>
+        <p>
+          The site&apos;s traffic passes through Cloudflare (Cloudflare, Inc.,
+          United States), which runs its domain name service and sits in front
+          of GitHub Pages as a proxy: when you open the site, your browser
+          connects to Cloudflare&apos;s servers, which fetch the pages from
+          GitHub. Cloudflare therefore processes your IP address and the
+          technical details of each request (such as the address of the page and
+          your browser&apos;s user agent) to deliver the site and protect it
+          from attacks. It sets no cookies on this site, and the operator has no
+          access to its logs either. The legal basis is the same legitimate
+          interest (GDPR Article 6(1)(f)). Cloudflare is certified under the
+          EU-U.S. Data Privacy Framework, which covers transfers to the United
+          States; the details are in{' '}
+          <a href='https://www.cloudflare.com/privacypolicy/'>
+            Cloudflare&apos;s privacy policy
           </a>
           .
         </p>

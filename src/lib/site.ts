@@ -46,4 +46,4 @@ export const showCourseExercises = privateSite;
 export const feedbackFormUrl = 'https://forms.gle/t3w2vrRpoRdqZMZw8';
 
 // The date the privacy and cookie policies were last changed.
-export const policyDate = 'November 9, 2026';
+export const policyDate = 'November 22, 2026';
