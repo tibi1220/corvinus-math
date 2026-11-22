@@ -640,21 +640,21 @@ Exercise 10.15. Two stocks on the same day, a finance example.
 [[slnc 600]]
 Finance context: the daily price moves of two stocks are usually not unrelated. On a good day for the market most stocks rise, and on a bad day most of them fall. To describe two moves together, we need their joint distribution: the probability of every combination of outcomes, not only the probabilities for each stock on its own.
 [[slnc 500]]
-On a given day, let X equal 1 if stock A rises, and X equal minus 1 if it falls. Let Y equal 1, 0 or minus 1 if stock B rises, stays unchanged or falls. The joint probability mass function p of x, y, equal to P of X equals x and Y equals y, is given by a table. In the row x equals minus 1: 0.20 for y equals minus 1, 0.10 for y equals 0, and 0.10 for y equals 1. In the row x equals 1: 0.05, 0.15 and 0.40. Part eh: find the marginal probability mass functions p X and p Y. Part b: find P of X equals Y, the probability that both stocks fall or both rise. Part c: find the value of the joint distribution function at 0, 0: F of 0, 0, equal to P of X less than or equal to 0 and Y less than or equal to 0. Part d: find the probability that stock B rises, given that stock A rises.
+On a given day, let X equal 1 if stock Eh rises, and X equal minus 1 if it falls. Let Y equal 1, 0 or minus 1 if stock B rises, stays unchanged or falls. The joint probability mass function p of x, y, equal to P of X equals x and Y equals y, is given by a table. In the row x equals minus 1: 0.20 for y equals minus 1, 0.10 for y equals 0, and 0.10 for y equals 1. In the row x equals 1: 0.05, 0.15 and 0.40. Part eh: find the marginal probability mass functions p X and p Y. Part b: find P of X equals Y, the probability that both stocks fall or both rise. Part c: find the value of the joint distribution function at 0, 0: F of 0, 0, equal to P of X less than or equal to 0 and Y less than or equal to 0. Part d: find the probability that stock B rises, given that stock Eh rises.
 [[slnc 800]]
-Before you start, read the table aloud with me: the cell 0.40 in the bottom right is A rises and B rises; the 0.20 in the top left is both fall. Try parts eh to c in pairs, three minutes.
+Before you start, read the table aloud with me: the cell 0.40 in the bottom right is Eh rises and B rises; the 0.20 in the top left is both fall. Try parts eh to c in pairs, three minutes.
 [[slnc 500]]
 Note for you: slide 26 shows the statement with the table, then part eh with the margins filled in on its second page; slide 27 has parts b, c and d. Ask first, then show.
 [[slnc 500]]
 Part eh.
 [[slnc 400]]
-Ask the class: how do we get p X of minus 1, the probability that A falls?
+Ask the class: how do we get p X of minus 1, the probability that Eh falls?
 [[slnc 800]]
 The first row sum: 0.20 plus 0.10 plus 0.10, which is 0.4.
 [[slnc 400]]
 Show the solution. Marginals: add up the rows and the columns, and write the sums in the margins. p X of minus 1 is 0.2 plus 0.1 plus 0.1, which is 0.4, and p X of 1 is 0.05 plus 0.15 plus 0.4, which is 0.6. The column sums: p Y of minus 1 is 0.25, p Y of 0 is 0.25, and p Y of 1 is 0.5.
 [[slnc 400]]
-Both margins add up to 1, a quick check of the arithmetic. So stock A rises with probability 0.6, stock B with probability 0.5.
+Both margins add up to 1, a quick check of the arithmetic. So stock Eh rises with probability 0.6, stock B with probability 0.5.
 [[slnc 500]]
 Part b.
 [[slnc 400]]
@@ -670,15 +670,15 @@ Ask the class: which cells belong to X less than or equal to 0 and Y less than o
 [[slnc 800]]
 The first row, the first two columns: minus 1, minus 1, and minus 1, 0.
 [[slnc 400]]
-X less than or equal to 0 means X equals minus 1; Y less than or equal to 0 means Y equals minus 1 or Y equals 0. F of 0, 0 is p of minus 1, minus 1, plus p of minus 1, 0, which is 0.20 plus 0.10, which is 0.30. In words: with probability 0.30, A falls and B does not rise.
+X less than or equal to 0 means X equals minus 1; Y less than or equal to 0 means Y equals minus 1 or Y equals 0. F of 0, 0 is p of minus 1, minus 1, plus p of minus 1, 0, which is 0.20 plus 0.10, which is 0.30. In words: with probability 0.30, Eh falls and B does not rise.
 [[slnc 500]]
-Ask the class: before part d. The probability that B rises is 0.5. If you know that A rose today, do you expect the chance for B to be higher, lower, or the same?
+Ask the class: before part d. The probability that B rises is 0.5. If you know that Eh rose today, do you expect the chance for B to be higher, lower, or the same?
 [[slnc 800]]
 Higher: the big number 0.40 sits in the up-up cell.
 [[slnc 400]]
-Part d. Conditional probability: the cell divided by the marginal. P of Y equals 1 given X equals 1 is p of 1, 1 over p X of 1, which is 0.40 over 0.60, which is two thirds, approximately 0.667. This is the definition from last week, P of E given F equals P of E F over P of F: the condition A rises keeps only the bottom row, which has total probability 0.60, and within it, the cell 0.40.
+Part d. Conditional probability: the cell divided by the marginal. P of Y equals 1 given X equals 1 is p of 1, 1 over p X of 1, which is 0.40 over 0.60, which is two thirds, approximately 0.667. This is the definition from last week, P of E given F equals P of E F over P of F: the condition Eh rises keeps only the bottom row, which has total probability 0.60, and within it, the cell 0.40.
 [[slnc 400]]
-Compare with P of Y equals 1, which is 0.5. Knowing that A rises makes it more likely that B rises too.
+Compare with P of Y equals 1, which is 0.5. Knowing that Eh rises makes it more likely that B rises too.
 [[slnc 500]]
 Note for you, common mistakes: in part d, answering p of 1, 1, which is 0.40, without dividing by p X of 1, which is 0.60. In part c, Y less than or equal to 0 includes Y equals 0.
 [[slnc 800]]
@@ -695,9 +695,9 @@ Answer: no. The marginals say how each stock behaves alone; only the joint table
 
 Joint distribution: the continuous case.
 [[slnc 600]]
-Now the same ideas for two continuous random variables: the table becomes a surface, and sums become integrals. A joint density f of x, y, greater than or equal to 0, plays the role of the table. The probability that the point X, Y lands in a region A of the plane is the double integral over A of f of x, y, d x d y, and the total over the whole plane is 1.
+Now the same ideas for two continuous random variables: the table becomes a surface, and sums become integrals. A joint density f of x, y, greater than or equal to 0, plays the role of the table. The probability that the point X, Y lands in a region Eh of the plane is the double integral over Eh of f of x, y, d x d y, and the total over the whole plane is 1.
 [[slnc 400]]
-Picture the density as a roof over the square in the picture. In one dimension probability was the area under a curve; now it is the volume under a surface. The probability that X, Y lands in the dark triangle A is the volume of the part of the roof standing above the triangle.
+Picture the density as a roof over the square in the picture. In one dimension probability was the area under a curve; now it is the volume under a surface. The probability that X, Y lands in the dark triangle Eh is the volume of the part of the roof standing above the triangle.
 [[slnc 500]]
 Marginal densities: integrate the other variable out. f X of x is the integral of f of x, y over all y, from minus infinity to infinity, and f Y of y is the integral of f of x, y over all x. This is the row sum of the table, with an integral in place of the sum: for a fixed x we collect the density over all values of y. And the joint distribution function is the volume over the quarter plane to the lower left of the point eh, b: F of eh, b is the integral for x from minus infinity to eh, of the integral for y from minus infinity to b, of f of x, y, d y d x.
 [[slnc 400]]
@@ -705,7 +705,7 @@ For a double integral, do the inner integral first, with the other variable held
 [[slnc 400]]
 On the board: the integral from 0 to 1 of the integral from 0 to 1 of f of x, y, d y d x: inner over y with x fixed, then outer over x.
 [[slnc 400]]
-Tiny example: f of x, y equals 1 on the unit square, 0 outside. With a constant density 1, volume is height 1 times area, so probabilities are areas. P of X at most one half and Y at most one half, which is F of one half, one half, is the area of the small square, one quarter. The triangle A of the picture, where X is greater than Y, has area one half, so P of X greater than Y is one half. And the marginal is f X of x equals the integral from 0 to 1 of 1 d y, which is 1, on the interval from 0 to 1: X alone is uniform.
+Tiny example: f of x, y equals 1 on the unit square, 0 outside. With a constant density 1, volume is height 1 times area, so probabilities are areas. P of X at most one half and Y at most one half, which is F of one half, one half, is the area of the small square, one quarter. The triangle Eh of the picture, where X is greater than Y, has area one half, so P of X greater than Y is one half. And the marginal is f X of x equals the integral from 0 to 1 of 1 d y, which is 1, on the interval from 0 to 1: X alone is uniform.
 [[slnc 500]]
 Ask the class: what is P of X equals Y?
 [[slnc 800]]
@@ -759,7 +759,7 @@ Independent random variables.
 [[slnc 600]]
 Note for you. Clock check: this slide is planned for minute 46 of Session 2. If you start it more than about 5 minutes late, skip Exercise 10.21, slides 36 and 37: say only that they meet with probability 11 over 36, approximately 0.306, and that the solution is in the exercises PDF; then go to the summary.
 [[slnc 500]]
-Last week, two events were independent if the probability of both is the product of their probabilities. Now we lift this to random variables: X and Y are independent if every event about X is independent of every event about Y: P of X in A and Y in B equals P of X in A times P of Y in B. It is enough to check this for the events X less than or equal to eh and Y less than or equal to b, so an equivalent form is F of eh, b equals F X of eh times F Y of b, for all eh and b.
+Last week, two events were independent if the probability of both is the product of their probabilities. Now we lift this to random variables: X and Y are independent if every event about X is independent of every event about Y: P of X in Eh and Y in B equals P of X in Eh times P of Y in B. It is enough to check this for the events X less than or equal to eh and Y less than or equal to b, so an equivalent form is F of eh, b equals F X of eh times F Y of b, for all eh and b.
 [[slnc 500]]
 In practice we use the two tests on the slide. Discrete: the product rule must hold in every cell of the table; one cell that fails, and they are not independent. Continuous: the joint density is the product of the marginals; on a rectangle this means that f splits into a function of x times a function of y.
 [[slnc 400]]
@@ -780,7 +780,7 @@ Exercise 10.19. Do the two stocks move independently? A finance example.
 [[slnc 600]]
 Finance context: investors spread their money over several stocks to reduce risk. This works best when the stocks do not tend to move together. If two stocks usually rise and fall on the same days, holding both protects much less than holding two stocks that move independently of each other.
 [[slnc 500]]
-These are the two stocks of Exercise 10.15. On a given day, let X equal 1 if stock A rises, and X equal minus 1 if it falls. Let Y equal 1, 0 or minus 1 if stock B rises, stays unchanged or falls. The joint probability mass function is the same table: in the row X equals minus 1, 0.20, 0.10 and 0.10; in the row X equals 1, 0.05, 0.15 and 0.40, for Y equals minus 1, 0 and 1. Part eh: are X and Y independent? Part b: write down the joint probability mass function that X and Y would have if they were independent, with the same marginal probability mass functions. Part c: for these independent stocks, find P of X equals Y, the probability that both fall or both rise. Compare it with P of X equals Y equals 0.60 for the real stocks.
+These are the two stocks of Exercise 10.15. On a given day, let X equal 1 if stock Eh rises, and X equal minus 1 if it falls. Let Y equal 1, 0 or minus 1 if stock B rises, stays unchanged or falls. The joint probability mass function is the same table: in the row X equals minus 1, 0.20, 0.10 and 0.10; in the row X equals 1, 0.05, 0.15 and 0.40, for Y equals minus 1, 0 and 1. Part eh: are X and Y independent? Part b: write down the joint probability mass function that X and Y would have if they were independent, with the same marginal probability mass functions. Part c: for these independent stocks, find P of X equals Y, the probability that both fall or both rise. Compare it with P of X equals Y equals 0.60 for the real stocks.
 [[slnc 800]]
 The same two stocks as before, now with the margins in the table. Try part eh in pairs, two minutes: compare a cell with the product of its margins.
 [[slnc 500]]
@@ -833,7 +833,7 @@ Exercise 10.20. Two borrowers, independent defaults, a finance example.
 [[slnc 600]]
 Finance context: a bank's credit loss depends on how many of its borrowers default, that is, stop paying their debt, not only on each borrower alone. The simplest model of a portfolio assumes that the default times of the borrowers are independent: one company's default tells us nothing about the other's. Each default time is modeled with an exponential distribution, whose rate is the yearly hazard rate of the company.
 [[slnc 500]]
-A bank has lent to two companies, A and B. Their default times T A and T B, in years, are independent and exponential with rates 0.02 and 0.03, so their densities are f T A of t equals 0.02 times e to the minus 0.02 t, and f T B of t equals 0.03 times e to the minus 0.03 t, for t greater than or equal to 0. Part eh: find the probability that A survives 10 years, that is, does not default in the first 10 years, and the same for B. Part b: what is the probability that both companies survive 10 years? Part c: what is the probability that at least one of them defaults within 10 years? Part d: what is the probability that both default within 10 years?
+A bank has lent to two companies, Eh and B. Their default times T Eh and T B, in years, are independent and exponential with rates 0.02 and 0.03, so their densities are f T Eh of t equals 0.02 times e to the minus 0.02 t, and f T B of t equals 0.03 times e to the minus 0.03 t, for t greater than or equal to 0. Part eh: find the probability that Eh survives 10 years, that is, does not default in the first 10 years, and the same for B. Part b: what is the probability that both companies survive 10 years? Part c: what is the probability that at least one of them defaults within 10 years? Part d: what is the probability that both default within 10 years?
 [[slnc 800]]
 A default time is the time until a company stops paying its debt. We model each with the exponential distribution of Session 1, and the two are independent. Try parts eh to c in pairs, three minutes. Remember the tail of the exponential.
 [[slnc 500]]
@@ -845,7 +845,7 @@ Ask the class: what is P of T greater than t for an exponential T with rate lamb
 [[slnc 800]]
 e to the minus lambda t: one minus F of t, which is 1 minus e to the minus lambda t.
 [[slnc 400]]
-Show the solution. P of T A greater than 10 is e to the minus 0.02 times 10, which is e to the minus 0.2, approximately 0.819. P of T B greater than 10 is e to the minus 0.03 times 10, which is e to the minus 0.3, approximately 0.741. The exponent is rate times time. Company B, with the higher rate, is the riskier one.
+Show the solution. P of T Eh greater than 10 is e to the minus 0.02 times 10, which is e to the minus 0.2, approximately 0.819. P of T B greater than 10 is e to the minus 0.03 times 10, which is e to the minus 0.3, approximately 0.741. The exponent is rate times time. Company B, with the higher rate, is the riskier one.
 [[slnc 500]]
 Part b.
 [[slnc 400]]
@@ -853,7 +853,7 @@ Ask the class: why may we multiply?
 [[slnc 800]]
 The default times are independent.
 [[slnc 400]]
-Events about T A and events about T B are independent, so the probability of and is the product: P of T A greater than 10 and T B greater than 10 is P of T A greater than 10 times P of T B greater than 10, which is e to the minus 0.2 times e to the minus 0.3, which is e to the minus 0.5, approximately 0.607. The exponents add, because e to the x times e to the y is e to the x plus y.
+Events about T Eh and events about T B are independent, so the probability of and is the product: P of T Eh greater than 10 and T B greater than 10 is P of T Eh greater than 10 times P of T B greater than 10, which is e to the minus 0.2 times e to the minus 0.3, which is e to the minus 0.5, approximately 0.607. The exponents add, because e to the x times e to the y is e to the x plus y.
 [[slnc 500]]
 Part c.
 [[slnc 400]]
@@ -863,7 +863,7 @@ Both survive.
 [[slnc 400]]
 Go to slide 35. The probability that at least one defaults is 1 minus e to the minus 0.5, approximately 1 minus 0.607, which is 0.393. In the picture: at least one defaults is everything outside the teal region, the three other pieces of the plane together.
 [[slnc 500]]
-Part d. Each default probability is one minus the survival probability: P of T A at most 10 is 1 minus e to the minus 0.2, approximately 0.181, and P of T B at most 10 is 1 minus e to the minus 0.3, approximately 0.259. By independence the product: P of T A at most 10 and T B at most 10 is approximately 0.181 times 0.259, approximately 0.047. That is the gold square in the picture. A check that ties parts c and d together, by inclusion-exclusion: 0.181 plus 0.259 minus 0.047 is approximately 0.393, the answer of part c.
+Part d. Each default probability is one minus the survival probability: P of T Eh at most 10 is 1 minus e to the minus 0.2, approximately 0.181, and P of T B at most 10 is 1 minus e to the minus 0.3, approximately 0.259. By independence the product: P of T Eh at most 10 and T B at most 10 is approximately 0.181 times 0.259, approximately 0.047. That is the gold square in the picture. A check that ties parts c and d together, by inclusion-exclusion: 0.181 plus 0.259 minus 0.047 is approximately 0.393, the answer of part c.
 [[slnc 500]]
 Ask the class: is 0.047, under 5 percent, realistic for two borrowers in the same economy?
 [[slnc 800]]
@@ -871,7 +871,7 @@ Probably too low: in a recession, both get into trouble at the same time.
 [[slnc 400]]
 In a crisis, defaults come together, so independence underestimates part d, the joint default, and that is exactly the event that causes the largest losses.
 [[slnc 500]]
-Note for you, a common mistake: in part c, adding P of T A at most 10 and P of T B at most 10, approximately 0.440, which counts both default twice.
+Note for you, a common mistake: in part c, adding P of T Eh at most 10 and P of T B at most 10, approximately 0.440, which counts both default twice.
 [[slnc 800]]
 Background for you.
 [[slnc 600]]

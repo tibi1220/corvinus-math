@@ -126,13 +126,4 @@
 		$P(X<2)=\frac35$ \quad
 		(c) $\E[X]=1.15$
 	\end{answer}
-	\begin{remark}
-		\textbf{Common mistake:} treating $P(X<2)$ and $P(X\le2)$ as equal.
-		For a discrete random variable they differ by the probability of the
-		endpoint: $P(X\le a)=P(X<a)+p(a)$. Here
-		\[ P(X\le2)-P(X<2)=\frac45-\frac35=\frac15=p(2). \]
-		The two are equal exactly when $p(a)=0$ (where $F$ does not jump).
-		The same care is needed for intervals: $P(a<X\le b)=F(b)-F(a)$, but
-		$P(a\le X\le b)=F(b)-F(a)+p(a)$.
-	\end{remark}
 \end{solution}

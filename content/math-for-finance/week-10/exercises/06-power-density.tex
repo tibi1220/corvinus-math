@@ -124,20 +124,4 @@
 		(e) $\E[X]=\frac94=2.25$ \quad
 		(f) $\Var(X)=\frac{27}{80}=0.3375$, $\SD(X)\approx0.581$
 	\end{answer}
-	\begin{remark}
-		\textbf{Common mistake:} choosing $c$ so that the largest value of $f$
-		is $1$ (here this happens to give $c=\frac19$ too).
-		The correct condition is that the \emph{area} under $f$ is $1$. Check
-		with the interval $[0,1]$: there the rule ``largest value $1$'' would
-		give $c=1$ and total area $\frac13$, which is wrong.
-
-		\smallskip
-		\textbf{Check:} $P(X\le1)=\frac1{27}$, so
-		$P(X\le1)+P(1<X<2)+P(X\ge2)=\frac{1+7+19}{27}=1$.
-
-		\smallskip
-		\textbf{Another common mistake:} computing $\E[X^2]$ as
-		$(\E[X])^2$, which would give $\Var(X)=0$. The square goes
-		\emph{inside} the integral: $\E[X^2]=\int x^2f(x)\,dx$.
-	\end{remark}
 \end{solution}

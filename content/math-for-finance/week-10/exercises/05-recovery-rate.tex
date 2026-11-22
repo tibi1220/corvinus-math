@@ -209,18 +209,4 @@
 		(e) expected loss $500\,000$ euros, standard deviation
 		$\approx223\,607$ euros
 	\end{answer}
-	\begin{remark}
-		\textbf{Common mistake:} reading a probability off the density,
-		e.g.\ saying $P(R=0.5)=f(0.5)=1.5$. A density value is not a
-		probability (here it is even larger than $1$). Probabilities are
-		\emph{areas} under $f$, and the area above a single point is $0$.
-		Another one: computing the variance in (e) as $1\,000\,000\cdot\Var(R)$.
-		The factor comes in squared, $\Var(aR+b)=a^2\Var(R)$; only the standard
-		deviation scales with $|a|$.
-
-		The loss given default is $L=1-R$, the fraction of the loan that is
-		lost (compare Exercise~\exref{loss-given-default}). Since the density
-		of $R$ is symmetric about $0.5$, here $L$ has the same distribution
-		as $R$.
-	\end{remark}
 \end{solution}

@@ -130,15 +130,4 @@
 		(d) $P(X=2)=\frac{3360}{15504}=\frac{70}{323}\approx0.2167$ \quad
 		(e) $\E[X]=1$
 	\end{answer}
-	\begin{remark}
-		\textbf{Common mistake:} using the binomial distribution with $n=5$ and
-		$p=4/20=0.2$. The binomial needs independent trials with the same success
-		probability. Here the draws are not independent: given that the first
-		invoice is erroneous, the second is erroneous with probability $3/19$;
-		given that the first is correct, the probability is $4/19$.
-		Unconditionally it is $4/20$. This is
-		what ``without replacement'' changes. The binomial would give
-		$P(X=0)=0.8^5\approx0.3277$ instead of $0.2817$. The expected value is
-		the same in both models ($np=5\cdot0.2=1$), but the probabilities differ.
-	\end{remark}
 \end{solution}

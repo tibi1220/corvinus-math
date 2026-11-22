@@ -152,18 +152,4 @@
 		is at most $24.9\%$ \quad
 		(d) $\text{VaR}_{95\%}=2\,490$ euros
 	\end{answer}
-	\begin{remark}
-		\textbf{Common mistake:} in (c), using $+1.645$ and getting
-		$r=0.08+0.329=0.409$. That is the return exceeded only with probability
-		$5\%$, the \emph{best} $5\%$ of the years; the risk is in the left
-		tail. Draw the bell curve first and check on which side the area $5\%$
-		lies.
-
-		By the $68$--$95$--$99.7$ rule, the return is within $2\sigma$ of
-		$\mu$, between $0.08-0.4=-0.32$ and $0.08+0.4=0.48$, with probability
-		about $95\%$. The VaR uses only one tail, so it needs the one-sided
-		quantile $1.645$, not $1.96$ (or $2$). Real returns have heavier tails
-		than the normal model: large losses are more frequent than the bell
-		curve predicts, so the normal VaR tends to understate the risk.
-	\end{remark}
 \end{solution}
