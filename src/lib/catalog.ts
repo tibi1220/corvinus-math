@@ -155,11 +155,11 @@ export const courses: CourseInfo[] = [
       },
       {
         number: 10,
-        title: 'Continuous random variables, named continuous distributions, joint distributions',
+        title:
+          'Continuous random variables, named continuous distributions, joint distributions',
         topics:
           'Continuous random variables, density, distribution function, expected value and variance, uniform, exponential and normal distributions, the standard normal table, the distribution of a function of a random variable, the lognormal stock price, joint distributions in the discrete and continuous case, joint distribution function, independent random variables',
         documents: weekDocuments(),
-        privateOnly: true,
       },
       {
         number: 11,
