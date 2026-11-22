@@ -1,5 +1,6 @@
 import { Mail, MessageSquare } from 'lucide-react';
 import type { Metadata } from 'next';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { LinkCard } from '@/components/link-card';
 import { courseHref, courses, isPublished } from '@/lib/content';
 import { pageMetadata } from '@/lib/metadata';
@@ -16,6 +17,7 @@ const contactLink =
 export default function Home() {
   return (
     <>
+      <Breadcrumbs items={[{ label: 'Home' }]} />
       <section
         aria-label='Contact'
         className='mb-10 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-5 py-4'

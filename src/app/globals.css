@@ -28,24 +28,10 @@ html {
   overscroll-behavior-x: contain;
 }
 
-/* Once the page's breadcrumbs scroll away, the header shows them in place of
-   the site title (components/breadcrumbs.tsx); both fade in when they swap. */
-.site-header:has(#header-breadcrumbs > nav) [data-site-title] {
+/* A page's breadcrumbs sit in the header in place of the site title
+   (components/breadcrumbs.tsx). */
+body:has([data-header-trail]) [data-site-title] {
   display: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .header-trail,
-  [data-site-title] {
-    animation: header-swap 160ms ease-out;
-  }
-}
-
-@keyframes header-swap {
-  from {
-    opacity: 0;
-    transform: translateY(2px);
-  }
 }
 
 /* In-page links (table of contents, figure references) scroll smoothly. */

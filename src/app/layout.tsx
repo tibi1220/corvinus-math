@@ -3,7 +3,7 @@ import { Geist, STIX_Two_Text } from 'next/font/google';
 import Link from 'next/link';
 import { Footer } from '@/components/footer';
 import { ThemeToggle } from '@/components/theme-toggle';
-import { absoluteUrl, siteDescription, siteName } from '@/lib/site';
+import { absoluteUrl, siteDescription, siteName, siteTitle } from '@/lib/site';
 import { THEME_SCRIPT } from '@/lib/theme';
 import 'katex/dist/katex.min.css';
 import './globals.css';
@@ -23,10 +23,8 @@ const stixTwo = STIX_Two_Text({
 export const metadata: Metadata = {
   // Relative URLs in the metadata (canonical, Open Graph) resolve against it.
   metadataBase: new URL(absoluteUrl('/')),
-  title: {
-    default: siteName,
-    template: `%s | ${siteName}`,
-  },
+  // Page titles stand alone, without the site name.
+  title: siteTitle,
   description: siteDescription,
   applicationName: siteName,
   keywords: [
@@ -65,11 +63,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             >
               {siteName}
             </Link>
-            <div
-              id='header-breadcrumbs'
-              className='min-w-0 flex-1 empty:hidden'
-            />
-            <div className='shrink-0'>
+            {/* Pages show their breadcrumbs here instead of the title
+                (components/breadcrumbs.tsx). */}
+            <div className='ml-auto shrink-0'>
               <ThemeToggle />
             </div>
           </div>

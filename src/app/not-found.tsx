@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Breadcrumbs } from '@/components/breadcrumbs';
 import { GameOfLife } from '@/components/game-of-life';
 
 // Unmatched URLs show this page; the static export writes it to 404.html.
@@ -11,32 +12,37 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section className='flex min-h-[calc(100dvh-15rem)] items-center justify-center'>
-      {/* The board fills the window behind the page; the header and footer
+    <>
+      <Breadcrumbs
+        items={[{ label: 'Home', href: '/' }, { label: 'Page not found' }]}
+      />
+      <section className='flex min-h-[calc(100dvh-15rem)] items-center justify-center'>
+        {/* The board fills the window behind the page; the header and footer
           stay on top of it. */}
-      <GameOfLife className='fixed inset-0 -z-10 size-full' />
-      <div className='max-w-sm rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-900/85 px-6 py-5 text-center shadow-sm backdrop-blur-sm'>
-        <p className='font-mono text-sm text-zinc-500 dark:text-zinc-400'>
-          404
-        </p>
-        <h1 className='mt-1 text-2xl font-semibold tracking-tight'>
-          Page not found
-        </h1>
-        <p className='mt-2 text-zinc-600 dark:text-zinc-400'>
-          This page does not exist or has moved. Meanwhile, the cells in the
-          background keep living by Conway&rsquo;s rules.
-        </p>
-        <Link
-          href='/'
-          className='mt-4 inline-flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-colors hover:border-zinc-400 dark:hover:border-zinc-500'
-        >
-          <ArrowLeft
-            aria-hidden
-            className='size-4'
-          />
-          Back to the home page
-        </Link>
-      </div>
-    </section>
+        <GameOfLife className='fixed inset-0 -z-10 size-full' />
+        <div className='max-w-sm rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-900/85 px-6 py-5 text-center shadow-sm backdrop-blur-sm'>
+          <p className='font-mono text-sm text-zinc-500 dark:text-zinc-400'>
+            404
+          </p>
+          <h1 className='mt-1 text-2xl font-semibold tracking-tight'>
+            Page not found
+          </h1>
+          <p className='mt-2 text-zinc-600 dark:text-zinc-400'>
+            This page does not exist or has moved. Meanwhile, the cells in the
+            background keep living by Conway&rsquo;s rules.
+          </p>
+          <Link
+            href='/'
+            className='mt-4 inline-flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm font-medium text-zinc-900 dark:text-zinc-100 transition-colors hover:border-zinc-400 dark:hover:border-zinc-500'
+          >
+            <ArrowLeft
+              aria-hidden
+              className='size-4'
+            />
+            Back to the home page
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }

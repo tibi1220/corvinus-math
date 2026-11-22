@@ -6,6 +6,10 @@ import { privateSite } from '@/lib/catalog';
 
 export const siteName = "Tibor Sándor's Math Courses";
 
+// The browser tab title of the home page; the other pages use their own
+// title alone, without the site name.
+export const siteTitle = 'Math Courses';
+
 export const siteOrigin = 'https://corvinus.tibi1220.hu';
 
 export const siteDescription =

@@ -1,53 +1,18 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { createPortal } from 'react-dom';
 
 export type Crumb = { label: string; href?: string };
 
-const subscribe = () => () => {};
-const headerSlot = () => document.getElementById('header-breadcrumbs');
-const serverSlot = () => null;
-
-function BreadcrumbTrail({ items }: { items: Crumb[] }) {
-  return (
-    <nav
-      aria-label='Breadcrumb'
-      className='text-sm text-zinc-500 dark:text-zinc-400'
-    >
-      <ol className='flex flex-wrap items-center gap-x-2 gap-y-1'>
-        {items.map((item, i) => (
-          <li
-            key={i}
-            className='flex items-center gap-2'
-          >
-            {i > 0 && <span aria-hidden>/</span>}
-            <CrumbLabel item={item} />
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
-}
-
-function CrumbLabel({
-  item,
-  className = '',
-}: {
-  item: Crumb;
-  className?: string;
-}) {
+function CrumbLabel({ item }: { item: Crumb }) {
   return item.href ? (
     <Link
       href={item.href}
-      className={`${className} hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline`}
+      className='min-w-0 truncate hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline'
     >
       {item.label}
     </Link>
   ) : (
     <span
-      className={`${className} text-zinc-900 dark:text-zinc-100`}
+      className='min-w-0 truncate text-zinc-900 dark:text-zinc-100'
       aria-current='page'
     >
       {item.label}
@@ -55,14 +20,13 @@ function CrumbLabel({
   );
 }
 
-// The trail in the header, once the page's own trail has scrolled away. It
-// shows the whole path and never scrolls sideways (no swiping or
-// rubber-banding on phones). If the path does not fit, labels are cut with an
-// ellipsis, in order of importance: first the crumbs in the middle (the
-// course), then Home and the parent, the current page last. The flex-shrink
-// factors are 10^4 apart, so a crumb loses (practically) nothing until the
-// ones before it in that order are as short as they can get; a minimum width
-// keeps at least a letter of every ancestor.
+// The trail never scrolls sideways (no swiping or rubber-banding on phones).
+// If the path does not fit, labels are cut with an ellipsis, in order of
+// importance: first the crumbs in the middle (the course), then Home and the
+// parent, the current page last. The flex-shrink factors are 10^4 apart, so a
+// crumb loses (practically) nothing until the ones before it in that order are
+// as short as they can get; a minimum width keeps at least a letter of every
+// ancestor.
 function shrinkClass(i: number, last: number) {
   if (i === last) return 'min-w-0 shrink';
   if (i === 0) return 'min-w-[1.75em] shrink-[10000]';
@@ -70,67 +34,46 @@ function shrinkClass(i: number, last: number) {
   return 'min-w-[2.75em] shrink-[100000000]';
 }
 
-function HeaderTrail({ items }: { items: Crumb[] }) {
+// The page's trail, shown in the header in place of the site title (see
+// globals.css). The header belongs to the root layout, which cannot see the
+// page's crumbs, so the page renders the trail as the first thing in <main>
+// and pulls it up into the header: -mt-24 cancels main's top padding (py-8)
+// and the header's height (h-16), mb-8 gives the padding back. Sticky at the
+// top, it stays over the header while the page scrolls, also through
+// overscroll, and it is in the server-rendered HTML, so nothing swaps in after
+// loading. The right padding keeps it clear of the theme toggle (size-8 plus
+// the header's gap-3). It must be the first child of the page.
+export function Breadcrumbs({ items }: { items: Crumb[] }) {
   const last = items.length - 1;
   return (
-    <nav
-      aria-label='Breadcrumb'
-      className='header-trail min-w-0 text-sm text-zinc-500 dark:text-zinc-400'
+    <div
+      data-header-trail
+      className='pointer-events-none sticky top-0 z-[60] -mt-24 mb-8 flex h-16 items-center pr-11'
     >
-      <ol className='flex min-w-0 items-center gap-1.5 whitespace-nowrap'>
-        {items.map((item, i) => (
-          <li
-            key={i}
-            title={item.label}
-            className={`flex items-center gap-1.5 ${shrinkClass(i, last)}`}
-          >
-            {i > 0 && (
-              <span
-                aria-hidden
-                className='shrink-0'
-              >
-                /
-              </span>
-            )}
-            <CrumbLabel
-              item={item}
-              className='min-w-0 truncate'
-            />
-          </li>
-        ))}
-      </ol>
-    </nav>
-  );
-}
-
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
-  const origin = useRef<HTMLDivElement>(null);
-  const [sticky, setSticky] = useState(false);
-  // The header is server-rendered; defer portal access until hydration.
-  const slot = useSyncExternalStore(subscribe, headerSlot, serverSlot);
-
-  useEffect(() => {
-    const element = origin.current;
-    if (!element || !slot) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setSticky(entry.boundingClientRect.bottom <= 65),
-      { rootMargin: '-65px 0px 0px 0px', threshold: [0, 1] },
-    );
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [slot]);
-
-  return (
-    <>
-      <div
-        ref={origin}
-        className='mb-6'
-        style={{ visibility: sticky ? 'hidden' : undefined }}
-        inert={sticky}
+      <nav
+        aria-label='Breadcrumb'
+        className='pointer-events-auto min-w-0 text-sm text-zinc-500 dark:text-zinc-400'
       >
-        <BreadcrumbTrail items={items} />
-      </div>
-      {sticky && slot && createPortal(<HeaderTrail items={items} />, slot)}
-    </>
+        <ol className='flex min-w-0 items-center gap-1.5 whitespace-nowrap'>
+          {items.map((item, i) => (
+            <li
+              key={i}
+              title={item.label}
+              className={`flex items-center gap-1.5 ${shrinkClass(i, last)}`}
+            >
+              {i > 0 && (
+                <span
+                  aria-hidden
+                  className='shrink-0'
+                >
+                  /
+                </span>
+              )}
+              <CrumbLabel item={item} />
+            </li>
+          ))}
+        </ol>
+      </nav>
+    </div>
   );
 }
