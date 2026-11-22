@@ -3,15 +3,34 @@
 import { useEffect, useRef } from 'react';
 
 // Conway's Game of Life on a wrapping grid, drawn on a canvas that fills its
-// parent. The live cells take the canvas's CSS `color`, so the theme (and
-// Tailwind's dark: variant) sets it. The root not-found page uses it, and
-// Next.js ships the root not-found file with every route, so keep this small.
+// box. The root not-found page uses it, and Next.js ships the root not-found
+// file with every route, so keep this small.
 
-const CELL = 10; // CSS pixels per cell, gap included
+const CELL = 12; // CSS pixels per cell, gap included
 const GAP = 1;
 const STEP_MS = 120; // time between generations
 const DENSITY = 0.22; // share of live cells in a random soup
 const QUIET_LIMIT = 40; // generations of near-stillness before new gliders
+
+// Cells are colored by age (in generations) with the course colors of the
+// .tex preambles: newborn gold (190,130,20), young teal (0,120,125), mature
+// plum (110,60,120), settled navy (24,48,75). Faint, so the board stays a
+// quiet background; lighter in dark mode, where navy would vanish.
+const AGES = [1, 4, 20, 255]; // upper end of each age range
+const PALETTE = {
+  light: [
+    'rgb(190 130 20 / 0.15)',
+    'rgb(0 120 125 / 0.1)',
+    'rgb(110 60 120 / 0.08)',
+    'rgb(24 48 75 / 0.06)',
+  ],
+  dark: [
+    'rgb(240 175 55 / 0.14)',
+    'rgb(40 195 190 / 0.11)',
+    'rgb(195 125 215 / 0.1)',
+    'rgb(95 140 205 / 0.09)',
+  ],
+};
 
 // The five cells of a glider heading down and to the right.
 const GLIDER = [
@@ -22,6 +41,7 @@ const GLIDER = [
   [2, 2],
 ];
 
+// cells[i] is the age of a live cell (1 = just born, capped at 255), 0 if dead.
 type Grid = { cols: number; rows: number; cells: Uint8Array };
 
 function randomGrid(cols: number, rows: number): Grid {
@@ -46,6 +66,7 @@ function resizeGrid(old: Grid, cols: number, rows: number): Grid {
 
 function step({ cols, rows, cells }: Grid): Grid {
   const next = new Uint8Array(cells.length);
+  const alive = (i: number) => (cells[i] ? 1 : 0);
   for (let y = 0; y < rows; y++) {
     const up = ((y - 1 + rows) % rows) * cols;
     const mid = y * cols;
@@ -54,15 +75,17 @@ function step({ cols, rows, cells }: Grid): Grid {
       const left = (x - 1 + cols) % cols;
       const right = (x + 1) % cols;
       const n =
-        cells[up + left] +
-        cells[up + x] +
-        cells[up + right] +
-        cells[mid + left] +
-        cells[mid + right] +
-        cells[down + left] +
-        cells[down + x] +
-        cells[down + right];
-      next[mid + x] = n === 3 || (n === 2 && cells[mid + x]) ? 1 : 0;
+        alive(up + left) +
+        alive(up + x) +
+        alive(up + right) +
+        alive(mid + left) +
+        alive(mid + right) +
+        alive(down + left) +
+        alive(down + x) +
+        alive(down + right);
+      const age = cells[mid + x];
+      if (age && (n === 2 || n === 3)) next[mid + x] = Math.min(age + 1, 255);
+      else if (!age && n === 3) next[mid + x] = 1;
     }
   }
   return { cols, rows, cells: next };
@@ -84,11 +107,13 @@ function addGliders(grid: Grid, count: number) {
   }
 }
 
-// Cells that differ from two generations back: zero for still lifes and
-// blinkers, so a low count means the board has settled.
+// Cells whose life or death differs from two generations back: zero for
+// still lifes and blinkers, so a low count means the board has settled.
 function changes(a: Uint8Array, b: Uint8Array) {
   let count = 0;
-  for (let i = 0; i < a.length; i++) count += a[i] ^ b[i];
+  for (let i = 0; i < a.length; i++) {
+    if (!a[i] !== !b[i]) count++;
+  }
   return count;
 }
 
@@ -112,14 +137,21 @@ export function GameOfLife({ className }: { className?: string }) {
       const dpr = window.devicePixelRatio || 1;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = getComputedStyle(canvas).color;
+      const dark = document.documentElement.dataset.theme === 'dark';
+      const colors = dark ? PALETTE.dark : PALETTE.light;
       const { cols, rows, cells } = grid;
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          if (cells[y * cols + x]) {
-            ctx.fillRect(x * CELL, y * CELL, CELL - GAP, CELL - GAP);
+      let from = 1;
+      for (const [i, upTo] of AGES.entries()) {
+        ctx.fillStyle = colors[i];
+        for (let y = 0; y < rows; y++) {
+          for (let x = 0; x < cols; x++) {
+            const age = cells[y * cols + x];
+            if (age >= from && age <= upTo) {
+              ctx.fillRect(x * CELL, y * CELL, CELL - GAP, CELL - GAP);
+            }
           }
         }
+        from = upTo + 1;
       }
     }
 
@@ -176,7 +208,7 @@ export function GameOfLife({ className }: { className?: string }) {
 
     const resize = new ResizeObserver(fit);
     resize.observe(canvas);
-    // The cell color follows the theme toggle even while paused.
+    // The colors follow the theme toggle even while paused.
     const theme = new MutationObserver(draw);
     theme.observe(document.documentElement, {
       attributes: true,

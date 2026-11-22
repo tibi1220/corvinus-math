@@ -11,8 +11,10 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <section className='relative isolate flex min-h-[26rem] h-[calc(100dvh-16rem)] items-center justify-center overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4'>
-      <GameOfLife className='absolute inset-0 -z-10 size-full text-zinc-200 dark:text-zinc-700/70' />
+    <section className='flex min-h-[calc(100dvh-15rem)] items-center justify-center'>
+      {/* The board fills the window behind the page; the header and footer
+          stay on top of it. */}
+      <GameOfLife className='fixed inset-0 -z-10 size-full' />
       <div className='max-w-sm rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white/85 dark:bg-zinc-900/85 px-6 py-5 text-center shadow-sm backdrop-blur-sm'>
         <p className='font-mono text-sm text-zinc-500 dark:text-zinc-400'>
           404
