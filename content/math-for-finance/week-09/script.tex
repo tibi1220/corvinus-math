@@ -721,10 +721,14 @@
 % PDF properties and the date on the title page
 \input{document-info}
 \documentinfo{Teaching script\ifdefined\scriptprint\space(print version)\fi}
-% Print version: no header and footer
+% Print version: no header; only the page number, as <current>/<total>, at
+% the bottom right
+% (PDF only: the website's HTML build has no page style.)
 \ifdefined\scriptprint
-  \AtBeginDocument{\pagestyle{empty}}
-  \renewcommand*{\titlepagestyle}{empty}
+  \IfPackageLoadedTF{scrlayer-scrpage}{%
+    \KOMAoptions{headsepline=false,footsepline=false,plainfootsepline=false}%
+    \clearpairofpagestyles
+    \ofoot*{\pagemark/\pageref*{LastPage}}}{}
 \fi
 
 \title{Mathematics for Finance}
